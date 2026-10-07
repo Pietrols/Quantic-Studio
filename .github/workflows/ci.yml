@@ -1,0 +1,41 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.12'
+      - name: Sync workspace
+        run: uv sync --all-packages --locked
+      - name: Check text
+        run: uv run python tools/ci/check_repository.py text
+      - name: Check reference files
+        if: ${{ !cancelled() }}
+        run: uv run python tools/ci/check_repository.py references
+      - name: Check import boundaries
+        if: ${{ !cancelled() }}
+        run: uv run python tools/ci/check_repository.py boundaries
+      - name: Ruff
+        if: ${{ !cancelled() }}
+        run: uv run ruff check --config tools/ci/ruff.toml .
+      - name: Workspace tests
+        if: ${{ !cancelled() }}
+        run: uv run pytest
+      - name: Plan checker when implemented
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -f tools/check_plan/__main__.py ] || [ -f tools/check_plan/check_plan/__main__.py ]; then
+            PYTHONPATH="tools:tools/check_plan${PYTHONPATH:+:$PYTHONPATH}" uv run python -m check_plan PLAN.md
+          else
+            echo 'Plan checker not implemented yet (WP-0.3).'
+          fi
