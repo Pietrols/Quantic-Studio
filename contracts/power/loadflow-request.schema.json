@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:power:loadflow-request",
+  "title": "Load-flow request",
+  "description": "Solver-neutral inputs for a balanced steady-state load-flow study.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "request_id", "network_file", "tolerance_mva", "max_iterations"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "request_id": { "type": "string", "minLength": 1 },
+    "network_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "tolerance_mva": { "type": "number", "exclusiveMinimum": 0 },
+    "max_iterations": { "type": "integer", "minimum": 1 },
+    "initialization": { "enum": ["flat", "previous_result"] }
+  }
+}

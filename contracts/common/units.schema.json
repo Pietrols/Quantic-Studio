@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:units",
+  "title": "Unit conventions",
+  "description": "Canonical unit labels for unit-suffixed contract fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["field_units"],
+  "properties": {
+    "field_units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_mva", "vn_kv", "vm_pu", "vm_setpoint_pu", "va_degree",
+        "va_setpoint_degree", "length_km", "r_ohm_per_km", "x_ohm_per_km",
+        "b_us_per_km", "max_current_ka", "sn_mva", "vn_hv_kv", "vn_lv_kv", "r_pu", "x_pu",
+        "tap_ratio", "phase_shift_degree", "p_mw", "q_mvar", "p_min_mw",
+        "p_max_mw", "q_min_mvar", "q_max_mvar", "tolerance_mva",
+        "largest_mismatch_mva", "p_from_mw", "q_from_mvar", "p_to_mw",
+        "q_to_mvar", "p_loss_mw", "q_loss_mvar", "loading_pct"
+      ],
+      "properties": {
+        "base_mva": { "const": "MVA" },
+        "vn_kv": { "const": "kV" },
+        "vm_pu": { "const": "pu" },
+        "vm_setpoint_pu": { "const": "pu" },
+        "va_degree": { "const": "degree" },
+        "va_setpoint_degree": { "const": "degree" },
+        "length_km": { "const": "km" },
+        "r_ohm_per_km": { "const": "ohm/km" },
+        "x_ohm_per_km": { "const": "ohm/km" },
+        "b_us_per_km": { "const": "uS/km" },
+        "max_current_ka": { "const": "kA" },
+        "sn_mva": { "const": "MVA" },
+        "vn_hv_kv": { "const": "kV" },
+        "vn_lv_kv": { "const": "kV" },
+        "r_pu": { "const": "pu" },
+        "x_pu": { "const": "pu" },
+        "tap_ratio": { "const": "dimensionless" },
+        "phase_shift_degree": { "const": "degree" },
+        "p_mw": { "const": "MW" },
+        "q_mvar": { "const": "Mvar" },
+        "p_min_mw": { "const": "MW" },
+        "p_max_mw": { "const": "MW" },
+        "q_min_mvar": { "const": "Mvar" },
+        "q_max_mvar": { "const": "Mvar" },
+        "tolerance_mva": { "const": "MVA" },
+        "largest_mismatch_mva": { "const": "MVA" },
+        "p_from_mw": { "const": "MW" },
+        "q_from_mvar": { "const": "Mvar" },
+        "p_to_mw": { "const": "MW" },
+        "q_to_mvar": { "const": "Mvar" },
+        "p_loss_mw": { "const": "MW" },
+        "q_loss_mvar": { "const": "Mvar" },
+        "loading_pct": { "const": "%" }
+      }
+    }
+  }
+}

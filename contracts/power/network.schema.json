@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:power:network",
+  "title": "Power network",
+  "description": "Engine-neutral steady-state network model for electrical power studies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "network_id", "base_mva", "buses", "lines", "transformers", "loads", "generators", "external_grids", "shunts"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "network_id": { "type": "string", "minLength": 1 },
+    "base_mva": { "type": "number", "exclusiveMinimum": 0 },
+    "buses": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/bus" } },
+    "lines": { "type": "array", "items": { "$ref": "#/$defs/line" } },
+    "transformers": { "type": "array", "items": { "$ref": "#/$defs/transformer" } },
+    "loads": { "type": "array", "items": { "$ref": "#/$defs/load" } },
+    "generators": { "type": "array", "items": { "$ref": "#/$defs/generator" } },
+    "external_grids": { "type": "array", "items": { "$ref": "#/$defs/external_grid" } },
+    "shunts": { "type": "array", "items": { "$ref": "#/$defs/shunt" } }
+  },
+  "$defs": {
+    "identifier": { "type": "string", "minLength": 1 },
+    "bus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bus_id", "vn_kv", "bus_type"],
+      "properties": {
+        "bus_id": { "$ref": "#/$defs/identifier" },
+        "name": { "type": "string" },
+        "vn_kv": { "type": "number", "exclusiveMinimum": 0 },
+        "bus_type": { "enum": ["slack", "pv", "pq"] },
+        "vm_pu": { "type": "number", "exclusiveMinimum": 0 },
+        "va_degree": { "type": "number" }
+      }
+    },
+    "line": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line_id", "from_bus", "to_bus", "length_km", "r_ohm_per_km", "x_ohm_per_km"],
+      "properties": {
+        "line_id": { "$ref": "#/$defs/identifier" },
+        "from_bus": { "$ref": "#/$defs/identifier" },
+        "to_bus": { "$ref": "#/$defs/identifier" },
+        "length_km": { "type": "number", "exclusiveMinimum": 0 },
+        "r_ohm_per_km": { "type": "number", "minimum": 0 },
+        "x_ohm_per_km": { "type": "number" },
+        "b_us_per_km": { "type": "number", "minimum": 0 },
+        "max_current_ka": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "transformer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transformer_id", "hv_bus", "lv_bus", "sn_mva", "vn_hv_kv", "vn_lv_kv", "r_pu", "x_pu"],
+      "properties": {
+        "transformer_id": { "$ref": "#/$defs/identifier" },
+        "hv_bus": { "$ref": "#/$defs/identifier" },
+        "lv_bus": { "$ref": "#/$defs/identifier" },
+        "sn_mva": { "type": "number", "exclusiveMinimum": 0 },
+        "vn_hv_kv": { "type": "number", "exclusiveMinimum": 0 },
+        "vn_lv_kv": { "type": "number", "exclusiveMinimum": 0 },
+        "r_pu": { "type": "number", "minimum": 0 },
+        "x_pu": { "type": "number" },
+        "tap_ratio": { "type": "number", "exclusiveMinimum": 0 },
+        "phase_shift_degree": { "type": "number" }
+      }
+    },
+    "load": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["load_id", "bus_id", "p_mw", "q_mvar"],
+      "properties": {
+        "load_id": { "$ref": "#/$defs/identifier" },
+        "bus_id": { "$ref": "#/$defs/identifier" },
+        "p_mw": { "type": "number", "minimum": 0 },
+        "q_mvar": { "type": "number" }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generator_id", "bus_id", "p_mw", "vm_setpoint_pu"],
+      "properties": {
+        "generator_id": { "$ref": "#/$defs/identifier" },
+        "bus_id": { "$ref": "#/$defs/identifier" },
+        "p_mw": { "type": "number" },
+        "vm_setpoint_pu": { "type": "number", "exclusiveMinimum": 0 },
+        "p_min_mw": { "type": "number" },
+        "p_max_mw": { "type": "number" },
+        "q_min_mvar": { "type": "number" },
+        "q_max_mvar": { "type": "number" }
+      }
+    },
+    "external_grid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["external_grid_id", "bus_id", "vm_setpoint_pu", "va_setpoint_degree"],
+      "properties": {
+        "external_grid_id": { "$ref": "#/$defs/identifier" },
+        "bus_id": { "$ref": "#/$defs/identifier" },
+        "vm_setpoint_pu": { "type": "number", "exclusiveMinimum": 0 },
+        "va_setpoint_degree": { "type": "number" }
+      }
+    },
+    "shunt": {
+      "type": "object",
+      "description": "Shunt power at the connected bus nominal voltage, positive values denote consumption.",
+      "additionalProperties": false,
+      "required": ["shunt_id", "bus_id", "p_mw", "q_mvar"],
+      "properties": {
+        "shunt_id": { "$ref": "#/$defs/identifier" },
+        "bus_id": { "$ref": "#/$defs/identifier" },
+        "p_mw": { "type": "number" },
+        "q_mvar": { "type": "number" }
+      }
+    }
+  }
+}

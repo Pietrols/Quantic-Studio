@@ -438,7 +438,7 @@ Change record: none
 
 ### WP-0.4 Contracts v0
 
-Status: [ ] Not started
+Status: [~] In progress | Copilot | branch wp-0.4-contracts | started 2026-10-08
 Lane: A (implement), B (verify), Peter approves
 Depends on: WP-0.1
 Owned paths: `contracts/common/**`, `contracts/project/**`, `contracts/power/**`, `docs/specs/**`, `docs/decisions/ADR-0002-contracts.md`
