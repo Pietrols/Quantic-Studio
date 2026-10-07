@@ -349,7 +349,7 @@ Change record:
 
 ### WP-0.1 Repository skeleton and rules
 
-Status: [~] In progress | Copilot | branch wp-0.1-skeleton | started 2026-10-07
+Status: [!] Changed design | due to uv sync rejecting the package directories before WP-0.5 adds member manifests, while original was enabling the packages/py/* workspace members in WP-0.1, as it was better for keeping uv sync usable without inventing placeholder packages | Copilot | 2026-10-07
 Lane: A (implement), B (verify)
 Depends on: WP-0.0
 Owned paths: `/*` (root files), `.github/ISSUE_TEMPLATE/**`, `.github/pull_request_template.md`, `.github/CODEOWNERS`, `docs/decisions/ADR-0001-monorepo.md`, `docs/README.md`, `docs/atlas/**`, all empty directories in section 3.1 (with `.gitkeep`)
@@ -374,7 +374,9 @@ Acceptance (verifier runs):
 - The em dash check finds nothing: `LC_ALL=C.UTF-8 grep -rnP '\x{2014}' --exclude-dir=.git .` returns no lines. (On macOS, install GNU grep with `brew install grep` and use `ggrep`.)
 
 Learning note: `docs/learning/monorepo-and-workspaces.md`: what a monorepo is, how `uv` workspaces work, why boundaries matter.
-Change record: none
+Change record:
+
+- due to uv sync rejecting the package directories before WP-0.5 adds member manifests, while original was enabling the packages/py/* workspace members in WP-0.1, as it was better for keeping uv sync usable without inventing placeholder packages
 
 ---
 

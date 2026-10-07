@@ -1,0 +1,14 @@
+[project]
+name = "quantic-studio-workspace"
+version = "0.0.0"
+requires-python = ">=3.12"
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+# Enabled by WP-0.5 when workspace package manifests exist.
+# members = ["packages/py/*"]
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
