@@ -1,0 +1,1 @@
+"""Quantic Studio command line."""

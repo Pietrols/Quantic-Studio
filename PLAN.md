@@ -587,7 +587,11 @@ Acceptance:
 - The report opens and reads correctly in a Markdown viewer.
 
 Learning note: `docs/learning/reading-a-load-flow-report.md`.
-Change record: none
+Change record:
+- Changed design due to the project manifest contract having no field for voltage limits, while original was "limits configurable in the project", as it was better for avoiding a contract change in Phase 0: limits are set with --vmin and --vmax (default 0.95 and 1.05 pu) and stated in the report. A future Contract Change WP can add them to the manifest. (Claude, 2026-10-08)
+- Changed design due to WP-0.8 replacing IEEE 14-bus with original fixtures and the example using project.json, which qe_core does not load, while original was "uv run qe study run examples/ieee14", as it was better for a runnable example: examples/fourteen_bus now has manifest.json, loadflow-request.json and an exact copy of the fixture network, guarded by a byte-equality test. The WP-0.8 fixture test now reads manifest.json. (Claude, 2026-10-08)
+- Changed design due to the solvers not enforcing generator reactive limits, while original was a report without source outputs, as it was better for catching impossible operating points: the report back-calculates each source's P and Q from power balance and warns when Q limits are breached. (Claude, 2026-10-08)
+- qe_power is now a proper workspace package (packages/py/qe_power/pyproject.toml) so qe_cli can depend on it. WP-0.6 adds pandapower to its dependencies. (Claude, 2026-10-08)
 
 ---
 

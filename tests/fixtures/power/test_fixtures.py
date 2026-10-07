@@ -25,7 +25,7 @@ def test_all_original_networks_validate_against_contract() -> None:
 
 
 def test_fourteen_bus_example_manifest_validates() -> None:
-    manifest_path = FIXTURE_ROOT.parents[2] / "examples" / "fourteen_bus" / "project.json"
+    manifest_path = FIXTURE_ROOT.parents[2] / "examples" / "fourteen_bus" / "manifest.json"
     diagnostics = validate(_read_json(manifest_path), "project/manifest")
     assert diagnostics == []
 

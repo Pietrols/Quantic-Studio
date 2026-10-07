@@ -1,0 +1,8 @@
+{
+  "schema_version": "0.1.0",
+  "request_id": "fourteen-bus-base-case",
+  "network_file": "network.json",
+  "tolerance_mva": 0.0001,
+  "max_iterations": 20,
+  "initialization": "flat"
+}
