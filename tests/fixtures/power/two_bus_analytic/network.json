@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "network_id": "two-bus-analytic",
+  "base_mva": 10.0,
+  "buses": [
+    { "bus_id": "source", "name": "Slack source", "vn_kv": 11.0, "bus_type": "slack" },
+    { "bus_id": "receiving", "name": "PQ receiving bus", "vn_kv": 11.0, "bus_type": "pq" }
+  ],
+  "lines": [
+    {
+      "line_id": "series-line",
+      "from_bus": "source",
+      "to_bus": "receiving",
+      "length_km": 1.0,
+      "r_ohm_per_km": 0.363,
+      "x_ohm_per_km": 0.726,
+      "b_us_per_km": 0.0
+    }
+  ],
+  "transformers": [],
+  "loads": [
+    { "load_id": "receiving-load", "bus_id": "receiving", "p_mw": 2.0, "q_mvar": 1.0 }
+  ],
+  "generators": [],
+  "external_grids": [
+    {
+      "external_grid_id": "source-grid",
+      "bus_id": "source",
+      "vm_setpoint_pu": 1.0,
+      "va_setpoint_degree": 0.0
+    }
+  ],
+  "shunts": []
+}

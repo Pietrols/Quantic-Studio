@@ -1,0 +1,14 @@
+id: quantic-original-power-fixtures-2026-10-08
+title: Quantic Studio original power network fixtures
+type: original-engineering-data
+author: Quantic Engineering Limited
+created: 2026-10-08
+purpose: Solver validation and cross-check tests for WP-0.7 and later studies
+files:
+  - tests/fixtures/power/two_bus_analytic/network.json
+  - tests/fixtures/power/two_bus_analytic/reference.json
+  - tests/fixtures/power/three_bus_original/network.json
+  - tests/fixtures/power/five_bus_original/network.json
+  - tests/fixtures/power/fourteen_bus_original/network.json
+external_sources: none
+terms: Original fixture values authored for this repository. Peter authorized fully owned, redistributable fixture data in the WP-0.8 design instruction. No UW archive or MATPOWER case data is included. The project-wide software and documentation license remains deferred under decision D4.
