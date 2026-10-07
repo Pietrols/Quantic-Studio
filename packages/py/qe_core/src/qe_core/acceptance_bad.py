@@ -1,0 +1,1 @@
+import qe_power
