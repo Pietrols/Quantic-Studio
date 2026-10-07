@@ -541,7 +541,7 @@ Change record: none
 
 ### WP-0.8 Reference fixtures
 
-Status: [!] Changed design | due to source terms not permitting commercial CI use and case4gs having no published solution, while original was IEEE 14-bus and case4gs fixtures, as it was better for fully owned, redistributable fixtures with independent references | Copilot | 2026-10-08
+Status: [x] Done | implemented by Copilot | commit 62b8597 | 2026-10-08
 Lane: B (implement), A (verify)
 Depends on: WP-0.4
 Owned paths: `tests/fixtures/power/**`, `examples/ieee14/**`
