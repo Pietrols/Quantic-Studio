@@ -371,12 +371,13 @@ Acceptance (verifier runs):
 
 - `uv sync` succeeds at the repo root.
 - Every folder in section 3.1 exists.
-- The em dash check finds nothing: `LC_ALL=C.UTF-8 grep -rnP '\x{2014}' --exclude-dir=.git .` returns no lines. (On macOS, install GNU grep with `brew install grep` and use `ggrep`.)
+- The em dash check finds nothing: `LC_ALL=C.UTF-8 grep -rnP '\x{2014}' --exclude-dir=.git --exclude-dir=.venv --exclude-dir=node_modules .` returns no lines. (On macOS, use `ggrep` with the same arguments.)
 
 Learning note: `docs/learning/monorepo-and-workspaces.md`: what a monorepo is, how `uv` workspaces work, why boundaries matter.
 Change record:
 
-- due to uv sync rejecting the package directories before WP-0.5 adds member manifests, while original was enabling the packages/py/* workspace members in WP-0.1, as it was better for keeping uv sync usable without inventing placeholder packages
+- Changed design due to uv sync rejecting the package directories before WP-0.5 adds member manifests, while original was enabling the packages/py/* workspace members in WP-0.1, as it was better for keeping uv sync usable without inventing placeholder packages. (Copilot, 2026-10-07)
+- Acceptance em dash command now excludes .venv and node_modules, due to installed dependencies containing em dashes. (Peter, 2026-10-07)
 
 ---
 

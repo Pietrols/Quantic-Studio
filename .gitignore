@@ -5,6 +5,7 @@
 private/
 QE-References/
 .DS_Store
+.vscode/
 
 # Python
 __pycache__/
@@ -43,4 +44,3 @@ pnpm-debug.log*
 !private/
 private/*
 !private/.gitkeep
-# Ignore all other private scratch files.
