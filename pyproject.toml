@@ -13,4 +13,9 @@ members = ["packages/py/qe_core"]
 qe-core = { workspace = true }
 
 [dependency-groups]
-dev = ["pytest", "ruff", "qe-core"]
+dev = [
+    "pytest",
+    "ruff",
+    "qe-core",
+    "numpy>=2.5.3",
+]
