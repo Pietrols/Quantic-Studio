@@ -1,0 +1,7 @@
+*.pdf
+*.epub
+*.djvu
+!docs/assets/**/*.pdf
+private/
+QE-References/
+.DS_Store
