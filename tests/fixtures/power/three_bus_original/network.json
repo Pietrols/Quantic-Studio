@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1.0",
+  "network_id": "three-bus-original",
+  "base_mva": 10.0,
+  "buses": [
+    { "bus_id": "bus-1", "name": "Slack", "vn_kv": 11.0, "bus_type": "slack" },
+    { "bus_id": "bus-2", "name": "PV generator", "vn_kv": 11.0, "bus_type": "pv" },
+    { "bus_id": "bus-3", "name": "PQ load", "vn_kv": 11.0, "bus_type": "pq" }
+  ],
+  "lines": [
+    { "line_id": "line-1-2", "from_bus": "bus-1", "to_bus": "bus-2", "length_km": 1.0, "r_ohm_per_km": 0.10, "x_ohm_per_km": 0.22, "b_us_per_km": 0.0 },
+    { "line_id": "line-2-3", "from_bus": "bus-2", "to_bus": "bus-3", "length_km": 1.2, "r_ohm_per_km": 0.12, "x_ohm_per_km": 0.24, "b_us_per_km": 0.0 },
+    { "line_id": "line-3-1", "from_bus": "bus-3", "to_bus": "bus-1", "length_km": 0.9, "r_ohm_per_km": 0.11, "x_ohm_per_km": 0.23, "b_us_per_km": 0.0 }
+  ],
+  "transformers": [],
+  "loads": [
+    { "load_id": "load-3", "bus_id": "bus-3", "p_mw": 1.4, "q_mvar": 0.6 }
+  ],
+  "generators": [
+    { "generator_id": "generator-2", "bus_id": "bus-2", "p_mw": 0.8, "vm_setpoint_pu": 1.01, "p_min_mw": 0.0, "p_max_mw": 2.0, "q_min_mvar": -1.0, "q_max_mvar": 1.0 }
+  ],
+  "external_grids": [
+    { "external_grid_id": "grid-1", "bus_id": "bus-1", "vm_setpoint_pu": 1.0, "va_setpoint_degree": 0.0 }
+  ],
+  "shunts": []
+}

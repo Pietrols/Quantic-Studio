@@ -1,0 +1,33 @@
+{
+  "schema_version": "0.1.0",
+  "network_id": "five-bus-original",
+  "base_mva": 10.0,
+  "buses": [
+    { "bus_id": "bus-1", "name": "33 kV slack", "vn_kv": 33.0, "bus_type": "slack" },
+    { "bus_id": "bus-2", "name": "33 kV PV generator", "vn_kv": 33.0, "bus_type": "pv" },
+    { "bus_id": "bus-3", "name": "33 kV junction", "vn_kv": 33.0, "bus_type": "pq" },
+    { "bus_id": "bus-4", "name": "11 kV PV generator", "vn_kv": 11.0, "bus_type": "pv" },
+    { "bus_id": "bus-5", "name": "11 kV load", "vn_kv": 11.0, "bus_type": "pq" }
+  ],
+  "lines": [
+    { "line_id": "line-1-2", "from_bus": "bus-1", "to_bus": "bus-2", "length_km": 2.0, "r_ohm_per_km": 0.25, "x_ohm_per_km": 0.38, "b_us_per_km": 3.0 },
+    { "line_id": "line-2-3", "from_bus": "bus-2", "to_bus": "bus-3", "length_km": 1.5, "r_ohm_per_km": 0.24, "x_ohm_per_km": 0.36, "b_us_per_km": 3.0 },
+    { "line_id": "line-3-1", "from_bus": "bus-3", "to_bus": "bus-1", "length_km": 2.2, "r_ohm_per_km": 0.27, "x_ohm_per_km": 0.40, "b_us_per_km": 3.0 },
+    { "line_id": "line-4-5", "from_bus": "bus-4", "to_bus": "bus-5", "length_km": 1.1, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.30, "b_us_per_km": 5.0 }
+  ],
+  "transformers": [
+    { "transformer_id": "transformer-3-4", "hv_bus": "bus-3", "lv_bus": "bus-4", "sn_mva": 10.0, "vn_hv_kv": 33.0, "vn_lv_kv": 11.0, "r_pu": 0.01, "x_pu": 0.08, "tap_ratio": 1.025, "phase_shift_degree": 0.0 }
+  ],
+  "loads": [
+    { "load_id": "load-3", "bus_id": "bus-3", "p_mw": 0.35, "q_mvar": 0.12 },
+    { "load_id": "load-5", "bus_id": "bus-5", "p_mw": 0.75, "q_mvar": 0.28 }
+  ],
+  "generators": [
+    { "generator_id": "generator-2", "bus_id": "bus-2", "p_mw": 0.5, "vm_setpoint_pu": 1.01, "p_min_mw": 0.0, "p_max_mw": 2.0, "q_min_mvar": -1.0, "q_max_mvar": 1.0 },
+    { "generator_id": "generator-4", "bus_id": "bus-4", "p_mw": 0.2, "vm_setpoint_pu": 1.005, "p_min_mw": 0.0, "p_max_mw": 1.0, "q_min_mvar": -0.5, "q_max_mvar": 0.5 }
+  ],
+  "external_grids": [
+    { "external_grid_id": "grid-1", "bus_id": "bus-1", "vm_setpoint_pu": 1.0, "va_setpoint_degree": 0.0 }
+  ],
+  "shunts": []
+}
