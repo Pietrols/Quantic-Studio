@@ -541,7 +541,7 @@ Change record: none
 
 ### WP-0.8 Reference fixtures
 
-Status: [ ] Not started
+Status: [!] Changed design | due to source terms not permitting commercial CI use and case4gs having no published solution, while original was IEEE 14-bus and case4gs fixtures, as it was better for fully owned, redistributable fixtures with independent references | Copilot | 2026-10-08
 Lane: B (implement), A (verify)
 Depends on: WP-0.4
 Owned paths: `tests/fixtures/power/**`, `examples/ieee14/**`
@@ -560,7 +560,9 @@ Acceptance:
 - Each fixture folder has a `PROVENANCE.md` stating source, license, conversion steps and known modelling differences.
 
 Learning note: `docs/learning/ieee-test-cases.md`.
-Change record: none
+Change record:
+
+- Changed design due to source terms not permitting commercial CI use and case4gs having no published solution, while original was IEEE 14-bus and case4gs fixtures, as it was better for fully owned, redistributable fixtures with independent references. (Copilot, 2026-10-08)
 
 ---
 
