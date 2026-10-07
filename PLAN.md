@@ -349,7 +349,7 @@ Change record:
 
 ### WP-0.1 Repository skeleton and rules
 
-Status: [ ] Not started
+Status: [~] In progress | Copilot | branch wp-0.1-skeleton | started 2026-10-07
 Lane: A (implement), B (verify)
 Depends on: WP-0.0
 Owned paths: `/*` (root files), `.github/ISSUE_TEMPLATE/**`, `.github/pull_request_template.md`, `.github/CODEOWNERS`, `docs/decisions/ADR-0001-monorepo.md`, `docs/README.md`, `docs/atlas/**`, all empty directories in section 3.1 (with `.gitkeep`)
