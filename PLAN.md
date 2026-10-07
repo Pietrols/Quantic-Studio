@@ -386,7 +386,7 @@ Change record:
 
 ### WP-0.2 Continuous integration
 
-Status: [~] In progress | Codex | branch wp-0.2-ci | started 2026-10-08
+Status: [x] Done | implemented by Codex | commit 55bd82e | 2026-10-08
 Lane: B (implement), A (verify)
 Depends on: WP-0.1
 Owned paths: `.github/workflows/**`, `tools/ci/**`
@@ -441,7 +441,7 @@ Change record: none
 
 ### WP-0.4 Contracts v0
 
-Status: [~] In progress | Copilot | branch wp-0.4-contracts | started 2026-10-08
+Status: [x] Done | implemented by Copilot | commit a14e2b5 | 2026-10-08
 Lane: A (implement), B (verify), Peter approves
 Depends on: WP-0.1
 Owned paths: `contracts/common/**`, `contracts/project/**`, `contracts/power/**`, `docs/specs/**`, `docs/decisions/ADR-0002-contracts.md`
