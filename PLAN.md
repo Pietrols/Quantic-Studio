@@ -383,7 +383,7 @@ Change record:
 
 ### WP-0.2 Continuous integration
 
-Status: [ ] Not started
+Status: [~] In progress | Codex | branch wp-0.2-ci | started 2026-10-08
 Lane: B (implement), A (verify)
 Depends on: WP-0.1
 Owned paths: `.github/workflows/**`, `tools/ci/**`
