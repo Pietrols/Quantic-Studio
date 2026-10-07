@@ -27,22 +27,22 @@ Every work package (WP) has exactly one `Status:` line. Only four forms are allo
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Not started    | `Status: [ ] Not started`                                                                                                                 |
 | In progress    | `Status: [~] In progress \| <model> \| branch <branch-name> \| started <YYYY-MM-DD>`                                                      |
-| Done           | `Status: [x] Done \| implemented by <model> \| verified by <model or Peter> \| commit <short-sha> \| <YYYY-MM-DD>`                        |
+| Done           | `Status: [x] Done \| implemented by <model> \| commit <short-sha> \| <YYYY-MM-DD>`                        |
 | Changed design | `Status: [!] Changed design \| due to <reason>, while original was <original>, as it was better for <benefit> \| <model> \| <YYYY-MM-DD>` |
 
 Rules:
 
-1. **Done means verified.** The verifier must be a different model from the implementer, or Peter. A model never verifies its own work.
-2. **Changed design is a record, not a hiding place.** When a model departs from a WP as written, it sets the Changed design status _before_ continuing, and copies the same sentence into that WP's `Change record:` list. The Change record is permanent. When the WP is later finished and verified, the status becomes Done, but the Change record stays.
+1. **Done means the implementer has passed all tests and acceptance commands with green CI.** The implementing agent marks its own WP Done. There is no per-WP cross-verification. A different model cross-audits each milestone, first M0 in WP-0.10. Historical Done lines with a `verified by` field remain valid records.
+2. **Changed design is a record, not a hiding place.** When a model departs from a WP as written, it sets the Changed design status _before_ continuing, and copies the same sentence into that WP's `Change record:` list. The Change record is permanent. When the WP is later completed, the status becomes Done, but the Change record stays.
 3. **A blocked WP stays In progress** with `blocked by <WP or reason>` appended to its status line.
-4. `tools/check_plan` (built in WP-0.3) enforces these formats in CI. A pull request with a malformed status line fails.
+4. WP-0.3 (plan checker and owned-path guard) is deferred until Peter reopens it. Manual status and ownership checks apply meanwhile; the absent checker does not block other WPs.
 
 ### 0.2 Who edits what in this file
 
 | Who                | May edit                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------- |
-| Implementing model | Only the `Status:` and `Change record:` lines of the WP it is working on              |
-| Verifying model    | Only the `Status:` line of the WP it verified (In progress to Done)                   |
+| Implementing model | Only the `Status:` and `Change record:` lines of its WP, including setting its own Done status              |
+| Milestone auditor | Records milestone audit findings in new logs; does not perform per-WP sign-off |
 | Peter              | Anything. Peter alone approves new WPs, contract changes and edits to sections 0 to 6 |
 
 All other changes to this file go through a WP that names `PLAN.md` in its owned paths, and only Peter approves that WP.
@@ -216,21 +216,22 @@ Every result records the solver name and version, input file hash, convergence d
 | A    | Claude         | Python core, power engines, contracts drafting                     |
 | B    | ChatGPT        | Tooling, CI, plan checker, reference fixtures, independent solvers |
 
-Lane holders can be swapped (decision D5). **The verifier of a WP is always from a different lane than its implementer.**
+Lane holders can be swapped (decision D5). **A different model cross-audits each milestone, first M0 in WP-0.10. Individual WPs are completed by their implementers.** Existing Lane fields naming per-WP verifiers describe the previous process and do not impose a sign-off gate.
 
 ### 4.2 Work package lifecycle
 
 1. **Claim:** the model runs the session review (AGENTS.md section 2), picks a Not started WP whose dependencies are Done, sets it In progress, and creates branch `wp-<id>-<short-name>`.
-2. **Build:** it changes only the WP's owned paths, plus its own status line and one new file in `docs/log/`.
+2. **Build:** it changes only the WP's owned paths, plus its own Status and Change record, its named learning note, and new files in `docs/log/` and `docs/sources/entries/`.
 3. **Pull request:** titled `[WP-<id>] <title>`, using the PR template, listing the acceptance commands and their output.
-4. **Verify:** a model from the other lane checks out the branch, re-runs every acceptance command, reads the diff, and either approves or writes a dispute note.
-5. **Merge:** Peter merges. The verifier's status line edit (Done) is part of the merged PR.
+4. **Complete:** the implementer runs all tests and acceptance commands. Once CI is green, it marks its own WP Done and adds a completed log with evidence. CI must also pass on the final PR head containing the status/log update.
+5. **Merge and continue:** the implementer merges with `gh`, pulls main, and proceeds to the next approved WP without waiting for Peter, respecting dependencies and explicit stop points.
+6. **Milestone audit:** a different model reruns and reviews the milestone, first M0 in WP-0.10. Findings and their resolution are recorded before the milestone closes. WP-0.7 remains reserved for a model that has not read WP-0.6 implementation code.
 
 ### 4.3 Why there are no merge conflicts
 
 | Shared resource | Conflict-free mechanism                                                                          |
 | --------------- | ------------------------------------------------------------------------------------------------ |
-| Source files    | Each WP owns disjoint paths; `tools/check_plan` rejects a PR that touches paths outside its WP   |
+| Source files    | Each WP owns disjoint paths; manual review checks ownership while WP-0.3 is deferred   |
 | PLAN.md         | Each model edits only its WP's status lines; WP blocks are far apart, so git merges them cleanly |
 | Change log      | One new file per event in `docs/log/`; nobody edits an existing log file                         |
 | Source register | One YAML file per source in `docs/sources/entries/`                                              |
@@ -243,7 +244,7 @@ File name: `docs/log/<YYYY-MM-DD>-<model>-WP-<id>-<event>.md`, for example `2026
 ```
 wp: WP-0.6
 model: Claude
-event: start | progress | changed-design | ready-for-review | verified | dispute
+event: start | progress | changed-design | ready-for-review | completed | audit | verified | dispute
 commit: <short-sha or none>
 date: 2026-10-12
 summary: one or two sentences
@@ -266,9 +267,11 @@ evidence: commands run and their result, or link to CI run
 - New code has tests. Numerical code is tested against a reference with recorded provenance.
 - The learning note named in the WP exists in `docs/learning/` and explains the concept, not just the code.
 - No em dashes in any file (Peter's house style; CI checks this from WP-0.2).
-- Status line and log file are updated, and a different lane has verified.
+- The implementer has updated the status and completed log with acceptance and CI evidence. Cross-audit happens at the milestone, not per WP.
 
 ---
+
+The learning note named in a WP is an authorized path even when omitted from its Owned paths list. This standing rule resolves the plan gap and does not require a Changed design entry. Until older templates and WP wording are revised, this section takes precedence over their per-WP verifier checkboxes. Milestone M0 still requires its independent numerical checks and Peter's recorded run.
 
 ## 5. Decisions register
 

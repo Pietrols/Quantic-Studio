@@ -5,8 +5,8 @@ These rules apply to every model and every session, whichever tool you run in. `
 ## 1. Non-negotiables
 
 1. Work on **one work package (WP) at a time**, and only one Peter has approved in `PLAN.md`.
-2. Change **only the WP's owned paths**, plus that WP's own `Status:` and `Change record:` lines in `PLAN.md`, plus new files in `docs/log/` and `docs/sources/entries/`. Anything else needs a new WP.
-3. **Never verify your own work.** Done requires a verifier from another lane, or Peter.
+2. Change **only the WP's owned paths**, plus that WP's own `Status:` and `Change record:` lines in `PLAN.md`, plus the learning note named in that WP's `Learning note:` field and new files in `docs/log/` and `docs/sources/entries/`. Anything else needs a new WP or Peter's explicit authorization.
+3. **The implementer completes its own WP.** Mark Done after all tests and acceptance commands pass and CI is green. There is no per-WP cross-verification. A different model performs one cross-audit at each milestone, first M0 in WP-0.10.
 4. **Never change `contracts/`** outside a Contract Change WP (PLAN.md section 4.5).
 5. **Never guess engineering numbers** from standards, datasheets or tables. If a value comes from a source you cannot read, stop and ask Peter, and record the gap as a diagnostic or a TODO that names the source and clause. A plausible value without a source is treated as a defect.
 6. **Never commit copyrighted textbooks, paid standards or client data.** Peter keeps them in a reference library outside the repo (`~/QE-References/`). Use it only to verify formulas, constants and results, never to copy text, figures, tables or worked examples. Cite the source (book, edition, volume, page or clause) in a code comment and in `docs/sources/entries/`.
@@ -27,8 +27,8 @@ Do this before claiming or continuing any work:
    - `git log --oneline <checkpoint>..HEAD`
    - `git diff <checkpoint>..HEAD -- PLAN.md contracts/ AGENTS.md`
    - every new file in `docs/log/` since then
-5. For every WP that became Done since your checkpoint: check that the verifier differs from the implementer, and that any Changed design entry has all three clauses. If something is wrong, write a `dispute` log file and tell Peter.
-6. Run `uv run python -m check_plan --summary PLAN.md` once it exists (WP-0.3) and confirm it passes.
+5. For every WP that became Done since your checkpoint: check its acceptance and CI evidence, and that any Changed design entry has all three clauses. Historical verifier fields remain valid records; new Done entries do not need a verifier. If something is wrong, write a `dispute` log file and tell Peter.
+6. WP-0.3 is deferred until Peter reopens it. Run `uv run python -m check_plan --summary PLAN.md` only once the checker exists; its absence does not block work.
 7. Only then claim or continue a WP.
 
 ## 3. Doing a WP
@@ -41,15 +41,16 @@ Do this before claiming or continuing any work:
 6. Write the learning note named in the WP, for Peter: explain the concept and the why, with the equations, not just the code.
 7. Run every acceptance command and paste the output into the pull request.
 8. Add a `ready-for-review` log file and open the PR, titled `[WP-<id>] <title>`.
+9. After tests and acceptance pass and CI is green, set your WP to Done and add a `completed` log with evidence. Push the status/log update and wait for CI on the final PR head to pass.
+10. Merge your PR with `gh`, pull main, and continue to the next approved WP without waiting for Peter. Respect dependencies and explicit stop points. Do not bypass failed checks or repository merge protections.
 
-## 4. Verifying a WP
+## 4. Milestone cross-audit
 
-1. Check out the PR branch on a clean environment.
-2. Re-run every acceptance command yourself. Do not trust pasted output.
-3. Read the full diff. Confirm that only owned paths changed (`tools/check_plan` automates this from WP-0.3).
-4. Check the Definition of Done in `PLAN.md` section 4.6.
-5. If everything passes: set the status to Done with your name as verifier, add a `verified` log file and approve the PR.
-6. If anything fails: add a `dispute` log file stating the exact command, the expected result and the actual result. Leave the status unchanged.
+1. A different model from the relevant implementer audits each milestone, first M0 in WP-0.10. This replaces per-WP cross-verification.
+2. Check out the milestone on a clean environment and rerun its acceptance commands and the constituent WPs' relevant tests. Do not trust pasted output.
+3. Read the diffs, check owned paths and the Definition of Done in PLAN.md section 4.6, and review sources, assumptions and numerical references.
+4. Record findings in an `audit` log. Failures require a `dispute` log with exact commands, expected and actual results; resolve them before closing the milestone.
+5. Preserve the independence of WP-0.7: its model must not read WP-0.6 implementation code. A model that implemented WP-0.6 must not implement WP-0.7.
 
 ## 5. Log file format
 
@@ -58,7 +59,7 @@ Path: `docs/log/<YYYY-MM-DD>-<model>-WP-<id>-<event>.md`
 ```
 wp: WP-<id>
 model: <Claude | ChatGPT | Peter>
-event: start | progress | changed-design | ready-for-review | verified | dispute
+event: start | progress | changed-design | ready-for-review | completed | audit | verified | dispute
 commit: <short-sha or none>
 date: <YYYY-MM-DD>
 summary: <one or two sentences>
