@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:project:manifest",
+  "title": "Project manifest",
+  "description": "Names a project, its network data, and its studies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "name", "network_file", "studies"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "network_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "studies": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/study" }
+    }
+  },
+  "$defs": {
+    "study": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["study_id", "study_type", "request_file"],
+      "properties": {
+        "study_id": { "type": "string", "minLength": 1 },
+        "study_type": { "type": "string", "minLength": 1 },
+        "request_file": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:diagnostic",
+  "title": "Diagnostic",
+  "description": "A machine-readable explanation of a validation or study condition.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "severity", "message", "element_ref"],
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["info", "warning", "error"]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "element_ref": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["element_type", "element_id"],
+          "properties": {
+            "element_type": { "type": "string", "minLength": 1 },
+            "element_id": { "type": "string", "minLength": 1 },
+            "field": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

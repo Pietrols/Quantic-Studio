@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:power:loadflow-result",
+  "title": "Load-flow result",
+  "description": "Per-bus and per-branch outputs plus convergence, diagnostics, and provenance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "result_id", "network_id", "bus_results", "branch_results", "convergence", "diagnostics", "provenance"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "result_id": { "type": "string", "minLength": 1 },
+    "network_id": { "type": "string", "minLength": 1 },
+    "bus_results": { "type": "array", "items": { "$ref": "#/$defs/bus_result" } },
+    "branch_results": { "type": "array", "items": { "$ref": "#/$defs/branch_result" } },
+    "convergence": { "$ref": "#/$defs/convergence" },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic" }
+    },
+    "provenance": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:common:provenance"
+    }
+  },
+  "$defs": {
+    "bus_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bus_id", "vm_pu", "va_degree"],
+      "properties": {
+        "bus_id": { "type": "string", "minLength": 1 },
+        "vm_pu": { "type": "number", "exclusiveMinimum": 0 },
+        "va_degree": { "type": "number" }
+      }
+    },
+    "branch_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branch_id", "branch_type", "p_from_mw", "q_from_mvar", "p_to_mw", "q_to_mvar", "p_loss_mw", "q_loss_mvar", "loading_pct"],
+      "properties": {
+        "branch_id": { "type": "string", "minLength": 1 },
+        "branch_type": { "enum": ["line", "transformer"] },
+        "p_from_mw": { "type": "number" },
+        "q_from_mvar": { "type": "number" },
+        "p_to_mw": { "type": "number" },
+        "q_to_mvar": { "type": "number" },
+        "p_loss_mw": { "type": "number" },
+        "q_loss_mvar": { "type": "number" },
+        "loading_pct": {
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "convergence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["converged", "iterations", "largest_mismatch_mva"],
+      "properties": {
+        "converged": { "type": "boolean" },
+        "iterations": { "type": "integer", "minimum": 0 },
+        "largest_mismatch_mva": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}
