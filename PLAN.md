@@ -570,7 +570,7 @@ Change record:
 
 ### WP-0.9 Command line and report
 
-Status: [~] In progress | Claude | branch wp-0.9-cli-report | started 2026-10-08
+Status: [x] Done | implemented by Claude | commit f160585 | 2026-10-08
 Lane: A (implement), B (verify)
 Depends on: WP-0.6, WP-0.8
 Owned paths: `packages/py/qe_cli/**`, `packages/py/qe_report/**`
