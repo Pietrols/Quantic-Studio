@@ -467,7 +467,7 @@ Change record: none
 
 ### WP-0.5 Core package
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Codex | commit 6e69c0e | 2026-10-08
 Lane: A (implement), B (verify)
 Depends on: WP-0.4
 Owned paths: `packages/py/qe_core/**`

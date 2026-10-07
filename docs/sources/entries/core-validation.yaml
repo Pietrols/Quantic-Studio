@@ -1,0 +1,14 @@
+wp: WP-0.5
+retrieved: 2026-10-08
+sources:
+  - title: jsonschema local referencing registry
+    url: https://python-jsonschema.readthedocs.io/en/stable/referencing/
+    use: Draft 2020-12 local schema resolution
+  - title: Pint tutorial
+    url: https://pint.readthedocs.io/en/stable/getting/tutorial.html
+    use: Quantity conversion and dimensional validation
+  - title: BIPM SI Brochure, 9th edition, updated 2026
+    url: https://www.bipm.org/en/publications/si-brochure
+    clause: Section 3, decimal multiples and submultiples
+    use: Exact kilo prefix for unit conversion tests
+    license: CC BY 4.0; citation only, no document copied
