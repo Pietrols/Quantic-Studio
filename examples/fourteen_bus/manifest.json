@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "name": "Fourteen-bus original cross-check network",
+  "network_file": "network.json",
+  "studies": [
+    {
+      "study_id": "loadflow-base",
+      "study_type": "loadflow",
+      "request_file": "loadflow-request.json"
+    }
+  ]
+}

@@ -44,3 +44,6 @@ pnpm-debug.log*
 !private/
 private/*
 !private/.gitkeep
+
+# Study outputs
+examples/*/out/

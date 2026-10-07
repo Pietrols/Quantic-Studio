@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1.0",
+  "network_id": "fourteen-bus-original",
+  "base_mva": 10.0,
+  "buses": [
+    { "bus_id": "bus-01", "name": "33 kV grid", "vn_kv": 33.0, "bus_type": "slack" },
+    { "bus_id": "bus-02", "name": "33 kV PV source", "vn_kv": 33.0, "bus_type": "pv" },
+    { "bus_id": "bus-03", "name": "33 kV load junction", "vn_kv": 33.0, "bus_type": "pq" },
+    { "bus_id": "bus-04", "name": "33 kV junction", "vn_kv": 33.0, "bus_type": "pq" },
+    { "bus_id": "bus-05", "name": "33 kV transformer bus", "vn_kv": 33.0, "bus_type": "pq" },
+    { "bus_id": "bus-06", "name": "11 kV transformer bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-07", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-08", "name": "11 kV PV source", "vn_kv": 11.0, "bus_type": "pv" },
+    { "bus_id": "bus-09", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-10", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-11", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-12", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-13", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" },
+    { "bus_id": "bus-14", "name": "11 kV load bus", "vn_kv": 11.0, "bus_type": "pq" }
+  ],
+  "lines": [
+    { "line_id": "line-01-02", "from_bus": "bus-01", "to_bus": "bus-02", "length_km": 2.0, "r_ohm_per_km": 0.25, "x_ohm_per_km": 0.38, "b_us_per_km": 3.0 },
+    { "line_id": "line-02-03", "from_bus": "bus-02", "to_bus": "bus-03", "length_km": 1.4, "r_ohm_per_km": 0.24, "x_ohm_per_km": 0.36, "b_us_per_km": 3.0 },
+    { "line_id": "line-03-04", "from_bus": "bus-03", "to_bus": "bus-04", "length_km": 1.6, "r_ohm_per_km": 0.26, "x_ohm_per_km": 0.39, "b_us_per_km": 3.0 },
+    { "line_id": "line-04-05", "from_bus": "bus-04", "to_bus": "bus-05", "length_km": 1.3, "r_ohm_per_km": 0.25, "x_ohm_per_km": 0.37, "b_us_per_km": 3.0 },
+    { "line_id": "line-05-01", "from_bus": "bus-05", "to_bus": "bus-01", "length_km": 2.4, "r_ohm_per_km": 0.27, "x_ohm_per_km": 0.40, "b_us_per_km": 3.0 },
+    { "line_id": "line-02-04", "from_bus": "bus-02", "to_bus": "bus-04", "length_km": 2.0, "r_ohm_per_km": 0.24, "x_ohm_per_km": 0.36, "b_us_per_km": 3.0 },
+    { "line_id": "line-06-07", "from_bus": "bus-06", "to_bus": "bus-07", "length_km": 1.1, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.30, "b_us_per_km": 5.0 },
+    { "line_id": "line-07-08", "from_bus": "bus-07", "to_bus": "bus-08", "length_km": 0.9, "r_ohm_per_km": 0.17, "x_ohm_per_km": 0.29, "b_us_per_km": 5.0 },
+    { "line_id": "line-08-09", "from_bus": "bus-08", "to_bus": "bus-09", "length_km": 1.0, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.31, "b_us_per_km": 5.0 },
+    { "line_id": "line-09-10", "from_bus": "bus-09", "to_bus": "bus-10", "length_km": 0.8, "r_ohm_per_km": 0.17, "x_ohm_per_km": 0.29, "b_us_per_km": 5.0 },
+    { "line_id": "line-10-11", "from_bus": "bus-10", "to_bus": "bus-11", "length_km": 0.7, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.30, "b_us_per_km": 5.0 },
+    { "line_id": "line-11-12", "from_bus": "bus-11", "to_bus": "bus-12", "length_km": 0.8, "r_ohm_per_km": 0.17, "x_ohm_per_km": 0.28, "b_us_per_km": 5.0 },
+    { "line_id": "line-12-13", "from_bus": "bus-12", "to_bus": "bus-13", "length_km": 0.9, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.30, "b_us_per_km": 5.0 },
+    { "line_id": "line-13-14", "from_bus": "bus-13", "to_bus": "bus-14", "length_km": 0.7, "r_ohm_per_km": 0.17, "x_ohm_per_km": 0.29, "b_us_per_km": 5.0 },
+    { "line_id": "line-14-06", "from_bus": "bus-14", "to_bus": "bus-06", "length_km": 1.0, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.31, "b_us_per_km": 5.0 },
+    { "line_id": "line-06-09", "from_bus": "bus-06", "to_bus": "bus-09", "length_km": 1.3, "r_ohm_per_km": 0.19, "x_ohm_per_km": 0.32, "b_us_per_km": 5.0 },
+    { "line_id": "line-08-12", "from_bus": "bus-08", "to_bus": "bus-12", "length_km": 1.4, "r_ohm_per_km": 0.18, "x_ohm_per_km": 0.30, "b_us_per_km": 5.0 },
+    { "line_id": "line-10-14", "from_bus": "bus-10", "to_bus": "bus-14", "length_km": 1.2, "r_ohm_per_km": 0.19, "x_ohm_per_km": 0.32, "b_us_per_km": 5.0 }
+  ],
+  "transformers": [
+    { "transformer_id": "transformer-05-06", "hv_bus": "bus-05", "lv_bus": "bus-06", "sn_mva": 10.0, "vn_hv_kv": 33.0, "vn_lv_kv": 11.0, "r_pu": 0.01, "x_pu": 0.08, "tap_ratio": 1.025, "phase_shift_degree": 0.0 }
+  ],
+  "loads": [
+    { "load_id": "load-03", "bus_id": "bus-03", "p_mw": 0.35, "q_mvar": 0.12 },
+    { "load_id": "load-04", "bus_id": "bus-04", "p_mw": 0.25, "q_mvar": 0.10 },
+    { "load_id": "load-06", "bus_id": "bus-06", "p_mw": 0.30, "q_mvar": 0.12 },
+    { "load_id": "load-07", "bus_id": "bus-07", "p_mw": 0.20, "q_mvar": 0.08 },
+    { "load_id": "load-09", "bus_id": "bus-09", "p_mw": 0.25, "q_mvar": 0.10 },
+    { "load_id": "load-10", "bus_id": "bus-10", "p_mw": 0.20, "q_mvar": 0.08 },
+    { "load_id": "load-11", "bus_id": "bus-11", "p_mw": 0.15, "q_mvar": 0.06 },
+    { "load_id": "load-12", "bus_id": "bus-12", "p_mw": 0.15, "q_mvar": 0.06 },
+    { "load_id": "load-13", "bus_id": "bus-13", "p_mw": 0.20, "q_mvar": 0.08 },
+    { "load_id": "load-14", "bus_id": "bus-14", "p_mw": 0.25, "q_mvar": 0.10 }
+  ],
+  "generators": [
+    { "generator_id": "generator-02", "bus_id": "bus-02", "p_mw": 0.60, "vm_setpoint_pu": 1.01, "p_min_mw": 0.0, "p_max_mw": 2.0, "q_min_mvar": -1.0, "q_max_mvar": 1.0 },
+    { "generator_id": "generator-08", "bus_id": "bus-08", "p_mw": 0.30, "vm_setpoint_pu": 1.005, "p_min_mw": 0.0, "p_max_mw": 1.0, "q_min_mvar": -0.5, "q_max_mvar": 0.5 }
+  ],
+  "external_grids": [
+    { "external_grid_id": "grid-01", "bus_id": "bus-01", "vm_setpoint_pu": 1.0, "va_setpoint_degree": 0.0 }
+  ],
+  "shunts": []
+}

@@ -1,10 +1,13 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.12"
 
 [manifest]
 members = [
+    "qe-cli",
     "qe-core",
+    "qe-power",
+    "qe-report",
     "quantic-studio-workspace",
 ]
 
@@ -227,6 +230,23 @@ wheels = [
 ]
 
 [[package]]
+name = "qe-cli"
+version = "0.1.0"
+source = { editable = "packages/py/qe_cli" }
+dependencies = [
+    { name = "qe-core" },
+    { name = "qe-power" },
+    { name = "qe-report" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "qe-core", editable = "packages/py/qe_core" },
+    { name = "qe-power", editable = "packages/py/qe_power" },
+    { name = "qe-report", editable = "packages/py/qe_report" },
+]
+
+[[package]]
 name = "qe-core"
 version = "0.1.0"
 source = { editable = "packages/py/qe_core" }
@@ -244,15 +264,37 @@ requires-dist = [
 ]
 
 [[package]]
+name = "qe-power"
+version = "0.1.0"
+source = { editable = "packages/py/qe_power" }
+dependencies = [
+    { name = "numpy" },
+    { name = "qe-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "numpy", specifier = ">=2.1" },
+    { name = "qe-core", editable = "packages/py/qe_core" },
+]
+
+[[package]]
+name = "qe-report"
+version = "0.1.0"
+source = { editable = "packages/py/qe_report" }
+
+[[package]]
 name = "quantic-studio-workspace"
 version = "0.0.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
 dev = [
-    { name = "numpy" },
     { name = "pytest" },
+    { name = "qe-cli" },
     { name = "qe-core" },
+    { name = "qe-power" },
+    { name = "qe-report" },
     { name = "ruff" },
 ]
 
@@ -260,9 +302,11 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "numpy", specifier = ">=2.5.3" },
     { name = "pytest" },
+    { name = "qe-cli", editable = "packages/py/qe_cli" },
     { name = "qe-core", editable = "packages/py/qe_core" },
+    { name = "qe-power", editable = "packages/py/qe_power" },
+    { name = "qe-report", editable = "packages/py/qe_report" },
     { name = "ruff" },
 ]
 

@@ -7,15 +7,25 @@ requires-python = ">=3.12"
 package = false
 
 [tool.uv.workspace]
-members = ["packages/py/qe_core"]
+members = [
+    "packages/py/qe_core",
+    "packages/py/qe_power",
+    "packages/py/qe_report",
+    "packages/py/qe_cli",
+]
 
 [tool.uv.sources]
 qe-core = { workspace = true }
+qe-power = { workspace = true }
+qe-report = { workspace = true }
+qe-cli = { workspace = true }
 
 [dependency-groups]
 dev = [
     "pytest",
     "ruff",
     "qe-core",
-    "numpy>=2.5.3",
+    "qe-power",
+    "qe-report",
+    "qe-cli",
 ]
