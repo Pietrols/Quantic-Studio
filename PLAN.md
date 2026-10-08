@@ -681,7 +681,7 @@ Change record: due to reactive-limit enforcement making legacy unconstrained com
 
 ### WP-1.2 Contract Change CC-1: short-circuit contracts
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-1.2-short-circuit-contracts | started 2026-10-08
 Lane: B (ChatGPT implements); Peter approved CC-1 in this session
 Depends on: WP-1.1
 Owned paths: `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0003-short-circuit-contracts.md`, `packages/py/qe_core/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `examples/shortcircuit/**`
