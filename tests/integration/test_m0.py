@@ -51,9 +51,21 @@ def request(name: str) -> dict:
 
 
 @pytest.fixture(scope="module")
-def results():
-    return {path.parent.name: {solver: run(path, request(path.parent.name)) for solver, run in SOLVERS.items()}
-            for path in NETWORKS}
+def results(tmp_path_factory):
+    temporary = tmp_path_factory.mktemp("unconstrained-comparison")
+    results = {}
+    for path in NETWORKS:
+        network = json.loads(path.read_text())
+        has_bounds = any("q_min_mvar" in g or "q_max_mvar" in g for g in network["generators"])
+        for generator in network["generators"]:
+            generator.pop("q_min_mvar", None)
+            generator.pop("q_max_mvar", None)
+        comparison = temporary / (path.parent.name + ".json")
+        # Retain exact reference bytes when no bounds need removing.
+        comparison.write_bytes(json.dumps(network).encode() if has_bounds else path.read_bytes())
+        results[path.parent.name] = {
+            solver: run(comparison, request(path.parent.name)) for solver, run in SOLVERS.items()}
+    return results
 
 
 def test_required_fixtures_are_covered():
@@ -139,8 +151,8 @@ def test_fourteen_bus_generator_setpoints_are_feasible(solver, tolerance_mva):
     """M0 section 6: authored setpoints must satisfy the existing Q limits.
 
     Check both the strict integration and shipped CLI request tolerances.
-    Reactive output is recovered from solved branch power balance, since these
-    solvers do not enforce limits or switch PV buses to PQ.
+    Reactive output is recovered independently from solved branch power balance.
+    These feasible targets need no PV to PQ switching in the constrained adapter.
     """
     path = FIXTURES / "fourteen_bus_original" / "network.json"
     assert path.read_bytes() == (EXAMPLE / "network.json").read_bytes()

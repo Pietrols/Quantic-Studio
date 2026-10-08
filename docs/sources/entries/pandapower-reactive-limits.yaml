@@ -1,0 +1,8 @@
+id: pandapower-reactive-limits
+title: Pandapower balanced AC power flow, enforce_q_lims
+url: https://pandapower.readthedocs.io/en/stable/powerflow/ac.html
+accessed: 2026-10-08
+engine_version: 3.5.6
+use: NR reactive-limit enforcement and repeated load flow after PV limits bind
+reference: Independent authored two-bus circuit derived in docs/learning/generator-reactive-limits.md
+license_note: Citation and original derivation only; no external tables copied

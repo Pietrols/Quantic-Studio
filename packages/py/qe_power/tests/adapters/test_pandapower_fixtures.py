@@ -104,7 +104,7 @@ def test_unsupported_fields_are_reported(tmp_path):
     assert ("SHUNT_MODEL", "cap", "q_mvar") in refs
     assert ("TRANSFORMER_MODEL", "transformer-3-4", "magnetizing") in refs
     for gen in network["generators"]:
-        for field in ("p_min_mw", "p_max_mw", "q_min_mvar", "q_max_mvar"):
+        for field in ("p_min_mw", "p_max_mw"):
             assert ("LIMIT_NOT_ENFORCED", gen["generator_id"], field) in refs
 
 

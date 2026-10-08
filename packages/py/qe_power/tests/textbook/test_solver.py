@@ -122,11 +122,17 @@ def test_shunt_is_a_constant_admittance() -> None:
     assert not math.isclose(vm_squared, 1.0, abs_tol=1e-6)
 
 
-def test_shunt_case_matches_pandapower() -> None:
+def test_shunt_case_matches_pandapower(tmp_path: Path) -> None:
     # Black-box comparison through the public adapter API only.
     from qe_power.adapters.pandapower import run_loadflow_file as run_pandapower_file
 
-    network_path, _ = load_network("three_bus_shunt")
+    _, network = load_network("three_bus_shunt")
+    # The textbook solver solves unconstrained PV equations.
+    for generator in network["generators"]:
+        generator.pop("q_min_mvar", None)
+        generator.pop("q_max_mvar", None)
+    network_path = tmp_path / "network.json"
+    network_path.write_text(json.dumps(network))
     request = request_for("network.json", "three-bus-shunt-compare")
     ours = run_loadflow_file(network_path, request)
     theirs = run_pandapower_file(network_path, request)

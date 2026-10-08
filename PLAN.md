@@ -657,7 +657,7 @@ not opportunities to insert plausible values.
 
 ### WP-1.1 Generator reactive-limit enforcement
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 936553e | 2026-10-08
 Lane: B (ChatGPT implements)
 Depends on: WP-0.11, WP-0.6, WP-0.10
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`
@@ -675,7 +675,7 @@ Acceptance:
 - `uv run pytest` and all existing CI guards pass without relaxing tolerances.
 
 Learning note: `docs/learning/generator-reactive-limits.md`, for an electrical engineer: PV/PQ equations, capability limits and why converged voltage may differ from the setpoint.
-Change record: none
+Change record: due to reactive-limit enforcement making legacy unconstrained comparisons solve different operating conditions, while original was adapter-only ownership with unchanged cross-solver tests, as it was better for preserving independent comparisons using temporary unbounded inputs without changing fixtures or tolerances | ChatGPT | 2026-10-08
 
 ---
 
