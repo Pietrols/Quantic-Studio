@@ -491,7 +491,7 @@ Change record: none
 
 ### WP-0.6 Pandapower load-flow adapter
 
-Status: [~] In progress | Codex | branch wp-0.6-pandapower | started 2026-10-08
+Status: [x] Done | implemented by Codex and Claude | commit 81008fe | 2026-10-08
 Lane: A (implement), B (verify)
 Depends on: WP-0.5
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `packages/py/qe_power/pyproject.toml`
