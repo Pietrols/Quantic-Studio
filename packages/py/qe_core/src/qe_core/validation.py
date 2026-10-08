@@ -87,7 +87,14 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
         root = root or contract_root()
         schemas = [json.loads(p.read_text()) for p in sorted(root.rglob("*.schema.json"))]
         resources = [(s["$id"], Resource.from_contents(s)) for s in schemas]
-        schema = json.loads((root / f"{name}.schema.json").read_text())
+        version = value.get("schema_version") if isinstance(value, dict) else None
+        supported = ("0.1.0", "0.2.0") if name in ("power/network", "project/manifest") else (
+            ("0.2.0",) if name in ("power/shortcircuit-request", "power/shortcircuit-result") else ("0.1.0",))
+        if version is not None and version not in supported:
+            return [diagnostic("SCHEMA_VERSION", f"Supported versions: {', '.join(supported)}",
+                               name, name, "schema_version")]
+        legacy = version == "0.1.0" and name in ("power/network", "project/manifest")
+        schema = json.loads((root / ("v0.1" if legacy else "") / f"{name}.schema.json").read_text())
         validator = Draft202012Validator(schema, registry=Registry().with_resources(resources),
                                         format_checker=FormatChecker())
         result = [Diagnostic("NONFINITE", "Numbers must be finite", _reference(value, p, name))
@@ -99,9 +106,45 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
                 path.append(missing)
             result.append(Diagnostic("SCHEMA_INVALID", error.message,
                                      _reference(value, path, name)))
-        if isinstance(value, dict) and "schema_version" in value and value["schema_version"] != "0.1.0":
-            result.append(diagnostic("SCHEMA_VERSION", "Only schema version 0.1.0 is supported",
-                                     name, name, "schema_version"))
+        if not result and name == "power/shortcircuit-result":
+            result.extend(_shortcircuit_semantics(value))
         return result
     except (OSError, ValueError, KeyError) as exc:
         return [diagnostic("CONTRACT_UNAVAILABLE", str(exc), "contract", name, "schema")]
+
+
+def _shortcircuit_semantics(value):
+    """Cross-row invariants not expressible as ordinary JSON Schema constraints."""
+    errors = []
+    seen = set()
+    bus_sets = []
+    statuses = []
+    for case in value["case_results"]:
+        label = case["case"]
+        if label in seen:
+            errors.append(diagnostic("DUPLICATE_CASE", "Case must occur once", "case", label, "case"))
+        seen.add(label)
+        rows = case["bus_results"]
+        ids = [r["bus_id"] for r in rows]
+        bus_sets.append(set(ids))
+        if len(ids) != len(set(ids)):
+            errors.append(diagnostic("DUPLICATE_ID", "Bus must occur once per case", "case", label, "bus_results"))
+        available = [r[k] is not None for r in rows for k in ("ikss_ka", "ip_ka", "ith_ka")]
+        expected = "success" if all(available) else "partial" if any(available) else "failed"
+        statuses.append(expected)
+        if case["status"] != expected:
+            errors.append(diagnostic("RESULT_STATUS", f"Expected {expected}", "case", label, "status"))
+        for row in rows:
+            for result_field in ("voltage_factor", "ikss_ka", "ip_ka", "ith_ka"):
+                if row[result_field] is None and not any(
+                    (d.get("element_ref") or {}).get("element_id") == row["bus_id"] and
+                    (d.get("element_ref") or {}).get("field") == result_field for d in case["diagnostics"]):
+                    errors.append(diagnostic("MISSING_DIAGNOSTIC", "Unavailable value requires a bus/field diagnostic",
+                                             "buses", row["bus_id"], result_field))
+    if any(ids != bus_sets[0] for ids in bus_sets):
+        errors.append(diagnostic("BUS_COVERAGE", "Cases must cover the same buses", "result", value["result_id"], "case_results"))
+    expected = "success" if all(s == "success" for s in statuses) else (
+        "failed" if all(s == "failed" for s in statuses) else "partial")
+    if value["status"] != expected:
+        errors.append(diagnostic("RESULT_STATUS", f"Expected {expected}", "result", value["result_id"], "status"))
+    return errors

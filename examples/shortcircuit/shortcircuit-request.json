@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.2.0",
+  "request_id": "three-phase-fault",
+  "network_file": "network.json",
+  "fault_type": "3ph",
+  "cases": [
+    "max",
+    "min"
+  ],
+  "fault_duration_s": 1,
+  "frequency_hz": 50,
+  "lv_tolerance_percent": 10
+}

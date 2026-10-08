@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantic-studio:contracts:0.2.0:project:manifest",
+  "$id": "urn:quantic-studio:contracts:0.1.0:project:manifest",
   "title": "Project manifest",
   "description": "Names a project, its network data, and its studies.",
   "type": "object",
@@ -13,7 +13,8 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "0.2.0"
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
     },
     "name": {
       "type": "string",
@@ -46,10 +47,8 @@
           "minLength": 1
         },
         "study_type": {
-          "enum": [
-            "loadflow",
-            "shortcircuit"
-          ]
+          "type": "string",
+          "minLength": 1
         },
         "request_file": {
           "type": "string",
