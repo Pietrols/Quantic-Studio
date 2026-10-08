@@ -657,7 +657,7 @@ not opportunities to insert plausible values.
 
 ### WP-1.1 Generator reactive-limit enforcement
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-1.1-reactive-limits | started 2026-10-08
 Lane: B (ChatGPT implements)
 Depends on: WP-0.11, WP-0.6, WP-0.10
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`
