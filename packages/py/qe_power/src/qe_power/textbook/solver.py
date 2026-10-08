@@ -300,6 +300,8 @@ def _branch_results(network: dict[str, Any], bus_indices: dict[str, int], voltag
         to_current_pu += 0.5j * charging_pu * voltage[to_index]
         from_power_mva = voltage[from_index] * from_current_pu.conjugate() * base_mva
         to_power_mva = voltage[to_index] * to_current_pu.conjugate() * base_mva
+        # docs/specs/loadflow-result.md: line loading = 100 * max(|I_from|,
+        # |I_to|) / max_current_ka, or null when the rating is absent.
         current_base_ka = base_mva / (math.sqrt(3.0) * voltage_base_kv)
         current_rating_ka = line.get("max_current_ka")
         loading_pct = None
@@ -335,7 +337,17 @@ def _branch_results(network: dict[str, Any], bus_indices: dict[str, int], voltag
         lv_current_pu += series_admittance_pu * voltage[lv_index]
         hv_power_mva = voltage[hv_index] * hv_current_pu.conjugate() * base_mva
         lv_power_mva = voltage[lv_index] * lv_current_pu.conjugate() * base_mva
-        loading_pct = max(abs(hv_power_mva), abs(lv_power_mva)) / transformer["sn_mva"] * 100.0
+        # Peter's formula, docs/specs/loadflow-result.md: loading = 100 *
+        # max(|I_hv| / I_rated_hv, |I_lv| / I_rated_lv), with three-phase
+        # |I| = |S| / (sqrt(3) * |V_terminal_kV|) and
+        # I_rated = sn_mva / (sqrt(3) * vn_winding_kv).
+        # Using solved terminal current directly is algebraically equivalent
+        # to S / V and also remains defined for a zero terminal voltage.
+        hv_current_ka = abs(hv_current_pu) * base_mva / (math.sqrt(3.0) * buses[hv_index]["vn_kv"])
+        lv_current_ka = abs(lv_current_pu) * base_mva / (math.sqrt(3.0) * buses[lv_index]["vn_kv"])
+        hv_rated_ka = transformer["sn_mva"] / (math.sqrt(3.0) * transformer["vn_hv_kv"])
+        lv_rated_ka = transformer["sn_mva"] / (math.sqrt(3.0) * transformer["vn_lv_kv"])
+        loading_pct = 100.0 * max(hv_current_ka / hv_rated_ka, lv_current_ka / lv_rated_ka)
         results.append(
             {
                 "branch_id": transformer["transformer_id"],

@@ -514,7 +514,7 @@ Change record: none
 
 ### WP-0.7 Textbook Newton-Raphson solver (independent implementation)
 
-Status: [!] Changed design | due to WP-0.8 replacing the case4gs fixture and no published case4gs solution being available, while original was validating Newton-Raphson against the Grainger and Stevenson case4gs results, as it was better for a fully owned analytic two-bus reference and a three-bus iteration-history test | Copilot | 2026-10-08
+Status: [!] Changed design | due to Peter authorizing Codex to correct current-based loading, while original was reserving WP-0.7 for a model independent of WP-0.6, as it was better for resolving the loading defect with a formula-derived regression test and a documented limited exception | Codex | 2026-10-08
 Lane: B (implement), A (verify)
 Depends on: WP-0.5
 Owned paths: `packages/py/qe_power/src/qe_power/textbook/**`, `packages/py/qe_power/tests/textbook/**`
@@ -536,6 +536,7 @@ Acceptance:
 
 Learning note: `docs/learning/newton-raphson-load-flow.md`: Y-bus, the power equations, the Jacobian and convergence, derived step by step.
 Change record:
+- [!] Changed design | due to Peter authorizing Codex to correct current-based loading, while original was reserving WP-0.7 for a model independent of WP-0.6, as it was better for resolving the loading defect with a formula-derived regression test and a documented limited exception | Codex | 2026-10-08
 
 - Changed design due to WP-0.8 replacing the case4gs fixture and no published case4gs solution being available, while original was validating Newton-Raphson against the Grainger and Stevenson case4gs results, as it was better for a fully owned analytic two-bus reference and a three-bus iteration-history test. (Copilot, 2026-10-08)
 

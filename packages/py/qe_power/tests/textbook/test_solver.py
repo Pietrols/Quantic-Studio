@@ -135,3 +135,51 @@ def test_shunt_case_matches_pandapower() -> None:
         assert got["bus_id"] == want["bus_id"]
         assert math.isclose(got["vm_pu"], want["vm_pu"], abs_tol=1e-9)
         assert math.isclose(got["va_degree"], want["va_degree"], abs_tol=1e-7)
+
+
+@pytest.mark.parametrize("setpoints", [(1.01, 1.005), (0.9998, 0.9693)])
+def test_fourteen_bus_loading_from_solved_terminal_values(tmp_path: Path, setpoints: tuple) -> None:
+    # Peter's three-phase current formula, docs/specs/loadflow-result.md.
+    # This original synthetic network provides terminal powers and voltages;
+    # the expected loading is calculated independently from those public results.
+    _, network = load_network("fourteen_bus_original")
+    for generator, vm_pu in zip(network["generators"], setpoints, strict=True):
+        generator["vm_setpoint_pu"] = vm_pu
+    # Exercise the contract's null loading when no line rating is supplied.
+    network["lines"][0].pop("max_current_ka", None)
+    path = tmp_path / "network.json"
+    path.write_text(json.dumps(network), encoding="utf-8")
+    result = run_loadflow_file(path, request_for("network.json", "terminal-loading"))
+    assert result["convergence"]["converged"]
+    assert validate(result, "power/loadflow-result") == []
+    nominal = {bus["bus_id"]: bus["vn_kv"] for bus in network["buses"]}
+    voltage_kv = {
+        bus["bus_id"]: bus["vm_pu"] * nominal[bus["bus_id"]]
+        for bus in result["bus_results"]
+    }
+    branches = {branch["branch_id"]: branch for branch in result["branch_results"]}
+    for transformer in network["transformers"]:
+        branch = branches[transformer["transformer_id"]]
+        hv_current = math.hypot(branch["p_from_mw"], branch["q_from_mvar"]) / (
+            math.sqrt(3) * voltage_kv[transformer["hv_bus"]]
+        )
+        lv_current = math.hypot(branch["p_to_mw"], branch["q_to_mvar"]) / (
+            math.sqrt(3) * voltage_kv[transformer["lv_bus"]]
+        )
+        hv_rated = transformer["sn_mva"] / (math.sqrt(3) * transformer["vn_hv_kv"])
+        lv_rated = transformer["sn_mva"] / (math.sqrt(3) * transformer["vn_lv_kv"])
+        expected = 100 * max(hv_current / hv_rated, lv_current / lv_rated)
+        assert branch["loading_pct"] == pytest.approx(expected, rel=0, abs=1e-9)
+    for line in network["lines"]:
+        branch = branches[line["line_id"]]
+        if "max_current_ka" not in line:
+            assert branch["loading_pct"] is None
+            continue
+        from_current = math.hypot(branch["p_from_mw"], branch["q_from_mvar"]) / (
+            math.sqrt(3) * voltage_kv[line["from_bus"]]
+        )
+        to_current = math.hypot(branch["p_to_mw"], branch["q_to_mvar"]) / (
+            math.sqrt(3) * voltage_kv[line["to_bus"]]
+        )
+        expected = 100 * max(from_current, to_current) / line["max_current_ka"]
+        assert branch["loading_pct"] == pytest.approx(expected, rel=0, abs=1e-9)
