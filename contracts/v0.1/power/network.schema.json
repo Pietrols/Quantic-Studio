@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantic-studio:contracts:0.2.0:power:network",
+  "$id": "urn:quantic-studio:contracts:0.1.0:power:network",
   "title": "Power network",
   "description": "Engine-neutral steady-state network model for electrical power studies.",
   "type": "object",
@@ -19,7 +19,8 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "0.2.0"
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
     },
     "network_id": {
       "type": "string",
@@ -152,10 +153,6 @@
         "max_current_ka": {
           "type": "number",
           "exclusiveMinimum": 0
-        },
-        "end_temperature_celsius": {
-          "type": "number",
-          "minimum": 20
         }
       }
     },
@@ -207,12 +204,6 @@
         },
         "phase_shift_degree": {
           "type": "number"
-        },
-        "power_station_unit": {
-          "type": "boolean"
-        },
-        "oltc": {
-          "type": "boolean"
         }
       }
     },
@@ -275,35 +266,6 @@
         },
         "q_max_mvar": {
           "type": "number"
-        },
-        "sn_mva": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "vn_kv": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "xdss_pu": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "rdss_ohm": {
-          "type": "number",
-          "minimum": 0
-        },
-        "cos_phi": {
-          "type": "number",
-          "exclusiveMinimum": 0,
-          "maximum": 1
-        },
-        "voltage_control_range_percent": {
-          "type": "number",
-          "minimum": 0
-        },
-        "power_station_transformer_id": {
-          "type": "string",
-          "minLength": 1
         }
       }
     },
@@ -329,22 +291,6 @@
         },
         "va_setpoint_degree": {
           "type": "number"
-        },
-        "s_sc_max_mva": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "s_sc_min_mva": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "rx_max": {
-          "type": "number",
-          "minimum": 0
-        },
-        "rx_min": {
-          "type": "number",
-          "minimum": 0
         }
       }
     },

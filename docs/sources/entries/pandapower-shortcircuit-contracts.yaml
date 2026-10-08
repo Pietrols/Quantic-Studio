@@ -1,0 +1,12 @@
+id: pandapower-shortcircuit-contracts
+accessed: 2026-10-08
+engine_version: 3.5.6
+sources:
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/run.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/voltage_source.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/branch_elements.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/currents.html
+  - https://pandapower.readthedocs.io/en/stable/elements/gen.html
+use: Fault request settings, equipment input meanings, positive-sequence scope and near-generator duty limitations.
+limitation: IEC 60909-0 not supplied; no independent standards certification. Branch documentation prints 0.04/K while installed build_branch.py uses 0.004/K; no normative value chosen in CC-1.
+license_note: Citations and original explanatory derivations only; no tables or worked examples copied.

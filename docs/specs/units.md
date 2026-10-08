@@ -45,3 +45,8 @@ Synthetic registry example:
   }
 }
 ```
+
+CC-1 extends the unit registry to version 0.2 with fault MVA, R/X and power
+factor (dimensionless), subtransient pu/ohms, generator voltage range and LV
+tolerance (%), line end temperature (degC), fault duration (s), frequency (Hz),
+voltage factor (dimensionless) and Ik''/ip/Ith (kA). Existing labels are unchanged.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantic-studio:contracts:0.2.0:common:units",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:units",
   "title": "Unit conventions",
   "description": "Canonical unit labels for unit-suffixed contract fields.",
   "type": "object",
@@ -146,54 +146,6 @@
         },
         "loading_pct": {
           "const": "%"
-        },
-        "s_sc_max_mva": {
-          "const": "MVA"
-        },
-        "s_sc_min_mva": {
-          "const": "MVA"
-        },
-        "rx_max": {
-          "const": "dimensionless"
-        },
-        "rx_min": {
-          "const": "dimensionless"
-        },
-        "xdss_pu": {
-          "const": "pu"
-        },
-        "rdss_ohm": {
-          "const": "ohm"
-        },
-        "cos_phi": {
-          "const": "dimensionless"
-        },
-        "voltage_control_range_percent": {
-          "const": "%"
-        },
-        "end_temperature_celsius": {
-          "const": "degC"
-        },
-        "fault_duration_s": {
-          "const": "s"
-        },
-        "frequency_hz": {
-          "const": "Hz"
-        },
-        "lv_tolerance_percent": {
-          "const": "%"
-        },
-        "voltage_factor": {
-          "const": "dimensionless"
-        },
-        "ikss_ka": {
-          "const": "kA"
-        },
-        "ip_ka": {
-          "const": "kA"
-        },
-        "ith_ka": {
-          "const": "kA"
         }
       }
     }

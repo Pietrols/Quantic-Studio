@@ -102,8 +102,9 @@ def load_project(folder: str | Path) -> Outcome[Project]:
         if sid in seen:
             errors.append(diagnostic("DUPLICATE_ID", "Study ID is not unique", "study", sid, "study_id"))
         seen.add(sid)
-        if item["study_type"] != "loadflow":
-            errors.append(diagnostic("UNSUPPORTED_STUDY", "Only loadflow is supported", "study", sid, "study_type"))
+        supported = ("loadflow", "shortcircuit") if manifest["schema_version"] == "0.2.0" else ("loadflow",)
+        if item["study_type"] not in supported:
+            errors.append(diagnostic("UNSUPPORTED_STUDY", "Study is unsupported by this manifest version", "study", sid, "study_type"))
             continue
         try:
             path = safe_path(root, item["request_file"])
@@ -114,7 +115,7 @@ def load_project(folder: str | Path) -> Outcome[Project]:
         errors.extend(request.diagnostics)
         if request.diagnostics:
             continue
-        problems = validate(request.value, "power/loadflow-request")
+        problems = validate(request.value, f"power/{item['study_type']}-request")
         errors.extend(problems)
         if problems:
             continue

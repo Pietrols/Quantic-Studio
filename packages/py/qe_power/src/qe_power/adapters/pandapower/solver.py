@@ -106,6 +106,20 @@ def _model_notes(network):
         notes.append(Diagnostic(code, message, {"element_type": kind, "element_id": identifier,
                                                 "field": field}, severity))
 
+    # CC-1 fields describe a separate fault study, not load-flow controls.
+    for kind, id_field, fields in (
+        ("external_grids", "external_grid_id", ("s_sc_max_mva", "s_sc_min_mva", "rx_max", "rx_min")),
+        ("generators", "generator_id", ("sn_mva", "vn_kv", "xdss_pu", "rdss_ohm", "cos_phi",
+                                       "voltage_control_range_percent", "power_station_transformer_id")),
+        ("lines", "line_id", ("end_temperature_celsius",)),
+        ("transformers", "transformer_id", ("power_station_unit", "oltc")),
+    ):
+        for element in network[kind]:
+            for field in fields:
+                if field in element:
+                    note("STUDY_ONLY_FIELD", "Short-circuit input is not used by load flow",
+                         kind, element[id_field], field, "info")
+
     for bus in network["buses"]:
         for field in ("vm_pu", "va_degree"):
             if field in bus:

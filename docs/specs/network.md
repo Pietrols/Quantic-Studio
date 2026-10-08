@@ -10,7 +10,7 @@ The example values are synthetic and demonstrate contract shape only. They are n
 
 ```json
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "network_id": "example-two-bus",
   "base_mva": 10.0,
   "buses": [
@@ -45,3 +45,21 @@ The example values are synthetic and demonstrate contract shape only. They are n
   "shunts": []
 }
 ```
+
+## Version 0.2 fault-study additions
+
+Version 0.1 remains readable through the archived schema. Version 0.2 adds
+optional fields without changing the existing load-flow meaning:
+
+| Element | Fields | Meaning |
+| --- | --- | --- |
+| External grid | `s_sc_max_mva`, `s_sc_min_mva`, `rx_max`, `rx_min` | Positive three-phase fault levels in MVA and nonnegative R/X ratios |
+| Generator | `sn_mva`, `vn_kv`, `xdss_pu`, `rdss_ohm`, `cos_phi` | Rated MVA/kV, subtransient reactance on own base, resistance in ohms, rated power factor in (0,1] |
+| Generator | `voltage_control_range_percent`, `power_station_transformer_id` | Nonnegative rated voltage-control range and optional station transformer association |
+| Transformer | `power_station_unit`, `oltc` | Explicit station-unit and on-load tap changer declarations |
+| Line | `end_temperature_celsius` | Final fault temperature, at least the 20 C resistance reference |
+
+Fields have no implicit equipment values. Fault studies diagnose missing data.
+The load-flow adapter emits informational `STUDY_ONLY_FIELD` diagnostics and
+retains its existing operating equations. No transformer vector group is added:
+CC-1 supports balanced positive-sequence three-phase faults only.
