@@ -44,6 +44,10 @@ def _preflight(network, request):
     if request.get("initialization", "flat") != "flat":
         errors.append(diagnostic("UNSUPPORTED_INITIALIZATION", "No compatible prior result was supplied",
                                  "request", request["request_id"], "initialization"))
+    for gen in network["generators"]:
+        if gen.get("q_min_mvar", -math.inf) > gen.get("q_max_mvar", math.inf):
+            errors.append(diagnostic("GENERATOR_Q_RANGE", "q_min_mvar must not exceed q_max_mvar",
+                                     "generators", gen["generator_id"], "q_min_mvar"))
     buses = {b["bus_id"]: b for b in network["buses"]}
     sources = {g["bus_id"] for g in network["external_grids"]}
     generators = {g["bus_id"] for g in network["generators"]}
@@ -109,9 +113,9 @@ def _model_notes(network):
                      "Stored bus value is reference data; the solve uses a flat start",
                      "buses", bus["bus_id"], field, "info")
     for gen in network["generators"]:
-        for field in ("p_min_mw", "p_max_mw", "q_min_mvar", "q_max_mvar"):
+        for field in ("p_min_mw", "p_max_mw"):
             if field in gen:
-                note("LIMIT_NOT_ENFORCED", "Unconstrained load flow does not enforce this operating limit",
+                note("LIMIT_NOT_ENFORCED", "Fixed active-power dispatch does not enforce this operating limit",
                      "generators", gen["generator_id"], field, "warning")
     for trafo in network["transformers"]:
         note("TRANSFORMER_MODEL",
@@ -172,7 +176,8 @@ def _convert(network):
     # elements/gen.html: a voltage-controlled (PV) generator with fixed p_mw.
     for gen in network["generators"]:
         pp.create_gen(net, buses[gen["bus_id"]], p_mw=gen["p_mw"], vm_pu=gen["vm_setpoint_pu"],
-                      name=gen["generator_id"])
+                      min_q_mvar=gen.get("q_min_mvar", float("nan")),
+                      max_q_mvar=gen.get("q_max_mvar", float("nan")), name=gen["generator_id"])
     # elements/ext_grid.html: the slack reference with voltage magnitude and angle.
     for grid in network["external_grids"]:
         pp.create_ext_grid(net, buses[grid["bus_id"]], vm_pu=grid["vm_setpoint_pu"],
@@ -220,11 +225,12 @@ def solve(network: dict, request: dict, input_hash: str | None = None) -> Outcom
         converged = True
         try:
             # powerflow/ac.html: runpp options. Flat start, polar NR, voltage
-            # angles on so phase shifts apply, no Q limits (the contract asks for
-            # an unconstrained load flow), constant-power loads only.
+            # angles on so phase shifts apply, reactive limits trigger PV to PQ
+            # switching, constant-power loads only. See powerflow/ac.html,
+            # enforce_q_lims: additional NR solves fix Q at the declared bound.
             pp.runpp(net, algorithm="nr", init="flat", calculate_voltage_angles=True,
                      max_iteration=request["max_iterations"], tolerance_mva=request["tolerance_mva"],
-                     trafo_model="pi", enforce_q_lims=False, voltage_depend_loads=False,
+                     trafo_model="pi", enforce_q_lims=True, voltage_depend_loads=False,
                      check_connectivity=False, numba=False)
         except pp.LoadflowNotConverged:
             converged = False
@@ -242,6 +248,18 @@ def solve(network: dict, request: dict, input_hash: str | None = None) -> Outcom
             notes.append(_not_converged(network, request, iterations, mismatch))
         buses, branches = [], []
         if converged:
+            for i, gen in enumerate(network["generators"]):
+                q = float(net.res_gen.loc[i, "q_mvar"])
+                for field in ("q_min_mvar", "q_max_mvar"):
+                    if field in gen and math.isclose(q, gen[field], rel_tol=0, abs_tol=1e-8):
+                        voltage = float(net.res_gen.loc[i, "vm_pu"])
+                        notes.append(Diagnostic("GENERATOR_Q_LIMIT",
+                            f"Generator at {field}={gen[field]:g} Mvar; actual Q={q:.12g} Mvar. "
+                            f"Reactive capability limits voltage control: actual voltage {voltage:.12g} pu, "
+                            f"setpoint {gen['vm_setpoint_pu']:g} pu (PV to PQ when constrained).",
+                            {"element_type": "generators", "element_id": gen["generator_id"],
+                             "field": field}, "warning"))
+                        break
             for i, bus in enumerate(network["buses"]):
                 row = net.res_bus.loc[i]
                 buses.append({"bus_id": bus["bus_id"], "vm_pu": float(row.vm_pu), "va_degree": float(row.va_degree)})

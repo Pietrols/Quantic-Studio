@@ -125,6 +125,13 @@ def test_both_solvers_agree_through_the_cli(tmp_path, fixture):
         base = tmp_path / solver
         base.mkdir()
         folder = make_project(base, fixture, tolerance_mva=1e-9)
+        # Compare the same unconstrained PV equations in temporary inputs only.
+        network_path = folder / "network.json"
+        network = json.loads(network_path.read_text())
+        for generator in network["generators"]:
+            generator.pop("q_min_mvar", None)
+            generator.pop("q_max_mvar", None)
+        network_path.write_text(json.dumps(network))
         assert main(["study", "run", str(folder), "--study", "loadflow",
                      "--solver", solver]) == 0
         data = json.loads((folder / "out" / "results.json").read_text(encoding="utf-8"))
