@@ -18,7 +18,7 @@ def _read_json(path: Path) -> dict:
 
 
 def test_all_original_networks_validate_against_contract() -> None:
-    assert len(NETWORK_PATHS) == 4
+    assert len(NETWORK_PATHS) == 5
     for network_path in NETWORK_PATHS:
         diagnostics = validate(_read_json(network_path), "power/network")
         assert diagnostics == [], f"{network_path}: {diagnostics}"
