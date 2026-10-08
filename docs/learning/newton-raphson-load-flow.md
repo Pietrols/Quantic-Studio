@@ -193,3 +193,18 @@ The branch active and reactive losses are the sums of the two terminal powers. A
 ## 8. How the tests use the original fixtures
 
 `two_bus_analytic` is checked against the independent quadratic derivation in its fixture provenance and provides a voltage magnitude and angle reference. `three_bus_original` checks the complete per-iteration mismatch history on a meshed PV/PQ network. `three_bus_shunt` is the same network with a capacitor at the load bus; it checks that the solved shunt power scales with $|V|^2$ and that the solver matches the pandapower adapter when a shunt is present. `five_bus_original` and `fourteen_bus_original` have no expected-answer files; they exercise line charging and off-nominal transformer taps as cross-check cases. The shared fixture verifier independently recomputes Y-bus bus mismatch and active losses from the returned voltages.
+
+## Current-based branch loading
+
+Transformer heating follows winding current. Peter specified the reporting
+convention in `docs/specs/loadflow-result.md`: for each solved terminal,
+`|I| = hypot(P, Q) / (sqrt(3) * |V_terminal_kV|)` in kA. Each winding's rated
+current is `I_rated = sn_mva / (sqrt(3) * vn_winding_kV)`. Report
+`100 * max(|I_hv| / I_rated_hv, |I_lv| / I_rated_lv)`.
+Using apparent power divided only by nameplate MVA misses the effect of actual
+terminal voltage. The implementation converts the already solved per-unit
+terminal currents to kA, which is equivalent to dividing terminal power by
+terminal voltage and avoids division by a zero voltage on a failed solve.
+For a rated line, report `100 * max(|I_from|, |I_to|) / max_current_ka`;
+without a current rating, report null. The regression reconstructs both winding
+currents from public solved powers and voltages, independently of that conversion.
