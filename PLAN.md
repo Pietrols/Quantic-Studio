@@ -597,7 +597,7 @@ Change record:
 
 ### WP-0.10 Integration and milestone M0
 
-Status: [ ] Not started
+Status: [~] In progress | Claude | branch wp-0.10-m0 | started 2026-10-08 | pending independent sign-off
 Lane: P and A (implement), B (verify)
 Depends on: WP-0.6, WP-0.7, WP-0.8, WP-0.9
 Owned paths: `tests/integration/**`, `docs/milestones/M0.md`
@@ -614,7 +614,8 @@ Acceptance:
 - `docs/milestones/M0.md` contains Peter's run, the versions used and a short "what we learned".
 
 Learning note: the milestone file itself.
-Change record: none
+Change record:
+- Changed design due to WP-0.8 replacing IEEE 14-bus with original fixtures that have no published solution, while original was a pandapower and textbook cross-check on IEEE 14-bus plus agreement with its published solution (about 1e-3 pu and 0.05 degrees), as it was better for a fully owned reference: the cross-check (1e-6 pu, 1e-4 degrees) runs on every fixture in tests/fixtures/power, and the reference test uses the closed-form two_bus_analytic/reference.json. (Claude, 2026-10-08)
 
 ---
 
