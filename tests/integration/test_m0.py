@@ -57,7 +57,8 @@ def results():
 
 def test_all_fixtures_are_covered():
     assert {path.parent.name for path in NETWORKS} == {
-        "two_bus_analytic", "three_bus_original", "five_bus_original", "fourteen_bus_original"}
+        "two_bus_analytic", "three_bus_original", "three_bus_shunt", "five_bus_original",
+        "fourteen_bus_original"}
 
 
 @pytest.mark.parametrize("path", NETWORKS, ids=lambda p: p.parent.name)
