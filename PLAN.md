@@ -657,7 +657,7 @@ not opportunities to insert plausible values.
 
 ### WP-1.1 Generator reactive-limit enforcement
 
-Status: [!] Changed design | due to reactive-limit enforcement making legacy unconstrained comparisons solve different operating conditions, while original was adapter-only ownership with unchanged cross-solver tests, as it was better for preserving independent comparisons using temporary unbounded inputs without changing fixtures or tolerances | ChatGPT | 2026-10-08
+Status: [x] Done | implemented by ChatGPT | commit 936553e | 2026-10-08
 Lane: B (ChatGPT implements)
 Depends on: WP-0.11, WP-0.6, WP-0.10
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`
