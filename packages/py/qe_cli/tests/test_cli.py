@@ -101,3 +101,35 @@ def test_bad_voltage_band_exits_2(tmp_path):
     folder = make_project(tmp_path, "two_bus_analytic")
     assert main(["study", "run", str(folder), "--study", "loadflow", "--solver", "textbook",
                  "--vmin", "1.1", "--vmax", "1.0"]) == 2
+
+
+@pytest.mark.parametrize("solver", ["textbook", "pandapower"])
+def test_solver_input_error_exits_2_without_traceback(tmp_path, capsys, solver):
+    # Zero series impedance passes the schema but no solver can model it.
+    folder = make_project(tmp_path, "two_bus_analytic")
+    network = json.loads((folder / "network.json").read_text())
+    network["lines"][0]["r_ohm_per_km"] = 0.0
+    network["lines"][0]["x_ohm_per_km"] = 0.0
+    (folder / "network.json").write_text(json.dumps(network))
+    assert main(["study", "run", str(folder), "--study", "loadflow", "--solver", solver]) == 2
+    err = capsys.readouterr().err
+    assert "ERROR" in err and "Traceback" not in err
+    assert not (folder / "out").exists()
+
+
+@pytest.mark.parametrize("fixture", ["two_bus_analytic", "three_bus_original",
+                                     "five_bus_original", "fourteen_bus_original"])
+def test_both_solvers_agree_through_the_cli(tmp_path, fixture):
+    results = {}
+    for solver in ("textbook", "pandapower"):
+        base = tmp_path / solver
+        base.mkdir()
+        folder = make_project(base, fixture, tolerance_mva=1e-9)
+        assert main(["study", "run", str(folder), "--study", "loadflow",
+                     "--solver", solver]) == 0
+        data = json.loads((folder / "out" / "results.json").read_text(encoding="utf-8"))
+        results[solver] = {b["bus_id"]: b for b in data["bus_results"]}
+    for bus_id, bus in results["textbook"].items():
+        other = results["pandapower"][bus_id]
+        assert bus["vm_pu"] == pytest.approx(other["vm_pu"], abs=1e-8)
+        assert bus["va_degree"] == pytest.approx(other["va_degree"], abs=1e-6)

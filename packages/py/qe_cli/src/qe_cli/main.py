@@ -3,7 +3,7 @@
 Exit codes:
   0  study ran and converged
   1  study ran but did not converge (results and report are still written)
-  2  the project or arguments are invalid (diagnostics are printed, nothing is written)
+  2  the project, arguments or solver inputs are invalid (diagnostics printed, nothing written)
   3  the requested solver is not installed
 """
 
@@ -78,7 +78,18 @@ def run_study(
         return 3
 
     network_path = root / selected.request["network_file"]
-    result = run(network_path, selected.request)
+    try:
+        result = run(network_path, selected.request)
+    except ValueError as exc:
+        # Solvers reject inputs they cannot model (for example zero impedance) before
+        # solving. pandapower's LoadflowInputError carries contract diagnostics; the
+        # textbook solver raises a plain ValueError with a message.
+        diagnostics = getattr(exc, "diagnostics", None)
+        if diagnostics:
+            _print_diagnostics(diagnostics)
+        else:
+            print(f"ERROR SOLVER_INPUT: {exc}", file=sys.stderr)
+        return 2
 
     problems = validate(result, "power/loadflow-result")
     if problems:
