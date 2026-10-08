@@ -86,3 +86,52 @@ def test_cross_check_network_converges_and_returns_contract(fixture_name: str) -
     assert verify_loadflow_result(network, result).max_bus_mismatch_pu < 1e-8
     assert len(result["bus_results"]) == len(network["buses"])
     assert len(result["branch_results"]) == len(network["lines"]) + len(network["transformers"])
+
+
+def test_shunt_is_a_constant_admittance() -> None:
+    # docs/specs/network.md defines shunt power at nominal voltage, so the solved
+    # shunt reactive power must scale with |V|^2 rather than stay at q_mvar.
+    network_path, network = load_network("three_bus_shunt")
+    result = run_loadflow_file(network_path, request_for("network.json", "three-bus-shunt"))
+    assert result["convergence"]["converged"] is True
+    assert validate(result, "power/loadflow-result") == []
+    assert verify_loadflow_result(network, result).max_bus_mismatch_pu < 1e-8
+
+    shunt = network["shunts"][0]
+    voltages = {
+        item["bus_id"]: item["vm_pu"] * complex(
+            math.cos(math.radians(item["va_degree"])), math.sin(math.radians(item["va_degree"]))
+        )
+        for item in result["bus_results"]
+    }
+    # Kirchhoff's current law at the shunt bus: load and shunt consumption must
+    # equal the sum of power leaving the bus into its branches, negated.
+    bus_id = shunt["bus_id"]
+    branch_injection_mva = 0j
+    for line, branch in zip(network["lines"], result["branch_results"], strict=False):
+        assert line["line_id"] == branch["branch_id"]
+        if line["from_bus"] == bus_id:
+            branch_injection_mva += complex(branch["p_from_mw"], branch["q_from_mvar"])
+        elif line["to_bus"] == bus_id:
+            branch_injection_mva += complex(branch["p_to_mw"], branch["q_to_mvar"])
+    load = next(item for item in network["loads"] if item["bus_id"] == bus_id)
+    vm_squared = abs(voltages[bus_id]) ** 2
+    shunt_consumption_mva = -branch_injection_mva - complex(load["p_mw"], load["q_mvar"])
+    assert math.isclose(shunt_consumption_mva.real, shunt["p_mw"] * vm_squared, abs_tol=1e-8)
+    assert math.isclose(shunt_consumption_mva.imag, shunt["q_mvar"] * vm_squared, abs_tol=1e-8)
+    assert not math.isclose(vm_squared, 1.0, abs_tol=1e-6)
+
+
+def test_shunt_case_matches_pandapower() -> None:
+    # Black-box comparison through the public adapter API only.
+    from qe_power.adapters.pandapower import run_loadflow_file as run_pandapower_file
+
+    network_path, _ = load_network("three_bus_shunt")
+    request = request_for("network.json", "three-bus-shunt-compare")
+    ours = run_loadflow_file(network_path, request)
+    theirs = run_pandapower_file(network_path, request)
+    assert ours["convergence"]["converged"] and theirs["convergence"]["converged"]
+    for got, want in zip(ours["bus_results"], theirs["bus_results"], strict=True):
+        assert got["bus_id"] == want["bus_id"]
+        assert math.isclose(got["vm_pu"], want["vm_pu"], abs_tol=1e-9)
+        assert math.isclose(got["va_degree"], want["va_degree"], abs_tol=1e-7)

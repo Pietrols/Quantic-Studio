@@ -81,6 +81,13 @@ def _network_admittance(network: dict[str, Any]) -> tuple[list[list[complex]], d
         tap = ratio * cmath.exp(1j * shift)
         _stamp_series_branch(ybus, hv_index, lv_index, admittance_pu, tap=tap)
 
+    # docs/specs/network.md: "Shunt values are specified as power at nominal bus
+    # voltage, with positive values denoting consumption." That makes a shunt a
+    # constant admittance: it consumes conj(y) |V|^2, so y = (p_mw - j q_mvar) / base_mva.
+    for shunt in network["shunts"]:
+        index = bus_indices[shunt["bus_id"]]
+        ybus[index][index] += complex(shunt["p_mw"], -shunt["q_mvar"]) / base_mva
+
     return ybus, bus_indices
 
 
@@ -122,11 +129,12 @@ def verify_loadflow_result(
         load_p_by_bus[load["bus_id"]] += load["p_mw"]
         load_q_by_bus[load["bus_id"]] += load["q_mvar"]
 
+    # Shunts are in the Y-bus, so their consumption is part of the calculated
+    # injection. Their actual active consumption scales with |V|^2.
     shunt_p_by_bus = {bus_id: 0.0 for bus_id in bus_indices}
-    shunt_q_by_bus = {bus_id: 0.0 for bus_id in bus_indices}
     for shunt in network["shunts"]:
-        shunt_p_by_bus[shunt["bus_id"]] += shunt["p_mw"]
-        shunt_q_by_bus[shunt["bus_id"]] += shunt["q_mvar"]
+        vm_pu = bus_result_by_id[shunt["bus_id"]]["vm_pu"]
+        shunt_p_by_bus[shunt["bus_id"]] += shunt["p_mw"] * vm_pu**2
 
     slack_ids = {grid["bus_id"] for grid in network["external_grids"]}
     max_bus_mismatch_pu = 0.0
@@ -135,14 +143,12 @@ def verify_loadflow_result(
         if bus_id in slack_ids or bus["bus_type"] == "slack":
             continue
         index = bus_indices[bus_id]
-        specified_p_pu = (
-            generation_p_by_bus[bus_id] - load_p_by_bus[bus_id] - shunt_p_by_bus[bus_id]
-        ) / base_mva
+        specified_p_pu = (generation_p_by_bus[bus_id] - load_p_by_bus[bus_id]) / base_mva
         p_mismatch_pu = calculated_powers[index].real - specified_p_pu
         max_bus_mismatch_pu = max(max_bus_mismatch_pu, abs(p_mismatch_pu))
 
         if bus["bus_type"] == "pq" and bus_id not in generator_buses:
-            specified_q_pu = -(load_q_by_bus[bus_id] + shunt_q_by_bus[bus_id]) / base_mva
+            specified_q_pu = -load_q_by_bus[bus_id] / base_mva
             q_mismatch_pu = calculated_powers[index].imag - specified_q_pu
             max_bus_mismatch_pu = max(max_bus_mismatch_pu, abs(q_mismatch_pu))
 
@@ -155,12 +161,14 @@ def verify_loadflow_result(
     generation_mw = sum(
         calculated_powers[bus_indices[bus["bus_id"]]].real * base_mva
         + load_p_by_bus[bus["bus_id"]]
-        + shunt_p_by_bus[bus["bus_id"]]
         for bus in network["buses"]
     )
     load_mw = sum(load_p_by_bus.values())
     shunt_consumption_mw = sum(shunt_p_by_bus.values())
-    network_losses_mw = sum(power.real for power in calculated_powers) * base_mva
+    # Total calculated injection is branch losses plus shunt consumption.
+    network_losses_mw = (
+        sum(power.real for power in calculated_powers) * base_mva - shunt_consumption_mw
+    )
 
     network_branches = {
         branch["line_id"] for branch in network["lines"]

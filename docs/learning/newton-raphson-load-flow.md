@@ -58,6 +58,20 @@ $$
 z_{pu,system} = z_{pu,rated}\frac{S_{base,system}}{S_{rated}}
 $$
 
+A shunt is a constant admittance. The contract (`docs/specs/network.md`) gives its power $P+jQ$ at nominal bus voltage, positive for consumption. A shunt $y=G+jB$ draws $I=yV$ and so consumes:
+
+$$
+S_{shunt} = V I^* = y^* |V|^2
+$$
+
+Setting $|V|=1$ gives $y^* = (P+jQ)/S_{base}$, so the diagonal stamp is:
+
+$$
+Y_{ii} \mathrel{+}= \frac{P - jQ}{S_{base}}
+$$
+
+A capacitor has $Q<0$ and therefore $B>0$. Shunts are not part of the specified power in section 4. Because they sit inside the Y-bus, the power they exchange follows $|V|^2$: a capacitor at a bus held at 1.003 pu supplies about 0.6 percent more than its rated value.
+
 ## 3. Calculate bus power from voltage
 
 Write bus voltage in polar form as $V_i=|V_i|e^{j\theta_i}$. Complex current and injected complex power are:
@@ -178,4 +192,4 @@ The branch active and reactive losses are the sums of the two terminal powers. A
 
 ## 8. How the tests use the original fixtures
 
-`two_bus_analytic` is checked against the independent quadratic derivation in its fixture provenance and provides a voltage magnitude and angle reference. `three_bus_original` checks the complete per-iteration mismatch history on a meshed PV/PQ network. `five_bus_original` and `fourteen_bus_original` have no expected-answer files; they exercise line charging and off-nominal transformer taps as cross-check cases. The shared fixture verifier independently recomputes Y-bus bus mismatch and active losses from the returned voltages.
+`two_bus_analytic` is checked against the independent quadratic derivation in its fixture provenance and provides a voltage magnitude and angle reference. `three_bus_original` checks the complete per-iteration mismatch history on a meshed PV/PQ network. `three_bus_shunt` is the same network with a capacitor at the load bus; it checks that the solved shunt power scales with $|V|^2$ and that the solver matches the pandapower adapter when a shunt is present. `five_bus_original` and `fourteen_bus_original` have no expected-answer files; they exercise line charging and off-nominal transformer taps as cross-check cases. The shared fixture verifier independently recomputes Y-bus bus mismatch and active losses from the returned voltages.

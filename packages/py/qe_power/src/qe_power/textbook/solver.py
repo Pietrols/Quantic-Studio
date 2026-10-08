@@ -96,6 +96,16 @@ def _network_matrices(network: dict[str, Any]) -> tuple[np.ndarray, dict[str, in
         ybus[lv_index, hv_index] -= series_admittance_pu / tap
         ybus[lv_index, lv_index] += series_admittance_pu
 
+    # Shunts are constant admittances, not constant power injections.
+    # docs/specs/network.md: "Shunt values are specified as power at nominal bus
+    # voltage, with positive values denoting consumption."
+    # A shunt y = G + jB draws I = y V, so it consumes S = V conj(I) = conj(y) |V|^2.
+    # At |V| = 1 pu, conj(y) = (p_mw + j q_mvar) / base_mva, so the diagonal stamp is
+    # y = (p_mw - j q_mvar) / base_mva. A capacitor (q_mvar < 0) gives B > 0.
+    for shunt in network["shunts"]:
+        index = bus_indices[shunt["bus_id"]]
+        ybus[index, index] += complex(shunt["p_mw"], -shunt["q_mvar"]) / base_mva
+
     return ybus, bus_indices
 
 
@@ -113,10 +123,8 @@ def _specified_power(network: dict[str, Any], bus_indices: dict[str, int]) -> tu
         index = bus_indices[load["bus_id"]]
         specified_p_pu[index] -= load["p_mw"] / base_mva
         specified_q_pu[index] -= load["q_mvar"] / base_mva
-    for shunt in network["shunts"]:
-        index = bus_indices[shunt["bus_id"]]
-        specified_p_pu[index] -= shunt["p_mw"] / base_mva
-        specified_q_pu[index] -= shunt["q_mvar"] / base_mva
+    # Shunts are not specified power: they are stamped into the Y-bus diagonal in
+    # _network_matrices, so their power varies with |V|^2.
 
     return specified_p_pu, specified_q_pu
 
