@@ -598,7 +598,7 @@ Change record:
 
 ### WP-0.10 Integration and milestone M0
 
-Status: [~] In progress | Claude | branch wp-0.10-m0 | started 2026-10-08 | pending independent sign-off
+Status: [~] In progress | Codex | branch wp-0.10-generator-setpoints | started 2026-10-08 | pending independent milestone audit
 Lane: P and A (implement), B (verify)
 Depends on: WP-0.6, WP-0.7, WP-0.8, WP-0.9
 Owned paths: `tests/integration/**`, `docs/milestones/M0.md`
