@@ -19,6 +19,7 @@ from qe_cli.main import main
 from qe_core import validate
 from qe_power import textbook
 from qe_power.adapters import pandapower
+from qe_report.loadflow import source_outputs
 
 REPO = Path(__file__).resolve().parents[2]
 FIXTURES = REPO / "tests" / "fixtures" / "power"
@@ -130,3 +131,29 @@ def test_cli_reports_match_for_both_solvers(tmp_path):
     for report in reports.values():
         diagnostics = report.partition("## 8. Diagnostics")[2].partition("## 9.")[0]
         assert "| error |" not in diagnostics
+
+
+@pytest.mark.parametrize("solver", SOLVERS)
+@pytest.mark.parametrize("tolerance_mva", [1e-10, 1e-4])
+def test_fourteen_bus_generator_setpoints_are_feasible(solver, tolerance_mva):
+    """M0 section 6: authored setpoints must satisfy the existing Q limits.
+
+    Check both the strict integration and shipped CLI request tolerances.
+    Reactive output is recovered from solved branch power balance, since these
+    solvers do not enforce limits or switch PV buses to PQ.
+    """
+    path = FIXTURES / "fourteen_bus_original" / "network.json"
+    assert path.read_bytes() == (EXAMPLE / "network.json").read_bytes()
+    network = json.loads(path.read_text(encoding="utf-8"))
+    study = request("fourteen-bus-feasibility")
+    study["tolerance_mva"] = tolerance_mva
+    result = SOLVERS[solver](path, study)
+    assert result["convergence"]["converged"]
+    sources = {s["source_id"]: s for s in source_outputs(network, result)}
+    for generator in network["generators"]:
+        output = sources[generator["generator_id"]]
+        assert not output["shared_bus"]
+        assert generator["q_min_mvar"] <= output["q_mvar"] <= generator["q_max_mvar"]
+        assert output["q_check"] == "ok"
+    # Existing report defaults, not new engineering limits (PLAN.md WP-0.9).
+    assert all(0.95 <= bus["vm_pu"] <= 1.05 for bus in result["bus_results"])

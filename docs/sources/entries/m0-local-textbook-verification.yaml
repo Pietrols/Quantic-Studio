@@ -1,0 +1,15 @@
+id: m0-local-textbook-verification-2026-10-08
+title: Power System Analysis & Design
+edition: sixth
+authors:
+  - J. Duncan Glover
+  - Thomas J. Overbye
+  - Mulukutla S. Sarma
+publisher: Cengage Learning
+year: 2017
+type: local-reference-verification
+location: Peter's external QE-References library
+citation: Examples 6.9 and 6.11; Tables 6.1-6.3 and 6.6; printed pages 347-348 and 357 (PDF pages 367-368 and 377)
+purpose: Verify the textbook solver against one worked load-flow example during M0 audit
+terms: Reference use only. No source text, tables, figures, worked example or reconstructed network is redistributed.
+evidence: docs/log/2026-10-08-codex-WP-0.7-verified-reference.md

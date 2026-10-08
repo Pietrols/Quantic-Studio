@@ -54,8 +54,8 @@
     { "load_id": "load-14", "bus_id": "bus-14", "p_mw": 0.25, "q_mvar": 0.10 }
   ],
   "generators": [
-    { "generator_id": "generator-02", "bus_id": "bus-02", "p_mw": 0.60, "vm_setpoint_pu": 1.01, "p_min_mw": 0.0, "p_max_mw": 2.0, "q_min_mvar": -1.0, "q_max_mvar": 1.0 },
-    { "generator_id": "generator-08", "bus_id": "bus-08", "p_mw": 0.30, "vm_setpoint_pu": 1.005, "p_min_mw": 0.0, "p_max_mw": 1.0, "q_min_mvar": -0.5, "q_max_mvar": 0.5 }
+    { "generator_id": "generator-02", "bus_id": "bus-02", "p_mw": 0.60, "vm_setpoint_pu": 0.9998, "p_min_mw": 0.0, "p_max_mw": 2.0, "q_min_mvar": -1.0, "q_max_mvar": 1.0 },
+    { "generator_id": "generator-08", "bus_id": "bus-08", "p_mw": 0.30, "vm_setpoint_pu": 0.9693, "p_min_mw": 0.0, "p_max_mw": 1.0, "q_min_mvar": -0.5, "q_max_mvar": 0.5 }
   ],
   "external_grids": [
     { "external_grid_id": "grid-01", "bus_id": "bus-01", "vm_setpoint_pu": 1.0, "va_setpoint_degree": 0.0 }
