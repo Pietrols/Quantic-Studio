@@ -42,7 +42,7 @@ def test_nonconvergence_has_contract_result():
     assert not result.value["convergence"]["converged"]
     assert result.value["convergence"]["iterations"] == 1
     assert result.value["convergence"]["largest_mismatch_mva"] > 0
-    assert any(d.code == "LOADFLOW_NOT_CONVERGED" for d in result.diagnostics)
+    assert any(d.code == "NON_CONVERGENCE" for d in result.diagnostics)
     assert not validate(result.value, "power/loadflow-result")
 
 
