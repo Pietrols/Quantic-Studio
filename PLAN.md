@@ -622,7 +622,7 @@ Change record:
 
 ### WP-0.11 Phase 1 planning
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 63bc046 | 2026-10-08
 Lane: A (draft), B (review), Peter approves
 Depends on: WP-0.10
 Owned paths: `PLAN.md` (section 8 only)
@@ -639,15 +639,194 @@ Change record: none
 
 ---
 
-## 8. Phase 1 onward
+## 8. Phase 1: power network workbench
 
-To be expanded by WP-0.11. Outline only:
+Peter approved this scope and order on 2026-10-08. Execute WP-0.11, WP-1.1,
+WP-1.2 and WP-1.3 serially, one PR each, merging only after green final-head CI.
+Stop after WP-1.3. WP-1.4 through WP-1.7 are planned, not authorized to start in
+this session. Shared paths below are protected by serial dependencies.
 
-- **Phase 1 (power network workbench):** pnpm workspace and React app; React Flow single-line editor that reads and writes the network contract; FastAPI study service; IEC 60909 short circuit via pandapower with textbook-verified fixtures; cable sizing and voltage drop; motor-start voltage dip; overcurrent time-current curves and coordination checks; PDF report; scenario comparison.
-- **Phase 2 (PV):** pvlib sun position and transposition; irradiance import; module, string and inverter sizing; cabling and losses; yield; AC grid connection run through Phase 1 load flow and short circuit.
-- **Phase 3 (circuits and control):** ngspice adapter; component canvas; oscilloscope view; python-control and SymPy transfer functions; step and Bode plots; controller tuning; evaluate Renode for microcontrollers.
-- **Phase 4 (PLC and motors):** Structured Text subset interpreter or OpenPLC process bridge; MCC model; induction motor dq model; starter and drive comparison; fault injection with explained outcomes.
-- **IT track (deferred, D6):** when reopened, starts with a topology contract and a containerlab generator (N1), then deploy and inspect labs (N2), a visual topology canvas sharing the Phase 1 canvas components (N3), and guided CCNA-style exercises (N4).
+Every numerical WP has an independent, hand-derived reference with authored
+inputs, equations and provenance. Do not use another solver's output as the
+reference. Standard-derived values must come from a readable source, with a
+pandapower documentation page cited in tests and a source-register entry.
+Peter has not supplied IEC 60909-0; use the documented pandapower implementation
+and state its assumptions and limitations, without claiming independent standards
+certification. Missing documented constants or equipment data are diagnostics,
+not opportunities to insert plausible values.
+
+### WP-1.1 Generator reactive-limit enforcement
+
+Status: [ ] Not started
+Lane: B (ChatGPT implements)
+Depends on: WP-0.11, WP-0.6, WP-0.10
+Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`
+
+Steps:
+
+1. Enforce generator `q_min_mvar` and `q_max_mvar` through pandapower PV to PQ switching. Emit an element-specific diagnostic for every generator at a reactive limit, stating the limit, actual Q and loss of voltage control.
+2. Validate inconsistent limits and preserve existing convergence and provenance behavior. Omitted limits remain unbounded.
+3. Restore 1.010 and 1.005 pu only in a temporary copy of the fourteen-bus case. Verify convergence, both Q caps, voltage relaxation and one diagnostic per affected generator. Leave committed fixtures unchanged.
+4. Add an independent hand-derived two-bus reference for upper and lower limits, plus an unconstrained case. Cite the pandapower load-flow documentation for enforcement behavior.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_power/tests/adapters -v` passes, including the temporary fourteen-bus regression and independent upper/lower-limit reference.
+- `uv run pytest` and all existing CI guards pass without relaxing tolerances.
+
+Learning note: `docs/learning/generator-reactive-limits.md`, for an electrical engineer: PV/PQ equations, capability limits and why converged voltage may differ from the setpoint.
+Change record: none
+
+---
+
+### WP-1.2 Contract Change CC-1: short-circuit contracts
+
+Status: [ ] Not started
+Lane: B (ChatGPT implements); Peter approved CC-1 in this session
+Depends on: WP-1.1
+Owned paths: `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0003-short-circuit-contracts.md`, `packages/py/qe_core/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `examples/shortcircuit/**`
+
+Steps:
+
+1. Run this Contract Change alone. Add engine-neutral three-phase short-circuit request/result schemas, maximum/minimum cases, fault duration, per-bus Ik'', ip and Ith in kA, diagnostics and provenance. Define unsuccessful and partial-result semantics explicitly.
+2. Add optional study inputs to the network: external-grid maximum/minimum short-circuit MVA and R/X, generator subtransient reactance and other documented nameplate/correction inputs, and line temperature where needed for minimum faults. Assess transformer vector group: three-phase faults use the positive-sequence network, so add it only if needed. Do not invent missing equipment values.
+3. Bump affected schema versions for additive changes. Keep v0.1 load-flow projects readable, update core schema dispatch and project loading, and test both versions and invalid inputs. Load flow must explicitly account for study-only fields rather than issuing misleading unsupported-field errors.
+4. Update specs, examples, schema validation and an ADR documenting units, impedance bases, compatibility and fault-study assumptions. WP-1.3 implements the new contracts in the solver, CLI and report; motor-start contracts require a separate approved Contract Change before WP-1.4.
+
+Acceptance:
+
+- `uv run python docs/specs/validate_examples.py` validates all documented examples.
+- `uv run pytest packages/py/qe_core packages/py/qe_power/tests/adapters -v` passes, covering new schema constraints, version compatibility and a short-circuit project load.
+- `uv run pytest` and existing CI guards pass. Review schema/spec/example consistency and Peter's explicit CC-1 authorization recorded in the start log.
+
+Learning note: `docs/learning/short-circuit-inputs-and-contracts.md`, for an electrical engineer: fault level to Thevenin impedance, R/X, machine subtransient bases and the distinction between load-flow and fault inputs.
+Change record: none
+
+---
+
+### WP-1.3 Three-phase short circuit via pandapower
+
+Status: [ ] Not started
+Lane: B (ChatGPT implements)
+Depends on: WP-1.2
+Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`
+
+Steps:
+
+1. Implement balanced three-phase IEC 60909 calculations using pandapower. Return Ik'', ip and Ith at every bus for maximum and minimum cases, with explicit duration, voltage factor assumptions, diagnostics and solver/input provenance. Pandapower documents ip/Ith only for faults far from synchronous generators; unsupported near-generator duties must be unavailable with a diagnostic, never presented as verified values. Diagnose missing fault data, disconnected buses and unsupported modelling instead of silently choosing equipment data.
+2. Verify against an independent hand-derived case: an infinite source through one transformer, Ik'' = c Un / (sqrt(3) |Z|). Derive c from a cited pandapower documentation page and state it in the test. Include the documented transformer correction in Z, derive ip and Ith from documented equations, and demonstrate a finite-source approximation converges to the infinite-source result without loosening tolerances.
+3. Add `qe study run <project-folder> --study shortcircuit` and a runnable authored example. Validate results against CC-1 and include both maximum and minimum bus results.
+4. Add a report section explaining Ik'', ip, Ith, units, duration, inputs and correction assumptions, maximum/minimum results, diagnostics and provenance. Preserve load-flow behavior.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_power/tests/adapters packages/py/qe_cli packages/py/qe_report tests/integration/test_shortcircuit.py -v` passes, including the hand-derived reference and invalid-input diagnostics.
+- `uv run qe study run examples/shortcircuit --study shortcircuit` produces schema-valid `out/results.json` and readable `out/report.md` with maximum/minimum results at every bus.
+- `uv run qe study run examples/fourteen_bus --study loadflow` still passes; `uv run pytest` and all CI guards pass.
+
+Learning note: `docs/learning/three-phase-short-circuit.md`, for an electrical engineer: positive-sequence Thevenin circuit, voltage and transformer corrections, initial symmetrical/peak/thermal currents, and maximum versus minimum duties.
+Change record: none
+
+---
+
+### WP-1.4 Motor-start voltage dip
+
+Status: [ ] Not started
+Lane: A (implement, after Peter reopens work)
+Depends on: WP-1.3
+Owned paths: `packages/py/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/motorstart/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `examples/motorstart/**`
+
+Steps:
+
+1. Before implementation, obtain approval and completion of a separate Contract Change WP for motor inputs, requests/results and core dispatch. WP-1.4 itself does not own contracts.
+2. Model the locked-rotor motor as impedance derived from shaft-rated kW, efficiency, rated power factor, locked-rotor current ratio and locked-rotor power factor. State voltage basis and distinguish rated and starting power factors; all nameplate values are user inputs.
+3. Compare pre-start and locked-rotor voltages at every bus against a user-set dip limit. Report both voltages, dip definition, pass/fail, diagnostics and provenance. This is a steady locked-rotor check, not a dynamic acceleration study.
+4. Derive an original two-bus source/line/motor case by complex voltage division; use its independent result as the reference test. Add CLI and report integration.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_power/tests/motorstart -v` passes with the hand-derived two-bus impedance reference and invalid nameplate-input tests.
+- `uv run qe study run examples/motorstart --study motorstart` reports every bus and the selected dip limit.
+- Full workspace tests and CI pass after the prerequisite Contract Change is complete.
+
+Learning note: `docs/learning/motor-start-voltage-dip.md`, deriving rated current, locked-rotor impedance and complex voltage division.
+Change record: none
+
+---
+
+### WP-1.5 Project study API
+
+Status: [ ] Not started
+Lane: A (implement, after Peter reopens work)
+Depends on: WP-1.4
+Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`
+
+Steps:
+
+1. Add a FastAPI package exposing load flow, short circuit and motor start for a project folder under a configured project root. Reuse contract validation and solver entry points.
+2. Validate paths, bound execution, return structured diagnostics and provenance, and preserve project data. Bind locally by default and document the trust boundary before remote use.
+3. Document requests/responses and test all three studies, unknown studies, traversal, missing inputs and solver failures.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_api tests/integration/test_api.py -v` passes.
+- An API request for each authored project returns contract-valid results and useful errors for invalid inputs; full workspace tests and CI pass.
+
+Learning note: `docs/learning/study-api.md`, explaining the project-to-study boundary and traceable results.
+Change record: none
+
+---
+
+### WP-1.6 Web single-line diagram editor
+
+Status: [ ] Not started
+Lane: B (implement, after Peter reopens work)
+Depends on: WP-1.5
+Owned paths: `packages/ts/**`, `apps/web/**`, `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `.github/workflows/web.yml`
+
+Steps:
+
+1. Establish a pnpm workspace with React, TypeScript and React Flow. Generate contract types and build a single-line editor for the supported electrical elements.
+2. Read/write the network contract without losing unedited electrical fields. Store presentation layout separately; validate edits and show element-specific diagnostics.
+3. Call the FastAPI studies, show per-bus results and limits, and expose report download. Provide keyboard access, readable symbols/units and clear save/run state.
+4. Test network round trips, edits, connections, validation and API error/results flows.
+
+Acceptance:
+
+- `pnpm install --frozen-lockfile`, `pnpm --filter qe-web test` and `pnpm --filter qe-web build` pass in CI.
+- A user can open an authored project, edit and save a network, run each study and inspect diagnostics and results without field loss.
+
+Learning note: `docs/learning/single-line-editor.md`, connecting diagram topology to electrical contracts and solver results.
+Change record: none
+
+---
+
+### WP-1.7 PDF study reports
+
+Status: [ ] Not started
+Lane: A (implement, after Peter reopens work)
+Depends on: WP-1.6
+Owned paths: `packages/py/qe_report/**`, `packages/py/qe_cli/**`, `packages/py/qe_api/**`, `uv.lock`, `tests/integration/test_pdf.py`
+
+Steps:
+
+1. Export load-flow, short-circuit and motor-start reports as PDF using a permissively licensed dependency. Preserve equations, units, assumptions, warnings and provenance.
+2. Add CLI/API export, page breaks and readable multipage tables. Keep generated PDFs out of tracked source files and expose errors as diagnostics.
+3. Test extracted report text, pagination on larger networks and failed/partial-study warnings; visually inspect all three reports.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_report tests/integration/test_pdf.py -v` passes.
+- PDF export for each authored example produces readable pages with the same numerical results and diagnostics as Markdown; workspace tests and CI pass.
+
+Learning note: `docs/learning/engineering-pdf-reports.md`, explaining reproducibility and what an engineer must include in a study deliverable.
+Change record: none
+
+### Deferred scope and source gaps
+
+- Cable sizing is deferred: ampacity and installation/derating tables require a paid standard Peter does not yet have. Peter must identify and obtain the applicable standard and edition before a cable-sizing WP can be approved. Do not type remembered table values into tests or code.
+- Protection coordination, scenario comparison and unbalanced studies need later approved WPs. IEC 60255-151 curve constants require readable sources before implementation.
+- Phase 2 remains PV design, Phase 3 circuits/control, and Phase 4 PLC/motors. The IT track remains deferred under D6. No work on these phases is authorized by this plan expansion.
 
 ---
 
