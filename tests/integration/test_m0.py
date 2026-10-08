@@ -55,9 +55,11 @@ def results():
             for path in NETWORKS}
 
 
-def test_all_fixtures_are_covered():
-    assert {path.parent.name for path in NETWORKS} == {
-        "two_bus_analytic", "three_bus_original", "five_bus_original", "fourteen_bus_original"}
+def test_required_fixtures_are_covered():
+    # New fixtures join the cross-check automatically; these must never drop out.
+    assert {path.parent.name for path in NETWORKS} >= {
+        "two_bus_analytic", "three_bus_original", "three_bus_shunt", "five_bus_original",
+        "fourteen_bus_original"}
 
 
 @pytest.mark.parametrize("path", NETWORKS, ids=lambda p: p.parent.name)
