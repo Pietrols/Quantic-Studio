@@ -5,8 +5,11 @@ disconnected. Nameplate inputs and the 15 percent dip limit are authored user
 choices, not standard values or equipment recommendations. The pre-start
 network has no loads; its source voltage is 1 pu. The line is 0.02+j0.03 ohm.
 
-CC-2 defines and validates this project. WP-1.4 implements its solver, CLI and
-report; until then `qe study run` does not support this study type.
+Run `uv run qe study run examples/motorstart --study motorstart`.
+The command writes `out/results.json` and `out/report.md`, reporting both
+voltages and the 15 percent dip limit for every bus. Exit 0 means calculated
+and passed; exit 1 means a failed dip limit or unavailable calculation.
+The JSON/report distinguish these conditions. Only pandapower supports this study.
 
 For independent numerical verification in WP-1.4, derive motor impedance from
 its nameplate, then use V_motor/V_source = Z_motor/(Z_line+Z_motor). This is an
