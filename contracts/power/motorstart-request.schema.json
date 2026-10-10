@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.3.0:power:motorstart-request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "network_file",
+    "motor",
+    "dip_limit_percent",
+    "tolerance_mva",
+    "max_iterations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.3.0"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "motor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "motor_id",
+        "bus_id",
+        "shaft_rated_kw",
+        "efficiency",
+        "rated_power_factor",
+        "rated_voltage_kv",
+        "locked_rotor_current_ratio",
+        "locked_rotor_power_factor"
+      ],
+      "properties": {
+        "motor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bus_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shaft_rated_kw": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "efficiency": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "rated_power_factor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "rated_voltage_kv": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_current_ratio": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_power_factor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "dip_limit_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "tolerance_mva": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "max_iterations": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

@@ -1,8 +1,8 @@
 """Command line entry point: `qe study run <project-folder> --study loadflow`.
 
 Exit codes:
-  0  study ran and converged
-  1  study ran but did not converge (results and report are still written)
+  0  study converged, or all requested fault duties are available
+  1  study did not converge, or fault duties are partial/failed (outputs written)
   2  the project, arguments or solver inputs are invalid (diagnostics printed, nothing written)
   3  the requested solver is not installed
 """
@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from qe_core import load_project, validate
-from qe_report import VoltageLimits, render_loadflow_report
+from qe_report import VoltageLimits, render_loadflow_report, render_shortcircuit_report
 
 # Each solver module must expose run_loadflow_file(network_path, request) -> loadflow-result.
 SOLVERS: dict[str, str] = {
@@ -70,8 +70,15 @@ def run_study(
         return 2
     selected = matches[0]
 
+    if selected.study_type == "shortcircuit" and solver != "pandapower":
+        print(f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement shortcircuit", file=sys.stderr)
+        return 2
+
     try:
-        run = solver_loader(solver)
+        if selected.study_type == "shortcircuit":
+            run = importlib.import_module(SOLVERS[solver]).run_shortcircuit_file
+        else:
+            run = solver_loader(solver)
     except ImportError as exc:
         print(f"ERROR SOLVER_UNAVAILABLE: solver '{solver}' is not installed ({exc})",
               file=sys.stderr)
@@ -91,7 +98,13 @@ def run_study(
             print(f"ERROR SOLVER_INPUT: {exc}", file=sys.stderr)
         return 2
 
-    problems = validate(result, "power/loadflow-result")
+    problems = validate(result, f"power/{selected.study_type}-result")
+    if selected.study_type == "shortcircuit" and not problems:
+        expected = {b["bus_id"] for b in project.network.data["buses"]}
+        if {c["case"] for c in result["case_results"]} != set(selected.request["cases"]) or any(
+                {b["bus_id"] for b in c["bus_results"]} != expected for c in result["case_results"]):
+            print("ERROR RESULT_COVERAGE: fault result does not cover requested buses/cases", file=sys.stderr)
+            return 2
     if problems:
         print("ERROR RESULT_CONTRACT: solver returned a result that breaks the contract",
               file=sys.stderr)
@@ -101,14 +114,23 @@ def run_study(
     out_dir = root / "out"
     out_dir.mkdir(exist_ok=True)
     (out_dir / "results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    report = render_loadflow_report(
+    render = render_shortcircuit_report if selected.study_type == "shortcircuit" else render_loadflow_report
+    report = render(
         project_name=project.name,
         network=project.network.data,
         request=selected.request,
         result=result,
-        limits=limits,
+        **({"limits": limits} if selected.study_type == "loadflow" else {}),
     )
     (out_dir / "report.md").write_text(report, encoding="utf-8")
+
+    if selected.study_type == "shortcircuit":
+        _print_diagnostics(result["diagnostics"])
+        for case in result["case_results"]:
+            _print_diagnostics(case["diagnostics"])
+        print(f"Short-circuit study {result['status'].upper()} with {solver}. "
+              f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
+        return 0 if result["status"] == "success" else 1
 
     converged = result["convergence"]["converged"]
     print(f"{'Converged' if converged else 'DID NOT CONVERGE'} in "
@@ -125,7 +147,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     run = study.add_parser("run", help="Run one study in a project folder")
     run.add_argument("project_folder", help="Folder containing manifest.json")
-    run.add_argument("--study", required=True, help="Study id or study type, e.g. loadflow")
+    run.add_argument("--study", required=True, help="Study id or type, e.g. loadflow or shortcircuit")
     run.add_argument("--solver", choices=sorted(SOLVERS), default=DEFAULT_SOLVER)
     run.add_argument("--vmin", type=float, default=0.95, help="Lowest acceptable voltage (pu)")
     run.add_argument("--vmax", type=float, default=1.05, help="Highest acceptable voltage (pu)")

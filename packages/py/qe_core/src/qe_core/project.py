@@ -102,7 +102,8 @@ def load_project(folder: str | Path) -> Outcome[Project]:
         if sid in seen:
             errors.append(diagnostic("DUPLICATE_ID", "Study ID is not unique", "study", sid, "study_id"))
         seen.add(sid)
-        supported = ("loadflow", "shortcircuit") if manifest["schema_version"] == "0.2.0" else ("loadflow",)
+        supported = {"0.1.0": ("loadflow",), "0.2.0": ("loadflow", "shortcircuit"),
+                     "0.3.0": ("loadflow", "shortcircuit", "motorstart")}[manifest["schema_version"]]
         if item["study_type"] not in supported:
             errors.append(diagnostic("UNSUPPORTED_STUDY", "Study is unsupported by this manifest version", "study", sid, "study_type"))
             continue
@@ -124,6 +125,11 @@ def load_project(folder: str | Path) -> Outcome[Project]:
                 errors.append(diagnostic("NETWORK_MISMATCH", "Request must name the project network", "study", sid, "network_file"))
         except ValueError as exc:
             errors.append(diagnostic("PROJECT_PATH", str(exc), "study", sid, "network_file"))
+        if item["study_type"] == "motorstart" and not validate_network(network):
+            motor = request.value["motor"]
+            if motor["bus_id"] not in {bus["bus_id"] for bus in network["buses"]}:
+                errors.append(diagnostic("UNKNOWN_BUS", "Motor bus does not exist", "motor",
+                                         motor["motor_id"], "bus_id"))
         studies.append(Study(sid, item["study_type"], request.value))
         files.append(path)
     if errors:

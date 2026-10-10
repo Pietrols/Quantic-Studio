@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.3.0:power:motorstart-result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "result_id",
+    "network_id",
+    "motor",
+    "dip_limit_percent",
+    "dip_definition",
+    "status",
+    "passes_limit",
+    "bus_results",
+    "assumptions",
+    "diagnostics",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.3.0"
+    },
+    "result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "motor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "motor_id",
+        "bus_id",
+        "shaft_rated_kw",
+        "efficiency",
+        "rated_power_factor",
+        "rated_voltage_kv",
+        "locked_rotor_current_ratio",
+        "locked_rotor_power_factor"
+      ],
+      "properties": {
+        "motor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bus_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shaft_rated_kw": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "efficiency": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "rated_power_factor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "rated_voltage_kv": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_current_ratio": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_power_factor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "dip_limit_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "dip_definition": {
+      "const": "100*(prestart_vm_pu-locked_rotor_vm_pu)/prestart_vm_pu"
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failed"
+      ]
+    },
+    "passes_limit": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "bus_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bus_id",
+          "prestart_vm_pu",
+          "locked_rotor_vm_pu",
+          "dip_percent",
+          "passes_limit"
+        ],
+        "properties": {
+          "bus_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "prestart_vm_pu": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          },
+          "locked_rotor_vm_pu": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "dip_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "maximum": 100
+          },
+          "passes_limit": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+      }
+    },
+    "provenance": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:common:provenance"
+    }
+  }
+}

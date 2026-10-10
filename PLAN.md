@@ -643,8 +643,10 @@ Change record: none
 
 Peter approved this scope and order on 2026-10-08. Execute WP-0.11, WP-1.1,
 WP-1.2 and WP-1.3 serially, one PR each, merging only after green final-head CI.
-Stop after WP-1.3. WP-1.4 through WP-1.7 are planned, not authorized to start in
-this session. Shared paths below are protected by serial dependencies.
+Peter reopened the next motor-start prerequisite on 2026-10-10 by replying
+"Proceed" after WP-1.3 completion. ChatGPT owns WP-1.8 (CC-2); WP-1.4
+follows only after that Contract Change is complete. WP-1.5 through WP-1.7
+remain planned and require the four-suite project-contract prerequisite. Shared paths below are protected by serial dependencies.
 
 Every numerical WP has an independent, hand-derived reference with authored
 inputs, equations and provenance. Do not use another solver's output as the
@@ -706,7 +708,7 @@ Change record: none
 
 ### WP-1.3 Three-phase short circuit via pandapower
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 4d4847e | 2026-10-10
 Lane: B (ChatGPT implements)
 Depends on: WP-1.2
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`
@@ -729,11 +731,36 @@ Change record: none
 
 ---
 
+### WP-1.8 Contract Change CC-2: motor-start contracts
+
+Status: [x] Done | implemented by ChatGPT | commit d043748 | 2026-10-10
+Lane: B (ChatGPT implements); Peter authorized the next prerequisite on 2026-10-10
+Depends on: WP-1.3
+Owned paths: `PLAN.md`, `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0004-motorstart-contracts.md`, `packages/py/qe_core/**`, `examples/motorstart/**`
+
+Steps:
+
+1. Add engine-neutral motor-start request/result contracts with explicit shaft rating, efficiency, rated voltage and power factor, locked-rotor current ratio and power factor. The study adds one initially disconnected motor; it must not duplicate an existing network load.
+2. Version the manifest additively and retain exact previous schemas. Motor inputs are study-local, leaving existing network contracts unchanged. Preserve v0.1 load flow and v0.2 short circuit.
+3. Define bus voltage bases, signed relative dip, user limit, numerical status versus limit compliance, unavailable diagnostics and provenance. Validate cross-field invariants and motor bus references in core.
+4. Update specs, an authored example and ADR. WP-1.4 is the explicit follow-up for adapter, CLI and reports; no claim of runnable motor-start solving in this Contract Change. Preserve ADR-0003's separate multi-domain manifest prerequisite before API/editor work.
+
+Acceptance:
+
+- `uv run python docs/specs/validate_examples.py` passes.
+- `uv run pytest packages/py/qe_core -v` covers version dispatch, nameplate bounds, bus references, results and compatibility.
+- Full workspace tests, Ruff and all existing CI guards pass on a clean checkout and final-head CI is green.
+
+Learning note: `docs/learning/motorstart-contracts.md`, explaining nameplate bases, study-local equipment and unavailable results.
+Change record: none
+
+---
+
 ### WP-1.4 Motor-start voltage dip
 
 Status: [ ] Not started
-Lane: A (implement, after Peter reopens work)
-Depends on: WP-1.3
+Lane: B (ChatGPT implements following CC-2)
+Depends on: WP-1.3, WP-1.8
 Owned paths: `packages/py/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/motorstart/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `examples/motorstart/**`
 
 Steps:

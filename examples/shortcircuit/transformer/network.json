@@ -1,6 +1,6 @@
 {
   "schema_version": "0.2.0",
-  "network_id": "authored-feeder-fault",
+  "network_id": "authored-transformer-fault",
   "base_mva": 10,
   "buses": [
     {
@@ -10,22 +10,23 @@
     },
     {
       "bus_id": "lv",
-      "vn_kv": 20,
+      "vn_kv": 0.4,
       "bus_type": "pq"
     }
   ],
-  "lines": [
+  "lines": [],
+  "transformers": [
     {
-      "line_id": "feeder",
-      "from_bus": "hv",
-      "to_bus": "lv",
-      "length_km": 2,
-      "r_ohm_per_km": 0.2,
-      "x_ohm_per_km": 0.4,
-      "end_temperature_celsius": 20
+      "transformer_id": "t1",
+      "hv_bus": "hv",
+      "lv_bus": "lv",
+      "sn_mva": 1,
+      "vn_hv_kv": 20,
+      "vn_lv_kv": 0.4,
+      "r_pu": 0.01,
+      "x_pu": 0.05
     }
   ],
-  "transformers": [],
   "external_grids": [
     {
       "external_grid_id": "grid",
