@@ -733,7 +733,7 @@ Change record: none
 
 ### WP-1.8 Contract Change CC-2: motor-start contracts
 
-Status: [~] In progress | ChatGPT | branch wp-1.8-motorstart-contracts | started 2026-10-10
+Status: [x] Done | implemented by ChatGPT | commit d043748 | 2026-10-10
 Lane: B (ChatGPT implements); Peter authorized the next prerequisite on 2026-10-10
 Depends on: WP-1.3
 Owned paths: `PLAN.md`, `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0004-motorstart-contracts.md`, `packages/py/qe_core/**`, `examples/motorstart/**`
