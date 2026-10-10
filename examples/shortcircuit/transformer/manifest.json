@@ -1,6 +1,6 @@
 {
   "schema_version": "0.2.0",
-  "name": "Authored feeder short circuit",
+  "name": "Authored transformer short circuit",
   "network_file": "network.json",
   "studies": [
     {

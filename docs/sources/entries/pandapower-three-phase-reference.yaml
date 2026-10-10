@@ -1,0 +1,44 @@
+id: pandapower-three-phase-reference
+accessed: 2026-10-10
+engine_version: 3.5.6
+sources:
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/ikss.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/ip.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/ith.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/branch_elements.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/voltage_source.html
+  - https://pandapower.readthedocs.io/en/stable/shortcircuit/run.html
+  - https://pandapower.readthedocs.io/en/stable/elements/gen.html
+  - https://github.com/e2nIEE/pandapower/blob/v3.5.6/pandapower/build_bus.py
+  - https://github.com/e2nIEE/pandapower/blob/v3.5.6/pandapower/build_branch.py
+  - https://github.com/e2nIEE/pandapower/blob/v3.5.6/pandapower/shortcircuit/currents.py
+  - https://github.com/e2nIEE/pandapower/blob/v3.5.6/pandapower/shortcircuit/ppc_conversion.py
+use: >-
+  Independent authored Thevenin references in test_shortcircuit_adapter.py,
+  maximum transformer KT, radial peak and 50-Hz far-from-generator thermal
+  duties, explicit-case grid conversion and synchronous initial current.
+reference_inputs: >-
+  Original synthetic 20/0.4-kV 1-MVA transformer r=.01 x=.05 pu;
+  20-kV 2-km feeder r=.2 x=.4 ohm/km, explicit end temperature 20 C;
+  grid maximum/minimum 1000/500 MVA and R/X=.1;
+  synchronous 20-kV 10-MVA xdss=.2 pu rdss=.4 ohm cosphi=.8 pg=0.
+  These are authored test inputs, not standard tables or equipment recommendations.
+independence: >-
+  Expected currents use complex series/parallel impedance and published equations,
+  never engine result tables. The finite-grid transformer reference tends to an
+  independently derived infinite-source limit as grid MVA increases. Tolerances
+  are not relaxed. References also verify machine/system base independence.
+limitations: >-
+  Peter approved explicit unavailable results for disputed conditions on 2026-10-10.
+  LV minimum c at 10 percent is .95 in the printed table versus .90 in build_bus.
+  Line temperature coefficient is .04/K on the page versus .004/K in build_branch;
+  only explicit 20 C avoids choosing a coefficient. currents._calc_ith hardcodes
+  50 Hz and sets m=0 for kappa>1.99; those disputed thermal duties are unavailable.
+  The branch page omits a case restriction for KT, but build_branch applies KT
+  only for maximum and cites IEC 60909-0:2016 section 6.3.3; without the standard
+  we cannot independently arbitrate minimum transformer duties, so they are null.
+  The generator page and implementation invert the machine/bus voltage ratio,
+  and the page omits pg; only equal nominal voltages and explicit pg=0 are used.
+  Station corrections, exact 1-kV boundary, multi-machine shared buses and meshed
+  peak/thermal duties remain unavailable. No independent standards certification.
+license_note: Citations, original numbers and original derivations only; no copied examples or paid standards.

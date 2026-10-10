@@ -706,7 +706,7 @@ Change record: none
 
 ### WP-1.3 Three-phase short circuit via pandapower
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 4d4847e | 2026-10-10
 Lane: B (ChatGPT implements)
 Depends on: WP-1.2
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/adapters/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`
