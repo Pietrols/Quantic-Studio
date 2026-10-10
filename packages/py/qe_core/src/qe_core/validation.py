@@ -88,13 +88,24 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
         schemas = [json.loads(p.read_text()) for p in sorted(root.rglob("*.schema.json"))]
         resources = [(s["$id"], Resource.from_contents(s)) for s in schemas]
         version = value.get("schema_version") if isinstance(value, dict) else None
-        supported = ("0.1.0", "0.2.0") if name in ("power/network", "project/manifest") else (
-            ("0.2.0",) if name in ("power/shortcircuit-request", "power/shortcircuit-result") else ("0.1.0",))
+        versions = {
+            "power/network": ("0.1.0", "0.2.0"),
+            "project/manifest": ("0.1.0", "0.2.0", "0.3.0"),
+            "power/shortcircuit-request": ("0.2.0",),
+            "power/shortcircuit-result": ("0.2.0",),
+            "power/motorstart-request": ("0.3.0",),
+            "power/motorstart-result": ("0.3.0",),
+        }
+        supported = versions.get(name, ("0.1.0",))
         if version is not None and version not in supported:
             return [diagnostic("SCHEMA_VERSION", f"Supported versions: {', '.join(supported)}",
                                name, name, "schema_version")]
-        legacy = version == "0.1.0" and name in ("power/network", "project/manifest")
-        schema = json.loads((root / ("v0.1" if legacy else "") / f"{name}.schema.json").read_text())
+        archive = ""
+        if version == "0.1.0" and name in ("power/network", "project/manifest"):
+            archive = "v0.1"
+        elif version == "0.2.0" and name == "project/manifest":
+            archive = "v0.2"
+        schema = json.loads((root / archive / f"{name}.schema.json").read_text())
         validator = Draft202012Validator(schema, registry=Registry().with_resources(resources),
                                         format_checker=FormatChecker())
         result = [Diagnostic("NONFINITE", "Numbers must be finite", _reference(value, p, name))
@@ -108,6 +119,8 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
                                      _reference(value, path, name)))
         if not result and name == "power/shortcircuit-result":
             result.extend(_shortcircuit_semantics(value))
+        if not result and name == "power/motorstart-result":
+            result.extend(_motorstart_semantics(value))
         return result
     except (OSError, ValueError, KeyError) as exc:
         return [diagnostic("CONTRACT_UNAVAILABLE", str(exc), "contract", name, "schema")]
@@ -147,4 +160,49 @@ def _shortcircuit_semantics(value):
         "failed" if all(s == "failed" for s in statuses) else "partial")
     if value["status"] != expected:
         errors.append(diagnostic("RESULT_STATUS", f"Expected {expected}", "result", value["result_id"], "status"))
+    return errors
+
+
+def _motorstart_semantics(value):
+    """Keep calculation availability separate from engineering compliance."""
+    errors = []
+    rows = value["bus_results"]
+    ids = [row["bus_id"] for row in rows]
+    if len(ids) != len(set(ids)):
+        errors.append(diagnostic("DUPLICATE_ID", "Bus must occur once", "result",
+                                 value["result_id"], "bus_results"))
+    complete = True
+    for row in rows:
+        bus = row["bus_id"]
+        pre, start = row["prestart_vm_pu"], row["locked_rotor_vm_pu"]
+        available = pre is not None and start is not None
+        complete = complete and available
+        for result_field in ("prestart_vm_pu", "locked_rotor_vm_pu", "dip_percent", "passes_limit"):
+            if row[result_field] is None and not any(
+                (d.get("element_ref") or {}).get("element_id") == bus and
+                (d.get("element_ref") or {}).get("element_type") == "buses" and
+                (d.get("element_ref") or {}).get("field") == result_field
+                for d in value["diagnostics"]
+            ):
+                errors.append(diagnostic("MISSING_DIAGNOSTIC", "Unavailable field needs a bus/field diagnostic",
+                                         "buses", bus, result_field))
+        if available:
+            dip = 100 * (pre - start) / pre
+            if row["dip_percent"] is None or not math.isclose(row["dip_percent"], dip,
+                                                               rel_tol=1e-9, abs_tol=1e-9):
+                errors.append(diagnostic("DIP_VALUE", "Dip disagrees with voltage magnitudes",
+                                         "buses", bus, "dip_percent"))
+            if row["passes_limit"] is not (dip <= value["dip_limit_percent"]):
+                errors.append(diagnostic("LIMIT_RESULT", "Compliance disagrees with computed dip",
+                                         "buses", bus, "passes_limit"))
+        elif row["dip_percent"] is not None or row["passes_limit"] is not None:
+            errors.append(diagnostic("UNAVAILABLE_RESULT", "Unavailable voltage requires null dip and compliance",
+                                     "buses", bus, "dip_percent"))
+    expected = "success" if complete else "failed"
+    if value["status"] != expected:
+        errors.append(diagnostic("RESULT_STATUS", f"Expected {expected}", "result", value["result_id"], "status"))
+    passed = all(row["passes_limit"] is True for row in rows) if complete else None
+    if value["passes_limit"] is not passed:
+        errors.append(diagnostic("LIMIT_RESULT", "Overall compliance disagrees with bus results",
+                                 "result", value["result_id"], "passes_limit"))
     return errors

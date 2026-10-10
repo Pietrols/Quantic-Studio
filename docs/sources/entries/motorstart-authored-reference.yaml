@@ -1,0 +1,15 @@
+id: motorstart-authored-reference
+accessed: 2026-10-10
+type: original-derivation
+use: CC-2 nameplate bases and WP-1.4 independent voltage-divider reference
+source: docs/learning/motorstart-contracts.md
+basis: >-
+  Balanced three-phase power S=sqrt(3)*U_line*I_line, P_electrical=P_shaft/eta,
+  lagging power factor cos(phi), Ohm's law and series complex voltage division.
+  These are algebraic identities; no standard-derived factors are used.
+authored_inputs: >-
+  400 V, 30 kW shaft, efficiency .9, rated power factor .85,
+  locked-rotor current ratio 6, locked-rotor power factor .3,
+  feeder .02+j.03 ohm per phase, source 1 pu, selected dip limit 15 percent.
+  Educational choices only, not manufacturer data or recommended limits.
+license_note: Original equations, numbers and wording; no copied worked example.

@@ -6,7 +6,7 @@ The project manifest is the entry point for a study. `schema_version` identifies
 
 ```json
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.3.0",
   "name": "Example distribution study",
   "network_file": "network.json",
   "studies": [
@@ -22,3 +22,5 @@ The project manifest is the entry point for a study. `schema_version` identifies
 Version 0.2 allows `loadflow` and `shortcircuit` study types. Each request is
 validated against its study schema. Version 0.1 projects retain their old
 load-flow behavior and schema. Requests must reference the project network.
+
+Version 0.3 also allows `motorstart`. Archived v0.1 and v0.2 manifests remain readable. This additive power study does not implement the multi-domain manifest required by ADR-0003.

@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.2.0",
+  "network_id": "authored-motor-feeder",
+  "base_mva": 1,
+  "buses": [
+    {
+      "bus_id": "source",
+      "vn_kv": 0.4,
+      "bus_type": "slack"
+    },
+    {
+      "bus_id": "motor_bus",
+      "vn_kv": 0.4,
+      "bus_type": "pq"
+    }
+  ],
+  "lines": [
+    {
+      "line_id": "feeder",
+      "from_bus": "source",
+      "to_bus": "motor_bus",
+      "length_km": 0.1,
+      "r_ohm_per_km": 0.2,
+      "x_ohm_per_km": 0.3
+    }
+  ],
+  "transformers": [],
+  "loads": [],
+  "generators": [],
+  "external_grids": [
+    {
+      "external_grid_id": "grid",
+      "bus_id": "source",
+      "vm_setpoint_pu": 1,
+      "va_setpoint_degree": 0
+    }
+  ],
+  "shunts": []
+}
