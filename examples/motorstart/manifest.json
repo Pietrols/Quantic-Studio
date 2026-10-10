@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.3.0",
+  "name": "Authored motor-start feeder",
+  "network_file": "network.json",
+  "studies": [
+    {
+      "study_id": "motorstart",
+      "study_type": "motorstart",
+      "request_file": "motorstart-request.json"
+    }
+  ]
+}
