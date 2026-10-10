@@ -4,8 +4,7 @@
   "network_file": "network.json",
   "fault_type": "3ph",
   "cases": [
-    "max",
-    "min"
+    "max"
   ],
   "fault_duration_s": 1,
   "frequency_hz": 50,
