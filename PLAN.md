@@ -788,7 +788,7 @@ Change record: none
 
 ### WP-1.9 Contract Change CC-3: multi-domain projects and asset identity
 
-Status: [~] In progress | ChatGPT | branch wp-1.9-multi-domain-projects | started 2026-10-11
+Status: [x] Done | implemented by ChatGPT | commit 5693c0e | 2026-10-11
 Lane: B (ChatGPT implements); Peter authorized the documented next architecture prerequisite on 2026-10-11
 Depends on: WP-1.4, WP-0.11
 Owned paths: `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0005-multi-domain-projects.md`, `packages/py/qe_core/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `examples/multi_domain/**`
