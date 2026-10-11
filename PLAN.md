@@ -758,7 +758,7 @@ Change record: none
 
 ### WP-1.4 Motor-start voltage dip
 
-Status: [~] In progress | ChatGPT | branch wp-1.4-motorstart-voltage-dip | started 2026-10-10
+Status: [x] Done | implemented by ChatGPT | commit 8e49106 | 2026-10-11
 Lane: B (ChatGPT implements following CC-2)
 Depends on: WP-1.3, WP-1.8
 Owned paths: `packages/py/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/motorstart/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/**`, `packages/py/qe_power/tests/motorstart/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `examples/motorstart/**`
