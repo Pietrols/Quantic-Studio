@@ -1,0 +1,15 @@
+id: motorstart-pandapower-shunt
+accessed: 2026-10-10
+engine_version: 3.5.6
+sources:
+  - https://pandapower.readthedocs.io/en/v3.5.6/elements/shunt.html
+use: >-
+  Map locked-rotor constant impedance to shunt nominal P/Q consumption.
+  Inputs are specified at nominal voltage; power scales with voltage squared.
+  Use S_nominal=U_bus_nominal^2/conjugate(Z_motor) from the original balanced
+  three-phase derivation. Retain the verified load-flow adapter's Q limits.
+verification: >-
+  Independent authored two-bus voltage division with and without existing shunt,
+  unequal motor/bus voltage bases, varied system base and starting power factor.
+limitations: Steady balanced snapshot only; external grids remain ideal voltage references.
+license_note: Citation and original derivations only; no copied examples.

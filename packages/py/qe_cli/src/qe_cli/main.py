@@ -1,8 +1,8 @@
 """Command line entry point: `qe study run <project-folder> --study loadflow`.
 
 Exit codes:
-  0  study converged, or all requested fault duties are available
-  1  study did not converge, or fault duties are partial/failed (outputs written)
+  0  load flow converged, fault duties available, or motor-start dip check passed
+  1  incomplete calculation or failed motor-start dip limit (outputs written)
   2  the project, arguments or solver inputs are invalid (diagnostics printed, nothing written)
   3  the requested solver is not installed
 """
@@ -18,7 +18,12 @@ from pathlib import Path
 from typing import Any, Callable
 
 from qe_core import load_project, validate
-from qe_report import VoltageLimits, render_loadflow_report, render_shortcircuit_report
+from qe_report import (
+    VoltageLimits,
+    render_loadflow_report,
+    render_motorstart_report,
+    render_shortcircuit_report,
+)
 
 # Each solver module must expose run_loadflow_file(network_path, request) -> loadflow-result.
 SOLVERS: dict[str, str] = {
@@ -70,13 +75,13 @@ def run_study(
         return 2
     selected = matches[0]
 
-    if selected.study_type == "shortcircuit" and solver != "pandapower":
-        print(f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement shortcircuit", file=sys.stderr)
+    if selected.study_type in ("shortcircuit", "motorstart") and solver != "pandapower":
+        print(f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement {selected.study_type}", file=sys.stderr)
         return 2
 
     try:
-        if selected.study_type == "shortcircuit":
-            run = importlib.import_module(SOLVERS[solver]).run_shortcircuit_file
+        if selected.study_type in ("shortcircuit", "motorstart"):
+            run = getattr(importlib.import_module(SOLVERS[solver]), f"run_{selected.study_type}_file")
         else:
             run = solver_loader(solver)
     except ImportError as exc:
@@ -105,6 +110,14 @@ def run_study(
                 {b["bus_id"] for b in c["bus_results"]} != expected for c in result["case_results"]):
             print("ERROR RESULT_COVERAGE: fault result does not cover requested buses/cases", file=sys.stderr)
             return 2
+    if selected.study_type == "motorstart" and not problems:
+        expected = {b["bus_id"] for b in project.network.data["buses"]}
+        if ({b["bus_id"] for b in result["bus_results"]} != expected
+                or result["motor"] != selected.request["motor"]
+                or result["dip_limit_percent"] != selected.request["dip_limit_percent"]
+                or result["network_id"] != project.network.network_id):
+            print("ERROR RESULT_COVERAGE: motor result differs from requested network/motor/limit", file=sys.stderr)
+            return 2
     if problems:
         print("ERROR RESULT_CONTRACT: solver returned a result that breaks the contract",
               file=sys.stderr)
@@ -114,7 +127,8 @@ def run_study(
     out_dir = root / "out"
     out_dir.mkdir(exist_ok=True)
     (out_dir / "results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    render = render_shortcircuit_report if selected.study_type == "shortcircuit" else render_loadflow_report
+    render = {"loadflow": render_loadflow_report, "shortcircuit": render_shortcircuit_report,
+              "motorstart": render_motorstart_report}[selected.study_type]
     report = render(
         project_name=project.name,
         network=project.network.data,
@@ -132,6 +146,13 @@ def run_study(
               f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
         return 0 if result["status"] == "success" else 1
 
+    if selected.study_type == "motorstart":
+        _print_diagnostics(result["diagnostics"])
+        compliance = "UNKNOWN" if result["passes_limit"] is None else "PASS" if result["passes_limit"] else "FAIL"
+        print(f"Motor-start calculation {result['status'].upper()}; dip limit {compliance}. "
+              f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
+        return 0 if result["status"] == "success" and result["passes_limit"] else 1
+
     converged = result["convergence"]["converged"]
     print(f"{'Converged' if converged else 'DID NOT CONVERGE'} in "
           f"{result['convergence']['iterations']} iterations with {solver}. "
@@ -147,7 +168,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     run = study.add_parser("run", help="Run one study in a project folder")
     run.add_argument("project_folder", help="Folder containing manifest.json")
-    run.add_argument("--study", required=True, help="Study id or type, e.g. loadflow or shortcircuit")
+    run.add_argument("--study", required=True, help="Study id or type, e.g. loadflow, shortcircuit or motorstart")
     run.add_argument("--solver", choices=sorted(SOLVERS), default=DEFAULT_SOLVER)
     run.add_argument("--vmin", type=float, default=0.95, help="Lowest acceptable voltage (pu)")
     run.add_argument("--vmax", type=float, default=1.05, help="Highest acceptable voltage (pu)")
