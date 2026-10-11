@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Authored mixed-domain project",
+  "models": [
+    {
+      "model_id": "plant",
+      "model_type": "power.network",
+      "file": "plant.json"
+    },
+    {
+      "model_id": "motor-feeder",
+      "model_type": "power.network",
+      "file": "motor-feeder.json"
+    },
+    {
+      "model_id": "control",
+      "model_type": "automation.plc",
+      "file": "control.json"
+    }
+  ],
+  "studies": [
+    {
+      "study_id": "plant-flow",
+      "study_type": "loadflow",
+      "model_id": "plant",
+      "request_file": "plant-flow.json"
+    },
+    {
+      "study_id": "plant-fault",
+      "study_type": "shortcircuit",
+      "model_id": "plant",
+      "request_file": "plant-fault.json"
+    },
+    {
+      "study_id": "motor-start",
+      "study_type": "motorstart",
+      "model_id": "motor-feeder",
+      "request_file": "motor-start.json"
+    },
+    {
+      "study_id": "control-scan",
+      "study_type": "plc.scan",
+      "model_id": "control",
+      "request_file": "scan.json"
+    }
+  ],
+  "asset_registry": {
+    "schema_version": "1.0.0",
+    "assets": [
+      {
+        "asset_id": "feeder-asset",
+        "name": "Feeder monitored by control model",
+        "representations": [
+          {
+            "model_id": "motor-feeder",
+            "element_type": "lines",
+            "element_id": "feeder"
+          },
+          {
+            "model_id": "control",
+            "element_type": "devices",
+            "element_id": "feeder-sensor"
+          }
+        ]
+      }
+    ]
+  }
+}

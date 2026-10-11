@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.2.0",
+  "request_id": "plant-fault",
+  "network_file": "plant.json",
+  "fault_type": "3ph",
+  "cases": [
+    "max",
+    "min"
+  ],
+  "fault_duration_s": 1,
+  "frequency_hz": 50,
+  "lv_tolerance_percent": 6
+}

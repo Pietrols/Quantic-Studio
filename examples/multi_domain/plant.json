@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.2.0",
+  "network_id": "mixed-plant",
+  "base_mva": 10,
+  "buses": [
+    {
+      "bus_id": "hv",
+      "vn_kv": 20,
+      "bus_type": "slack"
+    },
+    {
+      "bus_id": "lv",
+      "vn_kv": 20,
+      "bus_type": "pq"
+    }
+  ],
+  "lines": [
+    {
+      "line_id": "feeder",
+      "from_bus": "hv",
+      "to_bus": "lv",
+      "length_km": 2,
+      "r_ohm_per_km": 0.2,
+      "x_ohm_per_km": 0.4,
+      "end_temperature_celsius": 20
+    }
+  ],
+  "transformers": [],
+  "external_grids": [
+    {
+      "external_grid_id": "grid",
+      "bus_id": "hv",
+      "vm_setpoint_pu": 1,
+      "va_setpoint_degree": 0,
+      "s_sc_max_mva": 1000,
+      "s_sc_min_mva": 500,
+      "rx_max": 0.1,
+      "rx_min": 0.1
+    }
+  ],
+  "generators": [],
+  "loads": [],
+  "shunts": []
+}

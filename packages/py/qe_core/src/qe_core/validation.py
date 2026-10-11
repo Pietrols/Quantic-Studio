@@ -90,7 +90,8 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
         version = value.get("schema_version") if isinstance(value, dict) else None
         versions = {
             "power/network": ("0.1.0", "0.2.0"),
-            "project/manifest": ("0.1.0", "0.2.0", "0.3.0"),
+            "project/manifest": ("0.1.0", "0.2.0", "0.3.0", "1.0.0"),
+            "project/asset-registry": ("1.0.0",),
             "power/shortcircuit-request": ("0.2.0",),
             "power/shortcircuit-result": ("0.2.0",),
             "power/motorstart-request": ("0.3.0",),
@@ -103,8 +104,8 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
         archive = ""
         if version == "0.1.0" and name in ("power/network", "project/manifest"):
             archive = "v0.1"
-        elif version == "0.2.0" and name == "project/manifest":
-            archive = "v0.2"
+        elif version in ("0.2.0", "0.3.0") and name == "project/manifest":
+            archive = "v" + version.removesuffix(".0")
         schema = json.loads((root / archive / f"{name}.schema.json").read_text())
         validator = Draft202012Validator(schema, registry=Registry().with_resources(resources),
                                         format_checker=FormatChecker())

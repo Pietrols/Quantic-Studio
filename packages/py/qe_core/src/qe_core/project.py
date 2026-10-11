@@ -22,18 +22,48 @@ class Network:
 
 
 @dataclass(frozen=True)
+class Model:
+    model_id: str
+    model_type: str
+    file: str
+    data: dict[str, Any]
+
+    @property
+    def network(self) -> Network:
+        if self.model_type != "power.network":
+            raise ValueError(f"Model {self.model_id} is not a power network")
+        return Network(self.data)
+
+
+@dataclass(frozen=True)
 class Study:
     study_id: str
     study_type: str
     request: dict[str, Any]
+    model_id: str
 
 
 @dataclass(frozen=True)
 class Project:
     name: str
-    network: Network
+    models: tuple[Model, ...]
     studies: tuple[Study, ...]
     files: tuple[Path, ...]
+    assets: tuple[dict[str, Any], ...] = ()
+
+    def model(self, model_id: str) -> Model:
+        for model in self.models:
+            if model.model_id == model_id:
+                return model
+        raise KeyError(f"Unknown project model: {model_id}")
+
+    @property
+    def network(self) -> Network:
+        """Legacy accessor, deliberately unavailable for ambiguous projects."""
+        power = [model for model in self.models if model.model_type == "power.network"]
+        if len(power) != 1:
+            raise ValueError("Project.network requires exactly one power network; select a study's model")
+        return power[0].network
 
 
 def read_json(path: Path) -> Outcome[dict]:
@@ -76,7 +106,10 @@ def validate_network(data) -> list:
 
 def load_project(folder: str | Path) -> Outcome[Project]:
     root = Path(folder).resolve()
-    manifest_path = root / "manifest.json"
+    try:
+        manifest_path = safe_path(root, "manifest.json")
+    except ValueError as exc:
+        return Outcome(diagnostics=[diagnostic("PROJECT_PATH", str(exc), "manifest", root.name, "file")])
     parsed = read_json(manifest_path)
     if parsed.diagnostics:
         return Outcome(diagnostics=parsed.diagnostics)
@@ -84,6 +117,9 @@ def load_project(folder: str | Path) -> Outcome[Project]:
     errors = validate(manifest, "project/manifest")
     if errors:
         return Outcome(diagnostics=errors)
+    if manifest["schema_version"] == "1.0.0":
+        from .multidomain import load_models
+        return load_models(root, manifest)
     files = [manifest_path]
     try:
         network_path = safe_path(root, manifest["network_file"])
@@ -130,8 +166,10 @@ def load_project(folder: str | Path) -> Outcome[Project]:
             if motor["bus_id"] not in {bus["bus_id"] for bus in network["buses"]}:
                 errors.append(diagnostic("UNKNOWN_BUS", "Motor bus does not exist", "motor",
                                          motor["motor_id"], "bus_id"))
-        studies.append(Study(sid, item["study_type"], request.value))
+        studies.append(Study(sid, item["study_type"], request.value, network["network_id"]))
         files.append(path)
     if errors:
         return Outcome(diagnostics=errors)
-    return Outcome(Project(manifest["name"], Network(network), tuple(studies), tuple(files)))
+    return Outcome(Project(manifest["name"],
+                           (Model(network["network_id"], "power.network", manifest["network_file"], network),),
+                           tuple(studies), tuple(files)))

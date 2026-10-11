@@ -22,7 +22,12 @@ def project(tmp_path):
     for name in ("manifest", "network", "loadflow-request"):
         target = tmp_path / ("studies/loadflow-request.json" if name == "loadflow-request" else name + ".json")
         target.parent.mkdir(exist_ok=True)
-        target.write_text(json.dumps(example(name)))
+        data = example(name)
+        if name == "manifest":
+            data = {"schema_version": "0.3.0", "name": "Legacy fixture", "network_file": "network.json",
+                    "studies": [{"study_id": "lf", "study_type": "loadflow",
+                                 "request_file": "studies/loadflow-request.json"}]}
+        target.write_text(json.dumps(data))
     return tmp_path
 
 

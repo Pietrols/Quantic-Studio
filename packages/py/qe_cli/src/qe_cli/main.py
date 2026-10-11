@@ -60,9 +60,10 @@ def run_study(
 ) -> int:
     root = Path(project_folder).resolve()
     loaded = load_project(root)
-    if loaded.diagnostics:
+    if not loaded.ok:
         _print_diagnostics(loaded.diagnostics)
         return 2
+    _print_diagnostics(loaded.diagnostics)
     project = loaded.value
 
     # Match by study_id first, then by study_type, so "--study loadflow" works.
@@ -74,6 +75,11 @@ def run_study(
               f"found {len(matches)} (studies in project: {found})", file=sys.stderr)
         return 2
     selected = matches[0]
+    model = project.model(selected.model_id)
+    if selected.study_type not in ("loadflow", "shortcircuit", "motorstart") or model.model_type != "power.network":
+        print(f"ERROR UNSUPPORTED_STUDY: {selected.study_type} on {model.model_type} is stored but cannot execute", file=sys.stderr)
+        return 2
+    network = model.network
 
     if selected.study_type in ("shortcircuit", "motorstart") and solver != "pandapower":
         print(f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement {selected.study_type}", file=sys.stderr)
@@ -89,7 +95,7 @@ def run_study(
               file=sys.stderr)
         return 3
 
-    network_path = root / selected.request["network_file"]
+    network_path = root / model.file
     try:
         result = run(network_path, selected.request)
     except ValueError as exc:
@@ -104,18 +110,21 @@ def run_study(
         return 2
 
     problems = validate(result, f"power/{selected.study_type}-result")
+    if not problems and result["network_id"] != network.network_id:
+        print("ERROR RESULT_COVERAGE: result network differs from selected model", file=sys.stderr)
+        return 2
     if selected.study_type == "shortcircuit" and not problems:
-        expected = {b["bus_id"] for b in project.network.data["buses"]}
+        expected = {b["bus_id"] for b in network.data["buses"]}
         if {c["case"] for c in result["case_results"]} != set(selected.request["cases"]) or any(
                 {b["bus_id"] for b in c["bus_results"]} != expected for c in result["case_results"]):
             print("ERROR RESULT_COVERAGE: fault result does not cover requested buses/cases", file=sys.stderr)
             return 2
     if selected.study_type == "motorstart" and not problems:
-        expected = {b["bus_id"] for b in project.network.data["buses"]}
+        expected = {b["bus_id"] for b in network.data["buses"]}
         if ({b["bus_id"] for b in result["bus_results"]} != expected
                 or result["motor"] != selected.request["motor"]
                 or result["dip_limit_percent"] != selected.request["dip_limit_percent"]
-                or result["network_id"] != project.network.network_id):
+                or result["network_id"] != network.network_id):
             print("ERROR RESULT_COVERAGE: motor result differs from requested network/motor/limit", file=sys.stderr)
             return 2
     if problems:
@@ -131,7 +140,7 @@ def run_study(
               "motorstart": render_motorstart_report}[selected.study_type]
     report = render(
         project_name=project.name,
-        network=project.network.data,
+        network=network.data,
         request=selected.request,
         result=result,
         **({"limits": limits} if selected.study_type == "loadflow" else {}),

@@ -1,0 +1,10 @@
+{
+  "schema_version": "authored-placeholder",
+  "request_id": "control-scan",
+  "settings": {
+    "retain_me": [
+      1,
+      "original"
+    ]
+  }
+}
