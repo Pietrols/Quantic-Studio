@@ -622,7 +622,7 @@ Change record:
 
 ### WP-0.11 Phase 1 planning
 
-Status: [x] Done | implemented by ChatGPT | commit 63bc046 | 2026-10-08
+Status: [x] Done | implemented by ChatGPT | commit 2d38885 | 2026-10-11
 Lane: A (draft), B (review), Peter approves
 Depends on: WP-0.10
 Owned paths: `PLAN.md` (section 8 only)
@@ -646,7 +646,12 @@ WP-1.2 and WP-1.3 serially, one PR each, merging only after green final-head CI.
 Peter reopened the next motor-start prerequisite on 2026-10-10 by replying
 "Proceed" after WP-1.3 completion. ChatGPT owns WP-1.8 (CC-2); WP-1.4
 follows only after that Contract Change is complete. WP-1.5 through WP-1.7
-remain planned and require the four-suite project-contract prerequisite. Shared paths below are protected by serial dependencies.
+remain planned and require the four-suite project-contract prerequisite.
+Peter's 2026-10-11 Continue instruction reopens WP-0.11 to record ADR-0003's
+architecture prerequisites and authorizes WP-1.9 (CC-3) next, serially after
+WP-1.4. The updated WP-1.6 below records the generic canvas direction; its
+implementation, WP-1.5 and WP-1.7 are still separate future work packages.
+Shared paths below are protected by serial dependencies.
 
 Every numerical WP has an independent, hand-derived reference with authored
 inputs, equations and provenance. Do not use another solver's output as the
@@ -781,16 +786,43 @@ Change record: none
 
 ---
 
+### WP-1.9 Contract Change CC-3: multi-domain projects and asset identity
+
+Status: [ ] Not started
+Lane: B (ChatGPT implements); Peter authorized the documented next architecture prerequisite on 2026-10-11
+Depends on: WP-1.4, WP-0.11
+Owned paths: `contracts/**`, `docs/specs/**`, `docs/decisions/ADR-0005-multi-domain-projects.md`, `packages/py/qe_core/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/**`, `examples/multi_domain/**`
+
+Steps:
+
+1. Run CC-3 alone. Introduce a versioned project manifest with stable model IDs, domain/model kinds, confined model files and study-to-model references. Replace the top-level single network binding with explicit per-study model selection, using a major manifest version for the incompatible shape. Archive v0.3 byte-for-byte and preserve v0.1/v0.2/v0.3 project loading and requests.
+2. Add a project asset registry linking one stable physical asset ID to representations in multiple models. Keep identity outside domain engine imports. Validate duplicate IDs, model references and known power element references. Explicitly diagnose deferred validation of representations or payloads whose domain contracts do not exist yet; storage is not numerical validation or execution support.
+3. Core loads project models without importing engines; executable power studies must bind to a power network and their request must name exactly that model file. CLI selects the study's model, never the first power model. Unknown/deferred model or study types must be preserved for storage and diagnosed/rejected for execution without blocking an unrelated supported power study. Preserve the single-network compatibility accessor only where unambiguous.
+4. Update all current dependent packages in this PR. Add an authored mixed-domain project with at least two distinct power networks and a deferred non-power model; run all three power study types and preserve foreign content without lossy rewriting. Define model/study/asset identifier namespaces and input provenance boundaries in specs and ADR.
+5. Verify schema/spec/example consistency, legacy projects, exact model routing, duplicate and dangling identifiers, unsupported execution, path traversal/absolute paths/symlinks and mismatched request/model files. No foreign engine or GUI is implemented in this Contract Change. Time-series and FMI-style co-simulation remain explicit later contracts.
+
+Acceptance:
+
+- `uv run python docs/specs/validate_examples.py` passes.
+- `uv run pytest packages/py/qe_core packages/py/qe_cli -v` covers old/new versions, two-network routing, asset references, deferred models and path safety.
+- Each supported study in `examples/multi_domain` runs through the CLI, returns its selected network ID and contract-valid results; a deferred study is rejected explicitly.
+- Full workspace tests, Ruff, repository guards, plan/owned-path checker and final-head CI pass on a clean checkout.
+
+Learning note: `docs/learning/multi-domain-projects-and-assets.md`, explaining model versus physical asset identity, version migration, study binding and storage versus execution.
+Change record: none
+
+---
+
 ### WP-1.5 Project study API
 
 Status: [ ] Not started
 Lane: A (implement, after Peter reopens work)
-Depends on: WP-1.4
+Depends on: WP-1.4, WP-1.9
 Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`
 
 Steps:
 
-1. Add a FastAPI package exposing load flow, short circuit and motor start for a project folder under a configured project root. Reuse contract validation and solver entry points.
+1. Add a FastAPI package exposing load flow, short circuit and motor start for a multi-domain project under a configured project root. Select the model through the study binding from CC-3; never assume one network per project. Reuse contract validation and solver entry points.
 2. Validate paths, bound execution, return structured diagnostics and provenance, and preserve project data. Bind locally by default and document the trust boundary before remote use.
 3. Document requests/responses and test all three studies, unknown studies, traversal, missing inputs and solver failures.
 
@@ -804,24 +836,24 @@ Change record: none
 
 ---
 
-### WP-1.6 Web single-line diagram editor
+### WP-1.6 Generic diagram canvas and power workspace
 
 Status: [ ] Not started
 Lane: B (implement, after Peter reopens work)
-Depends on: WP-1.5
+Depends on: WP-1.5, WP-1.9
 Owned paths: `packages/ts/**`, `apps/web/**`, `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `.github/workflows/web.yml`
 
 Steps:
 
-1. Establish a pnpm workspace with React, TypeScript and React Flow. Generate contract types and build a single-line editor for the supported electrical elements.
-2. Read/write the network contract without losing unedited electrical fields. Store presentation layout separately; validate edits and show element-specific diagnostics.
+1. Establish a pnpm workspace with React, TypeScript and React Flow. Generate contract types and build a domain-neutral node/port/edge canvas with a power-specific symbol and connection-rule layer. Single-line diagrams are the first workspace; circuit, block-diagram and SCADA graphs must be possible without embedding their engines in the canvas. Ladder logic remains a separate grid component.
+2. Read/write the selected model in a CC-3 multi-domain project without losing unedited electrical or foreign model/asset data. Keep presentation layout separate from engineering payloads and bind visual elements to model IDs and asset references. If persisted layout needs a new shared contract, complete a separate Contract Change before implementation; WP-1.6 does not own contracts. Validate edits and show element-specific diagnostics.
 3. Call the FastAPI studies, show per-bus results and limits, and expose report download. Provide keyboard access, readable symbols/units and clear save/run state.
-4. Test network round trips, edits, connections, validation and API error/results flows.
+4. Test model/project round trips, edits, typed ports/connections, validation and API error/results flows. Test that the generic canvas does not hard-code electrical solver fields, and power rules remain in the power workspace.
 
 Acceptance:
 
 - `pnpm install --frozen-lockfile`, `pnpm --filter qe-web test` and `pnpm --filter qe-web build` pass in CI.
-- A user can open an authored project, edit and save a network, run each study and inspect diagnostics and results without field loss.
+- A user can open an authored multi-domain project, select a power model, edit and save it, run its studies and inspect diagnostics/results without losing other models or asset bindings.
 
 Learning note: `docs/learning/single-line-editor.md`, connecting diagram topology to electrical contracts and solver results.
 Change record: none
@@ -853,7 +885,7 @@ Change record: none
 
 - Cable sizing is deferred: ampacity and installation/derating tables require a paid standard Peter does not yet have. Peter must identify and obtain the applicable standard and edition before a cable-sizing WP can be approved. Do not type remembered table values into tests or code.
 - Protection coordination, scenario comparison and unbalanced studies need later approved WPs. IEC 60255-151 curve constants require readable sources before implementation.
-- Phase 2 remains PV design, Phase 3 circuits/control, and Phase 4 PLC/motors. The IT track remains deferred under D6. No work on these phases is authorized by this plan expansion.
+- ADR-0003 controls the future suite sequence: after the first Power slice and shared infrastructure, Solar PV and Industrial Automation can proceed in separate engine lanes, then Electronics/Control/Multiphysics workspace by workspace. Detailed WPs are still required before any suite starts; no foreign engine implementation is authorized here. The IT track remains deferred under D6.
 
 ---
 
