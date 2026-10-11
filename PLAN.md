@@ -412,7 +412,7 @@ Change record: none
 
 ### WP-0.3 Plan checker and owned-path guard
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 8923e6d | 2026-10-10
 Lane: B (implement), A (verify)
 Depends on: WP-0.1
 Owned paths: `tools/check_plan/**`
