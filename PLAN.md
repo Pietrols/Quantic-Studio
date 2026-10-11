@@ -622,7 +622,7 @@ Change record:
 
 ### WP-0.11 Phase 1 planning
 
-Status: [x] Done | implemented by ChatGPT | commit 63bc046 | 2026-10-08
+Status: [~] In progress | ChatGPT | branch wp-0.11-four-suite-prerequisites | started 2026-10-11
 Lane: A (draft), B (review), Peter approves
 Depends on: WP-0.10
 Owned paths: `PLAN.md` (section 8 only)
