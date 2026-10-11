@@ -1,0 +1,7 @@
+{
+  "schema_version": "0.1.0",
+  "request_id": "plant-flow",
+  "network_file": "plant.json",
+  "tolerance_mva": 1e-09,
+  "max_iterations": 100
+}

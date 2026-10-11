@@ -1,0 +1,10 @@
+{
+  "schema_version": "authored-placeholder",
+  "devices": [
+    {
+      "device_id": "feeder-sensor",
+      "label": "Future PLC representation"
+    }
+  ],
+  "program": "Deferred, not executable"
+}
