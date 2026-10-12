@@ -347,6 +347,7 @@ export function App() {
       return;
     }
     setBusy(true);
+    setNotice(`Running ${studyId} on ${modelId}...`);
     setResult(undefined);
     try {
       const response = await api.run(path, studyId, format);
