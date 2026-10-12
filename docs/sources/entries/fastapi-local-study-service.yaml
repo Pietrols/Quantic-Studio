@@ -1,0 +1,7 @@
+id: fastapi-local-study-service
+accessed: 2026-10-12
+sources:
+  - https://fastapi.tiangolo.com/tutorial/testing/
+  - https://fastapi.tiangolo.com/tutorial/cors/
+use: FastAPI TestClient request tests and explicit local browser-origin policy.
+license_note: Documentation citations only; implementation and tests are original.

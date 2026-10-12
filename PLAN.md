@@ -622,7 +622,7 @@ Change record:
 
 ### WP-0.11 Phase 1 planning
 
-Status: [x] Done | implemented by ChatGPT | commit 2d38885 | 2026-10-11
+Status: [x] Done | implemented by ChatGPT | commit 5c10723 | 2026-10-12
 Lane: A (draft), B (review), Peter approves
 Depends on: WP-0.10
 Owned paths: `PLAN.md` (section 8 only)
@@ -815,16 +815,16 @@ Change record: none
 
 ### WP-1.5 Project study API
 
-Status: [~] In progress | ChatGPT | branch wp-1.5-study-api | started 2026-10-12
+Status: [!] Changed design | due to the approved editor requiring validated model reads and saves, while original was a study-execution-only API, as it was better for providing one path-confined project boundary with stale-edit protection before the editor is built | ChatGPT | 2026-10-12
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.4, WP-1.9
-Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`
+Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`
 
 Steps:
 
 1. Add a FastAPI package exposing load flow, short circuit and motor start for a multi-domain project under a configured project root. Select the model through the study binding from CC-3; never assume one network per project. Reuse contract validation and solver entry points.
 2. Validate paths, bound execution, return structured diagnostics and provenance, and preserve project data. Bind locally by default and document the trust boundary before remote use.
-3. Document requests/responses and test all three studies, unknown studies, traversal, missing inputs and solver failures.
+3. Document requests/responses and test all three studies, unknown studies, traversal, missing inputs and solver failures. Extend the existing import guard narrowly to let qe_api depend on domain/report packages as an orchestration layer, while preserving core/domain/engine isolation. Add a guard regression for this allowed layer and forbidden engine imports.
 
 Acceptance:
 
@@ -832,7 +832,7 @@ Acceptance:
 - An API request for each authored project returns contract-valid results and useful errors for invalid inputs; full workspace tests and CI pass.
 
 Learning note: `docs/learning/study-api.md`, explaining the project-to-study boundary and traceable results.
-Change record: none
+Change record: due to the approved editor requiring validated model reads and saves, while original was a study-execution-only API, as it was better for providing one path-confined project boundary with stale-edit protection before the editor is built | ChatGPT | 2026-10-12
 
 ---
 
@@ -865,7 +865,7 @@ Change record: none
 Status: [ ] Not started
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.6
-Owned paths: `packages/py/qe_report/**`, `packages/py/qe_cli/**`, `packages/py/qe_api/**`, `uv.lock`, `tests/integration/test_pdf.py`
+Owned paths: `packages/py/qe_report/**`, `packages/py/qe_cli/**`, `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_pdf.py`
 
 Steps:
 

@@ -12,6 +12,7 @@ members = [
     "packages/py/qe_power",
     "packages/py/qe_report",
     "packages/py/qe_cli",
+    "packages/py/qe_api",
 ]
 
 [tool.uv.sources]
@@ -19,6 +20,7 @@ qe-core = { workspace = true }
 qe-power = { workspace = true }
 qe-report = { workspace = true }
 qe-cli = { workspace = true }
+qe-api = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -28,4 +30,6 @@ dev = [
     "qe-power",
     "qe-report",
     "qe-cli",
+    "qe-api",
+    "httpx>=0.27,<1",
 ]
