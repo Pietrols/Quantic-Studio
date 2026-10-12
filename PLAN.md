@@ -622,7 +622,7 @@ Change record:
 
 ### WP-0.11 Phase 1 planning
 
-Status: [~] In progress | ChatGPT | branch wp-0.11-service-boundaries | started 2026-10-12
+Status: [x] Done | implemented by ChatGPT | commit 5c10723 | 2026-10-12
 Lane: A (draft), B (review), Peter approves
 Depends on: WP-0.10
 Owned paths: `PLAN.md` (section 8 only)
