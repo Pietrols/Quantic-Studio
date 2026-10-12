@@ -1,0 +1,7 @@
+id: react-flow-generic-canvas
+accessed: 2026-10-12
+sources:
+  - https://reactflow.dev/learn/customization/custom-nodes
+  - https://reactflow.dev/examples/interaction/validation
+use: Custom presentation nodes, typed connection validation and keyboard-enabled diagram interaction.
+license_note: Documentation citations only; original power mapping and UI. React Flow MIT dependency.

@@ -1,0 +1,1 @@
+{"name":"@quantic/contracts","private":true,"version":"0.1.0","type":"module","exports":"./src/index.ts","scripts":{"generate":"node scripts/generate.mjs","generate:check":"node scripts/generate.mjs --check"},"devDependencies":{"json-schema-to-typescript":"^15.0.0"}}
