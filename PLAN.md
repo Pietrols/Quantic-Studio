@@ -815,7 +815,7 @@ Change record: none
 
 ### WP-1.5 Project study API
 
-Status: [~] In progress | ChatGPT | branch wp-1.5-study-api | started 2026-10-12
+Status: [x] Done | implemented by ChatGPT | commit 76b801d | 2026-10-12
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.4, WP-1.9
 Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`
@@ -832,7 +832,7 @@ Acceptance:
 - An API request for each authored project returns contract-valid results and useful errors for invalid inputs; full workspace tests and CI pass.
 
 Learning note: `docs/learning/study-api.md`, explaining the project-to-study boundary and traceable results.
-Change record: none
+Change record: due to the approved editor requiring validated model reads and saves, while original was a study-execution-only API, as it was better for providing one path-confined project boundary with stale-edit protection before the editor is built | ChatGPT | 2026-10-12
 
 ---
 

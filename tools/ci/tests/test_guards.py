@@ -51,6 +51,8 @@ def test_reference_guard(repo, name):
     ("qe_core", "from qe_report import report"),
     ("qe_power", "from qe_pv.solar import model"),
     ("qe_power", "import pandapower"),
+    ("qe_api", "import pandapower"),
+    ("qe_api", "import qe_cli"),
     ("qe_core", "importlib.import_module('qe_power')"),
 ])
 def test_forbidden_imports(repo, owner, source):
@@ -66,6 +68,7 @@ def test_allowed_dependencies(repo):
         "qe_power/src/qe_power/model.py": "from qe_core import units",
         "qe_power/src/qe_power/adapters/pandapower/run.py": "import pandapower",
         "qe_cli/src/qe_cli/cli.py": "import qe_power",
+        "qe_api/src/qe_api/service.py": "import qe_power\nimport qe_report",
         "qe_report/src/qe_report/report.py": "import qe_power",
     }.items():
         add(repo, "packages/py/" + name, source.encode())
