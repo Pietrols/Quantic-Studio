@@ -815,7 +815,7 @@ Change record: none
 
 ### WP-1.5 Project study API
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-1.5-study-api | started 2026-10-12
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.4, WP-1.9
 Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`
