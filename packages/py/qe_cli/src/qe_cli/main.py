@@ -3,7 +3,7 @@
 Exit codes:
   0  load flow converged, fault duties available, or motor-start dip check passed
   1  incomplete calculation or failed motor-start dip limit (outputs written)
-  2  the project, arguments or solver inputs are invalid (diagnostics printed, nothing written)
+  2  invalid inputs or report export failure (diagnostics printed)
   3  the requested solver is not installed
 """
 
@@ -19,9 +19,11 @@ from typing import Any, Callable
 
 from qe_core import load_project, validate
 from qe_report import (
+    PDFRenderError,
     VoltageLimits,
     render_loadflow_report,
     render_motorstart_report,
+    render_pdf,
     render_shortcircuit_report,
 )
 
@@ -57,7 +59,11 @@ def run_study(
     solver: str,
     limits: VoltageLimits,
     solver_loader: Callable[[str], Callable] = _load_solver,
+    report_format: str = "markdown",
 ) -> int:
+    if report_format not in ("markdown", "pdf"):
+        print("ERROR REPORT_FORMAT: choose markdown or pdf", file=sys.stderr)
+        return 2
     root = Path(project_folder).resolve()
     loaded = load_project(root)
     if not loaded.ok:
@@ -134,8 +140,6 @@ def run_study(
         return 2
 
     out_dir = root / "out"
-    out_dir.mkdir(exist_ok=True)
-    (out_dir / "results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     render = {"loadflow": render_loadflow_report, "shortcircuit": render_shortcircuit_report,
               "motorstart": render_motorstart_report}[selected.study_type]
     report = render(
@@ -145,7 +149,24 @@ def run_study(
         result=result,
         **({"limits": limits} if selected.study_type == "loadflow" else {}),
     )
-    (out_dir / "report.md").write_text(report, encoding="utf-8")
+    try:
+        pdf = render_pdf(report) if report_format == "pdf" else None
+        out_dir.mkdir(exist_ok=True)
+        # A Markdown-only rerun must not leave a PDF of a different study behind.
+        (out_dir / "report.pdf").unlink(missing_ok=True)
+        (out_dir / "results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        (out_dir / "report.md").write_text(report, encoding="utf-8")
+        if pdf is not None:
+            temporary = out_dir / ".report.pdf.tmp"
+            try:
+                temporary.write_bytes(pdf)
+                temporary.replace(out_dir / "report.pdf")
+            finally:
+                temporary.unlink(missing_ok=True)
+            print(f"PDF report: {out_dir / 'report.pdf'}")
+    except (PDFRenderError, OSError) as exc:
+        print(f"ERROR REPORT_EXPORT [study:{selected.study_id}.report_format]: {exc}", file=sys.stderr)
+        return 2
 
     if selected.study_type == "shortcircuit":
         _print_diagnostics(result["diagnostics"])
@@ -179,6 +200,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("project_folder", help="Folder containing manifest.json")
     run.add_argument("--study", required=True, help="Study id or type, e.g. loadflow, shortcircuit or motorstart")
     run.add_argument("--solver", choices=sorted(SOLVERS), default=DEFAULT_SOLVER)
+    run.add_argument("--report-format", choices=["markdown", "pdf"], default="markdown",
+                     help="PDF also retains report.md and results.json")
     run.add_argument("--vmin", type=float, default=0.95, help="Lowest acceptable voltage (pu)")
     run.add_argument("--vmax", type=float, default=1.05, help="Highest acceptable voltage (pu)")
     return parser
@@ -191,7 +214,7 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         print(f"ERROR VOLTAGE_LIMITS: {exc}", file=sys.stderr)
         return 2
-    return run_study(args.project_folder, args.study, args.solver, limits)
+    return run_study(args.project_folder, args.study, args.solver, limits, report_format=args.report_format)
 
 
 if __name__ == "__main__":

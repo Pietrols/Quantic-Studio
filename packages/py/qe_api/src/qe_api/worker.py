@@ -1,6 +1,7 @@
 """Isolated solver worker, JSON in/out, no project file writes."""
 from __future__ import annotations
 
+import base64
 import contextlib
 import io
 import json
@@ -8,7 +9,13 @@ import sys
 
 from qe_core import validate
 from qe_power.adapters import pandapower as adapter
-from qe_report import render_loadflow_report, render_motorstart_report, render_shortcircuit_report
+from qe_report import (
+    PDFRenderError,
+    render_loadflow_report,
+    render_motorstart_report,
+    render_pdf,
+    render_shortcircuit_report,
+)
 
 
 def execute(payload):
@@ -35,7 +42,15 @@ def execute(payload):
               'motorstart': render_motorstart_report}[kind]
     report = render(project_name=payload['project_name'], network=payload['network'],
                     request=payload['request'], result=result)
-    return {'study_type': kind, 'model_id': payload['model_id'], 'result': result, 'report_markdown': report}
+    response = {'study_type': kind, 'model_id': payload['model_id'], 'result': result, 'report_markdown': report}
+    if payload.get('report_format', 'markdown') == 'pdf':
+        try:
+            response['report_pdf_base64'] = base64.b64encode(render_pdf(report)).decode('ascii')
+        except PDFRenderError as exc:
+            return {'error': True, 'diagnostics': [{'code': 'REPORT_EXPORT', 'severity': 'error',
+                'message': str(exc), 'element_ref': {'element_type': 'study',
+                    'element_id': payload['request']['request_id'], 'field': 'report_format'}}]}
+    return response
 
 
 def main():

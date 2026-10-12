@@ -1,0 +1,8 @@
+id: reportlab-pdf-presentation
+accessed: 2026-10-12
+sources:
+  - https://docs.reportlab.com/reportlab/userguide/ch7_tables/
+  - https://docs.reportlab.com/reportlab/userguide/ch5_platypus/
+  - https://docs.reportlab.com/developerfaqs/
+use: Platypus paragraphs, LongTable repeated headers, row pagination and document page templates. Presentation only; no new engineering constants.
+license_note: ReportLab open-source toolkit is BSD licensed. Bundled Bitstream Vera fonts include their license in the dependency; no font binaries or third-party documents copied into this repository. No pyRXP dependency.
