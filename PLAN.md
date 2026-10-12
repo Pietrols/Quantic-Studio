@@ -838,7 +838,7 @@ Change record: due to the approved editor requiring validated model reads and sa
 
 ### WP-1.6 Generic diagram canvas and power workspace
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-1.6-power-workspace | started 2026-10-12
 Lane: B (implement, after Peter reopens work)
 Depends on: WP-1.5, WP-1.9
 Owned paths: `packages/ts/**`, `apps/web/**`, `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `.github/workflows/web.yml`
