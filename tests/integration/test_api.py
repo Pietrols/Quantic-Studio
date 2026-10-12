@@ -132,3 +132,13 @@ def test_failed_solve_still_returns_result_and_report(workspace):
     assert response.status_code==200,response.text
     assert response.json()['result']['status']=='failed'
     assert 'UNKNOWN' in response.json()['report_markdown']
+
+
+def test_declared_files_are_bounded_without_json_extension(workspace):
+    path = workspace/'multi_domain/manifest.json'
+    data = json.loads(path.read_text())
+    data['models'][2]['file'] = 'large.txt'
+    path.write_text(json.dumps(data))
+    (workspace/'multi_domain/large.txt').write_text('x'*100_001)
+    response = client(workspace,max_file_bytes=100_000).get('/api/project',params={'project_path':'multi_domain'})
+    assert response.status_code == 413

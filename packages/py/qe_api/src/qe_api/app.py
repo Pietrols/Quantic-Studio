@@ -95,7 +95,20 @@ def create_app(project_root: str | Path, *, runner=None, max_file_bytes=2_000_00
                 raise error('PROJECT_NOT_FOUND', 'Project folder does not exist', 404)
             # Trusted local project directory, but prevent accidentally reading enormous files.
             files = list(path.rglob('*.json'))
-            if len(files) > 500 or any(p.stat().st_size > max_file_bytes for p in files):
+            manifest = safe_path(path, 'manifest.json')
+            if manifest.is_file() and manifest.stat().st_size <= max_file_bytes:
+                try:
+                    metadata = json.loads(manifest.read_bytes())
+                except (ValueError, UnicodeError):
+                    metadata = {}
+                if isinstance(metadata, dict):
+                    names = [metadata.get('network_file')]
+                    for collection, field in [('models', 'file'), ('studies', 'request_file')]:
+                        entries = metadata.get(collection, [])
+                        if isinstance(entries, list):
+                            names.extend(e.get(field) for e in entries if isinstance(e, dict))
+                    files.extend(safe_path(path, n) for n in names if isinstance(n, str))
+            if len(files) > 500 or any(p.is_file() and p.stat().st_size > max_file_bytes for p in files):
                 raise error('INPUT_LIMIT', 'Project exceeds configured file count or size', 413)
             return path
         except (OSError, ValueError) as exc:
