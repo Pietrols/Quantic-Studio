@@ -7,7 +7,7 @@ import os
 import tempfile
 import threading
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -28,6 +28,7 @@ class RunRequest(BaseModel):
     project_path: str
     study_id: str
     solver: str = 'pandapower'
+    report_format: Literal['markdown', 'pdf'] = 'markdown'
 
 
 class SaveRequest(BaseModel):
@@ -132,7 +133,7 @@ def create_app(project_root: str | Path, *, runner=None, max_file_bytes=2_000_00
 
     @app.get('/health')
     def health():
-        return {'status': 'ok', 'report_formats': ['markdown']}
+        return {'status': 'ok', 'report_formats': ['markdown', 'pdf']}
 
     @app.get('/api/projects')
     def projects():
@@ -218,7 +219,8 @@ def create_app(project_root: str | Path, *, runner=None, max_file_bytes=2_000_00
             raise error('INPUT_LIMIT', 'Study exceeds configured iteration limit', 413)
         try:
             response = engine.run({'study_type': study.study_type, 'network': model.data,
-                'request': study.request, 'project_name': value.name, 'model_id': model.model_id})
+                'request': study.request, 'project_name': value.name, 'model_id': model.model_id,
+                'report_format': body.report_format})
         except WorkerError as exc:
             raise error(exc.code, exc.message, exc.status, 'study', study.study_id, 'execution') from exc
         if response.get('error'):

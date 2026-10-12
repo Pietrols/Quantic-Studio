@@ -60,3 +60,10 @@ changing the binding/origin policy. That deployment is outside WP-1.5.
 
 The editor uses these model routes; its presentation layout remains browser-local
 and separate from the engineering payload. PDF export is added by WP-1.7.
+
+PDF export (WP-1.7): `/health` advertises `report_formats: [markdown, pdf]`.
+The study endpoint accepts optional `report_format: pdf`; its response adds
+`report_pdf_base64` alongside `result` and `report_markdown`. Decode as PDF bytes.
+Omitting the format retains Markdown-only output. Rendering uses the same bounded
+worker and never writes project files. Unsupported report glyphs or rendering
+failures return a `REPORT_EXPORT` diagnostic. Invalid formats are request diagnostics.

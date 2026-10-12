@@ -862,7 +862,7 @@ Change record: none
 
 ### WP-1.7 PDF study reports
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 71c98df | 2026-10-12
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.6
 Owned paths: `packages/py/qe_report/**`, `packages/py/qe_cli/**`, `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_pdf.py`
