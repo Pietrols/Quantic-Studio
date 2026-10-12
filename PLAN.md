@@ -815,7 +815,7 @@ Change record: none
 
 ### WP-1.5 Project study API
 
-Status: [!] Changed design | due to the approved editor requiring validated model reads and saves, while original was a study-execution-only API, as it was better for providing one path-confined project boundary with stale-edit protection before the editor is built | ChatGPT | 2026-10-12
+Status: [x] Done | implemented by ChatGPT | commit 76b801d | 2026-10-12
 Lane: A (implement, after Peter reopens work)
 Depends on: WP-1.4, WP-1.9
 Owned paths: `packages/py/qe_api/**`, `pyproject.toml`, `uv.lock`, `tests/integration/test_api.py`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`
