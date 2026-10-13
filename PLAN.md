@@ -34,7 +34,7 @@ Rules:
 
 1. **Done means the implementer has passed all tests and acceptance commands with green CI.** The implementing agent marks its own WP Done. There is no per-WP cross-verification. A different model cross-audits each milestone, first M0 in WP-0.10. Historical Done lines with a `verified by` field remain valid records.
 2. **Changed design is a record, not a hiding place.** When a model departs from a WP as written, it sets the Changed design status _before_ continuing, and copies the same sentence into that WP's `Change record:` list. The Change record is permanent. When the WP is later completed, the status becomes Done, but the Change record stays.
-3. **A blocked WP stays In progress** with `blocked by <WP or reason>` appended to its status line.
+3. **In progress is optional.** A WP normally goes from Not started to Done in a single pull request. Use In progress only when a WP must pause across sessions or is blocked; a blocked WP appends `blocked by <WP or reason>` to its status line.
 4. WP-0.3 (plan checker and owned-path guard) is deferred until Peter reopens it. Manual status and ownership checks apply meanwhile; the absent checker does not block other WPs.
 
 ### 0.2 Who edits what in this file
@@ -220,10 +220,10 @@ Lane holders can be swapped (decision D5). **A different model cross-audits each
 
 ### 4.2 Work package lifecycle
 
-1. **Claim:** the model runs the session review (AGENTS.md section 2), picks a Not started WP whose dependencies are Done, sets it In progress, and creates branch `wp-<id>-<short-name>`.
+1. **Pick up:** the model runs the session review (AGENTS.md section 2), takes the Not started WP Peter assigned whose dependencies are Done, and creates branch `wp-<id>-<short-name>`. No reservation commit or start log.
 2. **Build:** it changes only the WP's owned paths, plus its own Status and Change record, its named learning note, and new files in `docs/log/` and `docs/sources/entries/`.
-3. **Pull request:** titled `[WP-<id>] <title>`, using the PR template, listing the acceptance commands and their output.
-4. **Complete:** the implementer runs all tests and acceptance commands. Once CI is green, it marks its own WP Done and adds a completed log with evidence. CI must also pass on the final PR head containing the status/log update.
+3. **Complete:** the implementer runs all tests and acceptance commands locally, then in one final commit marks its own WP Done and adds the single completed log with evidence.
+4. **Pull request:** titled `[WP-<id>] <title>`, using the PR template, listing the acceptance commands and their output. CI must pass on the PR head; failures are fixed in the same PR. Done reaches `main` only through a merge with green CI.
 5. **Merge and continue:** the implementer merges with `gh`, pulls main, and proceeds to the next approved WP without waiting for Peter, respecting dependencies and explicit stop points.
 6. **Milestone audit:** a different model reruns and reviews the milestone, first M0 in WP-0.10. Findings and their resolution are recorded before the milestone closes. WP-0.7 remains reserved for a model that has not read WP-0.6 implementation code.
 
@@ -239,12 +239,12 @@ Lane holders can be swapped (decision D5). **A different model cross-audits each
 
 ### 4.4 Change log entries
 
-File name: `docs/log/<YYYY-MM-DD>-<model>-WP-<id>-<event>.md`, for example `2026-10-12-claude-WP-0.6-start.md`.
+File name: `docs/log/<YYYY-MM-DD>-<model>-WP-<id>-<event>.md`, for example `2026-10-12-claude-WP-0.6-completed.md`. One `completed` log per WP; extra logs only for `changed-design`, `audit` and `dispute`. Older `start`, `progress`, `ready-for-review` and `verified` logs remain valid history.
 
 ```
 wp: WP-0.6
 model: Claude
-event: start | progress | changed-design | ready-for-review | completed | audit | verified | dispute
+event: completed | changed-design | audit | dispute
 commit: <short-sha or none>
 date: 2026-10-12
 summary: one or two sentences

@@ -33,16 +33,20 @@ Do this before claiming or continuing any work:
 
 ## 3. Doing a WP
 
+One WP is one branch, one pull request and one log file. Do not make separate commits or logs to reserve, start or record a WP. Peter assigns WPs in chat, and lanes own disjoint paths, so no reservation commit is needed.
+
 1. Confirm that every WP in `Depends on` is Done.
 2. Create branch `wp-<id>-<short-name>` from the latest `main`.
-3. Set your WP to In progress and add a `start` log file. Commit this first.
-4. Build in small commits whose messages start with `[WP-<id>]`.
-5. Write tests first, or alongside the code. Numerical code must be tested against a reference with recorded provenance.
-6. Write the learning note named in the WP, for Peter: explain the concept and the why, with the equations, not just the code.
-7. Run every acceptance command and paste the output into the pull request.
-8. Add a `ready-for-review` log file and open the PR, titled `[WP-<id>] <title>`.
-9. After tests and acceptance pass and CI is green, set your WP to Done and add a `completed` log with evidence. Push the status/log update and wait for CI on the final PR head to pass.
+3. Build in commits whose messages start with `[WP-<id>]`. Keep the count small: implementation commits, then one final status commit.
+4. Write tests first, or alongside the code. Numerical code must be tested against a reference with recorded provenance.
+5. Write the learning note named in the WP, for Peter: explain the concept and the why, with the equations, not just the code.
+6. Run every test and acceptance command locally.
+7. In one final commit, set your WP to Done (citing your last implementation commit) and add a single `completed` log with the evidence.
+8. Open the PR, titled `[WP-<id>] <title>`, with the acceptance commands and their output in the description.
+9. Wait for CI on the PR head. If it fails, fix it in the same PR. Done reaches `main` only through a merge with green CI, so Done on `main` always means CI passed.
 10. Merge your PR with `gh`, pull main, and continue to the next approved WP without waiting for Peter. Respect dependencies and explicit stop points. Do not bypass failed checks or repository merge protections.
+
+Use the In progress status only when a WP must pause across sessions or is blocked; then push it on the WP branch, not as a separate PR. Extra logs are only for `changed-design`, `dispute` and `audit` events.
 
 ## 4. Milestone cross-audit
 
@@ -59,14 +63,14 @@ Path: `docs/log/<YYYY-MM-DD>-<model>-WP-<id>-<event>.md`
 ```
 wp: WP-<id>
 model: <Claude | ChatGPT | Peter>
-event: start | progress | changed-design | ready-for-review | completed | audit | verified | dispute
+event: completed | changed-design | audit | dispute
 commit: <short-sha or none>
 date: <YYYY-MM-DD>
 summary: <one or two sentences>
 evidence: <commands run and results, or CI link>
 ```
 
-Never edit or delete an existing log file. Corrections are new files.
+Never edit or delete an existing log file. Corrections are new files. Older logs with the events `start`, `progress`, `ready-for-review` and `verified` remain valid history; new work does not create them.
 
 ## 6. Engineering conduct
 
