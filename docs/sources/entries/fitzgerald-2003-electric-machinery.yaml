@@ -1,0 +1,15 @@
+id: fitzgerald-2003-electric-machinery
+title: Electric Machinery
+edition: sixth
+authors:
+  - A. E. Fitzgerald
+  - Charles Kingsley Jr.
+  - Stephen D. Umans
+publisher: McGraw-Hill, New York
+year: 2003
+type: local-reference-verification
+location: Peter's private reference repository Pietrols/QE-References
+citation: Section 6.6.2 Blocked-Rotor Test, equations 6.47 to 6.51, printed pages 333-334
+purpose: Phase 1 milestone cross-audit of the WP-1.4 locked-rotor impedance model
+terms: Reference use only. No source text, tables, figures or worked examples are redistributed.
+evidence: docs/log/2026-10-14-claude-WP-1.0-audit.md

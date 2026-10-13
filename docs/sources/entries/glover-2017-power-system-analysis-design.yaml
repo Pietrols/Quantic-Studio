@@ -1,0 +1,15 @@
+id: glover-2017-power-system-analysis-design
+title: Power System Analysis and Design
+edition: sixth
+authors:
+  - J. Duncan Glover
+  - Thomas J. Overbye
+  - Mulukutla S. Sarma
+publisher: Cengage Learning
+year: 2017
+type: local-reference-verification
+location: Peter's private reference repository Pietrols/QE-References
+citation: Section 6.5 (printed page 352) and section 6.6 (printed page 356), reactive-limit handling of voltage-controlled buses
+purpose: Phase 1 milestone cross-audit of WP-1.1 PV to PQ switching
+terms: Reference use only. No source text, tables, figures or worked examples are redistributed.
+evidence: docs/log/2026-10-14-claude-WP-1.0-audit.md
