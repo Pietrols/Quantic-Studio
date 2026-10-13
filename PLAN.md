@@ -283,7 +283,7 @@ The learning note named in a WP is an authorized path even when omitted from its
 | D4  | License                                          | Deferred; no LICENSE file yet (recommendation remains Apache-2.0 for code, CC BY 4.0 for docs) | Deferred by Peter, 2026-10-07               |
 | D5  | Lane holders                                     | Lane A Claude, Lane B ChatGPT; GitHub Copilot implements WP-0.1 for Lane A                     | Agreed by Peter, 2026-10-07                 |
 | D6  | Electrical first; IT and other branches deferred | Electrical only until Peter reopens other branches                                             | Agreed by Peter, 2026-10-07                 |
-| D7  | Reference library                                | Books and paid standards outside the repo at `~/QE-References/`; verification use only         | Agreed by Peter, 2026-10-07                 |
+| D7  | Reference library                                | Books and paid standards in the private repo `Pietrols/QE-References` (local `~/QE-References/`), never in this repo; verification use only, readable by cloud agents | Agreed by Peter, 2026-10-07; private repo agreed 2026-10-14 |
 | D8  | Monorepo                                         | Monorepo with strict boundaries (section 2.3)                                                  | Recommended; recorded in ADR-0001 by WP-0.1 |
 | D9  | Contract source of truth                         | JSON Schema, with generated Python and TypeScript types                                        | Recommended; recorded in ADR-0002 by WP-0.4 |
 
