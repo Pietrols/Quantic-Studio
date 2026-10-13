@@ -889,7 +889,35 @@ Change record: none
 
 ---
 
-## 9. Seed source register
+### WP-1.10 Phase 2 planning: solar PV and industrial automation
+
+Status: [ ] Not started
+Lane: B (ChatGPT drafts), Peter approves
+Depends on: WP-1.7
+Owned paths: `PLAN.md` (section 9 only)
+
+Peter authorized this WP on 2026-10-13 ("continue with the pv and plc as suggested"), following ADR-0003 section 5 step 2.
+
+Steps:
+
+1. Expand section 9 into WPs in the same format as sections 7 and 8, for Suite 4 (Solar PV) and Suite 2 (Industrial Automation) as defined in `docs/decisions/ADR-0003-four-suites.md`.
+2. Put shared prerequisites first: a Contract Change for time series and time-stepped studies (ADR-0003 section 3, items 3 and 4), then one Contract Change per suite for its model kind in the multi-domain project. Contract Changes run serially and alone.
+3. After the Contract Changes, PV and PLC engine WPs must own disjoint paths so they can run in parallel, for example `packages/py/qe_pv/**` and `packages/py/qe_plc/**`, each with its own workspace in `apps/web` behind the generic canvas.
+4. Each numerical or semantic WP names an independent reference with recorded provenance and a readable, free or owned source. List sources per WP, and list separately anything that needs a paid standard (for example IEC 61131-3, IEC 61724-1), stating how the WP proceeds without it.
+5. Check every dependency licence. GPL code (for example OpenPLC runtime, MatIEC) may only run as a separate process, never be imported.
+6. Keep the first slice of each suite small and end to end: input, engine, contract-valid result, report section, CLI and API run, a web view.
+
+Acceptance: `tools/check_plan` passes, and Peter approves the section 9 plan in chat.
+Learning note: none.
+Change record: none
+
+---
+
+## 9. Phase 2: solar PV and industrial automation
+
+To be expanded by WP-1.10. No implementation WP in this section may start until Peter approves the plan.
+
+## 10. Seed source register
 
 WP-0.8 and later WPs create one YAML entry per source in `docs/sources/entries/`. Starting list for Phases 0 and 1:
 
@@ -909,12 +937,12 @@ WP-0.8 and later WPs create one YAML entry per source in `docs/sources/entries/`
 
 ---
 
-## 10. Appendix: prompt template for starting a WP
+## 11. Appendix: prompt template for starting a WP
 
 Paste this into whichever model is taking a WP:
 
-> You are working in the `qe-platform` repository. First read `AGENTS.md` fully and follow its session-start review. Then implement **WP-<id>** from `PLAN.md` and nothing else. Change only that WP's owned paths, its own status line in `PLAN.md`, and one new file in `docs/log/`. If you need to depart from the WP as written, set the Changed design status with all three clauses before continuing. Finish by opening a pull request titled `[WP-<id>] <title>` using the template, with every acceptance command and its output.
+> You are working in the Quantic Studio repository. First read `AGENTS.md` fully and follow its session-start review. Then implement **WP-<id>** from `PLAN.md` and nothing else. Change only that WP's owned paths, its own Status and Change record lines in `PLAN.md`, its learning note and new files in `docs/log/` and `docs/sources/entries/`. If you need to depart from the WP as written, set the Changed design status with all three clauses before continuing. Follow AGENTS.md section 3: one branch, one PR titled `[WP-<id>] <title>` with every acceptance command and its output, one completed log, merge after green CI.
 
-Prompt template for verifying:
+Prompt template for a milestone audit:
 
-> You are verifying **WP-<id>** in the `qe-platform` repository. Read `AGENTS.md` and do the session-start review. Check out the PR branch, re-run every acceptance command yourself, read the full diff, and confirm that only owned paths changed. If everything holds, set the WP to Done with your name as verifier and add a `verified` log file. If not, add a `dispute` log file explaining exactly what failed, and leave the status unchanged.
+> You are auditing milestone **<M>** in the Quantic Studio repository. You did not implement it. Read `AGENTS.md` and follow section 4: rerun the acceptance commands on a clean checkout, read the diffs, check owned paths, sources and numerical references, and record findings in an `audit` log, with a `dispute` log for each failure.
