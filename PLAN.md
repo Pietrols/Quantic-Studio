@@ -1012,11 +1012,12 @@ Change record: none
 Status: [ ] Not started
 Lane: A (Claude)
 Depends on: WP-1.13
-Owned paths: `.nvmrc`, `package.json`, `apps/web/README.md`
+Owned paths: `.nvmrc`, `package.json`, `apps/web/README.md`, `apps/web/package.json`, `pnpm-lock.yaml`
 
 Steps:
 
 1. Set `.nvmrc` to 26 and `engines.node` to `>=26` (D13). CI already reads `.nvmrc`.
+2. Upgrade `@playwright/test` to 1.63.0: browser installs before 1.60.0 hang on Node 26 (microsoft/playwright issues 40724 and 40998, Node bug nodejs/node#63487).
 
 Acceptance:
 
