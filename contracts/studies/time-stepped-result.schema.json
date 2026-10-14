@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:studies:time-stepped-result",
+  "title": "TimeSteppedResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "result_id",
+    "request_id",
+    "study_id",
+    "model_id",
+    "status",
+    "requested_end_time_s",
+    "reached_time_s",
+    "series",
+    "steps",
+    "working",
+    "model_versions",
+    "input_files",
+    "provenance",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "study_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial",
+        "failed"
+      ]
+    },
+    "requested_end_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "reached_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "series": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:common:time-series"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:time-step"
+      }
+    },
+    "working": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "equation",
+          "source",
+          "substitutions",
+          "result"
+        ],
+        "properties": {
+          "equation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "citation",
+              "locator"
+            ],
+            "properties": {
+              "citation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "substitutions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "unit"
+              ],
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "unit"
+            ],
+            "properties": {
+              "value": {
+                "type": [
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "model_versions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "input_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "role",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "enum": [
+              "model",
+              "request",
+              "data"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:common:provenance"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+      }
+    }
+  }
+}

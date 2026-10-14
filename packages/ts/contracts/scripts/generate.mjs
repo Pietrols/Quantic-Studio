@@ -78,3 +78,6 @@ console.log(
   "Generated contract types " +
     (process.argv.includes("--check") ? "match source schemas." : "written."),
 );
+
+// New independently versioned time contracts keep public power types unchanged.
+await import('./generate-time.mjs');

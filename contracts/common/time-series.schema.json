@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:time-series",
+  "title": "TimeSeries",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "series_id",
+    "time_axis",
+    "sampling",
+    "signals",
+    "samples",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "time_axis": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "unit"
+          ],
+          "properties": {
+            "kind": {
+              "const": "elapsed"
+            },
+            "unit": {
+              "const": "s"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "unit",
+            "origin"
+          ],
+          "properties": {
+            "kind": {
+              "const": "utc"
+            },
+            "unit": {
+              "const": "s"
+            },
+            "origin": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            }
+          }
+        }
+      ]
+    },
+    "sampling": {
+      "enum": [
+        "instant",
+        "interval_mean"
+      ]
+    },
+    "signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:signal"
+      }
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "time",
+          "values"
+        ],
+        "properties": {
+          "time": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$"
+              }
+            ]
+          },
+          "end_time": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$"
+              }
+            ]
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "value",
+                "status",
+                "diagnostics"
+              ],
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "status": {
+                  "enum": [
+                    "valid",
+                    "missing",
+                    "invalid"
+                  ]
+                },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+      }
+    }
+  }
+}

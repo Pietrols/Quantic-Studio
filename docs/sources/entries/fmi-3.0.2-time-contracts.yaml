@@ -1,0 +1,6 @@
+id: fmi-3.0.2-time-contracts
+accessed: 2026-10-14
+source: https://fmi-standard.org/docs/3.0.2/
+sections: 2.3 common API and state concepts; 2.4 variables and UnitDefinitions; 4.2.2.1 Co-Simulation doStep
+use: Reference for original initialization, named typed signals with units, requested/reached-time operation records. Quantic fixed-grid, no-rollback rules are declared subset choices, not FMI requirements. Original dimensional and lifecycle test tables are recorded in test_time_series_contracts.py and the specification.
+license_note: FMI specification CC BY-SA 4.0; companion code BSD-2. No specification text, source code or FMU is copied. Citation and original implementation only.

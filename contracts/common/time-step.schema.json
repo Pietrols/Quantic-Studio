@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:time-step",
+  "title": "TimeStep",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "session_id",
+    "operation",
+    "state_before",
+    "state_after",
+    "current_time_s",
+    "requested_time_s",
+    "reached_time_s",
+    "status",
+    "inputs",
+    "outputs",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation": {
+      "enum": [
+        "initialise",
+        "set_inputs",
+        "step_to",
+        "get_outputs",
+        "terminate",
+        "reset"
+      ]
+    },
+    "state_before": {
+      "enum": [
+        "instantiated",
+        "initialized",
+        "running",
+        "terminated",
+        "error"
+      ]
+    },
+    "state_after": {
+      "enum": [
+        "instantiated",
+        "initialized",
+        "running",
+        "terminated",
+        "error"
+      ]
+    },
+    "current_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "requested_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "reached_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failed"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "value",
+          "status",
+          "diagnostics"
+        ],
+        "properties": {
+          "value": {
+            "type": [
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "valid",
+              "missing",
+              "invalid"
+            ]
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+            }
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "value",
+          "status",
+          "diagnostics"
+        ],
+        "properties": {
+          "value": {
+            "type": [
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "valid",
+              "missing",
+              "invalid"
+            ]
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+            }
+          }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+      }
+    }
+  }
+}
