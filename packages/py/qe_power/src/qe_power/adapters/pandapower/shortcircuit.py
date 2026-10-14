@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import json
 import math
+import threading
+from contextlib import contextmanager
 from pathlib import Path
 
 import numpy as np
@@ -17,6 +19,7 @@ from qe_core.provenance import hash_inputs, provenance
 from qe_core.validation import diagnostic
 
 import pandapower as pp
+import pandapower.build_bus as engine_bus
 from pandapower.pypower.idx_bus import BASE_KV
 from pandapower.pypower.idx_bus_sc import C_MAX, C_MIN, KAPPA, R_EQUIV, X_EQUIV
 from pandapower.shortcircuit import calc_sc
@@ -61,19 +64,42 @@ def _components(network):
         yield sub
 
 
-def _factor(bus, case, request):
-    """Voltage factor c, Kasikci 1st ed (2002) Table 1.1 p. 8.
+def _c_factors(vn_kv, tolerance):
+    """(c_max, c_min) by voltage level, Kasikci 1st ed (2002) Table 1.1 p. 8.
 
-    LV (100 V to 1000 V): c_max 1.05 (+6% tolerance) or 1.10 (+10%); c_min 0.95 for
-    both classes (Peter's decision D10, 2026-10-14). MV and HV: 1.10 and 1.00.
-    Exactly 1 kV is LV in both owned books (Kasikci Table 1.1; Das Table 8-2), but
-    pandapower applies MV factors when vn_kv is not below 1, so it stays unavailable.
+    Levels (decision D12): LV up to and including 1 kV, MV above 1 kV up to 33 kV,
+    HV above 33 kV. LV: c_max 1.05 (+6% tolerance) or 1.10 (+10%), c_min 0.95 for both
+    classes (decision D10). MV and HV: c_max 1.10, c_min 1.00.
     """
-    if bus["vn_kv"] == 1:
-        return None
-    if bus["vn_kv"] < 1:
-        return (1.05 if request["lv_tolerance_percent"] == 6 else 1.1) if case == "max" else 0.95
-    return 1.1 if case == "max" else 1.0
+    if vn_kv <= 1:
+        return (1.05 if tolerance == 6 else 1.1), 0.95
+    return 1.1, 1.0
+
+
+def _factor(bus, case, request):
+    c_max, c_min = _c_factors(bus["vn_kv"], request["lv_tolerance_percent"])
+    return c_max if case == "max" else c_min
+
+
+_ENGINE_FACTOR_LOCK = threading.Lock()
+
+
+@contextmanager
+def _engine_voltage_factors(tolerance):
+    """Make pandapower 3.5.6 use our factor table (D10, D12) instead of its own, whose LV
+    band stops below 1 kV and whose +10% c_min is 0.90. build_bus._add_c_to_ppc is the
+    single place the engine assigns C_MAX and C_MIN; K_T and K_G read them from there.
+    The applied factors are still checked per bus after the solve."""
+    def add_c(net, ppc):
+        for row in ppc["bus"]:
+            row[C_MAX], row[C_MIN] = _c_factors(float(row[BASE_KV]), tolerance)
+    with _ENGINE_FACTOR_LOCK:
+        original = engine_bus._add_c_to_ppc
+        engine_bus._add_c_to_ppc = add_c
+        try:
+            yield
+        finally:
+            engine_bus._add_c_to_ppc = original
 
 
 def _impedance(r, x):
@@ -196,30 +222,43 @@ def _thermal_m(kappa, frequency, duration):
 
 
 def _nodal_impedances(network, request, case, scale):
-    """Own nodal solution for a single-voltage-level component with external grids:
-    Z_bus = Y_bus^-1 with reactances multiplied by `scale` (1 at system frequency,
-    fc/f for method C). Returns {bus_id: Z_kk in ohms}."""
-    ids = [b["bus_id"] for b in network["buses"]]
-    index = {bus: i for i, bus in enumerate(ids)}
-    y = np.zeros((len(ids), len(ids)), dtype=complex)
+    """Own nodal solution for a far-from-generator component fed by external grids:
+    Z_bus = Y_bus^-1 with reactances multiplied by `scale` (1 at system frequency, fc/f
+    for method C). Per unit on each bus's nominal voltage. A transformer is an ideal
+    transformer of off-nominal ratio t = (U_rHV / U_rLV)(U_nLV / U_nHV) on its HV side
+    with its series impedance (K_T included) on the LV side:
+    Y_hh += y / t^2, Y_ll += y, Y_hl = Y_lh -= y / t. For a radial path this reduces to
+    referral by the squared rated ratio (Kasikci eq. 8.2 p. 48). Returns {bus_id: Z_kk in ohms}."""
+    buses = {b["bus_id"]: b for b in network["buses"]}
+    index = {bus: i for i, bus in enumerate(buses)}
+    base = {bus: b["vn_kv"] ** 2 for bus, b in buses.items()}  # ohms on a 1 MVA base
+    y = np.zeros((len(index), len(index)), dtype=complex)
+
+    def connect(a, b, admittance, t=1.0):
+        i, k = index[a], index[b]
+        y[i, i] += admittance / t ** 2
+        y[k, k] += admittance
+        y[i, k] -= admittance / t
+        y[k, i] -= admittance / t
     for line in network["lines"]:
         entry = _branch_entry("lines", line, network, request, case)
-        admittance = 1 / complex(entry["r_ohm"], entry["x_ohm"] * scale)
-        a, b = index[line["from_bus"]], index[line["to_bus"]]
-        y[a, a] += admittance
-        y[b, b] += admittance
-        y[a, b] -= admittance
-        y[b, a] -= admittance
-    buses = {b["bus_id"]: b for b in network["buses"]}
+        connect(line["from_bus"], line["to_bus"],
+                base[line["from_bus"]] / complex(entry["r_ohm"], entry["x_ohm"] * scale))
+    for trafo in network["transformers"]:
+        entry = _branch_entry("transformers", trafo, network, request, case)
+        t = (trafo["vn_hv_kv"] / trafo["vn_lv_kv"]) * (buses[trafo["lv_bus"]]["vn_kv"]
+                                                       / buses[trafo["hv_bus"]]["vn_kv"])
+        connect(trafo["hv_bus"], trafo["lv_bus"],
+                base[trafo["lv_bus"]] / complex(entry["r_ohm"], entry["x_ohm"] * scale), t)
     for grid in network["external_grids"]:
         bus = buses[grid["bus_id"]]
         c = _factor(bus, case, request)
         rx = grid[f"rx_{case}"]
         z = c * bus["vn_kv"] ** 2 / grid[f"s_sc_{case}_mva"]
-        y[index[grid["bus_id"]], index[grid["bus_id"]]] += 1 / complex(z * rx / math.hypot(1, rx),
-                                                                         z * scale / math.hypot(1, rx))
+        y[index[grid["bus_id"]], index[grid["bus_id"]]] += base[grid["bus_id"]] / complex(
+            z * rx / math.hypot(1, rx), z * scale / math.hypot(1, rx))
     z_bus = np.linalg.inv(y)
-    return {bus: complex(z_bus[i, i]) for bus, i in index.items()}
+    return {bus: complex(z_bus[i, i]) * base[bus] for bus, i in index.items()}
 
 
 def _issues(network, request, case):
@@ -233,12 +272,6 @@ def _issues(network, request, case):
     if not network["external_grids"] and not network["generators"]:
         issues.append(diagnostic("DISCONNECTED_BUS", "Component has no fault-current source",
                                  "network", network["network_id"], "sources"))
-    for bus in network["buses"]:
-        if _factor(bus, case, request) is None:
-            problem("VOLTAGE_FACTOR_UNAVAILABLE",
-                    "Exactly 1 kV is low voltage in the owned books (Kasikci Table 1.1, Das Table 8-2) but the "
-                    "engine applies medium-voltage factors there; this connected component is unavailable",
-                    "buses", bus, "vn_kv")
     for grid in network["external_grids"]:
         for field in (f"s_sc_{case}_mva", f"rx_{case}"):
             if field not in grid:
@@ -282,12 +315,6 @@ def _issues(network, request, case):
             problem("GENERATOR_MODEL_UNAVAILABLE", "Multiple synchronous machines on one bus are not verified",
                     "generators", gen, "bus_id")
         gen_buses.add(gen["bus_id"])
-        if case == "min" and request["lv_tolerance_percent"] == 10 and buses[gen["bus_id"]]["vn_kv"] < 1:
-            # The engine is asked for its 6% LV table to obtain c_min 0.95 (D10); its K_G would then
-            # use c_max 1.05 instead of 1.10.
-            problem("GENERATOR_CORRECTION_UNAVAILABLE",
-                    "LV machine with +10% tolerance in the minimum case: engine K_G would use the wrong c_max",
-                    "generators", gen, "bus_id")
         if gen.get("power_station_transformer_id"):
             problem("STATION_MODEL_UNAVAILABLE", "Associated station correction is not verified",
                     "generators", gen, "power_station_transformer_id")
@@ -362,18 +389,17 @@ def _calculate_component(network, request, case):
     # No numerical claim of far-from-generator behavior in any component
     # containing a synchronous machine. Ik'' remains independently useful.
     far = not network["generators"]
-    # Meshed peak current by method C (Kasikci p. 99) only where our own nodal solve can check
-    # it: one voltage level (no transformers) fed by external grids.
-    meshed_c = not radial and far and not network["transformers"]
-    duties = far and (radial or meshed_c)
-    # D10: c_min is 0.95 for both LV tolerance classes, which is the engine's 6% table.
-    engine_tolerance = 6 if case == "min" else request["lv_tolerance_percent"]
+    # Meshed or multi-grid components: peak current by method C (Kasikci p. 99), reported only
+    # where our own nodal solve agrees with the engine at f and at fc.
+    meshed_c = not radial and far
+    duties = far
     try:
         net, buses = _convert(network, request, case)
-        calc_sc(net, fault="3ph", case=case, lv_tol_percent=engine_tolerance,
-                ip=duties, ith=duties and request["frequency_hz"] == 50, kappa_method="C",
-                tk_s=request["fault_duration_s"], topology="radial" if radial else "auto",
-                r_fault_ohm=0, x_fault_ohm=0, check_connectivity=True, use_pre_fault_voltage=False)
+        with _engine_voltage_factors(request["lv_tolerance_percent"]):
+            calc_sc(net, fault="3ph", case=case, lv_tol_percent=request["lv_tolerance_percent"],
+                    ip=duties, ith=duties and request["frequency_hz"] == 50, kappa_method="C",
+                    tk_s=request["fault_duration_s"], topology="radial" if radial else "auto",
+                    r_fault_ohm=0, x_fault_ohm=0, check_connectivity=True, use_pre_fault_voltage=False)
         chains = _radial_chains(network, request, case) if radial else {}
         nodal = _nodal_impedances(network, request, case, 1.0) if meshed_c else {}
         nodal_c = _nodal_impedances(network, request, case, (20 if request["frequency_hz"] == 50 else 24)
@@ -417,10 +443,8 @@ def _calculate_component(network, request, case):
                             "zk_ohm": abs(z_k), "rx_ratio": z_k.real / z_k.imag if z_k.imag > 0 else None,
                             "kappa": None, "kappa_method": None, "m": None, "n": None}
             if not duties:
-                _unavailable(row, notes, "NEAR_GENERATOR_DUTY" if not far else "MESH_DUTY_UNAVAILABLE",
-                    "Far-from-generator duties cannot be established" if not far else
-                    "Peak/thermal duties need a single-source radial component or a one-voltage-level "
-                    "mesh fed by external grids (method C)", ("ip_ka", "ith_ka"))
+                _unavailable(row, notes, "NEAR_GENERATOR_DUTY", "Far-from-generator duties cannot be established",
+                             ("ip_ka", "ith_ka"))
                 continue
             row["ip_ka"] = float(actual.ip_ka)
             if radial:
@@ -499,8 +523,8 @@ def solve_shortcircuit(network: dict, request: dict) -> Outcome[dict]:
             "Nominal transformer ratio; no magnetizing or branch shunt admittance.",
             "Grid strength and R/X are explicit per case; operating setpoints and loads/shunts do not define fault contribution.",
             "Currents are kA: initial symmetrical RMS Ik'', instantaneous peak ip, equivalent thermal RMS Ith for the requested duration.",
-            "Peak/thermal duties for components without synchronous generators: radial single-source, or one-voltage-level meshes fed by external grids using method C (fc 20 Hz at 50 Hz, 24 Hz at 60 Hz); n=1.",
-            "LV c_min 0.95 for both tolerance classes (decision D10, Kasikci Table 1.1 p. 8); exactly 1 kV is unavailable because the engine applies MV factors there.",
+            "Peak/thermal duties for components without synchronous generators: radial single-source by kappa from Z_k, meshed or multi-grid by method C (fc 20 Hz at 50 Hz, 24 Hz at 60 Hz) checked by our own nodal solve; n=1.",
+            "Voltage factors from Kasikci Table 1.1 p. 8, supplied to the engine: LV up to and including 1 kV (c_max 1.05 or 1.10, c_min 0.95 for both tolerance classes, D10), MV to 33 kV and HV above (1.10 and 1.00) (D12).",
             "Minimum-case line resistance R = R20 (1 + 0.004 (theta_e - 20 C)) (Kasikci p. 12); Ith uses m from Kasikci eq. 13.2 at the requested frequency, with m = 2 at kappa = 2.",
             "Synchronous Ik'' uses K_G = (Un/UrG) cmax / (1 + x''d sin phi) with zero voltage-control range; station corrections unavailable.",
             "Null means unavailable, never safe zero. IEC 60909-0 is not owned; values follow Kasikci 1st ed (2002) and Peter's decisions; no independent standards certification.",

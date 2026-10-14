@@ -92,9 +92,9 @@ was settled from those books or by an explicit engineering decision:
 | Thermal duty at 60 Hz | m evaluated at the requested f | Kasikci eq. 13.2 p. 117 |
 | Thermal duty for kappa above 1.99 | m from the equation, limit m = 2 at kappa = 2 | Kasikci eq. 13.2 p. 117 and Fig. 13.3a p. 118 |
 | Generator with machine kV different from bus kV | K_G = (U_n/U_rG) c_max / (1 + x''_d sin phi_rG) | Kasikci eq. 9.3 p. 76; Das eq. 8.11 |
-| Peak and thermal duty in a mesh at one voltage level, fed by grids | Method C | Kasikci p. 99 |
-| Exactly 1 kV | Still unavailable | Both books call 1000 V LV, but the engine applies MV factors there |
-| Nonzero generator voltage range, power-station/OLTC units, meshes with transformers, near-generator duties | Still unavailable | No owned source verifies them yet |
+| Peak and thermal duty in meshed or multi-grid networks, with or without transformers | Method C, checked by our own nodal solve (WP-1.14) | Kasikci p. 99 |
+| Exactly 1 kV | LV factors (WP-1.14) | Decision D12: LV up to and including 1 kV, MV to 33 kV, HV above; the adapter supplies the factors to the engine |
+| Nonzero generator voltage range, power-station/OLTC units, near-generator duties | Still unavailable | No owned source verifies them yet |
 
 Three of these deserve a closer look.
 
@@ -126,8 +126,20 @@ so the fault impedance's own R/X does not describe the decay of the DC offset.
 Method C reduces the network again with all reactances scaled to an equivalent
 frequency fc (20 Hz in a 50 Hz system), then uses R/X = (R_c / X_c)(fc / f).
 The adapter performs that reduction itself, Z_bus = Y_bus^-1 at f and at fc,
-and only reports ip and Ith when its answer agrees with the engine. Meshes that
-include transformers stay unavailable until that check covers them.
+and only reports ip and Ith when its answer agrees with the engine.
+
+A transformer enters that nodal solve as an ideal transformer with its series
+impedance on the LV side. In per unit on each bus's nominal voltage, its
+off-nominal ratio is t = (U_rHV / U_rLV)(U_nLV / U_nHV), and it adds y / t^2 at the
+HV bus, y at the LV bus and -y / t between them. For a single path this gives
+exactly the referral by the squared rated ratio used in the radial sum, so the
+two methods agree where both apply.
+
+**Voltage levels.** Peter's decision D12: LV up to and including 1 kV, MV above
+1 kV up to 33 kV, HV above 33 kV. pandapower's own table stops LV just below
+1 kV and uses c_min 0.90 for +10% networks, so the adapter hands the engine our
+factor table (one function, build_bus._add_c_to_ppc) and still checks the
+applied factor at every bus.
 
 Every unavailable result identifies its bus and exact field. Each requested case
 includes every input bus, preserving input order. Healthy separate components

@@ -274,15 +274,47 @@ def test_mesh_peak_and_thermal_by_method_c_match_hand_derivation(inputs):
         assert abs(kappa - (1.02 + 0.98 * math.exp(-3 * z.real / z.imag))) > 1e-3
 
 
-def test_mesh_with_transformer_keeps_duties_unavailable(inputs):
+def test_mesh_of_two_parallel_transformers_matches_hand_derivation(inputs):
+    # Two identical 1 MVA 20/0.4 kV transformers in parallel: Z_T/2 on the LV side, grid referred by
+    # (0.4/20)^2. With identical branches method C gives the same R/X as Z_k itself, so
+    # kappa = 1.02 + 0.98 exp(-3 R/X) of Z_k = Z_Q,LV + K_T Z_T / 2 (Kasikci p. 99, eq. 9.14 p. 79).
     network, request = inputs
-    second = {**copy.deepcopy(network["transformers"][0]), "transformer_id": "t2"}
-    network["transformers"].append(second)
+    network["transformers"].append({**copy.deepcopy(network["transformers"][0]), "transformer_id": "t2"})
     request["cases"] = ["max"]
     row = solved(network, request)["case_results"][0]["bus_results"][1]
-    assert row["ikss_ka"] > 0 and row["ip_ka"] is None and row["ith_ka"] is None
+    kt = 0.95 * 1.05 / (1 + 0.6 * 0.05)
+    zt = kt * complex(0.01, 0.05) * 0.4**2 / 1
+    zq = 1.1 * 0.4**2 / 1000 * complex(0.1, 1) / math.sqrt(1.01)
+    assert [row[k] for k in adapter.CURRENTS] == pytest.approx(duties(zq + zt / 2, 0.4, 1.05, 1), rel=1e-10)
+    assert row["trace"]["kappa_method"] == "method-C"
 
 
+def test_two_grid_network_uses_method_c(inputs):
+    # Grid A at hv, grid B at lv, line between (20 kV): Z_k(lv) = Z_B || (Z_A + Z_L).
+    # Method C: reactances at 0.4 of their 50 Hz value, R/X = (R_c / X_c) * 0.4.
+    network, request = inputs
+    network = line_network(network)
+    second = {**copy.deepcopy(network["external_grids"][0]), "external_grid_id": "gridB", "bus_id": "lv",
+              "s_sc_max_mva": 300, "s_sc_min_mva": 200, "rx_max": 0.3}
+    network["external_grids"].append(second)
+    network["buses"][1]["bus_type"] = "pv"
+    request["cases"] = ["max"]
+    row = solved(network, request)["case_results"][0]["bus_results"][1]
+
+    def grid(s, rx, scale=1.0):
+        z = 1.1 * 20**2 / s
+        return complex(z * rx / math.sqrt(1 + rx**2), scale * z / math.sqrt(1 + rx**2))
+
+    def par(a, b):
+        return a * b / (a + b)
+    z = par(grid(300, 0.3), grid(1000, 0.1) + complex(0.4, 0.8))
+    zc = par(grid(300, 0.3, 0.4), grid(1000, 0.1, 0.4) + complex(0.4, 0.32))
+    kappa = 1.02 + 0.98 * math.exp(-3 * zc.real / zc.imag * 0.4)
+    ik = 1.1 * 20 / (math.sqrt(3) * abs(z))
+    a = math.log(kappa - 1)
+    m = math.expm1(4 * 50 * a) / (2 * 50 * a)
+    assert (row["ikss_ka"], row["ip_ka"], row["ith_ka"]) == pytest.approx(
+        (ik, kappa * math.sqrt(2) * ik, ik * math.sqrt(1 + m)), rel=1e-10)
 def test_high_kappa_thermal_uses_book_equation_not_engine_shortcut(inputs):
     # R/X = 0.001: kappa = 1.02 + 0.98 exp(-0.003) = 1.02 + 0.98 * 0.9970045 = 1.997064 > 1.99, where
     # pandapower sets m = 0. Kasikci eq. 13.2: ln(0.997064) = -0.0029399;
@@ -385,17 +417,19 @@ def test_missing_machine_data_is_not_defaulted(inputs):
     assert missing == {"sn_mva", "vn_kv", "xdss_pu", "rdss_ohm", "cos_phi", "voltage_control_range_percent"}
 
 
-def test_exact_1kv_boundary_is_not_inferred(inputs):
-    # Both owned books put 1000 V in LV, but the engine applies MV factors at vn_kv = 1.
+@pytest.mark.parametrize("case,c,s_sc", [("max", 1.05, 1000), ("min", 0.95, 500)])
+def test_exact_1kv_is_low_voltage(inputs, case, c, s_sc):
+    # D12: LV includes 1 kV, so c is 1.05 (max, +6%) or 0.95 (min) from Kasikci Table 1.1 p. 8.
+    # Z_Q = c * 1^2 / S''_kQ at R/X 0.1; line 0.4 + j0.8 ohm; Ik'' = c * 1 / (sqrt(3) |Z_k|).
     network, request = inputs
     network = line_network(network)
     for bus in network["buses"]:
         bus["vn_kv"] = 1
-    result = solved(network, request)
-    assert result["status"] == "failed"
-    assert all(b["voltage_factor"] is None for c in result["case_results"] for b in c["bus_results"])
-
-
+    request["cases"] = [case]
+    row = solved(network, request)["case_results"][0]["bus_results"][1]
+    assert row["voltage_factor"] == c
+    zq = c * 1**2 / s_sc * complex(0.1, 1) / math.sqrt(1.01)
+    assert [row[k] for k in adapter.CURRENTS] == pytest.approx(duties(zq + complex(0.4, 0.8), 1, c, 1), rel=1e-10)
 def test_near_generator_duties_are_withheld_for_remote_buses_too(inputs):
     network, request = inputs
     network = line_network(network)
