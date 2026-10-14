@@ -941,7 +941,7 @@ Change record: none
 
 ### WP-1.12 Short-circuit cases unlocked from owned references
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 425b81d | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.11
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `tests/integration/test_pdf.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`
@@ -962,7 +962,7 @@ Acceptance:
 - The example report shows the newly available values with their worked calculations; CI passes.
 
 Learning note: `docs/learning/three-phase-short-circuit.md` (updated), explaining each decision and its source.
-Change record: none
+Change record: due to the method-C worked line living in qe_report and two tests using 60 Hz to force a partial result that this WP makes available, while original was owning only the adapter, its tests, the short-circuit integration test, the example and the learning note, as it was better for keeping each report line and test consistent with the new results (owned paths widened on main before implementation) | Claude | 2026-10-14
 
 ### WP-1.13 Pin the Node version for local web work
 

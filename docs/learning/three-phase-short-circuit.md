@@ -39,16 +39,15 @@ Zseen_LV = ZT + Zgrid_HV (Un_LV/Un_HV)^2
 Ik''_LV = cLV Un_LV / (sqrt(3) |Zseen_LV|)
 ```
 
-The printed voltage table gives maximum `cLV=1.05` at 6% LV tolerance and
+Kasikci Table 1.1 (p. 8) gives maximum `cLV=1.05` at 6% LV tolerance and
 `cHV=1.10` above 1 kV. The reference is a hand-derived complex circuit, not
 output copied from pandapower. Increasing finite grid strength from `1e4` to
 `1e12` MVA makes its impedance approach zero. Tests prove convergence to
 the separately derived infinite-source expression, without changing tolerances.
 
-For both maximum and minimum supported feeder duties, the authored example
-uses two 20-kV buses and a 2-km line with `.2+j.4 ohm/km`. Its explicit final
-conductor temperature is 20 C. Both disputed temperature formulas then give
-unit correction, so neither coefficient needs to be chosen. Each case has
+For both maximum and minimum feeder duties, the authored example uses two
+20-kV buses and a 2-km line with `.2+j.4 ohm/km`. Its explicit final conductor
+temperature is 20 C, so the minimum-case resistance factor is 1. Each case has
 its own source impedance and voltage factor, 1.10 maximum and 1.00 minimum.
 
 ## Peak force and thermal heating are different duties
@@ -71,29 +70,64 @@ fault duration in seconds. Ith gives an equivalent heating duty for that
 duration; `Ith^2 T` describes its squared-current integral. The program does not
 infer a breaker clearing time or claim that equipment passes a rating check.
 
-The machine reference uses `Xd''=xdss Un_machine^2/Sn_machine` and the
-documented generator correction at equal machine and bus ratings with explicit
+The machine reference uses `Xd''=xdss Un_machine^2/Sn_machine` and
+`K_G = (Un/UrG) cmax / (1 + xd'' sin phi)` (Kasikci eq. 9.3 p. 76) with explicit
 zero voltage-control range. Ik'' can be calculated. A connected synchronous
 machine makes the far-from-generator assumption uncertain, so peak and thermal
 values are null for every bus in that connected component.
 
-## What is deliberately unavailable
+## How the earlier gaps were settled (WP-1.12)
 
-The source review found disagreements or incomplete definitions. The approved
-approach preserves supported values and states what cannot be verified:
+When Phase 1 was built, several values were withheld because pandapower's
+documentation and code disagreed and no owned book was available. Peter's
+reference library now includes Kasikci, *Short Circuits in Power Systems*,
+1st ed (Wiley-VCH, 2002), and Das, *Power System Analysis* (2002). Each gap
+was settled from those books or by an explicit engineering decision:
 
-| Condition | Handling |
-| --- | --- |
-| LV minimum at 10% tolerance | Printed c=.95, engine c=.90; affected component unavailable |
-| Minimum line temperature other than explicit 20 C | Printed .04/K versus engine .004/K; component unavailable |
-| Minimum transformer fault | Page omits case restriction, engine uses KT only for maximum; component unavailable |
-| Thermal duty at 60 Hz | Engine hardcodes 50 Hz; Ik'' and supported ip remain, Ith unavailable |
-| Thermal kappa greater than 1.99 | Engine sets m=0 without the printed equation's basis; Ith unavailable |
-| Generator voltage mismatch or nonzero voltage range | Correction definitions disagree or are incomplete; component unavailable |
-| Power-station/OLTC correction, duplicate generator bus | Not independently verified; component unavailable |
-| Meshed or multiple-source component | Ik'' available; peak/thermal duties await their own reference |
-| Exactly 1 kV | Printed table omits equality; affected component unavailable |
-| Missing fault nameplate data or source-free island | Null results and named input/bus diagnostics |
+| Condition | Now | Source |
+| --- | --- | --- |
+| LV minimum voltage factor at +10% tolerance | c_min = 0.95 for both LV classes | Kasikci Table 1.1 p. 8; Peter's decision D10 |
+| Minimum transformer fault | Available with K_T = 1 | Kasikci ch. 9 p. 75 (corrections serve the greatest current); pandapower cites IEC 60909-0:2016 cl. 6.3.3 |
+| Line end temperature other than 20 C | R = R_20 (1 + 0.004 (theta_e - 20)) | Kasikci p. 12 (factor 1.24 for 20 to 80 C) |
+| Thermal duty at 60 Hz | m evaluated at the requested f | Kasikci eq. 13.2 p. 117 |
+| Thermal duty for kappa above 1.99 | m from the equation, limit m = 2 at kappa = 2 | Kasikci eq. 13.2 p. 117 and Fig. 13.3a p. 118 |
+| Generator with machine kV different from bus kV | K_G = (U_n/U_rG) c_max / (1 + x''_d sin phi_rG) | Kasikci eq. 9.3 p. 76; Das eq. 8.11 |
+| Peak and thermal duty in a mesh at one voltage level, fed by grids | Method C | Kasikci p. 99 |
+| Exactly 1 kV | Still unavailable | Both books call 1000 V LV, but the engine applies MV factors there |
+| Nonzero generator voltage range, power-station/OLTC units, meshes with transformers, near-generator duties | Still unavailable | No owned source verifies them yet |
+
+Three of these deserve a closer look.
+
+**Why c_min is a decision, not a lookup.** The c factor scales the pre-fault
+voltage. c_min gives the smallest fault current, which is what protection must
+still detect. Kasikci follows the 1997 draft of the 2001 standard and uses 0.95
+for all LV networks. The 2016 standard (as reported by its software vendors)
+uses 0.90 for the +10% class. Peter chose 0.95 (D10). For a +10% network this
+gives a minimum current about 5.6% higher than 0.90 would, so it should be
+revisited when the 2016 or 2026 text is owned.
+
+**Why m tends to 2, not 0.** The DC offset of a fault current decays with the
+time constant L/R. The factor m is the extra heating it adds over the fault
+duration Tk:
+
+```
+a = ln(kappa - 1)
+m = [exp(4 f Tk a) - 1] / (2 f Tk a)
+```
+
+As R/X falls to zero, kappa rises to 2 and a falls to 0. The fraction becomes
+0/0. Using exp(x) - 1 = x for small x, it approaches 4 f Tk a / (2 f Tk a) = 2.
+Physically, a DC offset that never decays adds heat for the whole fault.
+pandapower's shortcut sets m = 0 above kappa 1.99, which under-states Ith by up
+to about 42% in the limit. The adapter now evaluates the equation itself.
+
+**Method C for meshed networks.** In a mesh, parallel paths have different R/X,
+so the fault impedance's own R/X does not describe the decay of the DC offset.
+Method C reduces the network again with all reactances scaled to an equivalent
+frequency fc (20 Hz in a 50 Hz system), then uses R/X = (R_c / X_c)(fc / f).
+The adapter performs that reduction itself, Z_bus = Y_bus^-1 at f and at fc,
+and only reports ip and Ith when its answer agrees with the engine. Meshes that
+include transformers stay unavailable until that check covers them.
 
 Every unavailable result identifies its bus and exact field. Each requested case
 includes every input bus, preserving input order. Healthy separate components
@@ -112,10 +146,11 @@ uv run qe study run examples/shortcircuit --study shortcircuit
 uv run qe study run examples/shortcircuit/transformer --study shortcircuit
 ```
 
-The first returns maximum/minimum feeder duties. The second is maximum only.
-Adding a minimum case to the transformer request demonstrates explicit
-unavailability. Changing the feeder request to 60 Hz demonstrates partial
-results. Outputs are `out/results.json` and `out/report.md` in the project.
+The first returns maximum and minimum feeder duties. The second is maximum
+only; adding "min" to its cases shows the K_T = 1 minimum. Adding a
+synchronous generator demonstrates partial results (near-generator duties are
+withheld). Outputs are `out/results.json` and `out/report.md`, and each report
+shows a worked calculation for every bus (WP-1.11).
 
 Provenance records pandapower's version, UTC run time and SHA-256 of canonical
 network plus request content. Changing duration, frequency, tolerance or case
@@ -123,7 +158,8 @@ changes that hash. JSON whitespace or object-key order does not. Requests and
 network files are never edited by a study run.
 
 Read the [source register](../sources/entries/pandapower-three-phase-reference.yaml)
-for exact pages, installed-source functions and original test inputs. IEC
-60909-0 is unavailable; this is a traceable implementation with explicit limits,
-not independent standards certification. Resolving the gaps requires verified
-source material and numerical tests, not plausible remembered constants.
+and [Kasikci entry](../sources/entries/kasikci-2002-short-circuits.yaml) for
+exact pages, installed-source functions and original test inputs. IEC 60909-0
+itself is not owned; this is a traceable implementation with explicit limits,
+not independent standards certification. Remaining gaps need verified source
+material and numerical tests, not plausible remembered constants.

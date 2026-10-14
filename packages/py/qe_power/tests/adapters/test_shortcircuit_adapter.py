@@ -113,27 +113,61 @@ def test_line_at_explicit_20c_has_hand_derived_duties(inputs, case):
         duties(zgrid + zline, 20, c, request["fault_duration_s"]), rel=1e-10)
 
 
-def test_lv10_disputed_minimum_is_failed_but_maximum_survives(inputs):
+def minimum_transformer_reference(network, request):
+    # Minimum case, 20/0.4 kV: c_HV = 1.0, c_LV = 0.95 (D10, Kasikci Table 1.1 p. 8), K_T = 1
+    # (Kasikci ch. 9 p. 75). Z_Q on LV = 1.0 * 0.4^2 / 500 = 0.00032 ohm at R/X 0.1;
+    # Z_T = (0.01 + j0.05) * 0.4^2 / 1 = 0.0016 + j0.008 ohm; |Z_k| = 0.00847696 ohm, so
+    # Ik'' = 0.95 * 0.4 / (sqrt(3) * 0.00847696) = 25.8811 kA.
+    zq = 0.4**2 / network["external_grids"][0]["s_sc_min_mva"] * complex(0.1, 1) / math.sqrt(1.01)
+    zt = complex(0.01, 0.05) * 0.4**2 / 1
+    return duties(zq + zt, 0.4, 0.95, request["fault_duration_s"])
+
+
+@pytest.mark.parametrize("tolerance", [6, 10])
+def test_lv_minimum_uses_c_min_095_for_both_tolerance_classes(inputs, tolerance):
     network, request = inputs
-    request["lv_tolerance_percent"] = 10
+    request["lv_tolerance_percent"] = tolerance
+    request["cases"] = ["max", "min"]
     result = solved(network, request)
-    assert result["status"] == "partial"
-    assert [c["status"] for c in result["case_results"]] == ["success", "failed"]
-    assert result["case_results"][1]["bus_results"][1]["voltage_factor"] is None
+    assert [c["status"] for c in result["case_results"]] == ["success", "success"]
+    row = result["case_results"][1]["bus_results"][1]
+    assert row["voltage_factor"] == 0.95
+    assert [row[k] for k in adapter.CURRENTS] == pytest.approx(minimum_transformer_reference(network, request), rel=1e-10)
+    assert row["ikss_ka"] == pytest.approx(25.8811, rel=1e-5)
+    # Maximum c follows the tolerance class: 1.05 (+6%) or 1.10 (+10%).
+    assert result["case_results"][0]["bus_results"][1]["voltage_factor"] == (1.05 if tolerance == 6 else 1.1)
 
 
-def test_60hz_does_not_expose_hardcoded_50hz_thermal_current(inputs):
+def test_60hz_thermal_current_uses_the_requested_frequency(inputs):
+    # Kasikci eq. 13.2 p. 117 with f = 60 Hz; pandapower's own Ith is fixed at 50 Hz and is not used.
     network, request = inputs
     request["frequency_hz"] = 60
     request["cases"] = ["max"]
     result = solved(network, request)
-    assert result["status"] == "partial"
-    assert all(b["ith_ka"] is None and b["ikss_ka"] > 0 and b["ip_ka"] > 0
-               for c in result["case_results"] for b in c["bus_results"])
+    assert result["status"] == "success"
+    row = result["case_results"][0]["bus_results"][1]
+    ik, ip, ith = duties(complex(row["trace"]["zk_r_ohm"], row["trace"]["zk_x_ohm"]), 0.4, 1.05,
+                         request["fault_duration_s"], frequency=60)
+    assert (row["ikss_ka"], row["ip_ka"], row["ith_ka"]) == pytest.approx((ik, ip, ith), rel=1e-10)
+    assert row["ith_ka"] != pytest.approx(duties(complex(row["trace"]["zk_r_ohm"], row["trace"]["zk_x_ohm"]),
+                                                 0.4, 1.05, request["fault_duration_s"])[2], rel=1e-6)
 
 
-@pytest.mark.parametrize("temperature", [80, None])
-def test_disputed_or_missing_line_temperature_blocks_min_only(inputs, temperature):
+def test_line_at_80c_raises_minimum_resistance_by_factor_124(inputs):
+    # Kasikci p. 12: R = R_20 (1 + 0.004 (80 - 20)) = 1.24 R_20.
+    network, request = inputs
+    network = line_network(network, temperature=80)
+    request["cases"] = ["min"]
+    zgrid = 1.0 * 20**2 / network["external_grids"][0]["s_sc_min_mva"] * complex(0.1, 1) / math.sqrt(1.01)
+    zline = complex(0.4 * 1.24, 0.8)
+    row = solved(network, request)["case_results"][0]["bus_results"][1]
+    assert [row[k] for k in adapter.CURRENTS] == pytest.approx(duties(zgrid + zline, 20, 1.0, 1), rel=1e-10)
+    assert row["trace"]["elements"][1]["inputs"]["temperature_factor"] == pytest.approx(1.24, rel=1e-12)
+
+
+@pytest.mark.parametrize("temperature", [None])
+def test_missing_line_temperature_blocks_min_only(inputs, temperature):
+    # The network contract already rejects end temperatures below 20 C.
     network, request = inputs
     network = line_network(network)
     if temperature is None:
@@ -203,32 +237,68 @@ def test_synchronous_ikss_matches_hand_derived_machine_and_withholds_near_duties
         assert any(d["code"] == "NEAR_GENERATOR_DUTY" for d in case["diagnostics"])
 
 
-def test_mesh_has_independent_parallel_impedance_ikss_but_no_unverified_duties(inputs):
+def test_mesh_peak_and_thermal_by_method_c_match_hand_derivation(inputs):
+    # Two unlike parallel lines: a = (0.2 + j0.4) * 2 km, b = (0.5 + j0.3) * 1 km.
+    # Method C (Kasikci p. 99): scale reactances by fc/f = 20/50 = 0.4, reduce, then
+    # R/X = (R_c / X_c) * 0.4 and kappa = 1.02 + 0.98 exp(-3 R/X).
     network, request = inputs
     network = line_network(network)
-    second = copy.deepcopy(network["lines"][0])
-    second["line_id"] = "parallel"
+    second = {**copy.deepcopy(network["lines"][0]), "line_id": "parallel",
+              "length_km": 1, "r_ohm_per_km": 0.5, "x_ohm_per_km": 0.3}
     network["lines"].append(second)
     result = solved(network, request)
+
+    def parallel(a, b):
+        return a * b / (a + b)
     for case in result["case_results"]:
         grid = network["external_grids"][0]
         c = 1.1 if case["case"] == "max" else 1
-        zg = c * 20**2 / grid[f"s_sc_{case['case']}_mva"] * complex(.1, 1) / math.sqrt(1.01)
-        z = zg + complex(.4, .8) / 2
+        zq = c * 20**2 / grid[f"s_sc_{case['case']}_mva"] * complex(.1, 1) / math.sqrt(1.01)
+        za, zb = complex(.4, .8), complex(.5, .3)
+        z = zq + parallel(za, zb)
+
+        def at_fc(w):
+            return complex(w.real, 0.4 * w.imag)
+        zc = at_fc(zq) + parallel(at_fc(za), at_fc(zb))
+        rx = zc.real / zc.imag * 0.4
+        kappa = 1.02 + 0.98 * math.exp(-3 * rx)
+        ik = c * 20 / (math.sqrt(3) * abs(z))
+        a = math.log(kappa - 1)
+        m = math.expm1(4 * 50 * 1 * a) / (2 * 50 * 1 * a)
         row = case["bus_results"][1]
-        assert row["ikss_ka"] == pytest.approx(c * 20 / (math.sqrt(3) * abs(z)), rel=1e-10)
-        assert row["ip_ka"] is None and row["ith_ka"] is None
+        assert row["ikss_ka"] == pytest.approx(ik, rel=1e-10)
+        assert row["ip_ka"] == pytest.approx(kappa * math.sqrt(2) * ik, rel=1e-10)
+        assert row["ith_ka"] == pytest.approx(ik * math.sqrt(1 + m), rel=1e-10)
+        assert row["trace"]["kappa_method"] == "method-C"
+        # Method C differs from applying the fault-impedance R/X directly.
+        assert abs(kappa - (1.02 + 0.98 * math.exp(-3 * z.real / z.imag))) > 1e-3
 
 
-def test_high_kappa_thermal_shortcut_is_unavailable(inputs):
+def test_mesh_with_transformer_keeps_duties_unavailable(inputs):
+    network, request = inputs
+    second = {**copy.deepcopy(network["transformers"][0]), "transformer_id": "t2"}
+    network["transformers"].append(second)
+    request["cases"] = ["max"]
+    row = solved(network, request)["case_results"][0]["bus_results"][1]
+    assert row["ikss_ka"] > 0 and row["ip_ka"] is None and row["ith_ka"] is None
+
+
+def test_high_kappa_thermal_uses_book_equation_not_engine_shortcut(inputs):
+    # R/X = 0.001: kappa = 1.02 + 0.98 exp(-0.003) = 1.02 + 0.98 * 0.9970045 = 1.997064 > 1.99, where
+    # pandapower sets m = 0. Kasikci eq. 13.2: ln(0.997064) = -0.0029399;
+    # m = expm1(200 * -0.0029399) / (100 * -0.0029399) = -0.444550 / -0.293990 = 1.5121.
     network, request = inputs
     network["transformers"] = []
     network["buses"] = network["buses"][:1]
     for field in ("rx_max", "rx_min"):
         network["external_grids"][0][field] = 0.001
     result = solved(network, request)
-    assert result["status"] == "partial"
-    assert all(c["bus_results"][0]["ith_ka"] is None for c in result["case_results"])
+    assert result["status"] == "success"
+    for case in result["case_results"]:
+        row = case["bus_results"][0]
+        assert row["trace"]["kappa"] == pytest.approx(1.997064, rel=1e-6)
+        assert row["trace"]["m"] == pytest.approx(1.5121, rel=1e-4)
+        assert row["ith_ka"] == pytest.approx(row["ikss_ka"] * math.sqrt(1 + row["trace"]["m"]), rel=1e-12)
 
 
 @pytest.mark.parametrize("field,value", [("power_station_unit", True), ("oltc", True), ("x_pu", 0)])
@@ -294,14 +364,14 @@ def test_provenance_covers_network_request_and_reordered_keys(inputs):
     assert network == original[0]
 
 
-def test_minimum_transformer_case_is_explicitly_unavailable(inputs):
+def test_minimum_transformer_case_uses_kt_one(inputs):
     network, request = inputs
     request["cases"] = ["min"]
     result = solved(network, request)
-    assert result["status"] == "failed"
-    assert all(b["ikss_ka"] is None for b in result["case_results"][0]["bus_results"])
-    assert any(d["code"] == "TRANSFORMER_CORRECTION_UNAVAILABLE"
-               for d in result["case_results"][0]["diagnostics"])
+    assert result["status"] == "success"
+    row = result["case_results"][0]["bus_results"][1]
+    assert row["trace"]["elements"][1]["inputs"]["k_t"] == 1.0
+    assert [row[k] for k in adapter.CURRENTS] == pytest.approx(minimum_transformer_reference(network, request), rel=1e-10)
 
 
 def test_missing_machine_data_is_not_defaulted(inputs):
@@ -316,6 +386,7 @@ def test_missing_machine_data_is_not_defaulted(inputs):
 
 
 def test_exact_1kv_boundary_is_not_inferred(inputs):
+    # Both owned books put 1000 V in LV, but the engine applies MV factors at vn_kv = 1.
     network, request = inputs
     network = line_network(network)
     for bus in network["buses"]:
@@ -337,15 +408,20 @@ def test_near_generator_duties_are_withheld_for_remote_buses_too(inputs):
                    for b in case["bus_results"])
 
 
-def test_zero_resistance_source_does_not_leak_nonfinite_thermal_current(inputs):
+def test_zero_resistance_source_takes_the_m_equals_2_limit(inputs):
+    # R = 0: kappa = 2 exactly, ln(kappa - 1) = 0 and m -> 2 (Kasikci Fig. 13.3a p. 118), so
+    # ip = 2 sqrt(2) Ik'' and Ith = Ik'' sqrt(3); no non-finite value can leak.
     network, request = inputs
     network["buses"] = network["buses"][:1]
     network["transformers"] = []
     network["external_grids"][0].update(rx_max=0, rx_min=0)
     result = solved(network, request)
-    assert result["status"] == "partial"
-    assert all(b["ith_ka"] is None and b["ip_ka"] > 0
-               for c in result["case_results"] for b in c["bus_results"])
+    assert result["status"] == "success"
+    for case in result["case_results"]:
+        row = case["bus_results"][0]
+        assert row["ip_ka"] == pytest.approx(2 * math.sqrt(2) * row["ikss_ka"], rel=1e-12)
+        assert row["ith_ka"] == pytest.approx(math.sqrt(3) * row["ikss_ka"], rel=1e-12)
+        assert row["trace"]["m"] == 2.0
 
 
 def test_extremely_short_duration_is_not_certified_after_engine_cancellation(inputs):

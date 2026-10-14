@@ -37,7 +37,8 @@ def shortcircuit_method() -> list[str]:
         f"- Radial network: Z_k = sum of the referred element impedances; Ik'' = c Un / (sqrt(3) |Z_k|) "
         f"({KASIKCI}, section 11.2, p. 92).",
         f"- Peak current: kappa = 1.02 + 0.98 exp(-3 R/X), ip = kappa sqrt(2) Ik'' ({KASIKCI}, eqs. 11.22 "
-        "and 11.23, p. 98).",
+        "and 11.23, p. 98); in a meshed network R/X comes from method C, with reactances at 20 Hz "
+        "(24 Hz at 60 Hz) and R/X = (R_c / X_c)(fc / f) (p. 99).",
         f"- Thermal current: Ith = Ik'' sqrt(m + n), m = [exp(4 f Tk ln(kappa - 1)) - 1] / "
         f"(2 f Tk ln(kappa - 1)), n = 1 far from generators ({KASIKCI}, eqs. 13.1 and 13.2, p. 117).",
         "- Every hand-summed Z_k is checked against the solver's own network reduction to a relative "
@@ -86,15 +87,23 @@ def shortcircuit_worked(row: dict, case: str, frequency_hz: float, duration_s: f
                        g(e["r_referred_ohm"]), g(e["x_referred_ohm"])] for e in t["elements"]])
         out += ["", f"- Z_k = sum of the referred impedances = {g(t['zk_r_ohm'])} + j{g(t['zk_x_ohm'])} ohm."]
     else:
-        out += [f"- Z_k from the solver's network reduction (meshed or multi-source component) = "
+        out += [f"- Z_k from the solver's network reduction (meshed or multi-source component; at one voltage "
+                f"level fed by grids, checked against our own nodal solution Z_bus = Y_bus^-1) = "
                 f"{g(t['zk_r_ohm'])} + j{g(t['zk_x_ohm'])} ohm."]
     out += [f"- |Z_k| = sqrt({g(t['zk_r_ohm'])}^2 + {g(t['zk_x_ohm'])}^2) = {g(t['zk_ohm'])} ohm.",
             f"- Ik'' = c Un / (sqrt(3) |Z_k|) = {g(t['voltage_factor'])} * {g(t['un_kv'])} / "
             f"(sqrt(3) * {g(t['zk_ohm'])}) = {g(row['ikss_ka'])} kA."]
     if t["kappa"] is not None and row["ip_ka"] is not None:
-        out += [f"- R/X = {g(t['zk_r_ohm'])} / {g(t['zk_x_ohm'])} = {g(t['rx_ratio'])}; "
-                f"kappa = 1.02 + 0.98 exp(-3 * {g(t['rx_ratio'])}) = {g(t['kappa'])}.",
-                f"- ip = kappa sqrt(2) Ik'' = {g(t['kappa'])} * sqrt(2) * {g(row['ikss_ka'])} = {g(row['ip_ka'])} kA."]
+        if t["kappa_method"] == "method-C":
+            fc = 20 if frequency_hz == 50 else 24
+            rx_eq = -math.log((t["kappa"] - 1.02) / 0.98) / 3
+            out.append(f"- Method C ({KASIKCI}, p. 99): reactances scaled to fc = {fc} Hz, the network reduced "
+                       f"again, and R/X = (R_c / X_c)(fc / f) = {g(rx_eq)}; "
+                       f"kappa = 1.02 + 0.98 exp(-3 * {g(rx_eq)}) = {g(t['kappa'])}.")
+        else:
+            out.append(f"- R/X = {g(t['zk_r_ohm'])} / {g(t['zk_x_ohm'])} = {g(t['rx_ratio'])}; "
+                       f"kappa = 1.02 + 0.98 exp(-3 * {g(t['rx_ratio'])}) = {g(t['kappa'])}.")
+        out += [f"- ip = kappa sqrt(2) Ik'' = {g(t['kappa'])} * sqrt(2) * {g(row['ikss_ka'])} = {g(row['ip_ka'])} kA."]
     if t["m"] is not None and row["ith_ka"] is not None:
         ln = math.log(t["kappa"] - 1) if t["kappa"] < 2 else 0.0
         if t["kappa"] < 2:
