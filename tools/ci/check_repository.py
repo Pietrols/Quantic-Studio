@@ -5,10 +5,11 @@ import ast
 import subprocess
 import sys
 import tokenize
+import tomllib
 from pathlib import Path
 
 # Engine imports must stay behind the corresponding adapter boundary.
-ENGINES = {"pandapower"}
+ENGINES = {"pandapower": "qe_power", "pvlib": "qe_pv"}
 
 
 def tracked(root):
@@ -53,6 +54,19 @@ def imports(tree):
 def boundary_guard(root, paths):
     errors = []
     for path in paths:
+        if path.parts[:2] == ('packages','py') and path.name == 'pyproject.toml':
+            owner = path.parts[2]
+            if owner in {'qe_core','qe_power','qe_pv','qe_circuit','qe_plc'}:
+                import re
+                try:
+                    config = tomllib.loads((root/path).read_text())
+                    for entry in config.get('project',{}).get('dependencies',[]):
+                        match = re.match(r'^([A-Za-z0-9][A-Za-z0-9._-]*)',entry)
+                        target = match.group(1).lower().replace('-','_') if match else ''
+                        if target.startswith('qe_') and (owner == 'qe_core' or target != 'qe_core'):
+                            errors.append(f'{path}: {owner} cannot depend on {target}')
+                except (ValueError, TypeError) as exc:
+                    errors.append(f'{path}: cannot inspect dependencies: {exc}')
         if path.parts[:2] == ("packages", "ts") and path.suffix in {
             ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"
         }:
@@ -80,15 +94,16 @@ def boundary_guard(root, paths):
                 allowed = owner in {"qe_cli", "qe_report"} or (
                     owner == "qe_api" and target in {"qe_core", "qe_power", "qe_report"}
                 ) or (
-                    owner != "qe_core" and target == "qe_core"
+                    owner in {"qe_power", "qe_pv", "qe_circuit", "qe_plc"} and target == "qe_core"
                 )
                 if not allowed:
                     errors.append(f"{path}:{line}: {owner} cannot import {target}")
             if target in ENGINES:
-                expected = ("packages", "py", "qe_power", "src", "qe_power",
+                domain = ENGINES[target]
+                expected = ("packages", "py", domain, "src", domain,
                             "adapters", target)
                 if path.parts[:7] != expected:
-                    errors.append(f"{path}:{line}: {target} requires qe_power/adapters/{target}/")
+                    errors.append(f"{path}:{line}: {target} requires {domain}/adapters/{target}/")
     return errors
 
 

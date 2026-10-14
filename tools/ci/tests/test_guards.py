@@ -1,4 +1,5 @@
 """Exercise guards against real tracked files in isolated Git repositories."""
+
 import subprocess
 import sys
 from pathlib import Path
@@ -22,8 +23,12 @@ def add(repo, path, contents):
 
 
 def run(repo, check):
-    return subprocess.run([sys.executable, str(SCRIPT), check, "--root", str(repo)],
-                          capture_output=True, text=True, check=False)
+    return subprocess.run(
+        [sys.executable, str(SCRIPT), check, "--root", str(repo)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
 
 
 def test_text_tracks_hidden_files_but_ignores_untracked(repo):
@@ -46,15 +51,18 @@ def test_reference_guard(repo, name):
     assert result.returncode == 1 and name in result.stdout
 
 
-@pytest.mark.parametrize("owner,source", [
-    ("qe_core", "import qe_power"),
-    ("qe_core", "from qe_report import report"),
-    ("qe_power", "from qe_pv.solar import model"),
-    ("qe_power", "import pandapower"),
-    ("qe_api", "import pandapower"),
-    ("qe_api", "import qe_cli"),
-    ("qe_core", "importlib.import_module('qe_power')"),
-])
+@pytest.mark.parametrize(
+    "owner,source",
+    [
+        ("qe_core", "import qe_power"),
+        ("qe_core", "from qe_report import report"),
+        ("qe_power", "from qe_pv.solar import model"),
+        ("qe_power", "import pandapower"),
+        ("qe_api", "import pandapower"),
+        ("qe_api", "import qe_cli"),
+        ("qe_core", "importlib.import_module('qe_power')"),
+    ],
+)
 def test_forbidden_imports(repo, owner, source):
     name = f"packages/py/{owner}/src/{owner}/bad.py"
     add(repo, name, source.encode())
@@ -77,4 +85,60 @@ def test_allowed_dependencies(repo):
 
 def test_typescript_boundary(repo):
     add(repo, "packages/ts/ui.ts", b"import x from '../../py/qe_core/core.py';")
+    assert run(repo, "boundaries").returncode == 1
+
+
+@pytest.mark.parametrize(
+    "owner,target",
+    [
+        ("qe_pv", "qe_power"),
+        ("qe_pv", "qe_plc"),
+        ("qe_plc", "qe_pv"),
+        ("qe_circuit", "qe_power"),
+        ("qe_pv", "qe_report"),
+        ("qe_pv", "qe_api"),
+    ],
+)
+def test_domains_cannot_import_other_packages(repo, owner, target):
+    name = f"packages/py/{owner}/src/{owner}/invalid.py"
+    add(repo, name, f"import {target}".encode())
+    assert run(repo, "boundaries").returncode == 1
+
+
+@pytest.mark.parametrize(
+    "owner,source",
+    [
+        ("qe_pv", "import pvlib"),
+        ("qe_power", "from pvlib import solarposition"),
+        ("qe_core", "__import__('pvlib')"),
+        ("qe_api", "importlib.import_module('pvlib')"),
+    ],
+)
+def test_pvlib_only_in_its_named_adapter(repo, owner, source):
+    name = f"packages/py/{owner}/src/{owner}/invalid.py"
+    add(repo, name, source.encode())
+    assert run(repo, "boundaries").returncode == 1
+
+
+def test_new_domain_allowed_boundaries(repo):
+    for name, source in {
+        "qe_pv/src/qe_pv/engine.py": "from qe_core.stepping import Session",
+        "qe_plc/src/qe_plc/scan.py": "from qe_core import validate",
+        "qe_pv/src/qe_pv/adapters/pvlib/solar.py": "import pvlib\nfrom pvlib import solarposition",
+        "qe_cli/src/qe_cli/pv/runner.py": "import qe_pv",
+        "qe_report/src/qe_report/pv/report.py": "import qe_pv",
+    }.items():
+        add(repo, "packages/py/" + name, source.encode())
+    assert run(repo, "boundaries").returncode == 0
+
+
+@pytest.mark.parametrize(
+    "owner,dependency", [("qe_pv", "qe-plc"), ("qe_plc", "qe-pv"), ("qe_core", "qe-pv")]
+)
+def test_internal_dependency_metadata_is_guarded(repo, owner, dependency):
+    add(
+        repo,
+        f"packages/py/{owner}/pyproject.toml",
+        f'[project]\nname="{owner}"\ndependencies=["{dependency}>=0.1"]\n'.encode(),
+    )
     assert run(repo, "boundaries").returncode == 1
