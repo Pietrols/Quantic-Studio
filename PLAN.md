@@ -1028,7 +1028,7 @@ Change record: none
 
 ### WP-1.16 Workbench: no stale model request after switching project
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit ff2fbc6 | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.15
 Owned paths: `apps/web/src/App.tsx`, `apps/web/tests/**`
