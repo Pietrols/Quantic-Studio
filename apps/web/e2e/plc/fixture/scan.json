@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.1.0",
+  "model_file": "starter.json",
+  "execution": {
+    "schema_version": "0.1.0",
+    "request_id": "starter-run",
+    "study_id": "starter-scan",
+    "model_id": "starter",
+    "time_axis": {
+      "kind": "elapsed",
+      "unit": "s"
+    },
+    "clock": "fixed_ms",
+    "start_time_s": 0,
+    "stop_time_s": 0.4,
+    "step_size_s": 0.1,
+    "signals": [
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "start",
+        "model_id": "starter",
+        "name": "start",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "stop",
+        "model_id": "starter",
+        "name": "stop",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "permissive",
+        "model_id": "starter",
+        "name": "permissive",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "ol_event",
+        "model_id": "starter",
+        "name": "ol_event",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "ol_reset",
+        "model_id": "starter",
+        "name": "ol_reset",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "coil",
+        "model_id": "starter",
+        "name": "coil",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "fault",
+        "model_id": "starter",
+        "name": "fault",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "running",
+        "model_id": "starter",
+        "name": "running",
+        "data_type": "boolean",
+        "unit": "1",
+        "causality": "output"
+      }
+    ],
+    "input_series_file": "starter-events.json"
+  },
+  "start": "cold",
+  "events": {
+    "sha256": "f098bed35688fdb0d38778c193d1141aa45a177fcac58d605654387d56eb8bad",
+    "classification": "authored",
+    "description": "Original authored start and overload scenario"
+  },
+  "bindings": [
+    {
+      "signal_id": "start",
+      "target": {
+        "kind": "variable",
+        "variable": "Start"
+      }
+    },
+    {
+      "signal_id": "stop",
+      "target": {
+        "kind": "variable",
+        "variable": "Stop"
+      }
+    },
+    {
+      "signal_id": "permissive",
+      "target": {
+        "kind": "variable",
+        "variable": "Permissive"
+      }
+    },
+    {
+      "signal_id": "ol_event",
+      "target": {
+        "kind": "process_port",
+        "port": "overload_event"
+      }
+    },
+    {
+      "signal_id": "ol_reset",
+      "target": {
+        "kind": "process_port",
+        "port": "overload_reset"
+      }
+    },
+    {
+      "signal_id": "coil",
+      "target": {
+        "kind": "variable",
+        "variable": "Coil"
+      }
+    },
+    {
+      "signal_id": "fault",
+      "target": {
+        "kind": "variable",
+        "variable": "Fault"
+      }
+    },
+    {
+      "signal_id": "running",
+      "target": {
+        "kind": "process_port",
+        "port": "motor_running"
+      }
+    }
+  ]
+}

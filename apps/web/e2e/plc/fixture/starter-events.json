@@ -1,0 +1,179 @@
+{
+  "schema_version": "0.1.0",
+  "series_id": "starter-events",
+  "time_axis": {
+    "kind": "elapsed",
+    "unit": "s"
+  },
+  "sampling": "instant",
+  "signals": [
+    {
+      "schema_version": "0.1.0",
+      "signal_id": "start",
+      "model_id": "starter",
+      "name": "start",
+      "data_type": "boolean",
+      "unit": "1",
+      "causality": "input"
+    },
+    {
+      "schema_version": "0.1.0",
+      "signal_id": "stop",
+      "model_id": "starter",
+      "name": "stop",
+      "data_type": "boolean",
+      "unit": "1",
+      "causality": "input"
+    },
+    {
+      "schema_version": "0.1.0",
+      "signal_id": "permissive",
+      "model_id": "starter",
+      "name": "permissive",
+      "data_type": "boolean",
+      "unit": "1",
+      "causality": "input"
+    },
+    {
+      "schema_version": "0.1.0",
+      "signal_id": "ol_event",
+      "model_id": "starter",
+      "name": "ol_event",
+      "data_type": "boolean",
+      "unit": "1",
+      "causality": "input"
+    },
+    {
+      "schema_version": "0.1.0",
+      "signal_id": "ol_reset",
+      "model_id": "starter",
+      "name": "ol_reset",
+      "data_type": "boolean",
+      "unit": "1",
+      "causality": "input"
+    }
+  ],
+  "samples": [
+    {
+      "time": 0,
+      "values": {
+        "start": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "stop": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "permissive": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_event": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_reset": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        }
+      }
+    },
+    {
+      "time": 0.05,
+      "values": {
+        "start": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "stop": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "permissive": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_event": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_reset": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        }
+      }
+    },
+    {
+      "time": 0.2,
+      "values": {
+        "start": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "stop": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "permissive": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_event": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_reset": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        }
+      }
+    },
+    {
+      "time": 0.25,
+      "values": {
+        "start": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "stop": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "permissive": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_event": {
+          "value": true,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "ol_reset": {
+          "value": false,
+          "status": "valid",
+          "diagnostics": []
+        }
+      }
+    }
+  ],
+  "diagnostics": []
+}

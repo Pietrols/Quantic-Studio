@@ -8,6 +8,8 @@ for (const name of ["multi_domain", "fourteen_bus"])
   cpSync(resolve(repo, "examples", name), resolve(projects, name), {
     recursive: true,
   });
+for (const suite of ["pv", "plc"])
+  cpSync(resolve(import.meta.dirname, "e2e", suite, "fixture"), resolve(projects, `phase2_${suite}`), {recursive: true});
 export default defineConfig({
   testDir: "e2e",
   workers: 1,

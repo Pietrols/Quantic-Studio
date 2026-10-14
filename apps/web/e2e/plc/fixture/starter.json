@@ -1,0 +1,89 @@
+{
+  "schema_version": "0.1.0",
+  "controller_id": "starter-plc",
+  "name": "Authored motor starter",
+  "language": "quantic-st-0.1",
+  "program": {
+    "program_id": "MotorStarter",
+    "body": "Coil := (Start OR Coil) AND NOT Stop AND Permissive AND OverloadOk;\nFbTimer(IN := Coil AND NOT Feedback, PT := T#200ms);\nFault := FbTimer.Q;\n"
+  },
+  "variables": [
+    {
+      "name": "Start",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Stop",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Permissive",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Feedback",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "OverloadOk",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Coil",
+      "section": "output",
+      "type": "BOOL",
+      "initial": false
+    },
+    {
+      "name": "Fault",
+      "section": "output",
+      "type": "BOOL"
+    }
+  ],
+  "instances": [
+    {
+      "name": "FbTimer",
+      "block": "TON"
+    }
+  ],
+  "task": {
+    "task_id": "main",
+    "kind": "cyclic",
+    "period_ms": 100
+  },
+  "devices": [
+    {
+      "device_id": "start-button",
+      "label": "Start pushbutton",
+      "io": [
+        "Start"
+      ]
+    },
+    {
+      "device_id": "k1",
+      "label": "Contactor K1",
+      "io": [
+        "Coil",
+        "Feedback"
+      ]
+    }
+  ],
+  "process": {
+    "process_id": "motor-1",
+    "kind": "motor_starter",
+    "wiring": {
+      "coil": "Coil",
+      "contactor_feedback": "Feedback",
+      "overload_ok": "OverloadOk"
+    },
+    "initial": {
+      "contactor_closed": false,
+      "overload_tripped": false
+    }
+  }
+}

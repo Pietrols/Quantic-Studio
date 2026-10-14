@@ -743,3 +743,9 @@ details pre {
     padding: 13px;
   }
 }
+
+.suite-workspace { width: 100%; padding: 1rem; overflow: auto; }
+.suite-workspace .suite-graph { height: 350px; min-width: 600px; }
+.suite-workspace textarea { display: block; width: 100%; min-height: 160px; font-family: monospace; }
+.suite-actions { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; }
+.suite-workspace pre { white-space: pre-wrap; }

@@ -1,1 +1,16 @@
-{"name":"@quantic/contracts","private":true,"version":"0.1.0","type":"module","exports":"./src/index.ts","scripts":{"generate":"node scripts/generate.mjs","generate:check":"node scripts/generate.mjs --check"},"devDependencies":{"json-schema-to-typescript":"^15.0.0"}}
+{
+  "name": "@quantic/contracts",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "generate:check": "node scripts/generate.mjs --check",
+    "test": "tsc -p tests/tsconfig.json && node tests/pv-roundtrip.mjs tests/pv-fixture.json"
+  },
+  "devDependencies": {
+    "json-schema-to-typescript": "^15.0.0",
+    "typescript": "^5.9.0"
+  }
+}

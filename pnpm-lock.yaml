@@ -82,6 +82,9 @@ importers:
       json-schema-to-typescript:
         specifier: ^15.0.0
         version: 15.0.4
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
 
   packages/ts/power:
     dependencies:

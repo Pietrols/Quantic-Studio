@@ -2,6 +2,8 @@ import type {
   LoadflowResult,
   ShortcircuitResult,
   MotorstartResult,
+  PVYieldResult,
+  PlcScanResult,
 } from "@quantic/contracts";
 import type { Network } from "@quantic/power";
 export type Diagnostic = {
@@ -31,14 +33,14 @@ export type ProjectInfo = {
 export type ModelInfo = {
   model_id: string;
   model_type: string;
-  data: Network;
+  data: Network | Record<string, unknown>;
   etag: string;
   diagnostics: Diagnostic[];
 };
 export type StudyResponse = {
   study_type: string;
   model_id: string;
-  result: LoadflowResult | ShortcircuitResult | MotorstartResult;
+  result: LoadflowResult | ShortcircuitResult | MotorstartResult | PVYieldResult | PlcScanResult;
   report_markdown: string;
   report_pdf_base64?: string;
   project_diagnostics: Diagnostic[];
@@ -87,7 +89,7 @@ export const api = {
     request<ModelInfo>(
       "/api/model?" + new URLSearchParams({ project_path: path, model_id: id }),
     ),
-  save: (path: string, model: ModelInfo, data: Network) =>
+  save: (path: string, model: ModelInfo, data: Network | Record<string, unknown>) =>
     request<{ etag: string }>("/api/model/save", {
       project_path: path,
       model_id: model.model_id,

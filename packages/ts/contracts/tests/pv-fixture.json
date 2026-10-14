@@ -1,0 +1,874 @@
+[
+  {
+    "schema_version": "0.1.0",
+    "site_id": "test-site",
+    "name": "Authored hypothetical site",
+    "latitude_deg": 0,
+    "longitude_deg": 0,
+    "elevation_m": 0,
+    "orientation_convention": "north_clockwise_tilt_from_horizontal",
+    "albedo": 0.2,
+    "modules": [
+      {
+        "module_id": "module",
+        "reference_dc_power_w": 300,
+        "reference_cell_temperature_c": 25,
+        "power_temperature_coefficient_per_k": -0.004,
+        "temperature": {
+          "model": "ross",
+          "noct_c": 45
+        }
+      }
+    ],
+    "inverters": [
+      {
+        "inverter_id": "inverter",
+        "dc_input_limit_w": 1000,
+        "ac_rating_w": 900,
+        "nominal_efficiency": 0.9,
+        "reference_efficiency": 0.95
+      }
+    ],
+    "arrays": [
+      {
+        "array_id": "array",
+        "mount": "fixed_tilt",
+        "tilt_deg": 0,
+        "azimuth_deg": 180,
+        "module_id": "module",
+        "module_count": 5,
+        "inverter_id": "inverter"
+      }
+    ],
+    "losses": [
+      {
+        "loss_id": "soiling",
+        "name": "Hypothetical soiling",
+        "stage": "irradiance",
+        "fraction": 0.01
+      }
+    ]
+  },
+  {
+    "schema_version": "0.1.0",
+    "model_file": "solar.json",
+    "execution": {
+      "schema_version": "0.1.0",
+      "request_id": "yield",
+      "study_id": "yield-study",
+      "model_id": "solar",
+      "time_axis": {
+        "kind": "utc",
+        "unit": "s",
+        "origin": "2024-01-01T00:00:00Z"
+      },
+      "clock": "fixed_s",
+      "start_time_s": 0,
+      "stop_time_s": 7200,
+      "step_size_s": 3600,
+      "signals": [
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "site.ac_power_w",
+          "model_id": "solar",
+          "name": "site.ac_power_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.sun_zenith_deg",
+          "model_id": "solar",
+          "name": "array.sun_zenith_deg",
+          "data_type": "real",
+          "unit": "degree",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.sun_azimuth_deg",
+          "model_id": "solar",
+          "name": "array.sun_azimuth_deg",
+          "data_type": "real",
+          "unit": "degree",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.poa_beam_w_m2",
+          "model_id": "solar",
+          "name": "array.poa_beam_w_m2",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.poa_sky_w_m2",
+          "model_id": "solar",
+          "name": "array.poa_sky_w_m2",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.poa_ground_w_m2",
+          "model_id": "solar",
+          "name": "array.poa_ground_w_m2",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.poa_global_w_m2",
+          "model_id": "solar",
+          "name": "array.poa_global_w_m2",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.poa_effective_w_m2",
+          "model_id": "solar",
+          "name": "array.poa_effective_w_m2",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.cell_temperature_c",
+          "model_id": "solar",
+          "name": "array.cell_temperature_c",
+          "data_type": "real",
+          "unit": "degC",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.dc_gross_w",
+          "model_id": "solar",
+          "name": "array.dc_gross_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.dc_net_w",
+          "model_id": "solar",
+          "name": "array.dc_net_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.ac_gross_w",
+          "model_id": "solar",
+          "name": "array.ac_gross_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.ac_net_w",
+          "model_id": "solar",
+          "name": "array.ac_net_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.inverter_loss_w",
+          "model_id": "solar",
+          "name": "array.inverter_loss_w",
+          "data_type": "real",
+          "unit": "W",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "array.loss.soiling",
+          "model_id": "solar",
+          "name": "array.loss.soiling",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "output"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "ghi",
+          "model_id": "solar",
+          "name": "ghi",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "input"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "dni",
+          "model_id": "solar",
+          "name": "dni",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "input"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "dhi",
+          "model_id": "solar",
+          "name": "dhi",
+          "data_type": "real",
+          "unit": "W/m^2",
+          "causality": "input"
+        },
+        {
+          "schema_version": "0.1.0",
+          "signal_id": "temp",
+          "model_id": "solar",
+          "name": "temp",
+          "data_type": "real",
+          "unit": "degC",
+          "causality": "input"
+        }
+      ],
+      "input_series_file": "weather.json"
+    },
+    "weather": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "classification": "synthetic",
+      "citation": "Original hypothetical fixture, CC-5 tests",
+      "licence": "CC0-1.0",
+      "timezone": "UTC",
+      "calendar": "proleptic_gregorian",
+      "channels": {
+        "ghi": "ghi",
+        "dni": "dni",
+        "dhi": "dhi",
+        "temperature": "temp"
+      },
+      "temperature_kind": "air"
+    },
+    "solar_position": {
+      "model": "nrel_spa",
+      "pressure_pa": 100000,
+      "air_temperature_c": 20,
+      "delta_t_s": 60,
+      "atmospheric_refraction_deg": 0
+    },
+    "irradiance_model": "isotropic",
+    "dc_model": "pvwatts_v5",
+    "inverter_model": "pvwatts_v5",
+    "solar_sampling": "interval_midpoint"
+  },
+  {
+    "schema_version": "0.1.0",
+    "execution": {
+      "schema_version": "0.1.0",
+      "result_id": "result",
+      "request_id": "yield",
+      "study_id": "yield-study",
+      "model_id": "solar",
+      "status": "complete",
+      "requested_end_time_s": 7200,
+      "reached_time_s": 7200,
+      "series": {
+        "schema_version": "0.1.0",
+        "series_id": "yield",
+        "time_axis": {
+          "kind": "utc",
+          "unit": "s",
+          "origin": "2024-01-01T00:00:00Z"
+        },
+        "sampling": "interval_mean",
+        "signals": [
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "site.ac_power_w",
+            "model_id": "solar",
+            "name": "site.ac_power_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.sun_zenith_deg",
+            "model_id": "solar",
+            "name": "array.sun_zenith_deg",
+            "data_type": "real",
+            "unit": "degree",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.sun_azimuth_deg",
+            "model_id": "solar",
+            "name": "array.sun_azimuth_deg",
+            "data_type": "real",
+            "unit": "degree",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.poa_beam_w_m2",
+            "model_id": "solar",
+            "name": "array.poa_beam_w_m2",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.poa_sky_w_m2",
+            "model_id": "solar",
+            "name": "array.poa_sky_w_m2",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.poa_ground_w_m2",
+            "model_id": "solar",
+            "name": "array.poa_ground_w_m2",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.poa_global_w_m2",
+            "model_id": "solar",
+            "name": "array.poa_global_w_m2",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.poa_effective_w_m2",
+            "model_id": "solar",
+            "name": "array.poa_effective_w_m2",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.cell_temperature_c",
+            "model_id": "solar",
+            "name": "array.cell_temperature_c",
+            "data_type": "real",
+            "unit": "degC",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.dc_gross_w",
+            "model_id": "solar",
+            "name": "array.dc_gross_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.dc_net_w",
+            "model_id": "solar",
+            "name": "array.dc_net_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.ac_gross_w",
+            "model_id": "solar",
+            "name": "array.ac_gross_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.ac_net_w",
+            "model_id": "solar",
+            "name": "array.ac_net_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.inverter_loss_w",
+            "model_id": "solar",
+            "name": "array.inverter_loss_w",
+            "data_type": "real",
+            "unit": "W",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "array.loss.soiling",
+            "model_id": "solar",
+            "name": "array.loss.soiling",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "output"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "ghi",
+            "model_id": "solar",
+            "name": "ghi",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "input"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "dni",
+            "model_id": "solar",
+            "name": "dni",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "input"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "dhi",
+            "model_id": "solar",
+            "name": "dhi",
+            "data_type": "real",
+            "unit": "W/m^2",
+            "causality": "input"
+          },
+          {
+            "schema_version": "0.1.0",
+            "signal_id": "temp",
+            "model_id": "solar",
+            "name": "temp",
+            "data_type": "real",
+            "unit": "degC",
+            "causality": "input"
+          }
+        ],
+        "diagnostics": [],
+        "samples": [
+          {
+            "time": "2024-01-01T00:00:00Z",
+            "end_time": "2024-01-01T01:00:00Z",
+            "values": {
+              "site.ac_power_w": {
+                "value": 100,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.sun_zenith_deg": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.sun_azimuth_deg": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_beam_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_sky_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_ground_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_global_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_effective_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.cell_temperature_c": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.dc_gross_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.dc_net_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.ac_gross_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.ac_net_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.inverter_loss_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.loss.soiling": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "ghi": {
+                "value": 500,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "dni": {
+                "value": 600,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "dhi": {
+                "value": 100,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "temp": {
+                "value": 20,
+                "status": "valid",
+                "diagnostics": []
+              }
+            }
+          },
+          {
+            "time": "2024-01-01T01:00:00Z",
+            "end_time": "2024-01-01T02:00:00Z",
+            "values": {
+              "site.ac_power_w": {
+                "value": 100,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.sun_zenith_deg": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.sun_azimuth_deg": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_beam_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_sky_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_ground_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_global_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.poa_effective_w_m2": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.cell_temperature_c": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.dc_gross_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.dc_net_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.ac_gross_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.ac_net_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.inverter_loss_w": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "array.loss.soiling": {
+                "value": 0,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "ghi": {
+                "value": 500,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "dni": {
+                "value": 600,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "dhi": {
+                "value": 100,
+                "status": "valid",
+                "diagnostics": []
+              },
+              "temp": {
+                "value": 20,
+                "status": "valid",
+                "diagnostics": []
+              }
+            }
+          }
+        ]
+      },
+      "steps": [
+        {
+          "schema_version": "0.1.0",
+          "session_id": "session",
+          "operation": "initialise",
+          "state_before": "instantiated",
+          "state_after": "initialized",
+          "current_time_s": 0,
+          "requested_time_s": 0,
+          "reached_time_s": 0,
+          "status": "success",
+          "inputs": {},
+          "outputs": {},
+          "diagnostics": []
+        },
+        {
+          "schema_version": "0.1.0",
+          "session_id": "session",
+          "operation": "set_inputs",
+          "state_before": "initialized",
+          "state_after": "initialized",
+          "current_time_s": 0,
+          "requested_time_s": 0,
+          "reached_time_s": 0,
+          "status": "success",
+          "inputs": {
+            "ghi": {
+              "value": 500,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "dni": {
+              "value": 600,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "dhi": {
+              "value": 100,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "temp": {
+              "value": 20,
+              "status": "valid",
+              "diagnostics": []
+            }
+          },
+          "outputs": {},
+          "diagnostics": []
+        },
+        {
+          "schema_version": "0.1.0",
+          "session_id": "session",
+          "operation": "step_to",
+          "state_before": "initialized",
+          "state_after": "running",
+          "current_time_s": 0,
+          "requested_time_s": 3600,
+          "reached_time_s": 3600,
+          "status": "success",
+          "inputs": {},
+          "outputs": {},
+          "diagnostics": []
+        },
+        {
+          "schema_version": "0.1.0",
+          "session_id": "session",
+          "operation": "set_inputs",
+          "state_before": "running",
+          "state_after": "running",
+          "current_time_s": 3600,
+          "requested_time_s": 3600,
+          "reached_time_s": 3600,
+          "status": "success",
+          "inputs": {
+            "ghi": {
+              "value": 500,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "dni": {
+              "value": 600,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "dhi": {
+              "value": 100,
+              "status": "valid",
+              "diagnostics": []
+            },
+            "temp": {
+              "value": 20,
+              "status": "valid",
+              "diagnostics": []
+            }
+          },
+          "outputs": {},
+          "diagnostics": []
+        },
+        {
+          "schema_version": "0.1.0",
+          "session_id": "session",
+          "operation": "step_to",
+          "state_before": "running",
+          "state_after": "running",
+          "current_time_s": 3600,
+          "requested_time_s": 7200,
+          "reached_time_s": 7200,
+          "status": "success",
+          "inputs": {},
+          "outputs": {},
+          "diagnostics": []
+        }
+      ],
+      "working": [
+        {
+          "equation": "E=P*dt",
+          "source": {
+            "citation": "Original constant-power derivation",
+            "locator": "100 W for two hours gives 200 Wh"
+          },
+          "substitutions": {
+            "P": {
+              "value": 100,
+              "unit": "W"
+            },
+            "dt": {
+              "value": 2,
+              "unit": "h"
+            }
+          },
+          "result": {
+            "value": 200,
+            "unit": "Wh"
+          }
+        }
+      ],
+      "model_versions": {
+        "solar": "0.1.0"
+      },
+      "input_files": [
+        {
+          "path": "solar.json",
+          "role": "model",
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "path": "yield.json",
+          "role": "request",
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        {
+          "path": "weather.json",
+          "role": "data",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "provenance": {
+        "solver_name": "authored-reference",
+        "solver_version": "1",
+        "input_hash_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "timestamp": "2026-10-14T00:00:00Z"
+      },
+      "diagnostics": []
+    },
+    "weather": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "classification": "synthetic",
+      "citation": "Original hypothetical fixture, CC-5 tests",
+      "licence": "CC0-1.0",
+      "timezone": "UTC",
+      "calendar": "proleptic_gregorian",
+      "channels": {
+        "ghi": "ghi",
+        "dni": "dni",
+        "dhi": "dhi",
+        "temperature": "temp"
+      },
+      "temperature_kind": "air"
+    },
+    "coverage": {
+      "start": "2024-01-01T00:00:00Z",
+      "end": "2024-01-01T02:00:00Z",
+      "expected_intervals": 2,
+      "valid_intervals": 2,
+      "missing_intervals": 0,
+      "invalid_intervals": 0
+    },
+    "period": {
+      "start": "2024-01-01T00:00:00Z",
+      "end": "2024-01-01T02:00:00Z",
+      "complete": true,
+      "ac_energy_wh": 200
+    },
+    "monthly": [
+      {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2024-01-01T02:00:00Z",
+        "complete": true,
+        "ac_energy_wh": 200
+      }
+    ],
+    "annual": null
+  }
+]

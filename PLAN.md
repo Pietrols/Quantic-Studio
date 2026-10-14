@@ -1250,7 +1250,7 @@ Change record: none
 
 ### WP-2.4 Service routing, report registry and workspace scaffolding
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-2.4-phase2-routing | started 2026-10-14 | blocked by missing owned paths for import guard and uv.lock
 Lane: B, serial shared infrastructure; runs beside WP-2.9
 Depends on: WP-2.2, WP-2.3
 Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`

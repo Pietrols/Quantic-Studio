@@ -27,6 +27,8 @@ import {
 } from "./api";
 import { GraphCanvas } from "./GraphCanvas";
 import { Symbol } from "./Symbol";
+import { PVWorkspace } from "./workspaces/pv";
+import { PLCWorkspace } from "./workspaces/plc";
 const emptyTemplates: Record<Collection, Record<string, unknown>> = {
   buses: { bus_id: "", vn_kv: null, bus_type: "pq" },
   lines: {
@@ -210,7 +212,7 @@ export function App() {
         if (!active) return;
         setModel(value);
         setNetwork(
-          value.model_type === "power.network" ? value.data : undefined,
+          value.model_type === "power.network" ? value.data as Network : undefined,
         );
         setLayout(storedLayout(layoutKey));
         setIssues(value.diagnostics);
@@ -532,7 +534,7 @@ export function App() {
             <select
               aria-label="Study"
               value={studyId}
-              disabled={busy || !network}
+              disabled={busy || !model}
               onChange={(e) => {
                 setStudyId(e.target.value);
                 setResult(undefined);
@@ -605,6 +607,12 @@ export function App() {
                   )
                 }
               />
+            ) : model?.model_type === "pv.site" && model.data.schema_version === "0.1.0" && info ? (
+              <PVWorkspace key={`${path}:${modelId}`} projectPath={path} project={info}
+                model={model} studyId={studyId} reportFormat={format} />
+            ) : model?.model_type === "automation.plc" && model.data.schema_version === "0.1.0" && info ? (
+              <PLCWorkspace key={`${path}:${modelId}`} projectPath={path} project={info}
+                model={model} studyId={studyId} reportFormat={format} />
             ) : model ? (
               <div className="foreign-model">
                 <h2>Stored model</h2>
