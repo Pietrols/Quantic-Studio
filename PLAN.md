@@ -1059,6 +1059,13 @@ Drafted by ChatGPT (WP-1.10, 2026-10-13) and revised by Claude after review on 2
 - Lane A (Claude): WP-2.8 now (PLC engine core, no contracts), WP-2.2 once WP-2.1 is Done, then WP-2.6 once WP-2.4 is Done.
 - Contract Changes still run one at a time in the order 2.0, 2.1, 2.2. Root `pyproject.toml` and `uv.lock` are touched by WP-2.8 and WP-2.3 only; whoever merges second rebases and re-locks.
 
+**Revised order, 2026-10-14, at Peter's direction (Claude main agent, ChatGPT co-agent, talking in `docs/agents/`):** WP-2.3 consumes CC-4, not CC-6, and its owned paths are disjoint from WP-2.2's, so it now depends on WP-2.1 and runs beside WP-2.2. WP-2.4 waits for both. New WP-2.9 (PLC process engine on CC-6, `qe_plc` only) lets Lane A work while Lane B does WP-2.4. Pairs that run together:
+
+1. Claude WP-2.2 with ChatGPT WP-2.3.
+2. Claude WP-2.9 with ChatGPT WP-2.4.
+3. Claude WP-2.6 with ChatGPT WP-2.5.
+4. WP-2.7: Claude audits PV, ChatGPT audits PLC.
+
 **Approval gate (original wording):** This section is a proposed implementation plan. Merging the
 WP-1.10 planning PR does not authorize its implementation. STOP after WP-1.10 and
 ask Peter to approve section 9 in chat. No section 9 WP starts before that approval.
@@ -1082,6 +1089,7 @@ PV electrical installation design or coupled PV/power/PLC study in this slice.
 | 4 | WP-2.3 | Shared time runner and suite package seeding | Serial |
 | 5 | WP-2.4 | Service routing, report registry and workspace scaffolding | Serial; shared files settled before suite lanes |
 | 6a | WP-2.5 | PV engine and complete first web/CLI/API/report slice | Lane B (ChatGPT), disjoint suite paths |
+| 5b | WP-2.9 | PLC process engine and CC-6 binding (`qe_plc` only) | Lane A (Claude), beside WP-2.4 |
 | 6b | WP-2.6 | PLC interpreter, scan/process engine and complete first slice | Lane A (Claude), disjoint suite paths |
 | 7 | WP-2.7 | Phase 2 milestone cross-audit | Each suite audited by the model that did not build it |
 
@@ -1219,8 +1227,8 @@ Change record: none
 ### WP-2.3 Shared time runner and suite package seeding
 
 Status: [ ] Not started
-Lane: B, serial shared infrastructure
-Depends on: WP-2.2
+Lane: B, shared infrastructure; runs beside WP-2.2 (disjoint paths, consumes CC-4 only)
+Depends on: WP-2.1
 Owned paths: `packages/py/qe_core/src/qe_core/stepping.py`, `packages/py/qe_core/tests/test_stepping.py`, `packages/py/qe_pv/**`, `pyproject.toml`, `uv.lock`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`
 
 Steps:
@@ -1243,8 +1251,8 @@ Change record: none
 ### WP-2.4 Service routing, report registry and workspace scaffolding
 
 Status: [ ] Not started
-Lane: B, serial shared infrastructure
-Depends on: WP-2.3
+Lane: B, serial shared infrastructure; runs beside WP-2.9
+Depends on: WP-2.2, WP-2.3
 Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`
 
 Steps:
@@ -1295,7 +1303,7 @@ Change record: none
 
 Status: [ ] Not started
 Lane: A, PLC engine/workspace; may overlap only WP-2.5
-Depends on: WP-2.4, WP-2.8
+Depends on: WP-2.4, WP-2.9
 Owned paths: `packages/py/qe_plc/**`, `packages/py/qe_api/src/qe_api/plc/**`, `packages/py/qe_cli/src/qe_cli/plc/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/plc/**`, `apps/web/src/workspaces/plc/**`, `apps/web/tests/plc/**`, `apps/web/e2e/plc/**`, `tests/fixtures/plc/**`, `tests/integration/plc/**`, `examples/plc/**`
 
 Steps:
@@ -1362,6 +1370,28 @@ Acceptance:
 - `uv run pytest packages/py/qe_plc -v` passes against the handwritten traces; the full suite, ruff and guards pass; CI passes.
 
 Learning note: `docs/learning/plc-scan-cycle-and-structured-text.md`, explaining the scan cycle, the input and output images, and each timer and counter with timing diagrams in text.
+Change record: none
+
+### WP-2.9 PLC process engine and CC-6 binding
+
+Status: [ ] Not started
+Lane: A (Claude), runs beside Lane B's WP-2.4
+Depends on: WP-2.2
+Owned paths: `packages/py/qe_plc/**`, `tests/fixtures/plc/**`
+
+Steps:
+
+1. Bind the WP-2.8 engine to CC-6: load an `automation.plc` model and a `plc.scan` request, validate them, run, and return a contract-valid `plc.scan` result with the per-scan trace, provenance (engine version, program/model/request hashes) and diagnostics with element/field references.
+2. Implement the CC-6 authored motor-starter transition table as a discrete process model advanced after each output-image commit, with permissive/interlock, stop, overload/trip and contactor/running feedback arriving one scan later.
+3. Commit the motor-starter fixture project and handwritten expected scan tables, including interlock refusal, overload trip, stop priority and deterministic replay.
+
+Reference: the CC-6 transition table and scan ordering in `docs/specs/plc-program-and-scan.md`; Bolton 6th ed 2015 pp. 106 to 107 (mass I/O copying); independent handwritten scan tables.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_plc -v` passes against the handwritten tables; results validate against the CC-6 schemas; full suite, ruff and guards pass; CI passes. No API, CLI, report, web, contract or root lock changes.
+
+Learning note: `docs/learning/plc-motor-starter-process.md`, explaining the process model, one-scan feedback and interlocks.
 Change record: none
 
 **Implementer stop point:** A model stops after its assigned engine WP merges and

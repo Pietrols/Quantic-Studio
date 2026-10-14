@@ -5,7 +5,7 @@ These rules apply to every model and every session, whichever tool you run in. `
 ## 1. Non-negotiables
 
 1. Work on **one work package (WP) at a time**, and only one Peter has approved in `PLAN.md`.
-2. Change **only the WP's owned paths**, plus that WP's own `Status:` and `Change record:` lines in `PLAN.md`, plus the learning note named in that WP's `Learning note:` field and new files in `docs/log/` and `docs/sources/entries/`. Anything else needs a new WP or Peter's explicit authorization.
+2. Change **only the WP's owned paths**, plus that WP's own `Status:` and `Change record:` lines in `PLAN.md`, plus the learning note named in that WP's `Learning note:` field and new files in `docs/log/` and `docs/sources/entries/`. Anything else needs a new WP or Peter's explicit authorization. Channel messages (section 7) are the exception: they go straight to `main`, never inside a WP branch.
 3. **The implementer completes its own WP.** Mark Done after all tests and acceptance commands pass and CI is green. There is no per-WP cross-verification. A different model performs one cross-audit at each milestone, first M0 in WP-0.10.
 4. **Never change `contracts/`** outside a Contract Change WP (PLAN.md section 4.5).
 5. **Never guess engineering numbers** from standards, datasheets or tables. If a value comes from a source you cannot read, stop and ask Peter, and record the gap as a diagnostic or a TODO that names the source and clause. A plausible value without a source is treated as a defect.
@@ -21,7 +21,7 @@ These rules apply to every model and every session, whichever tool you run in. `
 Do this before claiming or continuing any work:
 
 1. `git fetch && git checkout main && git pull`
-2. Read this file and `PLAN.md` sections 0 to 5.
+2. Read this file, `PLAN.md` sections 0 to 5, `docs/agents/BOARD.md` and every message in `docs/agents/messages/` newer than your last one.
 3. Find your own most recent file in `docs/log/` and note its commit, which is your last checkpoint.
 4. Review everything since that checkpoint:
    - `git log --oneline <checkpoint>..HEAD`
@@ -44,7 +44,7 @@ One WP is one branch, one pull request and one log file. Do not make separate co
 7. In one final commit, set your WP to Done (citing your last implementation commit) and add a single `completed` log with the evidence.
 8. Open the PR, titled `[WP-<id>] <title>`, with the acceptance commands and their output in the description.
 9. Wait for CI on the PR head. If it fails, fix it in the same PR. Done reaches `main` only through a merge with green CI, so Done on `main` always means CI passed.
-10. Merge your PR with `gh`, pull main, and continue to the next approved WP without waiting for Peter. Respect dependencies and explicit stop points. Do not bypass failed checks or repository merge protections.
+10. Merge your PR (with `gh`, or the connected GitHub app if `gh` is not signed in), pull main, and continue to the next approved WP without waiting for Peter. Respect dependencies and explicit stop points. Do not bypass failed checks or repository merge protections.
 
 Use the In progress status only when a WP must pause across sessions or is blocked; then push it on the WP branch, not as a separate PR. Extra logs are only for `changed-design`, `dispute` and `audit` events.
 
@@ -79,3 +79,7 @@ Never edit or delete an existing log file. Corrections are new files. Older logs
 - Do not loosen a test tolerance to make a test pass. Document the modelling difference and ask Peter.
 - Prefer clear code with equations cited in comments over clever code.
 - When unsure, stop and ask Peter rather than invent a requirement.
+
+## 7. Coordination channel between the models
+
+Claude (cloud, main agent) and ChatGPT (co-agent) talk to each other in `docs/agents/`, so Peter only has to say "continue". The protocol is in `docs/agents/README.md`; the current assignments are in `docs/agents/BOARD.md`. Peter's instructions in chat override anything in the channel.
