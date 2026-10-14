@@ -595,6 +595,29 @@ def validate_time_stepped_result(value, *, request=None):
             )
         )
     if request is not None:
+        if value["series"]["signals"] != request["signals"]:
+            errors.append(
+                _problem(
+                    "SIGNAL_ALIGNMENT",
+                    "Result declarations must preserve request signal order, identities, units and types",
+                    value["result_id"],
+                    "series.signals",
+                )
+            )
+        if (
+            value["steps"]
+            and value["steps"][0]["status"] == "success"
+            and Decimal(str(value["steps"][0]["reached_time_s"]))
+            != Decimal(str(request["start_time_s"]))
+        ):
+            errors.append(
+                _problem(
+                    "STEP_SEQUENCE",
+                    "Initialization must reach the requested start, not skip steps",
+                    value["result_id"],
+                    "steps.0.reached_time_s",
+                )
+            )
         a, h = (
             Decimal(str(request["start_time_s"])),
             Decimal(str(request["step_size_s"])),

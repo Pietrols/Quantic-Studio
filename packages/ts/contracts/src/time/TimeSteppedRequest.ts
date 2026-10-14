@@ -108,7 +108,7 @@ export const timeSteppedRequestSchema = {
             "origin": {
               "type": "string",
               "format": "date-time",
-              "pattern": "Z$"
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
             }
           }
         }

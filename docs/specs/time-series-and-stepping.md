@@ -23,7 +23,9 @@ have value/status/diagnostics. A valid cell has its declared scalar type. Missin
 or invalid has null and a diagnostic; neither is silently changed to zero. A valid
 cell cannot carry an error diagnostic. Finite numbers are required throughout.
 
-Elapsed time is a nonnegative number of seconds. UTC is an ISO date-time ending
+Elapsed time is a nonnegative number of seconds. UTC has at most six fractional-second digits (microsecond precision) and rejects
+unsupported finer precision instead of silently truncating it. Leap-second labels
+are unsupported and diagnosed. UTC is an ISO date-time ending
 in Z with an explicit UTC origin, measured in seconds relative to that origin.
 UTC samples before the origin are invalid; local wall times and mixed axes are
 rejected. Consumers normalize timezone data before storing it. Instantaneous

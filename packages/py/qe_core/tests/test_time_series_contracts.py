@@ -405,3 +405,23 @@ def test_extreme_time_and_malformed_optional_context_produce_diagnostics():
     data = packet("get_outputs", "instantiated", "error")
     data.update(status="failed", diagnostics=[note(severity="error")])
     assert not validate_time_step(data)
+
+
+def test_utc_precision_and_initialization_cannot_hide_time():
+    data = series()
+    data["time_axis"] = {
+        "kind": "utc",
+        "unit": "s",
+        "origin": "2026-10-14T00:00:00.0000009Z",
+    }
+    assert validate_time_series(data)
+    data = result()
+    data["steps"] = [packet(target=0.02)]
+    assert "STEP_SEQUENCE" in codes(
+        validate_time_stepped_result(data, request=request())
+    )
+    data = result()
+    data["series"]["signals"][0]["unit"] = "kW"
+    assert "SIGNAL_ALIGNMENT" in codes(
+        validate_time_stepped_result(data, request=request())
+    )
