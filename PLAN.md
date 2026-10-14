@@ -1322,7 +1322,7 @@ Change record: none
 
 ### WP-2.8 PLC Structured Text engine core
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 951a2d8 | 2026-10-14
 Lane: A (Claude), runs now in parallel with Lane B's WP-2.0 and WP-2.1
 Depends on: WP-1.10
 Owned paths: `packages/py/qe_plc/**`, `pyproject.toml`, `uv.lock`, `docs/specs/structured-text-subset.md`

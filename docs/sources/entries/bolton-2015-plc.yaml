@@ -1,0 +1,14 @@
+id: bolton-2015-plc
+title: "Programmable Logic Controllers"
+edition: sixth
+authors:
+  - W. Bolton
+publisher: Newnes (Elsevier), Oxford
+year: 2015
+doi: 10.1016/B978-0-12-802929-9
+type: local-reference-verification
+location: Peter's private reference repository Pietrols/QE-References
+citation: Mass I/O copying pp. 106-107; scan cycle p. 117; Structured Text section 6.3, operator precedence Table 6.3 p. 168 and worked example pp. 168-169, case insensitivity p. 169; timers section 9.1 p. 225, Figures 9.2 and 9.3 p. 226; counters section 10.1 p. 245.
+purpose: WP-2.8 Structured Text subset, function blocks and scan cycle (qe_plc)
+terms: Reference use only. No source text, tables, figures or worked examples are redistributed; the precedence order and the worked example result are cited facts.
+evidence: docs/specs/structured-text-subset.md; packages/py/qe_plc/tests
