@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:automation:plc-scan-result",
+  "title": "PlcScanResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution",
+    "language",
+    "program",
+    "events",
+    "scans",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "execution": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:studies:time-stepped-result"
+    },
+    "language": {
+      "const": "quantic-st-0.1"
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "program_id",
+        "body_sha256"
+      ],
+      "properties": {
+        "program_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+          "maxLength": 64
+        },
+        "body_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "signal_id",
+          "time_ms",
+          "value",
+          "first_scan"
+        ],
+        "properties": {
+          "signal_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "time_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "first_scan": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "scans": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "scan",
+          "start_ms",
+          "commit_ms",
+          "inputs",
+          "statements",
+          "outputs",
+          "blocks",
+          "process"
+        ],
+        "properties": {
+          "scan": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "start_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "commit_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "inputs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "boolean",
+                "integer",
+                "number"
+              ]
+            }
+          },
+          "statements": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "line",
+                    "kind",
+                    "target",
+                    "expression",
+                    "value"
+                  ],
+                  "properties": {
+                    "line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "kind": {
+                      "const": "assign"
+                    },
+                    "target": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                      "maxLength": 64
+                    },
+                    "expression": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": [
+                        "boolean",
+                        "integer",
+                        "number"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "line",
+                    "kind",
+                    "expression",
+                    "value"
+                  ],
+                  "properties": {
+                    "line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "kind": {
+                      "const": "condition"
+                    },
+                    "expression": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "line",
+                    "kind",
+                    "instance",
+                    "block",
+                    "inputs",
+                    "outputs"
+                  ],
+                  "properties": {
+                    "line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "kind": {
+                      "const": "call"
+                    },
+                    "instance": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                      "maxLength": 64
+                    },
+                    "block": {
+                      "enum": [
+                        "TON",
+                        "TOF",
+                        "TP",
+                        "CTU",
+                        "CTD",
+                        "CTUD"
+                      ]
+                    },
+                    "inputs": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": [
+                          "boolean",
+                          "integer",
+                          "number"
+                        ]
+                      }
+                    },
+                    "outputs": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "minProperties": 2,
+                      "properties": {
+                        "Q": {
+                          "type": "boolean"
+                        },
+                        "QU": {
+                          "type": "boolean"
+                        },
+                        "QD": {
+                          "type": "boolean"
+                        },
+                        "ET": {
+                          "type": "integer"
+                        },
+                        "CV": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "additionalProperties": {
+              "type": [
+                "boolean",
+                "integer",
+                "number"
+              ]
+            }
+          },
+          "blocks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "minProperties": 2,
+              "properties": {
+                "Q": {
+                  "type": "boolean"
+                },
+                "QU": {
+                  "type": "boolean"
+                },
+                "QD": {
+                  "type": "boolean"
+                },
+                "ET": {
+                  "type": "integer"
+                },
+                "CV": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "process": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "before",
+                  "scenario",
+                  "coil",
+                  "after"
+                ],
+                "properties": {
+                  "before": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "contactor_closed",
+                      "overload_tripped"
+                    ],
+                    "properties": {
+                      "contactor_closed": {
+                        "type": "boolean"
+                      },
+                      "overload_tripped": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "scenario": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "overload_event",
+                      "overload_reset"
+                    ],
+                    "properties": {
+                      "overload_event": {
+                        "type": "boolean"
+                      },
+                      "overload_reset": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "coil": {
+                    "type": "boolean"
+                  },
+                  "after": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "contactor_closed",
+                      "overload_tripped",
+                      "motor_running"
+                    ],
+                    "properties": {
+                      "contactor_closed": {
+                        "type": "boolean"
+                      },
+                      "overload_tripped": {
+                        "type": "boolean"
+                      },
+                      "motor_running": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

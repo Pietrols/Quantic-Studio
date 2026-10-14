@@ -1201,7 +1201,7 @@ Change record: none
 
 ### WP-2.2 Contract Change CC-6: PLC program, I/O and scan study
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 8102e01 | 2026-10-14
 Lane: A or B, serial Contract Change
 Depends on: WP-2.1
 Owned paths: `contracts/automation/**`, `packages/py/qe_core/src/qe_core/multidomain.py`, `packages/py/qe_core/src/qe_core/plc_contracts.py`, `packages/py/qe_core/tests/test_plc_contracts.py`, `packages/ts/contracts/**`, `docs/specs/plc-program-and-scan.md`, `docs/specs/structured-text-subset.md`

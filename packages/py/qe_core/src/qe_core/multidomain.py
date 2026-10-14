@@ -8,6 +8,14 @@ from .project import Model, Project, Study, read_json, safe_path, validate_netwo
 from .validation import Diagnostic, Outcome, diagnostic, validate
 
 POWER_STUDIES = {'loadflow', 'shortcircuit', 'motorstart'}
+# CC-6 validates a PLC payload that declares a CC-6 version. Any other declared version
+# (for example the CC-3 placeholder) stays stored, unvalidated and not executable, with an
+# info note, so foreign and future files are preserved byte for byte.
+PLC_VERSIONS = ('0.1.0',)
+
+
+def _plc_version(data):
+    return data.get('schema_version') in PLC_VERSIONS
 POWER_IDS = {'buses': 'bus_id', 'lines': 'line_id', 'transformers': 'transformer_id',
              'loads': 'load_id', 'generators': 'generator_id', 'external_grids': 'external_grid_id',
              'shunts': 'shunt_id'}
@@ -61,6 +69,13 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
             from .pv_contracts import validate_pv_site
 
             problems = validate_pv_site(data)
+            errors.extend(problems)
+            if problems:
+                continue
+        elif entry['model_type'] == 'automation.plc' and _plc_version(data):
+            from .plc_contracts import validate_plc_model
+
+            problems = validate_plc_model(data)
             errors.extend(problems)
             if problems:
                 continue
@@ -141,6 +156,39 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
             elif weather is not None:
                 errors.extend(validate_pv_weather(weather, request=data, site=model.data,
                                                   raw_bytes=weather_path.read_bytes()))
+        elif kind == 'plc.scan' and _plc_version(data):
+            from .plc_contracts import validate_plc_events, validate_plc_request
+
+            if model.model_type != 'automation.plc' or not _plc_version(model.data):
+                errors.append(diagnostic('STUDY_MODEL_TYPE', 'PLC scan must bind to a CC-6 automation.plc model',
+                                         'study', sid, 'model_id'))
+                continue
+            problems = validate_plc_request(data, model=model.data)
+            errors.extend(problems)
+            if problems:
+                continue
+            run = data['execution']
+            if run['study_id'] != sid or run['model_id'] != mid:
+                errors.append(diagnostic('PLC_BINDING', 'Request must identify its bound study and model',
+                                         'study', sid, 'execution'))
+            try:
+                if safe_path(root, data['model_file']) != paths[mid]:
+                    errors.append(diagnostic('PLC_BINDING', 'Request must name its bound model file',
+                                             'study', sid, 'model_file'))
+            except ValueError as exc:
+                errors.append(diagnostic('PROJECT_PATH', str(exc), 'study', sid, 'model_file'))
+            events, events_path = read(run['input_series_file'], 'study', sid, 'execution.input_series_file')
+            taken = {path, (root / 'manifest.json').resolve(), *paths.values()}
+            for other in manifest['studies']:
+                try:
+                    taken.add(safe_path(root, other['request_file']))
+                except ValueError:
+                    pass  # The regular study loop reports the unsafe request path.
+            if events_path in taken:
+                errors.append(diagnostic('PLC_FILE_ALIAS', 'Events must be separate from model/request/manifest',
+                                         'study', sid, 'execution.input_series_file'))
+            elif events is not None:
+                errors.extend(validate_plc_events(events, request=data, raw_bytes=events_path.read_bytes()))
         else:
             notes.append(Diagnostic('DEFERRED_STUDY_VALIDATION',
                 f'Stored study type {kind} has no implemented request validator or execution support',
@@ -174,6 +222,12 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
 
                 if ref['element_id'] not in pv_elements(model.data).get(ref['element_type'], set()):
                     errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation must name a PV element',
+                                             'asset', aid, 'representations.element_id'))
+            elif model.model_type == 'automation.plc' and _plc_version(model.data):
+                from .plc_contracts import plc_elements
+
+                if ref['element_id'] not in plc_elements(model.data).get(ref['element_type'], set()):
+                    errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation must name a PLC element',
                                              'asset', aid, 'representations.element_id'))
             else:
                 notes.append(Diagnostic('DEFERRED_ASSET_VALIDATION',
