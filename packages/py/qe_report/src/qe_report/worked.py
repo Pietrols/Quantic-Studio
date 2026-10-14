@@ -24,8 +24,9 @@ def shortcircuit_method() -> list[str]:
         "## Method", "",
         "The equivalent voltage source c Un / sqrt(3) acts at the fault bus; all other sources are "
         "replaced by their internal impedances. Impedances are in ohms, voltages in kV and currents in kA.", "",
-        f"- Voltage factor c: maximum and minimum values by voltage level ({KASIKCI}, Table 1.1, p. 8; "
-        "low-voltage c_min = 0.95 for both tolerance classes, decision D10).",
+        f"- Voltage factor c: maximum and minimum values by voltage level ({KASIKCI}, Table 1.1, p. 8). "
+        "LV up to and including 1 kV: c_max 1.05 (+6%) or 1.10 (+10%), c_min 0.95 for both (decisions D10, D12); "
+        "MV to 33 kV and HV above: 1.10 and 1.00.",
         f"- External grid: Z_Q = c U_nQ^2 / S''_kQ, R_Q = Z_Q (R/X) / sqrt(1 + (R/X)^2), "
         f"X_Q = Z_Q / sqrt(1 + (R/X)^2) ({KASIKCI}, eq. 8.1, p. 48).",
         "- Line: Z_L = (r' + j x') l, with R multiplied by the conductor temperature factor in the minimum case.",
@@ -87,8 +88,8 @@ def shortcircuit_worked(row: dict, case: str, frequency_hz: float, duration_s: f
                        g(e["r_referred_ohm"]), g(e["x_referred_ohm"])] for e in t["elements"]])
         out += ["", f"- Z_k = sum of the referred impedances = {g(t['zk_r_ohm'])} + j{g(t['zk_x_ohm'])} ohm."]
     else:
-        out += [f"- Z_k from the solver's network reduction (meshed or multi-source component; at one voltage "
-                f"level fed by grids, checked against our own nodal solution Z_bus = Y_bus^-1) = "
+        out += [f"- Z_k from the solver's network reduction (meshed or multi-source component; when fed by "
+                f"grids, checked against our own nodal solution Z_bus = Y_bus^-1) = "
                 f"{g(t['zk_r_ohm'])} + j{g(t['zk_x_ohm'])} ohm."]
     out += [f"- |Z_k| = sqrt({g(t['zk_r_ohm'])}^2 + {g(t['zk_x_ohm'])}^2) = {g(t['zk_ohm'])} ohm.",
             f"- Ik'' = c Un / (sqrt(3) |Z_k|) = {g(t['voltage_factor'])} * {g(t['un_kv'])} / "

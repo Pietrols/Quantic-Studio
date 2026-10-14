@@ -987,7 +987,7 @@ Change record: none
 
 ### WP-1.14 Short-circuit: 1 kV as LV and meshed networks with transformers
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 3d92db9 | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.12
 Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`

@@ -38,7 +38,7 @@ def test_shortcircuit_report_states_method_with_sources(shortcircuit_report):
     method = shortcircuit_report.split("## Method", 1)[1].split("## Equipment inputs", 1)[0]
     for text in ("Z_Q = c U_nQ^2 / S''_kQ", "eq. 8.1, p. 48", "K_T = 0.95 c_max / (1 + 0.6 x_T)", "eq. 9.14, p. 79",
                  "Ik'' = c Un / (sqrt(3) |Z_k|)", "kappa = 1.02 + 0.98 exp(-3 R/X)", "eqs. 11.22",
-                 "Ith = Ik'' sqrt(m + n)", "eqs. 13.1 and 13.2, p. 117", "decision D10"):
+                 "Ith = Ik'' sqrt(m + n)", "eqs. 13.1 and 13.2, p. 117", "decisions D10, D12", "up to and including 1 kV"):
         assert text in method
 
 
