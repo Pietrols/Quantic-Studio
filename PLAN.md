@@ -893,7 +893,7 @@ Change record: none
 
 ### WP-1.10 Phase 2 planning: solar PV and industrial automation
 
-Status: [x] Done | implemented by ChatGPT and Claude | commit COMMIT | 2026-10-14
+Status: [x] Done | implemented by ChatGPT and Claude | commit bf13a15 | 2026-10-14
 Lane: B (ChatGPT drafts), Peter approves
 Depends on: WP-1.7
 Owned paths: `PLAN.md` (section 9 only)
