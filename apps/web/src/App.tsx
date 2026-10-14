@@ -113,6 +113,7 @@ export function App() {
   const [paths, setPaths] = useState<string[]>([]),
     [path, setPath] = useState(""),
     [info, setInfo] = useState<ProjectInfo>(),
+    [infoPath, setInfoPath] = useState(""),
     [modelId, setModelId] = useState(""),
     [model, setModel] = useState<ModelInfo>(),
     [network, setNetwork] = useState<Network>(),
@@ -159,6 +160,8 @@ export function App() {
   useEffect(() => {
     if (!path) return;
     let active = true;
+    // Forget the previous project's model before the new model list arrives (WP-1.16).
+    setModelId("");
     setModel(undefined);
     setNetwork(undefined);
     setInfo(undefined);
@@ -170,6 +173,7 @@ export function App() {
       .then((value) => {
         if (!active) return;
         setInfo(value);
+        setInfoPath(path);
         setModelId(
           value.models.find((m) => m.model_type === "power.network")
             ?.model_id ??
@@ -184,7 +188,14 @@ export function App() {
     };
   }, [path]);
   useEffect(() => {
-    if (!path || !modelId) return;
+    // Only request a model that belongs to the loaded project (WP-1.16).
+    if (
+      !path ||
+      !modelId ||
+      infoPath !== path ||
+      !info?.models.some((m) => m.model_id === modelId)
+    )
+      return;
     let active = true;
     setModel(undefined);
     setNetwork(undefined);
@@ -212,7 +223,7 @@ export function App() {
     return () => {
       active = false;
     };
-  }, [path, modelId, info]);
+  }, [path, modelId, info, infoPath]);
   const assetMap = useMemo(
     () => assetsForModel(info?.assets ?? [], modelId),
     [info, modelId],
