@@ -1026,6 +1026,27 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-1.16 Workbench: no stale model request after switching project
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.15
+Owned paths: `apps/web/src/App.tsx`, `apps/web/tests/**`
+
+Found on 2026-10-14 while running the workbench: after switching project, the page briefly requests the previous project's model ID from the new project (HTTP 404) before the new model list arrives.
+
+Steps:
+
+1. Clear the selected model when the project changes, and request a model only if it belongs to the loaded project.
+2. Add a regression test that switches between two projects and asserts that no model is requested from the wrong project.
+
+Acceptance:
+
+- `pnpm --filter qe-web test` passes with the new test; CI passes.
+
+Learning note: none.
+Change record: none
+
 ---
 
 ## 9. Phase 2: solar PV and industrial automation
