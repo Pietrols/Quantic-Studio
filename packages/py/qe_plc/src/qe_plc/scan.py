@@ -16,6 +16,7 @@ from dataclasses import dataclass
 
 from .blocks import BLOCK_TYPES, INT_MAX, INT_MIN
 from .errors import PlcError
+from .lexer import TIME_MAX, TIME_MIN
 from .parser import BLOCKS, Assign, If, Literal, Member, Name, Program, Unary, parse
 
 MAX_SCANS = 100_000
@@ -40,6 +41,12 @@ def _real(value):
 def _int(value, node):
     if not INT_MIN <= value <= INT_MAX:
         raise PlcError("INT_OVERFLOW", f"Result {value} is outside INT (-32768 to 32767)", node.line, node.column)
+    return value
+
+
+def _time(value, node):
+    if not TIME_MIN <= value <= TIME_MAX:
+        raise PlcError("TIME_OVERFLOW", f"Result {value} ms is outside TIME", node.line, node.column)
     return value
 
 
@@ -74,7 +81,9 @@ class ScanEngine:
             operand = self.value(node.operand)
             if node.op == "NOT":
                 return not operand
-            return _int(-operand, node) if node.type == "INT" else -operand
+            if node.type == "INT":
+                return _int(-operand, node)
+            return _time(-operand, node) if node.type == "TIME" else -operand
         left, right = self.value(node.left), self.value(node.right)
         op = node.op
         if op == "AND":
@@ -112,7 +121,7 @@ class ScanEngine:
             if op == "MOD":
                 return _int(left - quotient * right, node)
         if node.type == "TIME":
-            return left + right if op == "+" else left - right
+            return _time(left + right if op == "+" else left - right, node)
         try:
             if op == "+":
                 return float(left) + float(right)
@@ -157,6 +166,9 @@ class ScanEngine:
                 decl = self.program.decls[statement.instance]
                 arguments = {name: self.value(expr) for name, expr, _, _ in statement.params}
                 block = self.blocks[statement.instance]
+                if decl.type in ("TON", "TOF", "TP") and arguments.get("PT", 0) < 0:
+                    raise PlcError("TIMER_PRESET", f"{decl.name} has a negative preset PT", statement.line,
+                                   statement.column)
                 block.call(self.time_ms, **arguments)
                 steps.append({"line": statement.line, "kind": "call", "instance": decl.name, "block": decl.type,
                               "inputs": arguments, "outputs": block.state()})

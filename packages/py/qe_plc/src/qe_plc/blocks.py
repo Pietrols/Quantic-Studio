@@ -1,10 +1,11 @@
 """Standard function blocks driven by simulated time in whole milliseconds.
 
 Shapes from Bolton, Programmable Logic Controllers, 6th ed (Newnes, 2015):
-timers section 9.1, p. 225 and Figure 9.3, p. 226; counters section 10.1, p. 245.
-Where the book is silent (elapsed-time reset, retriggering, simultaneous edges,
-saturation) the behaviour is a declared Quantic subset choice, listed in
-docs/specs/structured-text-subset.md section 6 and marked "choice" below.
+timers section 9.1, p. 225 and Figure 9.3, p. 226; counters section 10.1, p. 245 and
+Figure 10.1, p. 246 (CTU stops counting at PV, CTD at 0); Beckhoff Tc2_Standard TON,
+TOF, TP, CTU and CTUD pages (accessed 2026-10-14). Where these are silent (retriggering,
+simultaneous edges, priorities, saturation) the behaviour is a declared Quantic subset
+choice, listed in docs/specs/structured-text-subset.md section 6 and marked "choice".
 Each block is evaluated once per call, at the scan's time `now` (ms).
 """
 from __future__ import annotations
@@ -80,12 +81,13 @@ class TP(Timer):
 
 
 def _bounded(value):
-    """INT saturation for counters (choice): CV stays within -32768..32767."""
+    """No counter wraps (choice): CV stays within the INT range."""
     return max(INT_MIN, min(INT_MAX, value))
 
 
 class CTU:
-    """Up counter (section 10.1): each rising CU adds 1; R sets CV to 0 and wins (choice); Q = CV >= PV."""
+    """Up counter: R sets CV to 0 and wins (choice); a rising CU adds 1 while CV < PV, so counting
+    stops at PV (Bolton Fig. 10.1b, p. 246); Q = CV >= PV (Beckhoff CTU)."""
     kind = "CTU"
 
     def __init__(self):
@@ -94,7 +96,7 @@ class CTU:
     def call(self, now, CU=False, R=False, PV=0):
         if R:
             self.CV = 0
-        elif CU and not self.prev:
+        elif CU and not self.prev and self.CV < PV:
             self.CV = _bounded(self.CV + 1)
         self.prev = CU
         self.Q = self.CV >= PV
@@ -104,7 +106,8 @@ class CTU:
 
 
 class CTD:
-    """Down counter (section 10.1): LD loads PV and wins (choice); each rising CD subtracts 1; Q = CV <= 0."""
+    """Down counter: LD loads PV and wins (choice); a rising CD subtracts 1 while CV > 0, so counting
+    stops at 0 (Bolton Fig. 10.1a, p. 246); Q = CV <= 0."""
     kind = "CTD"
 
     def __init__(self):
@@ -113,8 +116,8 @@ class CTD:
     def call(self, now, CD=False, LD=False, PV=0):
         if LD:
             self.CV = PV
-        elif CD and not self.prev:
-            self.CV = _bounded(self.CV - 1)
+        elif CD and not self.prev and self.CV > 0:
+            self.CV -= 1
         self.prev = CD
         self.Q = self.CV <= 0
 
@@ -123,8 +126,9 @@ class CTD:
 
 
 class CTUD:
-    """Up-down counter (section 10.1). Priority (choice): R, then LD, then edges; simultaneous
-    rising CU and CD leave CV unchanged. QU = CV >= PV, QD = CV <= 0."""
+    """Up-down counter. Priority (choice): R, then LD, then edges; simultaneous rising CU and CD
+    leave CV unchanged (choice). CU counts up to the INT maximum (choice); CD counts down only
+    while CV > 0 (Beckhoff CTUD). QU = CV >= PV, QD = CV <= 0."""
     kind = "CTUD"
 
     def __init__(self):
@@ -138,8 +142,8 @@ class CTUD:
             self.CV = PV
         elif up and not down:
             self.CV = _bounded(self.CV + 1)
-        elif down and not up:
-            self.CV = _bounded(self.CV - 1)
+        elif down and not up and self.CV > 0:
+            self.CV -= 1
         self.prev_u, self.prev_d = CU, CD
         self.QU, self.QD = self.CV >= PV, self.CV <= 0
 

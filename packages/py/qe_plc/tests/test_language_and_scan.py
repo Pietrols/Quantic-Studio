@@ -157,6 +157,22 @@ def test_no_python_evaluation_of_program_text():
         parse("PROGRAM P\nVAR X : INT; END_VAR\nX := __import__('os');\nEND_PROGRAM")
 
 
+def test_time_range_is_enforced():
+    # Declared TIME range: -2147483648 to 2147483647 ms (structured-text-subset.md section 4).
+    with pytest.raises(PlcError) as error:
+        parse("PROGRAM P\nVAR T1 : TIME; END_VAR\nT1 := T#2147483648ms;\nEND_PROGRAM")
+    assert error.value.code == "TIME_OVERFLOW"
+    source = "PROGRAM P\nVAR T1 : TIME := T#2147483647ms; END_VAR\nT1 := T1 + T#1ms;\nEND_PROGRAM"
+    assert run_program(source, period_ms=10, duration_ms=10)["diagnostics"][0]["code"] == "TIME_OVERFLOW"
+
+
+def test_reserved_words_match_the_cc6_contract():
+    from qe_core.plc_contracts import RESERVED
+    from qe_plc.lexer import KEYWORDS, UNSUPPORTED
+
+    assert RESERVED == KEYWORDS | UNSUPPORTED
+
+
 def test_engine_rejects_invalid_period():
     with pytest.raises(ValueError):
         ScanEngine(MOTOR_STARTER, 2.5)
