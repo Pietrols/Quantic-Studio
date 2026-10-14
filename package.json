@@ -1,1 +1,1 @@
-{"name":"quantic-studio-web-workspace","private":true,"packageManager":"pnpm@11.25.0","scripts":{"generate":"pnpm --filter @quantic/contracts generate","generate:check":"pnpm --filter @quantic/contracts generate:check"},"devDependencies":{"prettier":"3.6.2"}}
+{"name":"quantic-studio-web-workspace","private":true,"packageManager":"pnpm@11.25.0","scripts":{"generate":"pnpm --filter @quantic/contracts generate","generate:check":"pnpm --filter @quantic/contracts generate:check"},"devDependencies":{"prettier":"3.6.2"},"engines":{"node":">=24"}}
