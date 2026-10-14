@@ -287,6 +287,8 @@ The learning note named in a WP is an authorized path even when omitted from its
 | D8  | Monorepo                                         | Monorepo with strict boundaries (section 2.3)                                                  | Recommended; recorded in ADR-0001 by WP-0.1 |
 | D9  | Contract source of truth                         | JSON Schema, with generated Python and TypeScript types                                        | Recommended; recorded in ADR-0002 by WP-0.4 |
 | D10 | LV minimum voltage factor c_min                  | 0.95 for low-voltage networks of both tolerance classes (+6% and +10%), per Kasikci 1st ed (2002) Table 1.1 p. 8. IEC 60909-0:2016 Table 1 (as reported by DIgSILENT) gives 0.90 for the +10% class; 0.95 gives a minimum current about 5.6% higher there. Revisit when the 2016 or 2026 text is owned | Decided by Peter, 2026-10-14 |
+| D12 | Voltage levels for fault studies                 | LV up to and including 1 kV, MV above 1 kV up to 33 kV, HV above 33 kV. Voltage factors follow Kasikci Table 1.1 p. 8 (MV and HV both 1.10 / 1.00) with D10 for LV; the adapter supplies them to the engine | Decided by Peter, 2026-10-14 |
+| D13 | Node version                                     | Node 26 for local work and CI | Decided by Peter, 2026-10-14 |
 | D11 | Every study result shows its working             | Reports state each governing equation, the substituted input values and the result, with the book source, so a reviewer can redo the calculation by hand | Required by Peter, 2026-10-14 |
 
 ---
@@ -983,13 +985,59 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-1.14 Short-circuit: 1 kV as LV and meshed networks with transformers
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.12
+Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`
+
+Peter ruled on 2026-10-14 (D12): 1 kV is low voltage, and meshed networks must work.
+
+Steps:
+
+1. The adapter supplies the voltage factors to the engine from its own table (D10, D12), so 1 kV takes LV factors and K_T and K_G use the same c_max. Check the applied factors per bus as before.
+2. Extend the independent nodal solve to transformers, modelled by their rated ratio as an ideal transformer with the series impedance on the LV side, and to several external grids. Meshed and multi-source far-from-generator components then get ip and Ith by method C wherever our solve agrees with the engine at f and at fc.
+3. Hand-derived tests for a 1 kV bus, a two-transformer mesh and a two-grid network.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_power tests/integration/test_shortcircuit.py -v` passes with the new hand references; CI passes.
+
+Learning note: `docs/learning/three-phase-short-circuit.md` (updated).
+Change record: none
+
+### WP-1.15 Node 26
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.13
+Owned paths: `.nvmrc`, `package.json`, `apps/web/README.md`
+
+Steps:
+
+1. Set `.nvmrc` to 26 and `engines.node` to `>=26` (D13). CI already reads `.nvmrc`.
+
+Acceptance:
+
+- Web unit tests, build and e2e pass in CI on Node 26.
+
+Learning note: none.
+Change record: none
+
 ---
 
 ## 9. Phase 2: solar PV and industrial automation
 
 Drafted by ChatGPT (WP-1.10, 2026-10-13) and revised by Claude after review on 2026-10-14: WP-2.3 split into two packages, the owned PV and PLC books added as references, decision D11 (show the working) added to common acceptance, and the milestone audit made a cross-audit.
 
-**Approval gate:** This section is a proposed implementation plan. Merging the
+**Approved by Peter on 2026-10-14** ("write a prompt for ChatGPT to build something in phase 2 while you also build your own section"). Lanes, so both models work at once:
+
+- Lane B (ChatGPT): WP-2.0, WP-2.1, then WP-2.3, WP-2.4 and WP-2.5 (shared infrastructure and the PV suite).
+- Lane A (Claude): WP-2.8 now (PLC engine core, no contracts), WP-2.2 once WP-2.1 is Done, then WP-2.6 once WP-2.4 is Done.
+- Contract Changes still run one at a time in the order 2.0, 2.1, 2.2. Root `pyproject.toml` and `uv.lock` are touched by WP-2.8 and WP-2.3 only; whoever merges second rebases and re-locks.
+
+**Approval gate (original wording):** This section is a proposed implementation plan. Merging the
 WP-1.10 planning PR does not authorize its implementation. STOP after WP-1.10 and
 ask Peter to approve section 9 in chat. No section 9 WP starts before that approval.
 The requested sequence is to merge the checked planning draft, then obtain this
@@ -1151,12 +1199,12 @@ Change record: none
 Status: [ ] Not started
 Lane: B, serial shared infrastructure
 Depends on: WP-2.2
-Owned paths: `packages/py/qe_core/src/qe_core/stepping.py`, `packages/py/qe_core/tests/test_stepping.py`, `packages/py/qe_pv/**`, `packages/py/qe_plc/**`, `pyproject.toml`, `uv.lock`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`
+Owned paths: `packages/py/qe_core/src/qe_core/stepping.py`, `packages/py/qe_core/tests/test_stepping.py`, `packages/py/qe_pv/**`, `pyproject.toml`, `uv.lock`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`
 
 Steps:
 
 1. Implement CC-4 lifecycle and deterministic fixed-step execution in the core, using original mock engines. Exchange only typed named signals; reject invalid ordering/units and unsupported coupled systems. Preserve requested/reached time, failure diagnostics and bounded work. No domain imports into core.
-2. Seed installable `qe_pv`/`qe_plc` packages with a documented engine interface and explicit ENGINE_UNAVAILABLE diagnostics. Add both packages and the reviewed pvlib dependency to the locked workspace configuration. Stub behaviour is not a simulated result or a completed suite.
+2. Seed the installable `qe_pv` package with a documented engine interface and explicit ENGINE_UNAVAILABLE diagnostics (WP-2.8 has already created `qe_plc`). Add `qe_pv` and the reviewed pvlib dependency to the locked workspace configuration. Stub behaviour is not a simulated result or a completed suite.
 3. Extend boundary checks narrowly: domains may depend only on core, never one another; pvlib imports occur only inside `qe_pv/adapters/pvlib/`. Exercise negative guard fixtures. Do not edit `qe_power` or existing contracts.
 4. Record exact dependency and transitive licence checks and version pinning.
 
@@ -1225,7 +1273,7 @@ Change record: none
 
 Status: [ ] Not started
 Lane: A, PLC engine/workspace; may overlap only WP-2.5
-Depends on: WP-2.4
+Depends on: WP-2.4, WP-2.8
 Owned paths: `packages/py/qe_plc/**`, `packages/py/qe_api/src/qe_api/plc/**`, `packages/py/qe_cli/src/qe_cli/plc/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/plc/**`, `apps/web/src/workspaces/plc/**`, `apps/web/tests/plc/**`, `apps/web/e2e/plc/**`, `tests/fixtures/plc/**`, `tests/integration/plc/**`, `examples/plc/**`
 
 Steps:
@@ -1269,6 +1317,29 @@ Acceptance:
 - STOP at this milestone. Do not begin coupled engines, detailed PV/PLC features, Suite 3 or deeper Phase 1 work without a newly approved planning or fix WP.
 
 Learning note: none.
+Change record: none
+
+### WP-2.8 PLC Structured Text engine core
+
+Status: [ ] Not started
+Lane: A (Claude), runs now in parallel with Lane B's WP-2.0 and WP-2.1
+Depends on: WP-1.10
+Owned paths: `packages/py/qe_plc/**`, `pyproject.toml`, `uv.lock`, `docs/specs/structured-text-subset.md`
+
+Steps:
+
+1. Create the `qe_plc` workspace package: our own lexer, parser and typed interpreter for a bounded Structured Text subset (BOOL, INT, REAL, TIME; literals; assignment; arithmetic, comparison and boolean operators with stated precedence; IF/ELSIF/ELSE). Never `eval`, `exec` or a shell. Unsupported syntax, unknown names, type mismatches, divide-by-zero and INT overflow are diagnostics with line and column.
+2. Function blocks TON, TOF, TP, CTU, CTD and CTUD with persistent instance state, driven by simulated time.
+3. A scan engine: capture the input image, execute the program, commit the output image, advance simulated time by the scan period. Each scan returns a trace (D11): input image, each assignment with its evaluated value, timer and counter state, output image.
+4. Write `docs/specs/structured-text-subset.md` freezing the grammar and the timer and counter semantics, with sources. WP-2.2 (CC-6) builds its contract on it; until then the engine has no JSON contract.
+
+Reference: Bolton, Programmable Logic Controllers, 6th ed (Newnes, 2015) and Petruzella, 3rd ed (2005) for ST and timer and counter behaviour, cited by chapter and page; Beckhoff TC2_Standard TON/TOF/TP/CTU/CTUD pages. Independent handwritten scan traces for every block.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_plc -v` passes against the handwritten traces; the full suite, ruff and guards pass; CI passes.
+
+Learning note: `docs/learning/plc-scan-cycle-and-structured-text.md`, explaining the scan cycle, the input and output images, and each timer and counter with timing diagrams in text.
 Change record: none
 
 **Implementer stop point:** A model stops after its assigned engine WP merges and
