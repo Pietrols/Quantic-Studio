@@ -1226,7 +1226,7 @@ Change record: none
 
 ### WP-2.3 Shared time runner and suite package seeding
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit af42263 | 2026-10-14
 Lane: B, shared infrastructure; runs beside WP-2.2 (disjoint paths, consumes CC-4 only)
 Depends on: WP-2.1
 Owned paths: `packages/py/qe_core/src/qe_core/stepping.py`, `packages/py/qe_core/tests/test_stepping.py`, `packages/py/qe_pv/**`, `pyproject.toml`, `uv.lock`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`

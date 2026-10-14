@@ -1,0 +1,31 @@
+id: pvlib-0.16.1-runtime
+accessed: 2026-10-14
+sources:
+  - https://github.com/pvlib/pvlib-python/releases/tag/v0.16.1
+  - https://github.com/pvlib/pvlib-python/blob/v0.16.1/LICENSE
+  - https://github.com/pvlib/pvlib-python/blob/v0.16.1/pyproject.toml
+  - https://pypi.org/pypi/pvlib/0.16.1/json
+  - https://fmi-standard.org/docs/3.0.2/
+use: Pinned dependency, required dependency closure and installed distribution licence notices; FMI lifecycle concepts only, no copied specification/code. Runtime equations and expected mock tables are original and recorded in test_stepping.py.
+review_environment: CPython 3.12.14 on Linux; uv sync --all-packages --locked. pvlib requires Python >=3.11; workspace requires >=3.12. uv.lock records artifact hashes and exact transitive resolutions. No optional, doc, test or all extras were selected.
+required_closure:
+  pvlib: {version: 0.16.1, license: BSD-3-Clause}
+  numpy: {version: 2.4.6, license: BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0}
+  pandas: {version: 2.3.3, license: BSD-3-Clause with bundled notices}
+  pytz: {version: 2026.5, license: MIT}
+  requests: {version: 2.34.2, license: Apache-2.0}
+  scipy: {version: 1.18.1, license: BSD-3-Clause with native-runtime notices}
+  h5py: {version: 3.16.0, license: BSD-3-Clause with bundled notices}
+  tzdata: {version: 2026.5, license: Apache-2.0}
+  python-dateutil: {version: 2.9.0.post0, license: Apache-2.0 and BSD-3-Clause dual notices}
+  charset_normalizer: {version: 3.5.2, license: MIT}
+  idna: {version: 3.20, license: BSD-3-Clause}
+  urllib3: {version: 2.8.0, license: MIT}
+  certifi: {version: 2026.7.22, license: MPL-2.0}
+  six: {version: 1.17.0, license: MIT}
+review_method: Read release LICENSE and project requirements, then recursively evaluate required installed Requires-Dist entries with no extras and inspect License-Expression, License, classifiers and bundled license files. Existing NumPy, pandas, SciPy and date/time versions are unchanged; new distributions are pvlib, h5py, requests and urllib3.
+notices: |
+  Retain pvlib and dependency copyright, license and attribution notices when redistributing dependencies. No dependency source is vendored here. Certifi's certificate bundle has MPL-2.0 file-level requirements; its presence is not a GPL Python import.
+  The already-used SciPy wheel's native notices include OpenBLAS/LAPACK BSD, libgfortran GPL-3.0 with GCC Runtime Library Exception 3.1, and libquadmath LGPL-2.1-or-later. These compiled-runtime notices are not a blanket BSD-only claim. Preserve applicable notices and relinking/source obligations for actual redistribution. Platform-specific wheels must retain their own notices.
+  h5py's installed notices cover HDF5, LZF, PyTables-derived code, Python and stdint components; reviewed redistribution grants and notice conditions. Its Python package is BSD-3-Clause. The seed never imports h5py or pvlib, and optional GPL programs remain process-only.
+  This WP adds no GPL Python library. No OpenPLC or MatIEC import, paid standard, network weather dataset or proprietary text is added. FMI document CC BY-SA 4.0 and companion code BSD-2 are cited without copying.

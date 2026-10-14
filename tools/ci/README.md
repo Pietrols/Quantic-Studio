@@ -43,3 +43,15 @@ The corresponding steps must fail. Remove the fixtures and confirm all steps pas
 
 Workflow setup follows the [uv GitHub Actions guide](https://docs.astral.sh/uv/guides/integration/github/).
 The workflow uses `pull_request` and read-only repository permissions.
+
+Phase 2 adds `pvlib` to the named-engine map. It may be imported only below
+`qe_pv/src/qe_pv/adapters/pvlib/`; it is not allowed in core, power, PLC or API
+orchestration. Domain packages (`qe_power`, `qe_pv`, `qe_circuit`, `qe_plc`)
+may depend internally only on `qe_core`. The guard checks their tracked
+pyproject dependencies as well as imports. Core has no internal dependency.
+API permission to orchestrate new suites is a later WP-2.4 change.
+
+The runtime and guard oracles run with:
+`uv run pytest packages/py/qe_core/tests/test_stepping.py tools/ci/tests -v`.
+Negative guard cases use synthetic staged files in temporary Git repositories;
+no real book, external engine invocation or extra test PR is necessary.
