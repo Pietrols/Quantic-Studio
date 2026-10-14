@@ -1169,7 +1169,7 @@ Change record: none
 
 ### WP-2.1 Contract Change CC-5: PV site, system and yield study
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit cbd328e | 2026-10-14
 Lane: B, serial Contract Change
 Depends on: WP-2.0
 Owned paths: `contracts/pv/**`, `packages/py/qe_core/src/qe_core/multidomain.py`, `packages/py/qe_core/src/qe_core/pv_contracts.py`, `packages/py/qe_core/tests/test_pv_contracts.py`, `packages/ts/contracts/**`, `docs/specs/pv-site-and-yield.md`
