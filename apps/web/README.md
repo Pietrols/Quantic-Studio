@@ -58,3 +58,7 @@ Web CI runs these checks and real API/browser smoke tests. Browser tests copy
 projects under an ignored .e2e-projects folder and do not edit authored examples.
 Ladder logic is not implemented by this free graph canvas and remains a later
 separate grid component. Foreign engines and co-simulation are outside this WP.
+
+## Node version
+
+Use the Node major in `.nvmrc` (the same one CI uses), for example with `nvm use`. Newer Node versions also pass the unit tests, because `tests/setup.ts` binds jsdom's Web Storage over the global `localStorage` that Node 25 and later define, but Playwright's browser download has been seen to stall under Node 26.

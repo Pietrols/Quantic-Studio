@@ -966,7 +966,7 @@ Change record: none
 
 ### WP-1.13 Pin the Node version for local web work
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit d867c35 | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.6
 Owned paths: `apps/web/**`, `.nvmrc`, `package.json`, `.github/workflows/web.yml`
