@@ -1,6 +1,7 @@
 """Readable motor-start result, separating calculation and compliance."""
 from .loadflow import _fmt, _table
 from .shortcircuit import _diagnostics
+from .worked import motorstart_worked
 
 
 def _compliance(value):
@@ -27,7 +28,8 @@ def render_motorstart_report(*, project_name, network, request, result):
         [r['bus_id'], _fmt(nominal[r['bus_id']], 3), _fmt(r['prestart_vm_pu'], 8),
          _fmt(r['locked_rotor_vm_pu'], 8), _fmt(r['dip_percent'], 6), _compliance(r['passes_limit'])]
         for r in result['bus_results']])
-    out += ['', '## Assumptions', '', *[f'- {a}' for a in result['assumptions']], '',
+    out += ['', *motorstart_worked(result['motor'], result.get('motor_trace'), result['bus_results']),
+            '## Assumptions', '', *[f'- {a}' for a in result['assumptions']], '',
             '## Diagnostics', '', *_diagnostics(result['diagnostics']), '', '## Provenance', '']
     out += _table(['Item', 'Value'], [[k, str(v)] for k, v in result['provenance'].items()])
     out += ['', f"Request: {request['request_id']}. Result: {result['result_id']}.",

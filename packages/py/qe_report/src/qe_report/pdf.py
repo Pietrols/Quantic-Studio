@@ -65,6 +65,8 @@ def _table(lines, width, body, header):
         weights = [1, 3]
     elif rows[0][-1] == 'Message':
         weights[-1] = 4
+    if 'Equation with inputs' in rows[0]:
+        weights[rows[0].index('Equation with inputs')] = 4
     widths = [width * weight / sum(weights) for weight in weights]
     data = [[Paragraph(_inline(cell), header if n == 0 else body) for cell in row]
             for n, row in enumerate(rows)]

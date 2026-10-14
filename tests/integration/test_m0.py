@@ -117,14 +117,25 @@ def test_solver_matches_closed_form_reference(results, solver):
 # Report lines that legitimately differ between solvers: solver identity,
 # timestamp and result ID. Section 8 lists each solver's own diagnostics and is
 # compared separately.
-_SOLVER_SPECIFIC = re.compile(r"^\| (Solver|Solver version|Run time \(UTC\)|Result) \|")
+# Since WP-1.1 only pandapower enforces reactive limits, so the assumption line
+# about Q limits and the method (section 10) name each solver's own behaviour.
+# The section 11 balance residuals are rounding noise and are checked separately.
+_SOLVER_SPECIFIC = re.compile(r"^(\| (Solver|Solver version|Run time \(UTC\)|Result) \||- Generator reactive)")
 
 
 def _comparable_report(text: str) -> list[str]:
     before, _, rest = text.partition("## 8. Diagnostics")
     _, _, provenance = rest.partition("## 9. Provenance")
     assert provenance, "report layout changed: section 9 not found"
+    provenance, _, method = provenance.partition("## 10. Method")
+    assert method, "report layout changed: section 10 not found"
     return [line for line in (before + provenance).splitlines() if not _SOLVER_SPECIFIC.match(line)]
+
+
+def _balance_residuals(text: str) -> list[float]:
+    balance = text.partition("## 11. Power balance check")[2]
+    return [float(cell) for line in balance.splitlines() if line.startswith("| bus-")
+            for cell in line.strip("|").split("|")[4:6] if cell.strip() != "n/a"]
 
 
 def test_cli_reports_match_for_both_solvers(tmp_path):
@@ -139,6 +150,9 @@ def test_cli_reports_match_for_both_solvers(tmp_path):
     assert any(line.startswith("| bus-14 |") for line in pandapower_report)
     assert any(line.startswith("| Input SHA-256 |") for line in pandapower_report)
     assert pandapower_report == textbook_report
+    for report in reports.values():
+        residuals = _balance_residuals(report)
+        assert residuals and max(abs(r) for r in residuals) < 1e-6
     # Neither solver reports an error-severity diagnostic on the example.
     for report in reports.values():
         diagnostics = report.partition("## 8. Diagnostics")[2].partition("## 9.")[0]

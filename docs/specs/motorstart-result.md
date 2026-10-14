@@ -4,9 +4,11 @@ Schema: `../../contracts/power/motorstart-result.schema.json`
 
 Voltages are magnitudes on each network bus nominal line-to-line voltage base. Signed dip is 100*(pre-start minus locked-rotor)/pre-start; a voltage rise has negative dip. Equality to the user limit passes. All network buses appear exactly once. success means all values are available, independently of passes_limit. If any row is unavailable, status is failed and the overall limit outcome is null, even if another row exceeds the limit. Each unavailable row field needs a bus/field diagnostic. A row may preserve pre-start voltage when the second solve fails; its dip and compliance must then be null. Never substitute zero for a failed voltage solve. Core validation enforces numerical/status/limit consistency. The solver must enforce request/network coverage. Provenance hashes both network and complete request. This is a steady locked-rotor snapshot, not acceleration, protection or starting-time prediction.
 
+Version 0.4.0 (CC-7, WP-1.11) adds the optional `motor_trace`, the worked calculation behind the shunt: bus nominal kV, rated current I_r = P/(sqrt(3) U eta cos phi_r) in kA, locked-rotor current in kA, |Z_LR| in ohms and its angle acos(cos phi_LR) in degrees, R_LR and X_LR in ohms, and the equivalent shunt P (MW) and Q (Mvar) at bus nominal voltage. It is null when the calculation did not complete. Version 0.3.0 results remain valid against `contracts/v0.3/power/motorstart-result.schema.json`.
+
 ```json
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "result_id": "schema-example",
   "network_id": "authored-motor-feeder",
   "motor": {
@@ -39,6 +41,17 @@ Voltages are magnitudes on each network bus nominal line-to-line voltage base. S
       "passes_limit": true
     }
   ],
+  "motor_trace": {
+    "bus_kv": 0.4,
+    "rated_current_ka": 0.0566,
+    "locked_rotor_current_ka": 0.3396,
+    "z_lr_ohm": 0.68,
+    "locked_rotor_angle_deg": 72.54,
+    "r_lr_ohm": 0.204,
+    "x_lr_ohm": 0.6487,
+    "shunt_p_mw": 0.0706,
+    "shunt_q_mvar": 0.2245
+  },
   "assumptions": [
     "Synthetic schema illustration, not a numerical reference."
   ],

@@ -915,7 +915,7 @@ Change record: none
 
 ### WP-1.11 Contract Change CC-7: auditable calculation traces in results and reports
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 1be443e | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.7
 Owned paths: `contracts/power/shortcircuit-result.schema.json`, `contracts/power/motorstart-result.schema.json`, `contracts/v0.2/power/shortcircuit-result.schema.json`, `contracts/v0.3/power/motorstart-result.schema.json`, `docs/specs/shortcircuit-result.md`, `docs/specs/motorstart-result.md`, `docs/decisions/ADR-0006-calculation-traces.md`, `packages/py/qe_core/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/src/qe_power/adapters/pandapower/motorstart.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `packages/ts/contracts/**`, `apps/web/**`, `tests/integration/**`, `examples/shortcircuit/**`, `examples/motorstart/**`

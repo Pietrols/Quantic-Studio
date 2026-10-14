@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantic-studio:contracts:0.2.0:power:shortcircuit-result",
+  "$id": "urn:quantic-studio:contracts:0.3.0:power:shortcircuit-result",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -19,7 +19,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "0.2.0"
+      "const": "0.3.0"
     },
     "result_id": {
       "type": "string",
@@ -127,6 +127,150 @@
                     "null"
                   ],
                   "minimum": 0
+                },
+                "trace": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": false,
+                  "required": [
+                    "un_kv",
+                    "voltage_factor",
+                    "source_voltage_kv",
+                    "impedance_basis",
+                    "elements",
+                    "zk_r_ohm",
+                    "zk_x_ohm",
+                    "zk_ohm",
+                    "rx_ratio",
+                    "kappa",
+                    "kappa_method",
+                    "m",
+                    "n"
+                  ],
+                  "properties": {
+                    "un_kv": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "voltage_factor": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "source_voltage_kv": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "impedance_basis": {
+                      "enum": [
+                        "radial-sum",
+                        "engine-thevenin"
+                      ]
+                    },
+                    "elements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "element_type",
+                          "element_id",
+                          "inputs",
+                          "r_ohm",
+                          "x_ohm",
+                          "referral_factor",
+                          "r_referred_ohm",
+                          "x_referred_ohm"
+                        ],
+                        "properties": {
+                          "element_type": {
+                            "enum": [
+                              "external_grids",
+                              "generators",
+                              "transformers",
+                              "lines"
+                            ]
+                          },
+                          "element_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "inputs": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": "number"
+                            }
+                          },
+                          "r_ohm": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "x_ohm": {
+                            "type": "number"
+                          },
+                          "referral_factor": {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          },
+                          "r_referred_ohm": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "x_referred_ohm": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "zk_r_ohm": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "zk_x_ohm": {
+                      "type": "number"
+                    },
+                    "zk_ohm": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "rx_ratio": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "kappa": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 1,
+                      "maximum": 2
+                    },
+                    "kappa_method": {
+                      "enum": [
+                        "radial",
+                        "method-C",
+                        null
+                      ]
+                    },
+                    "m": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "n": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "exclusiveMinimum": 0
+                    }
+                  }
                 }
               },
               "allOf": [
@@ -144,6 +288,9 @@
                         "type": "null"
                       },
                       "ith_ka": {
+                        "type": "null"
+                      },
+                      "trace": {
                         "type": "null"
                       }
                     }

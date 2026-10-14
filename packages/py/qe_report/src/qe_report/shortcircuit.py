@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from .loadflow import _fmt, _table
+from .worked import shortcircuit_method, shortcircuit_worked
 
 
 def render_shortcircuit_report(*, project_name, network, request, result):
@@ -20,7 +21,7 @@ def render_shortcircuit_report(*, project_name, network, request, result):
         ["Frequency (Hz)", str(result["frequency_hz"])],
         ["LV tolerance (%)", str(result["lv_tolerance_percent"])],
     ])
-    out += ["", *[f"- {a}" for a in result["assumptions"]], "",
+    out += ["", *[f"- {a}" for a in result["assumptions"]], "", *shortcircuit_method(),
             "## Equipment inputs", "",
             "Transformer r/x are pu on its own rated MVA and LV kV, not on the system base. "
             "Machine xdss uses its own rated MVA/kV; machine rdss is ohms. "
@@ -40,7 +41,12 @@ def render_shortcircuit_report(*, project_name, network, request, result):
             [b["bus_id"], _fmt(nominal[b["bus_id"]], 3), _fmt(b["voltage_factor"], 3),
              _fmt(b["ikss_ka"], 6), _fmt(b["ip_ka"], 6), _fmt(b["ith_ka"], 6)]
             for b in case["bus_results"]])
-        out += ["", "### Case diagnostics", ""]
+        out.append("")
+        for b in case["bus_results"]:
+            if b.get("trace"):
+                out += shortcircuit_worked(b, case["case"], result["frequency_hz"],
+                                           result["fault_duration_s"], _table)
+        out += ["### Case diagnostics", ""]
         out += _diagnostics(case["diagnostics"])
         out.append("")
     out += ["## Study diagnostics", "", *_diagnostics(result["diagnostics"]), "", "## Provenance", ""]
