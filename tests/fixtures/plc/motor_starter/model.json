@@ -1,0 +1,123 @@
+{
+  "schema_version": "0.1.0",
+  "controller_id": "starter-plc",
+  "name": "Authored motor starter",
+  "language": "quantic-st-0.1",
+  "program": {
+    "program_id": "MotorStarter",
+    "body": "(* Seal-in motor starter: Stop, Permissive and the overload contact drop it. *)\nRun := (Start OR Run) AND NOT Stop AND Permissive AND OverloadOk;\nCoil := Run;\nFbTimer(IN := Coil AND NOT Feedback, PT := T#200ms);\nFault := FbTimer.Q;\nStarts(CU := Coil, R := Reset, PV := 2);\nStartCount := Starts.CV;\n"
+  },
+  "variables": [
+    {
+      "name": "Start",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Stop",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Permissive",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Reset",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Feedback",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "OverloadOk",
+      "section": "input",
+      "type": "BOOL"
+    },
+    {
+      "name": "Coil",
+      "section": "output",
+      "type": "BOOL"
+    },
+    {
+      "name": "Fault",
+      "section": "output",
+      "type": "BOOL"
+    },
+    {
+      "name": "Run",
+      "section": "internal",
+      "type": "BOOL",
+      "initial": false
+    },
+    {
+      "name": "StartCount",
+      "section": "internal",
+      "type": "INT",
+      "initial": 0
+    }
+  ],
+  "instances": [
+    {
+      "name": "FbTimer",
+      "block": "TON"
+    },
+    {
+      "name": "Starts",
+      "block": "CTU"
+    }
+  ],
+  "task": {
+    "task_id": "main",
+    "kind": "cyclic",
+    "period_ms": 100
+  },
+  "devices": [
+    {
+      "device_id": "start-button",
+      "label": "Start pushbutton (NO)",
+      "io": [
+        "Start"
+      ]
+    },
+    {
+      "device_id": "stop-button",
+      "label": "Stop pushbutton",
+      "io": [
+        "Stop"
+      ]
+    },
+    {
+      "device_id": "k1",
+      "label": "Contactor K1 with auxiliary contact",
+      "io": [
+        "Coil",
+        "Feedback"
+      ]
+    },
+    {
+      "device_id": "f1",
+      "label": "Overload relay F1",
+      "io": [
+        "OverloadOk"
+      ]
+    }
+  ],
+  "process": {
+    "process_id": "motor-1",
+    "kind": "motor_starter",
+    "wiring": {
+      "coil": "Coil",
+      "contactor_feedback": "Feedback",
+      "overload_ok": "OverloadOk"
+    },
+    "initial": {
+      "contactor_closed": false,
+      "overload_tripped": false
+    }
+  }
+}

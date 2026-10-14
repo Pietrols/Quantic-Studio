@@ -17,6 +17,10 @@ UNSUPPORTED = {"FOR", "WHILE", "REPEAT", "CASE", "FUNCTION", "FUNCTION_BLOCK", "
                "AT", "CONSTANT", "RETAIN", "DINT", "LREAL", "WORD", "DWORD", "STRING", "JMP"}
 
 
+# Declared TIME range in milliseconds (docs/specs/structured-text-subset.md section 4).
+TIME_MIN, TIME_MAX = -(2**31), 2**31 - 1
+
+
 @dataclass(frozen=True)
 class Token:
     kind: str      # NAME, KEYWORD, INT, REAL, TIME, OP, EOF
@@ -38,7 +42,10 @@ def time_literal_ms(body: str, sign: str, line: int, column: int) -> int:
         total += float(amount) * _UNIT_MS[unit.lower()]
     if total != int(total):
         raise PlcError("TIME_PRECISION", "TIME literals resolve to whole milliseconds", line, column)
-    return -int(total) if sign else int(total)
+    value = -int(total) if sign else int(total)
+    if not TIME_MIN <= value <= TIME_MAX:
+        raise PlcError("TIME_OVERFLOW", f"{value} ms is outside TIME ({TIME_MIN} to {TIME_MAX} ms)", line, column)
+    return value
 
 
 def tokenize(source: str) -> list[Token]:
