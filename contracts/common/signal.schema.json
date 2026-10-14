@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:common:signal",
+  "title": "NamedSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "signal_id",
+    "model_id",
+    "name",
+    "data_type",
+    "unit",
+    "causality"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "signal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "asset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data_type": {
+      "enum": [
+        "real",
+        "integer",
+        "boolean"
+      ]
+    },
+    "unit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "causality": {
+      "enum": [
+        "input",
+        "output"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,3 +1,13 @@
 export * from './generated';
 export {legacyPowerNetworkSchema} from './legacy';
 export type {LegacyPowerNetwork} from './legacy';
+export type {NamedSignal} from './time/NamedSignal';
+export type {TimeSeries} from './time/TimeSeries';
+export type {TimeStep} from './time/TimeStep';
+export type {TimeSteppedRequest} from './time/TimeSteppedRequest';
+export type {TimeSteppedResult} from './time/TimeSteppedResult';
+export {namedSignalSchema} from './time/NamedSignal';
+export {timeSeriesSchema} from './time/TimeSeries';
+export {timeStepSchema} from './time/TimeStep';
+export {timeSteppedRequestSchema} from './time/TimeSteppedRequest';
+export {timeSteppedResultSchema} from './time/TimeSteppedResult';
