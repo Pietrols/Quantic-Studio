@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:pv:yield-result",
+  "title": "PVYieldResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution",
+    "weather",
+    "coverage",
+    "period",
+    "monthly",
+    "annual"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "execution": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:studies:time-stepped-result"
+    },
+    "weather": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "classification",
+        "citation",
+        "licence",
+        "timezone",
+        "calendar",
+        "channels",
+        "temperature_kind"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "classification": {
+          "enum": [
+            "synthetic",
+            "observed"
+          ]
+        },
+        "citation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timezone": {
+          "const": "UTC"
+        },
+        "calendar": {
+          "const": "proleptic_gregorian"
+        },
+        "channels": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ghi",
+            "dni",
+            "dhi",
+            "temperature"
+          ],
+          "properties": {
+            "ghi": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dni": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dhi": {
+              "type": "string",
+              "minLength": 1
+            },
+            "temperature": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "temperature_kind": {
+          "enum": [
+            "air",
+            "cell"
+          ]
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end",
+        "expected_intervals",
+        "valid_intervals",
+        "missing_intervals",
+        "invalid_intervals"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected_intervals": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "valid_intervals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missing_intervals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid_intervals": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end",
+        "complete",
+        "ac_energy_wh"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "ac_energy_wh": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "monthly": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "start",
+          "end",
+          "complete",
+          "ac_energy_wh"
+        ],
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "ac_energy_wh": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "annual": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start",
+            "end",
+            "complete",
+            "ac_energy_wh"
+          ],
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "complete": {
+              "type": "boolean"
+            },
+            "ac_energy_wh": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    }
+  }
+}

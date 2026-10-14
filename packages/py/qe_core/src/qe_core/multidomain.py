@@ -57,6 +57,13 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
             errors.extend(problems)
             if problems:
                 continue
+        elif entry['model_type'] == 'pv.site':
+            from .pv_contracts import validate_pv_site
+
+            problems = validate_pv_site(data)
+            errors.extend(problems)
+            if problems:
+                continue
         else:
             notes.append(Diagnostic('DEFERRED_MODEL_VALIDATION',
                 f"Stored {entry['model_type']} payload has no implemented domain validator or engine",
@@ -99,6 +106,41 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
             if kind == 'motorstart' and data['motor']['bus_id'] not in {b['bus_id'] for b in model.data['buses']}:
                 errors.append(diagnostic('UNKNOWN_BUS', 'Motor bus does not exist in bound network',
                                          'motor', data['motor']['motor_id'], 'bus_id'))
+        elif kind == 'pv.yield':
+            from .pv_contracts import validate_pv_request, validate_pv_weather
+
+            if model.model_type != 'pv.site':
+                errors.append(diagnostic('STUDY_MODEL_TYPE', 'PV study must bind to pv.site',
+                                         'study', sid, 'model_id'))
+                continue
+            problems = validate_pv_request(data, site=model.data)
+            errors.extend(problems)
+            if problems:
+                continue
+            run = data['execution']
+            if run['study_id'] != sid or run['model_id'] != mid:
+                errors.append(diagnostic('PV_BINDING', 'Request must identify its bound study and model',
+                                         'study', sid, 'execution'))
+            try:
+                if safe_path(root, data['model_file']) != paths[mid]:
+                    errors.append(diagnostic('PV_BINDING', 'Request must name its bound model file',
+                                             'study', sid, 'model_file'))
+            except ValueError as exc:
+                errors.append(diagnostic('PROJECT_PATH', str(exc), 'study', sid, 'model_file'))
+            weather_name = run['input_series_file']
+            weather, weather_path = read(weather_name, 'study', sid, 'execution.input_series_file')
+            request_paths = {path, (root / 'manifest.json').resolve()}
+            for other in manifest['studies']:
+                try:
+                    request_paths.add(safe_path(root, other['request_file']))
+                except ValueError:
+                    pass  # The regular study loop reports the unsafe request path.
+            if weather_path in paths.values() or weather_path in request_paths:
+                errors.append(diagnostic('PV_FILE_ALIAS', 'Weather must be separate from model/request/manifest',
+                                         'study', sid, 'execution.input_series_file'))
+            elif weather is not None:
+                errors.extend(validate_pv_weather(weather, request=data, site=model.data,
+                                                  raw_bytes=weather_path.read_bytes()))
         else:
             notes.append(Diagnostic('DEFERRED_STUDY_VALIDATION',
                 f'Stored study type {kind} has no implemented request validator or execution support',
@@ -126,6 +168,12 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
                 id_field = POWER_IDS.get(ref['element_type'])
                 if id_field is None or ref['element_id'] not in {e[id_field] for e in model.data[ref['element_type']]}:
                     errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation does not name a power element',
+                                             'asset', aid, 'representations.element_id'))
+            elif model.model_type == 'pv.site':
+                from .pv_contracts import pv_elements
+
+                if ref['element_id'] not in pv_elements(model.data).get(ref['element_type'], set()):
+                    errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation must name a PV element',
                                              'asset', aid, 'representations.element_id'))
             else:
                 notes.append(Diagnostic('DEFERRED_ASSET_VALIDATION',

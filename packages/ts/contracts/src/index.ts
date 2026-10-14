@@ -11,3 +11,10 @@ export {timeSeriesSchema} from './time/TimeSeries';
 export {timeStepSchema} from './time/TimeStep';
 export {timeSteppedRequestSchema} from './time/TimeSteppedRequest';
 export {timeSteppedResultSchema} from './time/TimeSteppedResult';
+
+export type {PVSite} from './time/PVSite';
+export {pvSiteSchema} from './time/PVSite';
+export type {PVYieldRequest} from './time/PVYieldRequest';
+export {pvYieldRequestSchema} from './time/PVYieldRequest';
+export type {PVYieldResult} from './time/PVYieldResult';
+export {pvYieldResultSchema} from './time/PVYieldResult';
