@@ -893,7 +893,7 @@ Change record: none
 
 ### WP-1.10 Phase 2 planning: solar PV and industrial automation
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT and Claude | commit COMMIT | 2026-10-14
 Lane: B (ChatGPT drafts), Peter approves
 Depends on: WP-1.7
 Owned paths: `PLAN.md` (section 9 only)
@@ -911,7 +911,7 @@ Steps:
 
 Acceptance: `tools/check_plan` passes, and Peter approves the section 9 plan in chat.
 Learning note: none.
-Change record: none
+Change record: due to ChatGPT's planning branch being unreachable from GitHub (its environment had no authenticated gh), while original was Lane B ChatGPT drafting and merging alone, as it was better for landing ChatGPT's draft unchanged in substance with Claude's review revisions (WP-2.3 split, owned books cited, decision D11, cross-audit) in one reviewed PR | Claude | 2026-10-14
 
 ### WP-1.11 Contract Change CC-7: auditable calculation traces in results and reports
 
@@ -987,7 +987,293 @@ Change record: none
 
 ## 9. Phase 2: solar PV and industrial automation
 
-To be expanded by WP-1.10. No implementation WP in this section may start until Peter approves the plan.
+Drafted by ChatGPT (WP-1.10, 2026-10-13) and revised by Claude after review on 2026-10-14: WP-2.3 split into two packages, the owned PV and PLC books added as references, decision D11 (show the working) added to common acceptance, and the milestone audit made a cross-audit.
+
+**Approval gate:** This section is a proposed implementation plan. Merging the
+WP-1.10 planning PR does not authorize its implementation. STOP after WP-1.10 and
+ask Peter to approve section 9 in chat. No section 9 WP starts before that approval.
+The requested sequence is to merge the checked planning draft, then obtain this
+approval. Do not record approval as received until Peter actually gives it.
+
+**First deliverables:** one fixed-tilt PV energy-yield study and one simulated
+Structured Text motor-starter study. Each includes a validated CC-3 project,
+engine, result, CLI/API run, Markdown/PDF report and web workspace. They reuse
+shared infrastructure; `qe_pv` and `qe_plc` never import each other or `qe_power`.
+There is no live PLC hardware control, full SCADA, ladder editor, detailed shading,
+PV electrical installation design or coupled PV/power/PLC study in this slice.
+
+**Order and lanes:**
+
+| Order | WP | Deliverable | Execution |
+| --- | --- | --- | --- |
+| 1 | WP-2.0, CC-4 | Shared time-series and stepping contracts | Serial and alone |
+| 2 | WP-2.1, CC-5 | PV site/system and yield-study contracts | Serial and alone |
+| 3 | WP-2.2, CC-6 | PLC program/I/O and scan-study contracts | Serial and alone |
+| 4 | WP-2.3 | Shared time runner and suite package seeding | Serial |
+| 5 | WP-2.4 | Service routing, report registry and workspace scaffolding | Serial; shared files settled before suite lanes |
+| 6a | WP-2.5 | PV engine and complete first web/CLI/API/report slice | Lane B (ChatGPT), disjoint suite paths |
+| 6b | WP-2.6 | PLC interpreter, scan/process engine and complete first slice | Lane A (Claude), disjoint suite paths |
+| 7 | WP-2.7 | Phase 2 milestone cross-audit | Each suite audited by the model that did not build it |
+
+If only one implementer is available, execute 2.0 to 2.6 in order. With two
+agents, 2.5 and 2.6 may run together after 2.4 merges. Each agent
+still works on one WP at a time. Contract Changes never overlap one another or
+another active contract consumer. Phase 1 auditing may continue on disjoint paths;
+a Phase 1 fix and Phase 2 WP sharing a file must be serialized. No lane edits the
+other lane's Status or files, root locks, shared registration files or contracts.
+
+**References and provenance:** Every WP below names its reference. Record URL,
+edition/version, access date, section/page, fixture origin, units, expected values,
+tolerance rationale and input SHA-256 in its permitted new source entries and
+fixture provenance. Published outputs and independently hand-derived equations
+or state traces are references; a second call to the same tested implementation
+is not. Read the source before taking a constant from it. Missing source values
+produce an element/field diagnostic or a TODO naming the source, not a plausible
+default. Test scenarios may use explicitly authored hypothetical inputs; never
+present them as measured weather, manufacturer ratings or standards values.
+
+**Source and dependency policy:**
+
+| Source or dependency | Access/licence and intended use |
+| --- | --- |
+| [FMI 3.0.2 specification](https://fmi-standard.org/docs/3.0.2/) | Free specification, CC BY-SA 4.0; accompanying code is BSD-2. Cite lifecycle/variable/unit concepts and author our own protocol. No copied specification or FMU compatibility claim. |
+| [Reda and Andreas, NREL/TP-560-34302, revised January 2008](https://docs.nlr.gov/docs/fy08osti/34302.pdf) | Free report; Appendix A.5 and Table A5.1, printed pp. A-15/A-16, provide the independent solar-position case. Citation and necessary test facts only. Do not redistribute the report or NREL C implementation. |
+| [Dobos, PVWatts Version 5 Manual, NREL/TP-6A20-62641](https://docs.nlr.gov/docs/fy14osti/62641.pdf) | Free report and equations for the simple module/inverter reference. Record the applicable equation/page when implementing. Our study is a declared subset, not the whole PVWatts calculator. |
+| [pvlib documentation](https://pvlib-python.readthedocs.io/en/stable/) and cited papers | pvlib is BSD-3-Clause and may be imported, confined to `qe_pv/adapters/pvlib/`. Pin the installed version and its documentation; use Python SPA, not the separately restricted NREL C source. Record each selected model's citation. A paywalled cited paper is not a readable source just because its citation is free. |
+| Owned PV books in `Pietrols/QE-References` | Mertens, Photovoltaics: Fundamentals, Technology and Practice, 2nd ed (Wiley, 2019); Masters, Renewable and Efficient Electric Power Systems (Wiley, 2004); Gilman, SAM Photovoltaic Model Technical Reference (NREL/TP-6A20-64102, 2015); Stein, PV Performance Modeling Methods and Practices (IEA-PVPS T13-06:2017). Cite edition and page for solar geometry, transposition, temperature and loss equations. Duffie and Beckman is not in the library (catalogue gap); do not cite it until it is. |
+| Owned PLC books in `Pietrols/QE-References` | Bolton, Programmable Logic Controllers, 6th ed (Newnes, 2015), written around IEC 61131-3 (Structured Text, timers, counters, scan); Petruzella, Programmable Logic Controllers, 3rd ed (McGraw-Hill, 2005). Cite chapter and page for language and timing semantics alongside the vendor pages. John and Tiegelkamp is a catalogue gap. |
+| [Beckhoff TON](https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74406539.html), [TOF](https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74405003.html), [TP](https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74408075.html), [CTU](https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74400523.html), [CTUD](https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74402059.html) | Free vendor documentation, copyrighted. Read and cite behaviour; write original code and traces. Do not copy vendor source, figures or manuals. |
+| [CODESYS Bus Cycle Task](https://content.helpme-codesys.com/en/CODESYS%20Development%20System/_cds_buscycle_task.html) and [ST expressions](https://content.helpme-codesys.com/en/CODESYS%20Development%20System/_cds_st_expressions.html), [IF](https://content.helpme-codesys.com/en/CODESYS%20Development%20System/_cds_st_instruction_if.html) and [assignment](https://content.helpme-codesys.com/en/CODESYS%20Development%20System/_cds_st_operator_assignment.html) help | Free vendor documentation for input capture, task execution, output transfer and supported language syntax. Cite semantics, not a redistribution licence for vendor software. |
+| New Python dependencies | pvlib, NumPy, pandas and SciPy are BSD-3-Clause, checked against their package metadata. PLC uses our parser/interpreter and the Python standard library, with no new parser/runtime dependency. Review the exact locked distributions and transitive licences in WP-2.3. |
+| Existing infrastructure | Reuse installed FastAPI/Pydantic, JSON Schema, units, React/React Flow and ReportLab dependencies. No new browser/chart dependency is required for this slice. Record exact licences for any newly resolved distribution before adding it. |
+| OpenPLC runtime and MatIEC | GPL projects are optional later external comparisons only, executed as separate processes with documented version/licence. Never import, vendor or link their GPL code into our packages. Neither is required to pass Phase 2 acceptance. |
+| Committed weather fixtures | First use small original synthetic scenarios, with an explicit CC0-1.0 data dedication and authorship recorded in `docs/sources/entries/` and the fixture provenance. This data-only policy does not decide the repository's deferred overall licence. Imported observations require readable redistribution terms before committing; a library's licence does not license its example/weather datasets. |
+
+**Paid sources and how work proceeds without them:**
+
+| Unavailable source | Affected WPs | Permitted first slice and excluded claim |
+| --- | --- | --- |
+| IEC 61724-1, PV performance monitoring | 2.1, 2.5, 2.7 | State weather provenance, sample coverage, model assumptions and energy units. Use declared energy accounting and the free numerical references. No IEC monitoring class, sensor requirement, standard performance-ratio compliance or certification claim. |
+| IEC 61131-3, programmable-controller languages | 2.2, 2.6, 2.7 | Implement an explicitly specified ST subset and vendor-documented timers/counters/scan behaviour with original test traces. No full language, edition-specific conformance, vendor binary compatibility or certified PLC/safety claim. |
+| Paid papers/textbooks cited by a model | Any WP using that model | Read an owned lawful copy if available, or use a freely readable model/equation. Record the gap and defer any unavailable constant. Peter is asked only for a scope/source decision, never to run acceptance commands. |
+
+**Show the working (decision D11):** every Phase 2 result carries a trace of
+its calculation, and every report states each governing equation with its
+source, the substituted values and the result, as WP-1.11 does for Phase 1.
+For PV this covers sun position, POA components, cell temperature, DC power,
+inverter output, each loss stage and the energy integration for at least one
+representative interval per report; for PLC, each scan's input image,
+evaluated statements, timer and counter state and output image.
+
+**Common acceptance:** Each implementer runs its named commands plus locked Python
+sync, workspace tests, Ruff, text/reference/import-boundary guards and committed
+plan/ownership checks. Any TS/web change also passes frozen pnpm install,
+`pnpm generate:check`, web tests/build and applicable real API browser flows.
+CI and Web must pass on the final PR head. No expected value or tolerance is
+changed to hide a disagreement. All tests run offline, with no weather download,
+remote solver, vendor login, hardware, paid tooling or secrets required.
+
+### WP-2.0 Contract Change CC-4: shared time series and stepping
+
+Status: [ ] Not started
+Lane: B, serial Contract Change
+Depends on: WP-1.10
+Owned paths: `contracts/common/time-series.schema.json`, `contracts/common/signal.schema.json`, `contracts/common/time-step.schema.json`, `contracts/studies/time-stepped-request.schema.json`, `contracts/studies/time-stepped-result.schema.json`, `packages/py/qe_core/src/qe_core/time_series.py`, `packages/py/qe_core/tests/test_time_series_contracts.py`, `packages/ts/contracts/**`, `docs/specs/time-series-and-stepping.md`
+
+Steps:
+
+1. Add independently versioned JSON Schema contracts for named typed signals with units, time-series samples, time-stepped requests/results and lifecycle messages. Map `initialise(t0)`, set/exchange named inputs, `step_to(t)`, read named outputs and termination to FMI initialization/Co-Simulation concepts. This is a Quantic protocol, not an FMI ABI/FMUs implementation.
+2. Specify absolute UTC timestamps versus elapsed simulation time, explicit time origin/units, monotone advancement, requested and reached time, initialization/reset/error states and supported fixed-step boundaries. Define interval start/end versus instantaneous samples and unit-compatible connections. For first PLC runs, time must map exactly to declared integer-millisecond scan boundaries. Reject unsupported rollback, asynchronous event iteration and algebraic coupling; do not invent a full co-simulation master.
+3. Define unique signal IDs, stable model/asset references, boolean/integer/real typing, dimensionless signals, missing-value status/diagnostics, finite-number rules, sample alignment and complete/partial/failed coverage. Missing is never zero. Provenance covers canonical requests/models and referenced data, with solver/model versions.
+4. Write engine-free validators and original positive/negative fixtures. Preserve every existing schema byte-for-byte; any change to an existing contract requires a separately approved CC with archive/version/migration steps. Extend TS generation for the new schema types without changing existing public power types.
+
+Reference: FMI 3.0.2 initialization, Co-Simulation `doStep`, variable causality/types and UnitDefinitions; independently authored state-transition and dimensional-consistency tables, linked in fixture provenance. No numerical engine is required.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_core/tests/test_time_series_contracts.py -v` passes for units, alignment, repeated/backward time, invalid signal types, missing samples, initialization and partial results.
+- `pnpm generate:check` passes. Existing project/power contracts, fixtures and generated public types retain compatibility; all common acceptance checks pass.
+
+Learning note: `docs/learning/time-series-and-stepping.md`, explaining time origins, sample meaning, units and the limited FMI-shaped lifecycle.
+Change record: none
+
+### WP-2.1 Contract Change CC-5: PV site, system and yield study
+
+Status: [ ] Not started
+Lane: B, serial Contract Change
+Depends on: WP-2.0
+Owned paths: `contracts/pv/**`, `packages/py/qe_core/src/qe_core/multidomain.py`, `packages/py/qe_core/src/qe_core/pv_contracts.py`, `packages/py/qe_core/tests/test_pv_contracts.py`, `packages/ts/contracts/**`, `docs/specs/pv-site-and-yield.md`
+
+Steps:
+
+1. Specify a `pv.site` model and `pv.yield` request/result inside the existing CC-3 manifest, with model IDs and asset representations for site, fixed-tilt array, modules and inverter. Use the manifest's current open model/study kinds; do not fork or replace its schema.
+2. Require coordinates/elevation, orientation convention, explicit module rating/temperature coefficient, temperature-model input, inverter ratings/efficiency parameters, albedo and named loss fractions. Distinguish module reference DC rating from inverter DC input limit. Missing required engineering inputs receive field diagnostics, never fabricated equipment defaults.
+3. Bind local weather files through safe project paths and CC-4 series, including irradiance components, air/cell temperature as required by the selected model, interval semantics, timezone/calendar and data provenance. Record source hash, synthetic/observed classification, validity and coverage. Define per-step sun position/POA/DC/AC/loss outputs and covered-period/monthly/annual energy; incomplete years cannot claim an annual total.
+4. Add pure domain registration/validation, reference checks and mixed-domain round-trip fixtures. Other model files, assets and all existing contracts remain unchanged. Contract fixtures use explicitly authored hypothetical inputs and validation tables, not unverified datasheet constants.
+
+Reference: CC-3 binding rules and CC-4 unit/time tables; free pvlib solar-position, isotropic irradiance, Ross cell-temperature and PVWatts DC/inverter documentation; Dobos's manual. Independent dimensional, rating-distinction and calendar-coverage cases have recorded provenance. IEC 61724-1 claims remain excluded.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_core/tests/test_pv_contracts.py packages/py/qe_core/tests/test_multidomain.py -v` passes, including broken assets/files, incompatible units, missing inputs and incomplete-year coverage.
+- New JSON payloads and TS types round-trip without modifying power/PLC/foreign data; `pnpm generate:check` and all common acceptance checks pass.
+
+Learning note: `docs/learning/pv-contracts-and-energy-accounting.md`, explaining site inputs, sample coverage and power versus energy.
+Change record: none
+
+### WP-2.2 Contract Change CC-6: PLC program, I/O and scan study
+
+Status: [ ] Not started
+Lane: A or B, serial Contract Change
+Depends on: WP-2.1
+Owned paths: `contracts/automation/**`, `packages/py/qe_core/src/qe_core/multidomain.py`, `packages/py/qe_core/src/qe_core/plc_contracts.py`, `packages/py/qe_core/tests/test_plc_contracts.py`, `packages/ts/contracts/**`, `docs/specs/plc-program-and-scan.md`, `docs/specs/structured-text-subset.md`
+
+Steps:
+
+1. Specify `automation.plc` models and `plc.scan` requests/results within CC-3, retaining its manifest and stable asset IDs. Define program source, typed variables and initial values, function-block instances, digital I/O names/directions, one cyclic task, scan period, run duration and scheduled input events.
+2. Freeze a deliberately bounded ST grammar: BOOL/INT/REAL/TIME declarations, literals, assignment, declared expression operators/precedence, IF/ELSIF/ELSE and named timer/counter calls. Define integer range/overflow, TIME precision, initialization/reset, persistent state between scans and invalid-program diagnostics with line/column. Unsupported loops, functions, pointers, multitasking and vendor extensions are diagnosed, never silently executed.
+3. Define TON/TOF/TP and CTU/CTUD state inputs/outputs, reset/load/edge rules, timer elapsed time, invocation order and sampling convention. Resolve ambiguous simultaneous events and mid-pulse parameter changes as explicit Quantic subset choices, with vendor citations and declared limitations, not alleged IEC requirements.
+4. Define the motor-starter process as an authored discrete transition table: start/stop command, permissive, overload/trip, contactor feedback and running state. State exact boundary ordering: capture input image, execute statements/blocks in order, commit output image, advance the process to the next scan. No electrical motor dynamics or safety certification is implied.
+5. Add CC-4 trace/result bindings, per-scan status, diagnostics, event source and provenance, pure domain/asset validation and original mixed-project fixtures. Preserve existing contracts and power behaviour.
+
+Reference: Beckhoff TON/TOF/TP/CTU/CTUD documentation and CODESYS Bus Cycle Task/ST syntax help; independent handwritten timing/edge/scan/process tables. Every unspecified vendor corner case is identified before freezing the subset. IEC 61131-3 is unavailable; no full conformance claim.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_core/tests/test_plc_contracts.py packages/py/qe_core/tests/test_multidomain.py -v` passes for invalid I/O binding/types, scan/event alignment, timer presets, duplicate instances and trace coverage.
+- The grammar and independent reference traces are documented, new TS types regenerate, mixed-project preservation and all common acceptance checks pass.
+
+Learning note: `docs/learning/plc-contracts-and-scan-images.md`, explaining typed programs, scan snapshots, state and declared subset limits.
+Change record: none
+
+### WP-2.3 Shared time runner and suite package seeding
+
+Status: [ ] Not started
+Lane: B, serial shared infrastructure
+Depends on: WP-2.2
+Owned paths: `packages/py/qe_core/src/qe_core/stepping.py`, `packages/py/qe_core/tests/test_stepping.py`, `packages/py/qe_pv/**`, `packages/py/qe_plc/**`, `pyproject.toml`, `uv.lock`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`
+
+Steps:
+
+1. Implement CC-4 lifecycle and deterministic fixed-step execution in the core, using original mock engines. Exchange only typed named signals; reject invalid ordering/units and unsupported coupled systems. Preserve requested/reached time, failure diagnostics and bounded work. No domain imports into core.
+2. Seed installable `qe_pv`/`qe_plc` packages with a documented engine interface and explicit ENGINE_UNAVAILABLE diagnostics. Add both packages and the reviewed pvlib dependency to the locked workspace configuration. Stub behaviour is not a simulated result or a completed suite.
+3. Extend boundary checks narrowly: domains may depend only on core, never one another; pvlib imports occur only inside `qe_pv/adapters/pvlib/`. Exercise negative guard fixtures. Do not edit `qe_power` or existing contracts.
+4. Record exact dependency and transitive licence checks and version pinning.
+
+Reference: CC-4 state tables and independently derived mock scan/interval traces, plus FMI lifecycle concepts.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_core/tests/test_stepping.py tools/ci/tests -v` passes, including incompatible units, unavailable engines, forbidden imports and bounded work.
+- Frozen install and the full Python suite pass; all common acceptance checks pass.
+
+Learning note: `docs/learning/phase2-time-runtime.md`, explaining the stepping lifecycle and isolated engines.
+Change record: none
+
+### WP-2.4 Service routing, report registry and workspace scaffolding
+
+Status: [ ] Not started
+Lane: B, serial shared infrastructure
+Depends on: WP-2.3
+Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`
+
+Steps:
+
+1. Establish explicit allowlisted model/study handlers and atomic save validation in CLI/API, pure report dispatch and workspace selection in the existing web shell. Keep loopback/origin/path/body/etag restrictions and killable worker limits. Time-series file access is confined and bounded; no arbitrary import string or filesystem execution comes from project data. Preserve the existing power routes and Markdown/PDF flows.
+2. Seed suite-local API/CLI/report/web entry points for PV and PLC that report ENGINE_UNAVAILABLE until the engines land. Extend the import guard narrowly so API orchestration may call the two new domain packages.
+3. Seed `apps/web/src/workspaces/pv/` and `plc/` components and suite test/e2e directories. Generic canvas handles graphs/ports; ST is a text editor plus process/I/O graph, never a ladder grid disguised as a graph. Route suite-local browser tests through shared CI without requiring unavailable engines.
+4. Place future suite implementations entirely under the disjoint paths granted to 2.5/2.6. No contract edits and no further root/lock/shared-shell edits in the parallel engine WPs.
+
+Reference: CC-5/CC-6 routing/validation fixtures. Reuse the existing API/browser tests as preservation evidence, not as the new engine's reference.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_report/tests/test_report_registry.py tests/integration/test_phase2_routing.py -v` passes, including kill/release limits, unavailable handlers, schema routing and foreign-file preservation.
+- Generated types, full Python/web tests, build and existing real power browser flows pass. Stub workspaces report unavailable engines correctly. Owned-path sets for 2.5/2.6 have zero intersection; all common acceptance checks pass.
+
+Learning note: `docs/learning/phase2-routing.md`, explaining common execution infrastructure and how a suite plugs in.
+Change record: none
+
+### WP-2.5 Solar PV first end-to-end yield slice
+
+Status: [ ] Not started
+Lane: B, PV engine/workspace; may overlap only WP-2.6
+Depends on: WP-2.4
+Owned paths: `packages/py/qe_pv/**`, `packages/py/qe_api/src/qe_api/pv/**`, `packages/py/qe_cli/src/qe_cli/pv/**`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/tests/pv/**`, `apps/web/src/workspaces/pv/**`, `apps/web/tests/pv/**`, `apps/web/e2e/pv/**`, `tests/fixtures/pv/**`, `tests/integration/pv/**`, `examples/pv/**`
+
+Steps:
+
+1. Implement a pvlib adapter for the fixed-tilt `pv.yield` study: Python SPA sun position, direct beam plus isotropic sky and ground-reflected POA, an explicit Ross or supplied cell-temperature input, simple PVWatts DC/module and inverter models, clipping and a basic named loss chain. Declare simplifications and each stage's units/order. Module, inverter, temperature, albedo and loss inputs are required or explicitly sourced, never unexplained library defaults.
+2. Read only local validated weather. Commit a small authored day fixture and a compact complete-year hourly fixture with the declared data licence, authorship, file hash and interval/calendar provenance. Test data are synthetic and labelled as such. Real user files are supported locally but never committed without recorded redistribution rights. Tests/download-free acceptance never call pvlib online iotools or remote weather services.
+3. Write independent references before or alongside the adapter: the published SPA Appendix A.5/Table A5.1 case with its actual inputs/outputs, hand-derived POA cases, Ross temperature/DC/inverter equation cases and loss/integration arithmetic. Store derivations and fixed tolerance rationale without calling pvlib to produce expected values. Required published constants come from the readable NREL report/documented model. If an inaccessible source is required, diagnose/defer that model.
+4. Integrate covered-period and monthly energy from actual interval durations; report annual yield only for complete validated calendar coverage. Test leap years, timezone/UTC conversion, interval means versus instants, dark hours, clipping, missing/nonfinite samples and mixed-project asset preservation. Do not annualize a short series or fill missing irradiance with zero. A synthetic year's result is a scenario yield, not a weather prediction for Kitwe or any real site.
+5. Implement the pre-registered suite handlers and pure report modules: CLI study selection/exit codes, bounded API request/result, equations/units/inputs/loss stages/assumptions/coverage/diagnostics/provenance in Markdown and existing PDF export. Hash weather content as well as model/request. Source gaps and partial results remain visible.
+6. Provide a generic-canvas PV workspace showing site/array/inverter graph, model/weather selection, validated property edits, loss/energy summary and unit-labelled time-series view. Run and download the same study through the existing API; test edits/save/assets, invalid input and study errors. No geometric roof CAD, shading mesh, electrical cable sizing, bankability or IEC compliance feature is inferred.
+
+Reference: Reda/Andreas revised-2008 SPA Table A5.1 (pp. A-15/A-16); Dobos PVWatts Version 5 equations; owned Mertens 2nd ed 2019 and Gilman 2015 for transposition, temperature and loss equations, cited by page; pvlib [isotropic](https://pvlib-python.readthedocs.io/en/stable/reference/generated/pvlib.irradiance.isotropic.html), [Ross](https://pvlib-python.readthedocs.io/en/stable/reference/generated/pvlib.temperature.ross.html), [DC](https://pvlib-python.readthedocs.io/en/stable/reference/generated/pvlib.pvsystem.pvwatts_dc.html) and [inverter](https://pvlib-python.readthedocs.io/en/stable/reference/generated/pvlib.inverter.pvwatts.html) equations and their cited papers. Ross's fixed-wind/slowly-changing-irradiance assumptions are explicitly reported. Independently derive limiting cases and energy/loss accounting. IEC 61724-1 remains a stated gap.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_pv packages/py/qe_report/tests/pv tests/integration/pv -v` passes offline against the independent references and all invalid/partial cases.
+- CLI and API execute the committed PV example; full-year energy matches independently summed interval energy within the recorded tolerance. `pnpm --filter qe-web test -- tests/pv` and `pnpm --filter qe-web exec playwright test e2e/pv` pass with a real API worker.
+- Inspect the web view and rendered report/PDF, including warnings/units/coverage/provenance. Other model/asset files are unchanged; all common acceptance checks pass. No root locks, shared handlers, power paths or contracts changed.
+
+Learning note: `docs/learning/pv-first-yield-study.md`, explaining solar geometry, POA, temperature, loss order, clipping and energy coverage.
+Change record: none
+
+### WP-2.6 Industrial automation first end-to-end scan slice
+
+Status: [ ] Not started
+Lane: A, PLC engine/workspace; may overlap only WP-2.5
+Depends on: WP-2.4
+Owned paths: `packages/py/qe_plc/**`, `packages/py/qe_api/src/qe_api/plc/**`, `packages/py/qe_cli/src/qe_cli/plc/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/plc/**`, `apps/web/src/workspaces/plc/**`, `apps/web/tests/plc/**`, `apps/web/e2e/plc/**`, `tests/fixtures/plc/**`, `tests/integration/plc/**`, `examples/plc/**`
+
+Steps:
+
+1. Write our own bounded ST lexer/parser/typed interpreter for exactly the CC-6 subset. Never use Python `eval`/`exec`, transpile arbitrary input or launch a shell from program text. Diagnose unsupported syntax, unknown names, type mismatches, divide-by-zero, overflow and execution/resource limits with source location and element/field references.
+2. Implement deterministic input-image capture, ordered program/block calls and output-image commit on each scan, with persistent variables/block state and declared reset behaviour. Simulated time, not wall-clock speed, drives TON/TOF/TP and CTU/CTUD. Honour CC-6's timing, edge, saturation/overflow and precedence choices, documenting their limits.
+3. Author independent expected scan tables from the free vendor timing/scan documentation before or alongside the interpreter. Cover preset boundaries, zero preset, held/pulsed inputs, timer cancellation and off delay, TP input changes, counter held edges/reset/load/simultaneous events, invocation order and scan-boundary input events. Distinguish vendor-documented behaviour from our declared subset choices; never claim these tests certify IEC 61131-3.
+4. Implement one authored discrete motor-starter process with permissive/interlock, stop and overload/trip events plus contactor/running feedback, using CC-6's explicit transition table and scan ordering. Assert interlocks at every step, one-scan feedback timing and deterministic replay. Parameters are explicit fictional scenario inputs, not guessed machine constants or a model of safety-rated hardware.
+5. Implement suite-local CLI/API/report handlers: validated contract trace, scan counts and reached time, states/I/O/timer/counter tables, unsupported features, process assumptions, diagnostics, source and program/model/input hashes. Existing Markdown/PDF export preserves semantic failures and partial traces; bounded worker execution never controls real equipment or writes unselected files.
+6. Provide an ST text editor and generic-canvas I/O/controller/motor process view with typed ports, input-event controls and a unit-labelled scan timeline. Editing validates/saves the selected model, running shows the same trace as CLI/API, and downloads expose report/provenance. Ladder logic, multitask/fieldbus runtime, full HMI/SCADA, analog process dynamics and hardware deployment remain deferred.
+
+Reference: Beckhoff TON/TOF/TP/CTU/CTUD pages, CODESYS Bus Cycle Task/ST help and Bolton 6th ed 2015 (cited by chapter and page), translated into original independently handwritten scan traces; the authored motor-starter transition table is the process reference. Record source versions/access dates and corner-case conventions. No GPL runtime dependency and no paid IEC 61131-3 conformance claim.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_plc packages/py/qe_report/tests/plc tests/integration/plc -v` passes offline with exact integer-time/boolean/counter reference traces and justified real-number tolerances where needed.
+- CLI/API reproduce the motor-starter example and intentional syntax/interlock/timer failures with bounded work. `pnpm --filter qe-web test -- tests/plc` and `pnpm --filter qe-web exec playwright test e2e/plc` pass with a real API worker.
+- Inspect the process view and report/PDF; unsupported semantics and source gaps are visible. Input/program/foreign model files remain unchanged after runs; all common acceptance checks pass. No shared/root/power/contract files changed.
+
+Learning note: `docs/learning/plc-first-scan-and-process-study.md`, explaining ST evaluation, scan images, timer/counter state and discrete interlocks.
+Change record: none
+
+### WP-2.7 Phase 2 milestone cross-audit
+
+Status: [ ] Not started
+Lane: Cross-audit: the PV slice is audited by the model that did not build it, and the PLC slice likewise
+Depends on: WP-2.5, WP-2.6
+Owned paths: `tests/integration/phase2_audit/**`
+
+Steps:
+
+1. Follow AGENTS.md section 4 on a clean checkout. Independently rerun both suites' acceptance, schema/asset/unit/time validation, mixed-project save preservation, bounded API/browser flows and report/PDF comparisons. Recheck SPA/equation references and handwritten PLC traces from their primary sources, not just pasted CI output.
+2. Check weather licences/hashes, offline test operation, module/inverter/loss assumptions, calendar coverage, timer/counter/scan boundaries, source gaps, dependency licences, domain/import boundaries and that every report shows its working (D11). Verify the two engine WP path sets are disjoint and no Phase 1 or frozen contract changes slipped in.
+3. Record the milestone audit in an `audit` log and `dispute` logs for failures. Do not repair unowned files; a fix needs an approved WP with explicit paths.
+
+Reference: Reproduce the published SPA case, hand-derived PV equations/energy totals and vendor-derived PLC/process trace tables independently. No second invocation of the suite under audit substitutes for its reference.
+
+Acceptance:
+
+- `uv run pytest tests/integration/phase2_audit -v`, both suite acceptance sets, full offline workspace/web checks and CI pass on the audit head; all disputes are closed with rerun evidence.
+- STOP at this milestone. Do not begin coupled engines, detailed PV/PLC features, Suite 3 or deeper Phase 1 work without a newly approved planning or fix WP.
+
+Learning note: none.
+Change record: none
+
+**Implementer stop point:** A model stops after its assigned engine WP merges and
+hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
+choices; all builds, acceptance, CI checks and merges are performed by the agents.
 
 ## 10. Seed source register
 
