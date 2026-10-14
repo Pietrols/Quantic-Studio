@@ -944,7 +944,7 @@ Change record: none
 Status: [ ] Not started
 Lane: A (Claude)
 Depends on: WP-1.11
-Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`
+Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `tests/integration/test_shortcircuit.py`, `tests/integration/test_pdf.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`
 
 Steps:
 
