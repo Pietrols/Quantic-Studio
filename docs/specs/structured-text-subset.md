@@ -1,6 +1,10 @@
 # Structured Text subset (qe_plc engine, WP-2.8)
 
-Status: frozen for WP-2.2 (CC-6), which builds the PLC program and scan-study contract on it.
+Status: frozen by WP-2.2 (CC-6) as language `quantic-st-0.1`. The contract that carries
+programs, I/O and scan results is `docs/specs/plc-program-and-scan.md`. WP-2.2 changed
+three rules of the WP-2.8 draft to follow the sources: counters stop at their limits
+(section 6), TIME has a range, and a negative timer preset is a fault. The engine is
+brought into line in WP-2.9.
 
 This is a deliberately bounded subset of IEC 61131-3 Structured Text. IEC 61131-3
 itself is not owned (PLAN.md section 9, paid-source table), so nothing here claims
@@ -15,6 +19,8 @@ Sources:
   section 9.1 p. 225, Figures 9.2 and 9.3 p. 226; counters section 10.1 p. 245.
 - Petruzella, F. D., Programmable Logic Controllers, 3rd ed (McGraw-Hill, 2005),
   `petruzella-2005-plc`, for background on timer and counter instructions.
+- Beckhoff Information System, Tc2_Standard TON, TOF, TP, CTU and CTUD pages, accessed
+  2026-10-14 (`beckhoff-tc2-standard-2026`). Behaviour is cited; nothing is copied.
 
 ## 1. Program structure
 
@@ -26,6 +32,11 @@ PROGRAM <name>
   <statements>
 END_PROGRAM
 ```
+
+Under CC-6 the declarations are structured data in the `automation.plc` model and the
+model's `program.body` holds only the statements; the engine joins the two, and
+diagnostics give lines and columns of the body. The full text form below remains the
+engine's direct input for tests.
 
 A declaration is `name {, name} : TYPE [:= constant] ;`. Inputs take no initial value.
 Function-block instances are declared only in VAR and take no initial value. Each name is
@@ -55,7 +66,8 @@ declared once.
 ## 4. Types and operators
 
 Types: BOOL; INT (16-bit, -32768 to 32767); REAL (IEEE 754 binary32: values are rounded
-to single precision on assignment); TIME (whole milliseconds).
+to single precision on assignment); TIME (whole milliseconds, -2147483648 to 2147483647
+ms, about 24.8 days either way, a declared range: a result outside it is TIME_OVERFLOW).
 
 Precedence, lowest first (Bolton Table 6.3, p. 168): OR; XOR; AND and &; = and <>;
 <, >, <= and >=; + and -; *, / and MOD; unary - and NOT; **; parentheses. Binary
@@ -101,30 +113,40 @@ instance.
 Timer shapes follow Bolton Figure 9.3 (p. 226); counters follow section 10.1 (p. 245).
 Rules marked (choice) are Quantic subset choices where the books do not decide.
 
+Timers take the preset PT at every call: a PT changed during timing applies from that
+call (choice; the Beckhoff pages are silent). A negative PT is a runtime fault,
+TIMER_PRESET (choice).
+
 **TON (on-delay).** While IN is TRUE, ET = t - t_start, capped at PT, where t_start is the
 scan in which IN was first seen TRUE; Q = (ET >= PT). When IN is FALSE, Q = FALSE and
-ET = 0 (choice: immediate reset).
+ET = 0 (Beckhoff TON: a falling edge resets).
 
 **TOF (off-delay).** While IN is TRUE, Q = TRUE and ET = 0. When IN falls, timing starts:
 ET = t - t_fall capped at PT, and Q stays TRUE until ET >= PT. After expiry ET holds PT
-until IN is TRUE again (choice). Before IN has ever been TRUE, Q = FALSE.
+until IN is TRUE again (Beckhoff TOF: Q is FALSE when IN is FALSE and ET = PT). Before
+IN has ever been TRUE, Q = FALSE (choice).
 
 **TP (pulse).** A rising edge of IN starts a pulse: Q = TRUE while ET = t - t_start < PT,
 whatever IN does. A rising edge during a pulse is ignored (choice: not retriggerable).
 After the pulse, ET holds PT while IN stays TRUE and returns to 0 when IN is FALSE
 (choice).
 
-**CTU (up counter).** Each rising edge of CU adds 1. R sets CV = 0 and takes priority
-(choice). Q = (CV >= PV).
+Counters use INT for PV and CV, as in Bolton Figure 10.1 (p. 246); Beckhoff uses WORD.
 
-**CTD (down counter).** LD loads CV = PV and takes priority (choice). Each rising edge of
-CD subtracts 1. Q = (CV <= 0).
+**CTU (up counter).** R sets CV = 0 and takes priority (choice). Otherwise a rising edge
+of CU adds 1 while CV < PV: counting stops at PV (Bolton Figure 10.1b, p. 246).
+Q = (CV >= PV) (Beckhoff CTU).
+
+**CTD (down counter).** LD loads CV = PV and takes priority (choice). Otherwise a rising
+edge of CD subtracts 1 while CV > 0: counting stops at 0 (Bolton Figure 10.1a, p. 246).
+Q = (CV <= 0).
 
 **CTUD (up-down counter).** Priority (choice): R (CV = 0), then LD (CV = PV), then edges.
-A rising CU adds 1, a rising CD subtracts 1, and both rising in the same scan leave CV
-unchanged (choice). QU = (CV >= PV), QD = (CV <= 0).
+A rising CU adds 1 up to the INT maximum (choice: the sources do not stop CTUD at PV); a
+rising CD subtracts 1 only while CV > 0 (Beckhoff CTUD); both rising in the same scan
+leave CV unchanged (choice). QU = (CV >= PV) and QD = (CV <= 0) (Beckhoff CTUD).
 
-All counters saturate at the INT limits instead of wrapping (choice). Edges are detected
+No counter wraps. Edges are detected
 between successive calls of the same instance; the first call compares with FALSE. A zero
 PT gives: TON on in the same scan, TOF off in the falling scan, TP no pulse.
 
@@ -143,6 +165,8 @@ as a PLC faults, keeping the scans already completed. Each is a diagnostic whose
 | TYPE_MISMATCH | Operand, assignment, condition or block input of the wrong type |
 | READ_ONLY | Assignment to an input |
 | INT_OVERFLOW | INT result or constant outside -32768 to 32767 |
+| TIME_OVERFLOW | TIME result or constant outside the declared range |
+| TIMER_PRESET | Negative timer preset PT |
 | DIVIDE_BY_ZERO | / or MOD by zero |
 | REAL_RANGE | REAL result not finite or not real |
 | TIME_PRECISION | Duration that is not a whole number of milliseconds |

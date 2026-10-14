@@ -1,0 +1,16 @@
+id: beckhoff-tc2-standard-2026
+title: "TwinCAT 2 Tc2_Standard library: TON, TOF, TP, CTU and CTUD"
+publisher: Beckhoff Automation, Beckhoff Information System
+urls:
+  - https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74406539.html
+  - https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74405003.html
+  - https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74408075.html
+  - https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74400523.html
+  - https://infosys.beckhoff.com/content/1033/tcplclib_tc2_standard/74402059.html
+accessed: 2026-10-14
+type: free-vendor-documentation
+citation: TON IN falling resets Q and ET; TOF Q TRUE and ET 0 while IN TRUE, Q FALSE when IN FALSE and ET = PT; TP Q TRUE for PT irrespective of IN, ET 0 when IN and Q are FALSE; CTU Q when CV >= PV; CTUD CD decrements only while CV > 0, QD when CV is 0.
+gaps: The pages do not state PT changes during timing, TP retriggering, ET after a pulse while IN stays TRUE, RESET versus count priority, RESET versus LOAD priority, simultaneous CU and CD edges, or overflow. These are Quantic subset choices in docs/specs/structured-text-subset.md section 6. Beckhoff counters use WORD; the Quantic subset uses INT after Bolton Figure 10.1.
+purpose: WP-2.2 (CC-6) timer and counter semantics; WP-2.9 engine alignment
+terms: Behaviour cited, no vendor text, figures or code copied.
+evidence: docs/specs/structured-text-subset.md; docs/specs/plc-program-and-scan.md; packages/py/qe_core/tests/test_plc_contracts.py

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.1.0:automation:plc-scan-request",
+  "title": "PlcScanRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "model_file",
+    "execution",
+    "start",
+    "events",
+    "bindings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "model_file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:studies:time-stepped-request"
+    },
+    "start": {
+      "const": "cold"
+    },
+    "events": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "classification",
+        "description"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "classification": {
+          "const": "authored"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "signal_id",
+          "target"
+        ],
+        "properties": {
+          "signal_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "variable"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "variable"
+                  },
+                  "variable": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                    "maxLength": 64
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "port"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "process_port"
+                  },
+                  "port": {
+                    "enum": [
+                      "overload_event",
+                      "overload_reset",
+                      "contactor_closed",
+                      "overload_tripped",
+                      "motor_running"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
