@@ -35,7 +35,7 @@ Rules:
 1. **Done means the implementer has passed all tests and acceptance commands with green CI.** The implementing agent marks its own WP Done. There is no per-WP cross-verification. A different model cross-audits each milestone, first M0 in WP-0.10. Historical Done lines with a `verified by` field remain valid records.
 2. **Changed design is a record, not a hiding place.** When a model departs from a WP as written, it sets the Changed design status _before_ continuing, and copies the same sentence into that WP's `Change record:` list. The Change record is permanent. When the WP is later completed, the status becomes Done, but the Change record stays.
 3. **In progress is optional.** A WP normally goes from Not started to Done in a single pull request. Use In progress only when a WP must pause across sessions or is blocked; a blocked WP appends `blocked by <WP or reason>` to its status line.
-4. WP-0.3 (plan checker and owned-path guard) is deferred until Peter reopens it. Manual status and ownership checks apply meanwhile; the absent checker does not block other WPs.
+4. WP-0.3 (plan checker and owned-path guard) is Done. CI validates every status line and checks that a WP branch changes only its owned paths.
 
 ### 0.2 Who edits what in this file
 
@@ -231,7 +231,7 @@ Lane holders can be swapped (decision D5). **A different model cross-audits each
 
 | Shared resource | Conflict-free mechanism                                                                          |
 | --------------- | ------------------------------------------------------------------------------------------------ |
-| Source files    | Each WP owns disjoint paths; manual review checks ownership while WP-0.3 is deferred   |
+| Source files    | Each WP owns disjoint paths; the WP-0.3 checker enforces ownership in CI               |
 | PLAN.md         | Each model edits only its WP's status lines; WP blocks are far apart, so git merges them cleanly |
 | Change log      | One new file per event in `docs/log/`; nobody edits an existing log file                         |
 | Source register | One YAML file per source in `docs/sources/entries/`                                              |
@@ -286,6 +286,8 @@ The learning note named in a WP is an authorized path even when omitted from its
 | D7  | Reference library                                | Books and paid standards in the private repo `Pietrols/QE-References` (local `~/QE-References/`), never in this repo; verification use only, readable by cloud agents | Agreed by Peter, 2026-10-07; private repo agreed 2026-10-14 |
 | D8  | Monorepo                                         | Monorepo with strict boundaries (section 2.3)                                                  | Recommended; recorded in ADR-0001 by WP-0.1 |
 | D9  | Contract source of truth                         | JSON Schema, with generated Python and TypeScript types                                        | Recommended; recorded in ADR-0002 by WP-0.4 |
+| D10 | LV minimum voltage factor c_min                  | 0.95 for low-voltage networks of both tolerance classes (+6% and +10%), per Kasikci 1st ed (2002) Table 1.1 p. 8. IEC 60909-0:2016 Table 1 (as reported by DIgSILENT) gives 0.90 for the +10% class; 0.95 gives a minimum current about 5.6% higher there. Revisit when the 2016 or 2026 text is owned | Decided by Peter, 2026-10-14 |
+| D11 | Every study result shows its working             | Reports state each governing equation, the substituted input values and the result, with the book source, so a reviewer can redo the calculation by hand | Required by Peter, 2026-10-14 |
 
 ---
 
@@ -908,6 +910,76 @@ Steps:
 6. Keep the first slice of each suite small and end to end: input, engine, contract-valid result, report section, CLI and API run, a web view.
 
 Acceptance: `tools/check_plan` passes, and Peter approves the section 9 plan in chat.
+Learning note: none.
+Change record: none
+
+### WP-1.11 Contract Change CC-7: auditable calculation traces in results and reports
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.7
+Owned paths: `contracts/power/shortcircuit-result.schema.json`, `contracts/power/motorstart-result.schema.json`, `contracts/v0.2/power/shortcircuit-result.schema.json`, `contracts/v0.3/power/motorstart-result.schema.json`, `docs/specs/shortcircuit-result.md`, `docs/specs/motorstart-result.md`, `docs/decisions/ADR-0006-calculation-traces.md`, `packages/py/qe_core/**`, `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/src/qe_power/adapters/pandapower/motorstart.py`, `packages/py/qe_power/tests/**`, `packages/py/qe_report/**`, `packages/ts/contracts/**`, `apps/web/**`, `tests/integration/**`, `examples/shortcircuit/**`, `examples/motorstart/**`
+
+Peter required on 2026-10-14 (decision D11) that results carry their working, after the Phase 1 audit dispute 2026-10-14-claude-WP-1.7-dispute.md.
+
+Steps:
+
+1. Additive Contract Change. Short-circuit result 0.2.0 to 0.3.0 adds an optional per-bus `trace`: nominal voltage, voltage factor, source voltage, the element impedances (formula, inputs and ohms referred to the fault bus) for single-source radial components, the Thevenin impedance R + jX at the fault bus, R/X, kappa and its method, m, n and the frequency used. Motor-start result 0.3.0 to 0.4.0 adds an optional `motor_trace`: rated current, locked-rotor current, impedance magnitude and angle, R and X, and the equivalent shunt. Archive the previous schemas byte for byte and keep validating them.
+2. The adapters fill the traces from their own independent arithmetic: element impedances from the inputs (external grid Z_Q = c U_n^2 / S''_kQ, transformer Z_T = (u_k/100) U_rT^2 / S_rT with K_T, line (r' + j x') l with temperature correction, generator K_G (R_G + j X''_d)), summed along the radial path and referred by rated transformer ratios. That sum must agree with the engine's Thevenin impedance to a relative 1e-9, and Ik'' = c U_n / (sqrt(3) |Z_k|) must reproduce the engine current; otherwise the value is unavailable with a TRACE_MISMATCH diagnostic.
+3. Reports (Markdown and PDF) gain a Method section with every governing equation and its book source, and a per-bus worked calculation showing each equation with the substituted numbers and the result. The load-flow report gains its method (bus power-balance equations, Newton-Raphson update, convergence test, branch flow, losses, loading and reactive-limit rule).
+4. Use ASCII notation in reports (sqrt, kappa, ^) so PDF fonts render it.
+
+Reference: Kasikci, Short Circuits in Power Systems, 1st ed 2002: eq. 9.3 p. 76 (K_G), eq. 9.14 p. 79 (K_T), eqs. 11.22 and 11.23 p. 98 (ip, kappa), eqs. 13.1 and 13.2 p. 117 (n, m), p. 12 (temperature factor); Fitzgerald, Electric Machinery, 6th ed 2003, section 6.6.2 pp. 333 to 334 (locked rotor); Glover, Power System Analysis and Design, 6th ed 2017, sections 6.4 to 6.6 (Newton-Raphson, PV buses).
+
+Acceptance:
+
+- `uv run pytest` passes, including tests that recompute each worked line of the example reports by hand from the inputs.
+- `uv run qe study run examples/shortcircuit --study shortcircuit --report-format pdf` and the same for `examples/motorstart` produce reports whose worked calculations match the tables; old 0.2.0 and 0.3.0 results still validate; `pnpm generate:check` and CI pass.
+
+Learning note: `docs/learning/auditable-calculation-traces.md`, explaining why a study must show its working and how to check a trace by hand.
+Change record: none
+
+### WP-1.12 Short-circuit cases unlocked from owned references
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.11
+Owned paths: `packages/py/qe_power/src/qe_power/adapters/pandapower/shortcircuit.py`, `packages/py/qe_power/tests/**`, `tests/integration/test_shortcircuit.py`, `examples/shortcircuit/**`, `docs/learning/three-phase-short-circuit.md`
+
+Steps:
+
+1. Voltage factor (D10): c_min = 0.95 at LV for both tolerance classes; c_max stays 1.05 (+6%) and 1.10 (+10%). Exactly 1 kV stays unavailable, with the corrected reason: both owned books put 1000 V in the LV band but the engine applies MV factors at 1.0 kV.
+2. K_T in the minimum case = 1: Kasikci ch. 9 p. 75 states the impedance corrections are needed above all for the greatest current and does not list them for the smallest; pandapower 3.5.6 cites IEC 60909-0:2016 clause 6.3.3 for the same rule; K_T = 1 gives the larger impedance, the conservative direction for minimum duty.
+3. Thermal current from the book equation (Kasikci eq. 13.2 p. 117) in the adapter, with the request frequency (50 or 60 Hz) and the limit m = 2 at kappa = 2, replacing the engine's m = 0 shortcut and 50-Hz hardcode.
+4. Line end temperature other than 20 C: R = R_20 (1 + 0.004 (theta_e - 20)), Kasikci p. 12.
+5. Generator correction with unequal network and machine rated voltage (p_G = 0): K_G = (U_n/U_rG) c_max / (1 + x''_d sin phi_rG), Kasikci eq. 9.3 p. 76 and Das eq. 8.11. Nonzero p_G stays unavailable.
+6. Meshed single-frequency components: peak current by method C (Kasikci p. 99: reactances at 20 Hz for 50 Hz, 24 Hz for 60 Hz), only where a hand-derived meshed reference agrees with the engine.
+7. Each unlock has a hand-derived test with inputs, equations and the book page in the test docstring.
+
+Acceptance:
+
+- `uv run pytest packages/py/qe_power tests/integration/test_shortcircuit.py -v` passes with the new hand references.
+- The example report shows the newly available values with their worked calculations; CI passes.
+
+Learning note: `docs/learning/three-phase-short-circuit.md` (updated), explaining each decision and its source.
+Change record: none
+
+### WP-1.13 Pin the Node version for local web work
+
+Status: [ ] Not started
+Lane: A (Claude)
+Depends on: WP-1.6
+Owned paths: `apps/web/**`, `.nvmrc`, `package.json`, `.github/workflows/web.yml`
+
+Steps:
+
+1. Add `.nvmrc` with the CI Node major and an `engines` range in the root `package.json`; make CI read `.nvmrc`.
+2. Make the web tests independent of the host's global `localStorage` (Node 25 and later define one that shadows jsdom's) by binding jsdom's storage in a test setup file.
+
+Acceptance:
+
+- `pnpm --filter qe-web test` passes under Node 24 and under Node 26; CI passes.
+
 Learning note: none.
 Change record: none
 

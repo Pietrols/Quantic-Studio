@@ -28,7 +28,7 @@ Do this before claiming or continuing any work:
    - `git diff <checkpoint>..HEAD -- PLAN.md contracts/ AGENTS.md`
    - every new file in `docs/log/` since then
 5. For every WP that became Done since your checkpoint: check its acceptance and CI evidence, and that any Changed design entry has all three clauses. Historical verifier fields remain valid records; new Done entries do not need a verifier. If something is wrong, write a `dispute` log file and tell Peter.
-6. WP-0.3 is deferred until Peter reopens it. Run `uv run python -m check_plan --summary PLAN.md` only once the checker exists; its absence does not block work.
+6. Run `PYTHONPATH=tools uv run python -m check_plan --summary PLAN.md` (WP-0.3 is Done and CI runs the same checker).
 7. Only then claim or continue a WP.
 
 ## 3. Doing a WP

@@ -1,5 +1,7 @@
 # ADR-0003: Four product suites, specialised engines, shared infrastructure
 
+Numbering note: this record shares the number 0003 with ADR-0003-short-circuit-contracts.md. Both names are kept because logs cite them; new ADRs start at 0006.
+
 Status: Accepted direction (Peter, 2026-10-10). Detailed WPs follow when development resumes.
 Context: Peter's alignment notes of 2026-10-10 and four reference documents (ETAP and PowerWorld; PLC, HMI and SCADA; Proteus, Simulink and Simscape; PVsyst and HelioScope). The references are study material, not blueprints. We do not clone products.
 
