@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Authored PV routing fixture",
+  "models": [
+    {
+      "model_id": "solar",
+      "model_type": "pv.site",
+      "file": "solar.json"
+    }
+  ],
+  "studies": [
+    {
+      "study_id": "yield-study",
+      "study_type": "pv.yield",
+      "model_id": "solar",
+      "request_file": "yield.json"
+    }
+  ],
+  "asset_registry": {
+    "schema_version": "1.0.0",
+    "assets": [
+      {
+        "asset_id": "pv-asset",
+        "name": "Authored binding",
+        "representations": [
+          {
+            "model_id": "solar",
+            "element_type": "arrays",
+            "element_id": "array"
+          }
+        ]
+      }
+    ]
+  }
+}

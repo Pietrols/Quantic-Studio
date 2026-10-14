@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Authored PLC routing fixture",
+  "models": [
+    {
+      "model_id": "starter",
+      "model_type": "automation.plc",
+      "file": "starter.json"
+    }
+  ],
+  "studies": [
+    {
+      "study_id": "starter-scan",
+      "study_type": "plc.scan",
+      "model_id": "starter",
+      "request_file": "scan.json"
+    }
+  ],
+  "asset_registry": {
+    "schema_version": "1.0.0",
+    "assets": [
+      {
+        "asset_id": "plc-asset",
+        "name": "Authored binding",
+        "representations": [
+          {
+            "model_id": "starter",
+            "element_type": "devices",
+            "element_id": "k1"
+          }
+        ]
+      }
+    ]
+  }
+}

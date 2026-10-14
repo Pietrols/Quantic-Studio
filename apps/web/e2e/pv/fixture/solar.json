@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "site_id": "test-site",
+  "name": "Authored hypothetical site",
+  "latitude_deg": 0,
+  "longitude_deg": 0,
+  "elevation_m": 0,
+  "orientation_convention": "north_clockwise_tilt_from_horizontal",
+  "albedo": 0.2,
+  "modules": [
+    {
+      "module_id": "module",
+      "reference_dc_power_w": 300,
+      "reference_cell_temperature_c": 25,
+      "power_temperature_coefficient_per_k": -0.004,
+      "temperature": {
+        "model": "ross",
+        "noct_c": 45
+      }
+    }
+  ],
+  "inverters": [
+    {
+      "inverter_id": "inverter",
+      "dc_input_limit_w": 1000,
+      "ac_rating_w": 900,
+      "nominal_efficiency": 0.9,
+      "reference_efficiency": 0.95
+    }
+  ],
+  "arrays": [
+    {
+      "array_id": "array",
+      "mount": "fixed_tilt",
+      "tilt_deg": 0,
+      "azimuth_deg": 180,
+      "module_id": "module",
+      "module_count": 5,
+      "inverter_id": "inverter"
+    }
+  ],
+  "losses": [
+    {
+      "loss_id": "soiling",
+      "name": "Hypothetical soiling",
+      "stage": "irradiance",
+      "fraction": 0.01
+    }
+  ]
+}

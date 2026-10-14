@@ -13,19 +13,21 @@ import argparse
 import importlib
 import json
 import sys
+from collections.abc import Callable
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from qe_core import load_project, validate
 from qe_report import (
     PDFRenderError,
     VoltageLimits,
-    render_loadflow_report,
-    render_motorstart_report,
     render_pdf,
-    render_shortcircuit_report,
+    render_study_report,
 )
+
+from . import plc, pv
+from .inputs import check_project, context
 
 # Each solver module must expose run_loadflow_file(network_path, request) -> loadflow-result.
 SOLVERS: dict[str, str] = {
@@ -33,6 +35,11 @@ SOLVERS: dict[str, str] = {
     "textbook": "qe_power.textbook",
 }
 DEFAULT_SOLVER = "pandapower"
+
+SUITES = {
+    ("pv.site", "pv.yield", "0.1.0"): pv.execute,
+    ("automation.plc", "plc.scan", "0.1.0"): plc.execute,
+}
 
 
 def _load_solver(name: str) -> Callable[[Path, dict[str, Any]], dict[str, Any]]:
@@ -49,8 +56,10 @@ def _print_diagnostics(diagnostics: list[Any]) -> None:
         if ref:
             where = f" [{ref.get('element_type')}:{ref.get('element_id')}"
             where += f".{ref['field']}]" if ref.get("field") else "]"
-        print(f"{item['severity'].upper()} {item['code']}{where}: {item['message']}",
-              file=sys.stderr)
+        print(
+            f"{item['severity'].upper()} {item['code']}{where}: {item['message']}",
+            file=sys.stderr,
+        )
 
 
 def run_study(
@@ -65,6 +74,11 @@ def run_study(
         print("ERROR REPORT_FORMAT: choose markdown or pdf", file=sys.stderr)
         return 2
     root = Path(project_folder).resolve()
+    try:
+        check_project(root)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR {getattr(exc, 'code', 'INPUT_READ')}: {exc}", file=sys.stderr)
+        return 2
     loaded = load_project(root)
     if not loaded.ok:
         _print_diagnostics(loaded.diagnostics)
@@ -77,28 +91,80 @@ def run_study(
     matches = matches or [s for s in project.studies if s.study_type == study]
     if len(matches) != 1:
         found = ", ".join(s.study_id for s in project.studies) or "none"
-        print(f"ERROR STUDY_SELECTION: expected exactly one study matching '{study}', "
-              f"found {len(matches)} (studies in project: {found})", file=sys.stderr)
+        print(
+            f"ERROR STUDY_SELECTION: expected exactly one study matching '{study}', "
+            f"found {len(matches)} (studies in project: {found})",
+            file=sys.stderr,
+        )
         return 2
     selected = matches[0]
     model = project.model(selected.model_id)
-    if selected.study_type not in ("loadflow", "shortcircuit", "motorstart") or model.model_type != "power.network":
-        print(f"ERROR UNSUPPORTED_STUDY: {selected.study_type} on {model.model_type} is stored but cannot execute", file=sys.stderr)
+    suite = SUITES.get(
+        (model.model_type, selected.study_type, model.data.get("schema_version"))
+    )
+    if suite and selected.request.get("schema_version") == model.data.get(
+        "schema_version"
+    ):
+        if solver != DEFAULT_SOLVER:
+            print(
+                "ERROR UNSUPPORTED_SOLVER: suite engines use their registered handler",
+                file=sys.stderr,
+            )
+            return 2
+        try:
+            inputs = context(root, project, model, selected)
+            response = suite(
+                {
+                    **inputs,
+                    "study_type": selected.study_type,
+                    "model_type": model.model_type,
+                    "model_id": model.model_id,
+                    "project_name": project.name,
+                    "report_format": report_format,
+                }
+            )
+            if response.get("error"):
+                _print_diagnostics(response["diagnostics"])
+                return 2
+            return export_suite_response(
+                root, selected.study_id, response, report_format
+            )
+        except (OSError, ValueError) as exc:
+            print(
+                f"ERROR {getattr(exc, 'code', 'STUDY_INPUT')}: {exc}", file=sys.stderr
+            )
+            return 2
+    if (
+        selected.study_type not in ("loadflow", "shortcircuit", "motorstart")
+        or model.model_type != "power.network"
+    ):
+        print(
+            f"ERROR UNSUPPORTED_STUDY: {selected.study_type} on {model.model_type} is stored but cannot execute",
+            file=sys.stderr,
+        )
         return 2
     network = model.network
 
     if selected.study_type in ("shortcircuit", "motorstart") and solver != "pandapower":
-        print(f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement {selected.study_type}", file=sys.stderr)
+        print(
+            f"ERROR UNSUPPORTED_SOLVER: '{solver}' does not implement {selected.study_type}",
+            file=sys.stderr,
+        )
         return 2
 
     try:
         if selected.study_type in ("shortcircuit", "motorstart"):
-            run = getattr(importlib.import_module(SOLVERS[solver]), f"run_{selected.study_type}_file")
+            run = getattr(
+                importlib.import_module(SOLVERS[solver]),
+                f"run_{selected.study_type}_file",
+            )
         else:
             run = solver_loader(solver)
     except ImportError as exc:
-        print(f"ERROR SOLVER_UNAVAILABLE: solver '{solver}' is not installed ({exc})",
-              file=sys.stderr)
+        print(
+            f"ERROR SOLVER_UNAVAILABLE: solver '{solver}' is not installed ({exc})",
+            file=sys.stderr,
+        )
         return 3
 
     network_path = root / model.file
@@ -117,32 +183,48 @@ def run_study(
 
     problems = validate(result, f"power/{selected.study_type}-result")
     if not problems and result["network_id"] != network.network_id:
-        print("ERROR RESULT_COVERAGE: result network differs from selected model", file=sys.stderr)
+        print(
+            "ERROR RESULT_COVERAGE: result network differs from selected model",
+            file=sys.stderr,
+        )
         return 2
     if selected.study_type == "shortcircuit" and not problems:
         expected = {b["bus_id"] for b in network.data["buses"]}
-        if {c["case"] for c in result["case_results"]} != set(selected.request["cases"]) or any(
-                {b["bus_id"] for b in c["bus_results"]} != expected for c in result["case_results"]):
-            print("ERROR RESULT_COVERAGE: fault result does not cover requested buses/cases", file=sys.stderr)
+        if {c["case"] for c in result["case_results"]} != set(
+            selected.request["cases"]
+        ) or any(
+            {b["bus_id"] for b in c["bus_results"]} != expected
+            for c in result["case_results"]
+        ):
+            print(
+                "ERROR RESULT_COVERAGE: fault result does not cover requested buses/cases",
+                file=sys.stderr,
+            )
             return 2
     if selected.study_type == "motorstart" and not problems:
         expected = {b["bus_id"] for b in network.data["buses"]}
-        if ({b["bus_id"] for b in result["bus_results"]} != expected
-                or result["motor"] != selected.request["motor"]
-                or result["dip_limit_percent"] != selected.request["dip_limit_percent"]
-                or result["network_id"] != network.network_id):
-            print("ERROR RESULT_COVERAGE: motor result differs from requested network/motor/limit", file=sys.stderr)
+        if (
+            {b["bus_id"] for b in result["bus_results"]} != expected
+            or result["motor"] != selected.request["motor"]
+            or result["dip_limit_percent"] != selected.request["dip_limit_percent"]
+            or result["network_id"] != network.network_id
+        ):
+            print(
+                "ERROR RESULT_COVERAGE: motor result differs from requested network/motor/limit",
+                file=sys.stderr,
+            )
             return 2
     if problems:
-        print("ERROR RESULT_CONTRACT: solver returned a result that breaks the contract",
-              file=sys.stderr)
+        print(
+            "ERROR RESULT_CONTRACT: solver returned a result that breaks the contract",
+            file=sys.stderr,
+        )
         _print_diagnostics(problems)
         return 2
 
     out_dir = root / "out"
-    render = {"loadflow": render_loadflow_report, "shortcircuit": render_shortcircuit_report,
-              "motorstart": render_motorstart_report}[selected.study_type]
-    report = render(
+    report = render_study_report(
+        selected.study_type,
         project_name=project.name,
         network=network.data,
         request=selected.request,
@@ -154,7 +236,9 @@ def run_study(
         out_dir.mkdir(exist_ok=True)
         # A Markdown-only rerun must not leave a PDF of a different study behind.
         (out_dir / "report.pdf").unlink(missing_ok=True)
-        (out_dir / "results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        (out_dir / "results.json").write_text(
+            json.dumps(result, indent=2) + "\n", encoding="utf-8"
+        )
         (out_dir / "report.md").write_text(report, encoding="utf-8")
         if pdf is not None:
             temporary = out_dir / ".report.pdf.tmp"
@@ -165,45 +249,110 @@ def run_study(
                 temporary.unlink(missing_ok=True)
             print(f"PDF report: {out_dir / 'report.pdf'}")
     except (PDFRenderError, OSError) as exc:
-        print(f"ERROR REPORT_EXPORT [study:{selected.study_id}.report_format]: {exc}", file=sys.stderr)
+        print(
+            f"ERROR REPORT_EXPORT [study:{selected.study_id}.report_format]: {exc}",
+            file=sys.stderr,
+        )
         return 2
 
     if selected.study_type == "shortcircuit":
         _print_diagnostics(result["diagnostics"])
         for case in result["case_results"]:
             _print_diagnostics(case["diagnostics"])
-        print(f"Short-circuit study {result['status'].upper()} with {solver}. "
-              f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
+        print(
+            f"Short-circuit study {result['status'].upper()} with {solver}. "
+            f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}"
+        )
         return 0 if result["status"] == "success" else 1
 
     if selected.study_type == "motorstart":
         _print_diagnostics(result["diagnostics"])
-        compliance = "UNKNOWN" if result["passes_limit"] is None else "PASS" if result["passes_limit"] else "FAIL"
-        print(f"Motor-start calculation {result['status'].upper()}; dip limit {compliance}. "
-              f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
+        compliance = (
+            "UNKNOWN"
+            if result["passes_limit"] is None
+            else "PASS"
+            if result["passes_limit"]
+            else "FAIL"
+        )
+        print(
+            f"Motor-start calculation {result['status'].upper()}; dip limit {compliance}. "
+            f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}"
+        )
         return 0 if result["status"] == "success" and result["passes_limit"] else 1
 
     converged = result["convergence"]["converged"]
-    print(f"{'Converged' if converged else 'DID NOT CONVERGE'} in "
-          f"{result['convergence']['iterations']} iterations with {solver}. "
-          f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}")
+    print(
+        f"{'Converged' if converged else 'DID NOT CONVERGE'} in "
+        f"{result['convergence']['iterations']} iterations with {solver}. "
+        f"Wrote {out_dir / 'results.json'} and {out_dir / 'report.md'}"
+    )
     return 0 if converged else 1
 
 
+def export_suite_response(root, study_id, response, report_format):
+    """Export a validated suite response. Never write model, request or foreign files."""
+    report = response["report_markdown"]
+    result = response["result"]
+    try:
+        pdf = render_pdf(report) if report_format == "pdf" else None
+        out = root / "out"
+        if out.is_symlink() or not out.resolve().is_relative_to(root):
+            raise ValueError("Output must remain inside the selected project")
+        out.mkdir(exist_ok=True)
+        content = {
+            "results.json": json.dumps(result, indent=2, allow_nan=False) + "\n",
+            "report.md": report,
+        }
+        for name in [*content, "report.pdf"]:
+            if (out / name).is_symlink():
+                raise ValueError("Output cannot replace a symlink")
+        for name, text in content.items():
+            (out / name).write_text(text, encoding="utf-8")
+        if pdf is None:
+            (out / "report.pdf").unlink(missing_ok=True)
+        else:
+            (out / "report.pdf").write_bytes(pdf)
+    except (PDFRenderError, OSError, ValueError) as exc:
+        print(
+            f"ERROR REPORT_EXPORT [study:{study_id}.report_format]: {exc}",
+            file=sys.stderr,
+        )
+        return 2
+    _print_diagnostics(result["execution"]["diagnostics"])
+    print(
+        f"Study {study_id}: {result['execution']['status']}. Wrote {out / 'results.json'} and {out / 'report.md'}"
+    )
+    return 0 if result["execution"]["status"] == "complete" else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="qe", description="Quantic Studio command line")
+    parser = argparse.ArgumentParser(
+        prog="qe", description="Quantic Studio command line"
+    )
     commands = parser.add_subparsers(dest="command", required=True)
     study = commands.add_parser("study", help="Run engineering studies").add_subparsers(
         dest="study_command", required=True
     )
     run = study.add_parser("run", help="Run one study in a project folder")
     run.add_argument("project_folder", help="Folder containing manifest.json")
-    run.add_argument("--study", required=True, help="Study id or type, e.g. loadflow, shortcircuit or motorstart")
+    run.add_argument(
+        "--study",
+        required=True,
+        help="Study id or type, e.g. loadflow, shortcircuit or motorstart",
+    )
     run.add_argument("--solver", choices=sorted(SOLVERS), default=DEFAULT_SOLVER)
-    run.add_argument("--report-format", choices=["markdown", "pdf"], default="markdown",
-                     help="PDF also retains report.md and results.json")
-    run.add_argument("--vmin", type=float, default=0.95, help="Lowest acceptable voltage (pu)")
-    run.add_argument("--vmax", type=float, default=1.05, help="Highest acceptable voltage (pu)")
+    run.add_argument(
+        "--report-format",
+        choices=["markdown", "pdf"],
+        default="markdown",
+        help="PDF also retains report.md and results.json",
+    )
+    run.add_argument(
+        "--vmin", type=float, default=0.95, help="Lowest acceptable voltage (pu)"
+    )
+    run.add_argument(
+        "--vmax", type=float, default=1.05, help="Highest acceptable voltage (pu)"
+    )
     return parser
 
 
@@ -214,7 +363,13 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         print(f"ERROR VOLTAGE_LIMITS: {exc}", file=sys.stderr)
         return 2
-    return run_study(args.project_folder, args.study, args.solver, limits, report_format=args.report_format)
+    return run_study(
+        args.project_folder,
+        args.study,
+        args.solver,
+        limits,
+        report_format=args.report_format,
+    )
 
 
 if __name__ == "__main__":

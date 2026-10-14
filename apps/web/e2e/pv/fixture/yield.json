@@ -1,0 +1,219 @@
+{
+  "schema_version": "0.1.0",
+  "model_file": "solar.json",
+  "execution": {
+    "schema_version": "0.1.0",
+    "request_id": "yield",
+    "study_id": "yield-study",
+    "model_id": "solar",
+    "time_axis": {
+      "kind": "utc",
+      "unit": "s",
+      "origin": "2024-01-01T00:00:00Z"
+    },
+    "clock": "fixed_s",
+    "start_time_s": 0,
+    "stop_time_s": 7200,
+    "step_size_s": 3600,
+    "signals": [
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "site.ac_power_w",
+        "model_id": "solar",
+        "name": "site.ac_power_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.sun_zenith_deg",
+        "model_id": "solar",
+        "name": "array.sun_zenith_deg",
+        "data_type": "real",
+        "unit": "degree",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.sun_azimuth_deg",
+        "model_id": "solar",
+        "name": "array.sun_azimuth_deg",
+        "data_type": "real",
+        "unit": "degree",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.poa_beam_w_m2",
+        "model_id": "solar",
+        "name": "array.poa_beam_w_m2",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.poa_sky_w_m2",
+        "model_id": "solar",
+        "name": "array.poa_sky_w_m2",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.poa_ground_w_m2",
+        "model_id": "solar",
+        "name": "array.poa_ground_w_m2",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.poa_global_w_m2",
+        "model_id": "solar",
+        "name": "array.poa_global_w_m2",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.poa_effective_w_m2",
+        "model_id": "solar",
+        "name": "array.poa_effective_w_m2",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.cell_temperature_c",
+        "model_id": "solar",
+        "name": "array.cell_temperature_c",
+        "data_type": "real",
+        "unit": "degC",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.dc_gross_w",
+        "model_id": "solar",
+        "name": "array.dc_gross_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.dc_net_w",
+        "model_id": "solar",
+        "name": "array.dc_net_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.ac_gross_w",
+        "model_id": "solar",
+        "name": "array.ac_gross_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.ac_net_w",
+        "model_id": "solar",
+        "name": "array.ac_net_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.inverter_loss_w",
+        "model_id": "solar",
+        "name": "array.inverter_loss_w",
+        "data_type": "real",
+        "unit": "W",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "array.loss.soiling",
+        "model_id": "solar",
+        "name": "array.loss.soiling",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "output"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "ghi",
+        "model_id": "solar",
+        "name": "ghi",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "dni",
+        "model_id": "solar",
+        "name": "dni",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "dhi",
+        "model_id": "solar",
+        "name": "dhi",
+        "data_type": "real",
+        "unit": "W/m^2",
+        "causality": "input"
+      },
+      {
+        "schema_version": "0.1.0",
+        "signal_id": "temp",
+        "model_id": "solar",
+        "name": "temp",
+        "data_type": "real",
+        "unit": "degC",
+        "causality": "input"
+      }
+    ],
+    "input_series_file": "weather.json"
+  },
+  "weather": {
+    "sha256": "d744e91bb6592b33184abe1d9a66ec5643bf321727f39c499cf2b8f36a2b148b",
+    "classification": "synthetic",
+    "citation": "Original hypothetical fixture, CC-5 tests",
+    "licence": "CC0-1.0",
+    "timezone": "UTC",
+    "calendar": "proleptic_gregorian",
+    "channels": {
+      "ghi": "ghi",
+      "dni": "dni",
+      "dhi": "dhi",
+      "temperature": "temp"
+    },
+    "temperature_kind": "air"
+  },
+  "solar_position": {
+    "model": "nrel_spa",
+    "pressure_pa": 100000,
+    "air_temperature_c": 20,
+    "delta_t_s": 60,
+    "atmospheric_refraction_deg": 0
+  },
+  "irradiance_model": "isotropic",
+  "dc_model": "pvwatts_v5",
+  "inverter_model": "pvwatts_v5",
+  "solar_sampling": "interval_midpoint"
+}

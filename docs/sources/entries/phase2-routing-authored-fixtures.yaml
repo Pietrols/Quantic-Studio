@@ -1,0 +1,29 @@
+id: phase2-routing-authored-fixtures
+accessed: 2026-10-14
+citation: Original Quantic Studio CC-5 and CC-6 contract fixtures, adapted for WP-2.4 routing
+authors: Quantic Studio contributors
+licence: CC0-1.0
+classification: synthetic_and_authored
+independent_reference: Contract binding inventories, finite JSON, SHA256 byte identity, asset preservation and process lifecycle. No engine-generated numerical expectations.
+provenance: The authored site and weather originate in qe_core/tests/test_pv_contracts.py; the authored motor-starter model and events originate in qe_core/tests/test_plc_contracts.py. Fictional input parameters are not equipment constants or weather predictions.
+files:
+  - path: apps/web/e2e/plc/fixture/manifest.json
+    sha256: 987429c783fd4e2710aa2f3a244c07b201b8b2008ec7f2350515e285b55c4d99
+  - path: apps/web/e2e/plc/fixture/scan.json
+    sha256: 300a970115780c971fd706a71d9a192ccaf63c650bdba6453b9f33bdcb508443
+  - path: apps/web/e2e/plc/fixture/starter-events.json
+    sha256: f098bed35688fdb0d38778c193d1141aa45a177fcac58d605654387d56eb8bad
+  - path: apps/web/e2e/plc/fixture/starter.json
+    sha256: 6d31a67fa6baafa9405e1fb64a536d4d2eb4ea57ec3f4e0fb56dccc1aafc94f8
+  - path: apps/web/e2e/pv/fixture/manifest.json
+    sha256: 1445171dcd49a6354fcf7e7d024021a3dee236514843fbeaa7894d499fcdff1f
+  - path: apps/web/e2e/pv/fixture/solar.json
+    sha256: 008dcc9c8b5ae80ef7c33f978c0ce7a3ecf578f89e23128a2a039486fe90ff40
+  - path: apps/web/e2e/pv/fixture/weather.json
+    sha256: d744e91bb6592b33184abe1d9a66ec5643bf321727f39c499cf2b8f36a2b148b
+  - path: apps/web/e2e/pv/fixture/yield.json
+    sha256: 558044d52e2ab966dce64c198cba035005956442ab499451cf01f9d80f514b43
+  - path: packages/ts/contracts/tests/pv-fixture.json
+    sha256: 38010df655883c7856f5e7646924a7091d807af2b19645c837b22161df250389
+weather_rights: Original synthetic two-hour interval means, UTC, proleptic Gregorian calendar. No downloaded data, network access, private books or copied examples.
+paid_standards: No IEC 61724-1 or IEC 61131-3 compliance claim; routing adds no standard-specific numerical model.
