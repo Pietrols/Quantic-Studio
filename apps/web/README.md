@@ -61,4 +61,4 @@ separate grid component. Foreign engines and co-simulation are outside this WP.
 
 ## Node version
 
-Use the Node major in `.nvmrc` (the same one CI uses), for example with `nvm use`. Newer Node versions also pass the unit tests, because `tests/setup.ts` binds jsdom's Web Storage over the global `localStorage` that Node 25 and later define, but Playwright's browser download has been seen to stall under Node 26.
+Use Node 26, the version in `.nvmrc` that CI also uses (decision D13), for example with `nvm use`. `tests/setup.ts` binds jsdom's Web Storage over the global `localStorage` that Node 25 and later define, so the unit tests behave like a browser.
