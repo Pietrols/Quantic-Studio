@@ -135,7 +135,16 @@ def request(duration=7200):
             "start_time_s": 0,
             "stop_time_s": duration,
             "step_size_s": 3600 if duration == 7200 else duration,
-            "signals": [signal(k, u) for k, u in OUTPUTS.items()],
+            "signals": [signal(k, u) for k, u in OUTPUTS.items()]
+            + [
+                signal(k, u, "input")
+                for k, u in [
+                    ("ghi", "W/m^2"),
+                    ("dni", "W/m^2"),
+                    ("dhi", "W/m^2"),
+                    ("temp", "degC"),
+                ]
+            ],
             "input_series_file": "weather.json",
         },
         "weather": {
@@ -236,12 +245,12 @@ def result(req):
         }
 
     steps = [operation("initialise", "instantiated", "initialized", 0, 0)]
-    steps += [
-        operation(
-            "step_to", "initialized" if t == 0 else "running", "running", t, t + h
-        )
-        for t in range(0, duration, h)
-    ]
+    weather_values = {"ghi": 500, "dni": 600, "dhi": 100, "temp": 20}
+    for t in range(0, duration, h):
+        state = "initialized" if t == 0 else "running"
+        exchange = operation("set_inputs", state, state, t, t)
+        exchange["inputs"] = {key: cell(v) for key, v in weather_values.items()}
+        steps.extend([exchange, operation("step_to", state, "running", t, t + h)])
     series = {
         "schema_version": "0.1.0",
         "series_id": "yield",
@@ -254,7 +263,10 @@ def result(req):
                 "time": a,
                 "end_time": b,
                 "values": {
-                    key: cell(100 if key == "site.ac_power_w" else 0) for key in OUTPUTS
+                    key: cell(
+                        100 if key == "site.ac_power_w" else weather_values.get(key, 0)
+                    )
+                    for key in [s["signal_id"] for s in run["signals"]]
                 },
             }
             for a, b in bounds
@@ -482,7 +494,7 @@ def test_unavailable_interval_is_not_zero_or_annual():
     run["status"] = "partial"
     run["reached_time_s"] = 3600
     run["series"]["samples"] = run["series"]["samples"][:1]
-    run["steps"] = run["steps"][:2]
+    run["steps"] = run["steps"][:3]
     run["diagnostics"] = [
         {
             "code": "WEATHER_GAP",
@@ -658,3 +670,21 @@ def test_weather_cannot_alias_another_study_request(mixed):
     req["execution"]["input_series_file"] = "scan.json"
     path.write_text(json.dumps(req))
     assert "PV_FILE_ALIAS" in codes(load_project(mixed).diagnostics)
+
+
+def test_legacy_loading_does_not_initialize_pv_units():
+    import sys
+
+    # An isolated consumer proves ordinary projects avoid PV/Pint startup.
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import sys; from qe_core import load_project; "
+            "assert load_project('examples/multi_domain').ok; "
+            "assert 'qe_core.pv_contracts' not in sys.modules; "
+            "assert 'qe_core.time_series' not in sys.modules",
+        ],
+        cwd=ROOT,
+        check=True,
+    )

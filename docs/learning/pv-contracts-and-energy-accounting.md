@@ -54,6 +54,8 @@ Leap 2024 has 366 days, so constant 100 W gives 878400 Wh, and February gives
 29 x 24 x 100 = 69600 Wh. These are original calendar test cases, not yield
 predictions. Two hours cannot become an annual result by multiplying a factor.
 
+The step trace declares weather channels as named inputs with units, records
+their exchange and preserves their values alongside the outputs.
 The input weather hash ties the result to exact local file bytes. A citation,
 licence and synthetic/observed label explain where those bytes came from.
 The trace then records each step and, under D11, equations with sources,

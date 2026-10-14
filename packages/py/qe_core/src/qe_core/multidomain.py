@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 from .project import Model, Project, Study, read_json, safe_path, validate_network
-from .pv_contracts import pv_elements, validate_pv_request, validate_pv_site, validate_pv_weather
 from .validation import Diagnostic, Outcome, diagnostic, validate
 
 POWER_STUDIES = {'loadflow', 'shortcircuit', 'motorstart'}
@@ -59,6 +58,8 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
             if problems:
                 continue
         elif entry['model_type'] == 'pv.site':
+            from .pv_contracts import validate_pv_site
+
             problems = validate_pv_site(data)
             errors.extend(problems)
             if problems:
@@ -106,6 +107,8 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
                 errors.append(diagnostic('UNKNOWN_BUS', 'Motor bus does not exist in bound network',
                                          'motor', data['motor']['motor_id'], 'bus_id'))
         elif kind == 'pv.yield':
+            from .pv_contracts import validate_pv_request, validate_pv_weather
+
             if model.model_type != 'pv.site':
                 errors.append(diagnostic('STUDY_MODEL_TYPE', 'PV study must bind to pv.site',
                                          'study', sid, 'model_id'))
@@ -167,6 +170,8 @@ def load_models(root: Path, manifest: dict) -> Outcome[Project]:
                     errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation does not name a power element',
                                              'asset', aid, 'representations.element_id'))
             elif model.model_type == 'pv.site':
+                from .pv_contracts import pv_elements
+
                 if ref['element_id'] not in pv_elements(model.data).get(ref['element_type'], set()):
                     errors.append(diagnostic('UNKNOWN_ELEMENT', 'Asset representation must name a PV element',
                                              'asset', aid, 'representations.element_id'))

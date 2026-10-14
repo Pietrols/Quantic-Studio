@@ -188,18 +188,31 @@ def validate_pv_request(value, *, site=None):
         if site_errors:
             return [*errors, *site_errors]
         expected = pv_output_units(site)
+        input_units = {
+            sid: "degC" if quantity == "temperature" else "W/m^2"
+            for quantity, sid in value["weather"]["channels"].items()
+        }
+        if set(expected) & set(input_units):
+            errors.append(
+                problem(
+                    "PV_CHANNEL",
+                    "weather.channels",
+                    "Weather IDs cannot collide with PV output IDs",
+                )
+            )
+        expected.update(input_units)
         actual = {s["signal_id"]: s for s in run["signals"]}
         if set(actual) != set(expected) or any(
             s["unit"] != expected.get(key)
             or s["data_type"] != "real"
-            or s["causality"] != "output"
+            or s["causality"] != ("input" if key in input_units else "output")
             for key, s in actual.items()
         ):
             errors.append(
                 problem(
                     "PV_OUTPUTS",
                     "execution.signals",
-                    "Declare exactly the CC-5 real output IDs and canonical units",
+                    "Declare CC-5 real weather input and output IDs with canonical units and causality",
                 )
             )
         modules = {m["module_id"]: m for m in site["modules"]}
@@ -356,6 +369,15 @@ def validate_pv_result(value, *, request, site):
             "weather",
             "Result must preserve weather identity and its hashed input file",
             "PV_WEATHER_HASH",
+        )
+    if not any(
+        f["path"] == request["model_file"] and f["role"] == "model"
+        for f in run["input_files"]
+    ):
+        fail(
+            "execution.input_files",
+            "Result must identify the bound model file",
+            "PV_BINDING",
         )
     if run["series"]["sampling"] != "interval_mean":
         return [

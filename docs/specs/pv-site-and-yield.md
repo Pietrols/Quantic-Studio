@@ -17,7 +17,7 @@ IDs cannot contain dots because dots delimit output signal IDs.
 
 Coordinates are latitude north positive, longitude east positive, degrees;
 elevation is metres. Tilt is degrees from horizontal; azimuth is clockwise
-from north, north 0 and south 180. Albedo is an explicit dimensionless fraction.
+from true north, north 0 and south 180. Albedo is an explicit dimensionless fraction.
 The fixed-tilt subset has one inverter per array, with no shared inverter,
 tracking, string voltage model, bifacial model or inferred shading geometry.
 Other topologies require a future approved Contract Change.
@@ -87,8 +87,12 @@ it does not claim to reproduce SAM's sunrise-hour correction or all PVWatts.
 ## Outputs, working and energy
 
 `pv_output_units(site)` lists the frozen real output inventory. The request
-must declare exactly these signal IDs and canonical units, with output
-causality and its model ID. For each array, prefix `<array_id>.`:
+must declare these output IDs and canonical units with output causality, plus
+exactly the four weather channel IDs as real input signals with W/m^2 or degC
+canonical units. Every declaration uses its model ID. Weather inputs cannot
+collide with output IDs. The output series preserves both input and output
+columns, so the CC-4 step trace can record named input exchanges and the
+report can expose their interval values after explicit unit conversion. For each array, prefix `<array_id>.`:
 
 | Signal suffix | Unit |
 | --- | --- |
