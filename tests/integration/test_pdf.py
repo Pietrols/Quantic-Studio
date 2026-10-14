@@ -87,8 +87,17 @@ def test_incomplete_calculation_and_compliance_are_visible(tmp_path, project, mo
     shutil.copytree(ROOT / 'examples' / project, tmp_path, dirs_exist_ok=True, ignore=shutil.ignore_patterns('out'))
     path = tmp_path / ('motorstart-request.json' if project == 'motorstart' else 'shortcircuit-request.json')
     request = json.loads(path.read_text())
-    request[{'failed': 'max_iterations', 'limit': 'dip_limit_percent', 'partial': 'frequency_hz'}[mode]] = {
-        'failed': 1, 'limit': 1, 'partial': 60}[mode]
+    if mode == 'partial':
+        # A machine makes the component near-to-generator: Ik'' available, ip and Ith withheld.
+        network_path = tmp_path / 'network.json'
+        network = json.loads(network_path.read_text())
+        network['buses'][1]['bus_type'] = 'pv'
+        network['generators'] = [{'generator_id': 'g1', 'bus_id': 'lv', 'p_mw': 1, 'vm_setpoint_pu': 1,
+                                  'sn_mva': 10, 'vn_kv': 20, 'xdss_pu': 0.2, 'rdss_ohm': 0.4, 'cos_phi': 0.8,
+                                  'voltage_control_range_percent': 0}]
+        network_path.write_text(json.dumps(network))
+    else:
+        request[{'failed': 'max_iterations', 'limit': 'dip_limit_percent'}[mode]] = 1
     path.write_text(json.dumps(request))
     assert main(['study', 'run', str(tmp_path), '--study', study, '--report-format', 'pdf']) == 1
     _, text = pdf_text((tmp_path / 'out/report.pdf').read_bytes())
@@ -97,7 +106,7 @@ def test_incomplete_calculation_and_compliance_are_visible(tmp_path, project, mo
     if mode != 'limit':
         assert 'n/a' in text
     if mode == 'partial':
-        assert 'THERMAL_FREQUENCY_UNAVAILABLE' in compact(text)
+        assert 'NEAR_GENERATOR_DUTY' in compact(text)
 
 
 def test_large_network_table_repeats_headers_and_retains_last_row():

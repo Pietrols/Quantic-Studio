@@ -1,8 +1,8 @@
 """Balanced bolted fault studies through pandapower's equivalent voltage source.
 
-References are the 3.5.6 pages shortcircuit/{ikss,ip,ith,branch_elements,
-voltage_source,run}.html. Source discrepancies are deliberately unavailable,
-as approved by Peter on 2026-10-10, not resolved by guessing standard values.
+Every factor and equation is cited to Kasikci, Short Circuits in Power Systems,
+1st ed (Wiley-VCH, 2002), or to a decision by Peter (PLAN.md section 5, D10).
+Cases no owned source settles stay unavailable rather than guessed (WP-1.12).
 """
 from __future__ import annotations
 
@@ -62,10 +62,14 @@ def _components(network):
 
 
 def _factor(bus, case, request):
-    # ikss.html voltage table and v3.5.6 build_bus._add_c_to_ppc.
-    # Exactly 1 kV has no explicit boundary in the printed table: diagnose it.
-    if bus["vn_kv"] == 1 or (case == "min" and bus["vn_kv"] < 1
-                            and request["lv_tolerance_percent"] == 10):
+    """Voltage factor c, Kasikci 1st ed (2002) Table 1.1 p. 8.
+
+    LV (100 V to 1000 V): c_max 1.05 (+6% tolerance) or 1.10 (+10%); c_min 0.95 for
+    both classes (Peter's decision D10, 2026-10-14). MV and HV: 1.10 and 1.00.
+    Exactly 1 kV is LV in both owned books (Kasikci Table 1.1; Das Table 8-2), but
+    pandapower applies MV factors when vn_kv is not below 1, so it stays unavailable.
+    """
+    if bus["vn_kv"] == 1:
         return None
     if bus["vn_kv"] < 1:
         return (1.05 if request["lv_tolerance_percent"] == 6 else 1.1) if case == "max" else 0.95
@@ -118,7 +122,9 @@ def _branch_entry(kind, item, network, request, case):
     in the maximum case, where c_max is that of the LV bus.
     """
     if kind == "lines":
-        factor = 1.0
+        # Minimum case: R = R_20 (1 + 0.004 (theta_e - 20 C)), Kasikci p. 12 (1.24 for 20 to 80 C);
+        # the same 0.004/K as pandapower 3.5.6 build_branch._end_temperature_correction_factor.
+        factor = 1 + 0.004 * (item["end_temperature_celsius"] - 20) if case == "min" else 1.0
         return {"element_type": "lines", "element_id": item["line_id"],
                 "inputs": {"length_km": item["length_km"], "r_ohm_per_km": item["r_ohm_per_km"],
                            "x_ohm_per_km": item["x_ohm_per_km"], "temperature_factor": factor},
@@ -176,6 +182,46 @@ def _close(a, b):
     return abs(a - b) <= TRACE_TOLERANCE * max(abs(a), abs(b))
 
 
+def _thermal_m(kappa, frequency, duration):
+    """m = [exp(4 f Tk ln(kappa - 1)) - 1] / (2 f Tk ln(kappa - 1)), Kasikci eq. 13.2 p. 117.
+
+    Evaluated with expm1 for accuracy; as kappa -> 2, ln(kappa - 1) -> 0 and m -> 2
+    (Kasikci Fig. 13.3a p. 118 shows m approaching 2). This replaces pandapower's
+    m = 0 shortcut above kappa 1.99 and its fixed 50 Hz.
+    """
+    a = math.log(kappa - 1) if kappa < 2 else 0.0
+    if a == 0.0:
+        return 2.0
+    return math.expm1(4 * frequency * duration * a) / (2 * frequency * duration * a)
+
+
+def _nodal_impedances(network, request, case, scale):
+    """Own nodal solution for a single-voltage-level component with external grids:
+    Z_bus = Y_bus^-1 with reactances multiplied by `scale` (1 at system frequency,
+    fc/f for method C). Returns {bus_id: Z_kk in ohms}."""
+    ids = [b["bus_id"] for b in network["buses"]]
+    index = {bus: i for i, bus in enumerate(ids)}
+    y = np.zeros((len(ids), len(ids)), dtype=complex)
+    for line in network["lines"]:
+        entry = _branch_entry("lines", line, network, request, case)
+        admittance = 1 / complex(entry["r_ohm"], entry["x_ohm"] * scale)
+        a, b = index[line["from_bus"]], index[line["to_bus"]]
+        y[a, a] += admittance
+        y[b, b] += admittance
+        y[a, b] -= admittance
+        y[b, a] -= admittance
+    buses = {b["bus_id"]: b for b in network["buses"]}
+    for grid in network["external_grids"]:
+        bus = buses[grid["bus_id"]]
+        c = _factor(bus, case, request)
+        rx = grid[f"rx_{case}"]
+        z = c * bus["vn_kv"] ** 2 / grid[f"s_sc_{case}_mva"]
+        y[index[grid["bus_id"]], index[grid["bus_id"]]] += 1 / complex(z * rx / math.hypot(1, rx),
+                                                                         z * scale / math.hypot(1, rx))
+    z_bus = np.linalg.inv(y)
+    return {bus: complex(z_bus[i, i]) for bus, i in index.items()}
+
+
 def _issues(network, request, case):
     issues = []
     buses = {b["bus_id"]: b for b in network["buses"]}
@@ -190,8 +236,9 @@ def _issues(network, request, case):
     for bus in network["buses"]:
         if _factor(bus, case, request) is None:
             problem("VOLTAGE_FACTOR_UNAVAILABLE",
-                    "Disputed LV minimum factor at 10% tolerance, or undocumented exact 1-kV boundary; "
-                    "this connected component is unavailable", "buses", bus, "vn_kv")
+                    "Exactly 1 kV is low voltage in the owned books (Kasikci Table 1.1, Das Table 8-2) but the "
+                    "engine applies medium-voltage factors there; this connected component is unavailable",
+                    "buses", bus, "vn_kv")
     for grid in network["external_grids"]:
         for field in (f"s_sc_{case}_mva", f"rx_{case}"):
             if field not in grid:
@@ -212,17 +259,11 @@ def _issues(network, request, case):
             if "end_temperature_celsius" not in line:
                 problem("MISSING_FAULT_DATA", "Minimum fault requires explicit final conductor temperature",
                         "lines", line, "end_temperature_celsius")
-            elif line["end_temperature_celsius"] != 20:
-                problem("TEMPERATURE_CORRECTION_UNAVAILABLE",
-                        "Documentation uses 0.04/K; pinned implementation uses 0.004/K. "
-                        "Only explicit 20 C (unit correction) is supported pending verification",
-                        "lines", line, "end_temperature_celsius")
     for trafo in network["transformers"]:
-        if case == "min":
-            problem("TRANSFORMER_CORRECTION_UNAVAILABLE",
-                    "Public KT page omits the case distinction; pinned implementation applies KT only "
-                    "to maximum faults. Minimum transformer correction needs a verified source",
-                    "transformers", trafo, "correction")
+        # Minimum case uses K_T = 1: Kasikci ch. 9 p. 75 needs the impedance corrections "above all"
+        # for the greatest current and lists other conditions for the smallest; pandapower 3.5.6
+        # applies the same rule citing IEC 60909-0:2016 clause 6.3.3. K_T = 1 gives the larger
+        # impedance, the conservative direction for minimum duty.
         if trafo["hv_bus"] == trafo["lv_bus"]:
             problem("SELF_LOOP", "Branch endpoints must differ", "transformers", trafo, "lv_bus")
         if trafo["x_pu"] <= 0:
@@ -241,14 +282,18 @@ def _issues(network, request, case):
             problem("GENERATOR_MODEL_UNAVAILABLE", "Multiple synchronous machines on one bus are not verified",
                     "generators", gen, "bus_id")
         gen_buses.add(gen["bus_id"])
+        if case == "min" and request["lv_tolerance_percent"] == 10 and buses[gen["bus_id"]]["vn_kv"] < 1:
+            # The engine is asked for its 6% LV table to obtain c_min 0.95 (D10); its K_G would then
+            # use c_max 1.05 instead of 1.10.
+            problem("GENERATOR_CORRECTION_UNAVAILABLE",
+                    "LV machine with +10% tolerance in the minimum case: engine K_G would use the wrong c_max",
+                    "generators", gen, "bus_id")
         if gen.get("power_station_transformer_id"):
             problem("STATION_MODEL_UNAVAILABLE", "Associated station correction is not verified",
                     "generators", gen, "power_station_transformer_id")
-        # voltage_source.html prints the inverse voltage ratio to the pinned
-        # ppc_conversion._add_gen_sc_z_kg_ks. Both agree at equal ratings and pg=0.
-        if gen.get("vn_kv", buses[gen["bus_id"]]["vn_kv"]) != buses[gen["bus_id"]]["vn_kv"]:
-            problem("GENERATOR_CORRECTION_UNAVAILABLE", "Generator and bus rated-voltage ratios disagree in sources",
-                    "generators", gen, "vn_kv")
+        # K_G = (U_n / U_rG) c_max / (1 + x''_d sin phi_rG): Kasikci eq. 9.3 p. 76 and Das eq. 8.11 agree
+        # with pandapower 3.5.6 ppc_conversion._add_gen_sc_z_kg_ks (its HTML page prints the ratio
+        # inverted). Unequal machine and network rated voltages are supported for p_G = 0.
         if gen.get("voltage_control_range_percent", 0) != 0:
             problem("GENERATOR_CORRECTION_UNAVAILABLE", "Nonzero generator voltage-range correction lacks agreed reference",
                     "generators", gen, "voltage_control_range_percent")
@@ -317,14 +362,22 @@ def _calculate_component(network, request, case):
     # No numerical claim of far-from-generator behavior in any component
     # containing a synchronous machine. Ik'' remains independently useful.
     far = not network["generators"]
-    duties = radial and far
+    # Meshed peak current by method C (Kasikci p. 99) only where our own nodal solve can check
+    # it: one voltage level (no transformers) fed by external grids.
+    meshed_c = not radial and far and not network["transformers"]
+    duties = far and (radial or meshed_c)
+    # D10: c_min is 0.95 for both LV tolerance classes, which is the engine's 6% table.
+    engine_tolerance = 6 if case == "min" else request["lv_tolerance_percent"]
     try:
         net, buses = _convert(network, request, case)
-        calc_sc(net, fault="3ph", case=case, lv_tol_percent=request["lv_tolerance_percent"],
-                ip=duties, ith=duties and request["frequency_hz"] == 50,
+        calc_sc(net, fault="3ph", case=case, lv_tol_percent=engine_tolerance,
+                ip=duties, ith=duties and request["frequency_hz"] == 50, kappa_method="C",
                 tk_s=request["fault_duration_s"], topology="radial" if radial else "auto",
                 r_fault_ohm=0, x_fault_ohm=0, check_connectivity=True, use_pre_fault_voltage=False)
         chains = _radial_chains(network, request, case) if radial else {}
+        nodal = _nodal_impedances(network, request, case, 1.0) if meshed_c else {}
+        nodal_c = _nodal_impedances(network, request, case, (20 if request["frequency_hz"] == 50 else 24)
+                                    / request["frequency_hz"]) if meshed_c else {}
         base_mva = float(net._ppc["baseMVA"])
         for row in rows:
             index = buses[row["bus_id"]]
@@ -351,7 +404,9 @@ def _calculate_component(network, request, case):
                           sum(e["x_referred_ohm"] for e in elements)) if elements else z_engine
             un = nominal[row["bus_id"]]
             c = row["voltage_factor"]
+            check = nodal.get(row["bus_id"], z_k)
             if (elements and not (_close(z_k.real, z_engine.real) and _close(z_k.imag, z_engine.imag))) \
+                    or not (_close(check.real, z_engine.real) and _close(check.imag, z_engine.imag)) \
                     or not _close(c * un / (SQRT3 * abs(z_k)), ikss):
                 _unavailable(row, notes, "TRACE_MISMATCH",
                              "Hand-summed impedance or c*Un/(sqrt(3)|Zk|) disagrees with the engine")
@@ -364,40 +419,38 @@ def _calculate_component(network, request, case):
             if not duties:
                 _unavailable(row, notes, "NEAR_GENERATOR_DUTY" if not far else "MESH_DUTY_UNAVAILABLE",
                     "Far-from-generator duties cannot be established" if not far else
-                    "Peak/thermal reference verified only for a radial component with one source",
-                    ("ip_ka", "ith_ka"))
+                    "Peak/thermal duties need a single-source radial component or a one-voltage-level "
+                    "mesh fed by external grids (method C)", ("ip_ka", "ith_ka"))
                 continue
             row["ip_ka"] = float(actual.ip_ka)
-            # kappa = 1.02 + 0.98 exp(-3 R/X), ip = kappa sqrt(2) Ik'' (Kasikci eqs. 11.22, 11.23 p. 98).
-            kappa = 1.02 + 0.98 * math.exp(-3 * row["trace"]["rx_ratio"])
+            if radial:
+                # kappa = 1.02 + 0.98 exp(-3 R/X), ip = kappa sqrt(2) Ik'' (Kasikci eqs. 11.22, 11.23 p. 98).
+                kappa, method = 1.02 + 0.98 * math.exp(-3 * row["trace"]["rx_ratio"]), "radial"
+            else:
+                # Method C (Kasikci p. 99): R/X = (R_c / X_c)(f_c / f) from our nodal solve at f_c.
+                z_c = nodal_c[row["bus_id"]]
+                fc = 20 if request["frequency_hz"] == 50 else 24
+                kappa = 1.02 + 0.98 * math.exp(-3 * z_c.real / z_c.imag * fc / request["frequency_hz"])
+                method = "method-C"
             if not (_close(kappa, float(net._ppc["bus"][ppc_index, KAPPA]))
                     and _close(kappa * math.sqrt(2) * ikss, row["ip_ka"])):
                 _unavailable(row, notes, "TRACE_MISMATCH", "kappa or ip disagrees with the hand equation",
                              ("ip_ka", "ith_ka"))
                 continue
-            row["trace"].update(kappa=kappa, kappa_method="radial")
-            if request["frequency_hz"] != 50:
-                _unavailable(row, notes, "THERMAL_FREQUENCY_UNAVAILABLE", "Pinned thermal implementation hardcodes 50 Hz",
-                             ("ith_ka",))
-            elif float(net._ppc["bus"][ppc_index, KAPPA]) > 1.99:
-                # currents._calc_ith sets m=0 here, unlike the printed equation.
-                _unavailable(row, notes, "THERMAL_FACTOR_UNAVAILABLE", "Engine m=0 shortcut at kappa>1.99 lacks agreed reference",
-                             ("ith_ka",))
+            row["trace"].update(kappa=kappa, kappa_method=method)
+            # Ith = Ik'' sqrt(m + n), n = 1 far from generators (Kasikci eqs. 13.1, 13.2 p. 117), with
+            # m from the book equation at the requested frequency.
+            m = _thermal_m(kappa, request["frequency_hz"], request["fault_duration_s"])
+            reference = ikss * math.sqrt(m + 1)
+            if request["frequency_hz"] == 50 and kappa <= 1.99 and not math.isclose(
+                    float(actual.ith_ka), reference, rel_tol=1e-10, abs_tol=1e-10):
+                # Where the engine evaluates the same equation it must agree; a disagreement (for
+                # example cancellation at extremely short durations) is not certified.
+                _unavailable(row, notes, "THERMAL_EQUATION_MISMATCH",
+                             "Engine thermal duty disagrees with the book equation", ("ith_ka",))
             else:
-                row["ith_ka"] = float(actual.ith_ka)
-                # ith.html: stable evaluation detects cancellation in the
-                # engine's exp(...)-1 for extremely short declared durations.
-                kappa = float(net._ppc["bus"][ppc_index, KAPPA])
-                a = math.log(kappa - 1)
-                duration = request["fault_duration_s"]
-                m = math.expm1(4 * 50 * duration * a) / (2 * 50 * duration * a)
-                reference = ikss * math.sqrt(1 + m)
-                if not math.isclose(row["ith_ka"], reference, rel_tol=1e-10, abs_tol=1e-10):
-                    _unavailable(row, notes, "THERMAL_EQUATION_MISMATCH",
-                                 "Engine thermal duty disagrees with stable documented equation", ("ith_ka",))
-                else:
-                    # Ith = Ik'' sqrt(m + n), n = 1 far from generators (Kasikci eqs. 13.1, 13.2 p. 117).
-                    row["trace"].update(m=m, n=1.0)
+                row["ith_ka"] = reference
+                row["trace"].update(m=m, n=1.0)
             for field in ("ip_ka", "ith_ka"):
                 if row[field] is not None and (not math.isfinite(row[field]) or row[field] < 0):
                     _unavailable(row, notes, "NONFINITE_FAULT_RESULT", "Duty is not a finite nonnegative magnitude", (field,))
@@ -442,15 +495,15 @@ def solve_shortcircuit(network: dict, request: dict) -> Outcome[dict]:
         "case_results": cases,
         "assumptions": [
             "Balanced bolted three-phase positive-sequence equivalent-voltage-source method; no pre-fault load flow.",
-            "Maximum transformer KT=0.95*cmax_LV/(1+0.6*xT), on its own rating; minimum transformer duties unavailable pending case-basis verification.",
+            "Transformer KT=0.95*cmax_LV/(1+0.6*xT) on its own rating in the maximum case; KT=1 in the minimum case (Kasikci ch. 9 p. 75).",
             "Nominal transformer ratio; no magnetizing or branch shunt admittance.",
             "Grid strength and R/X are explicit per case; operating setpoints and loads/shunts do not define fault contribution.",
             "Currents are kA: initial symmetrical RMS Ik'', instantaneous peak ip, equivalent thermal RMS Ith for the requested duration.",
-            "Peak/thermal verified only for radial single-source components without synchronous generators; n=1.",
-            "Disputed LV minimum at 10% tolerance and exact 1-kV boundary block affected connected components.",
-            "Minimum line correction supported only at explicit 20 C; 60-Hz Ith and kappa>1.99 thermal shortcut are unavailable.",
-            "Synchronous Ik'' limited to equal machine/bus rated voltages and explicit zero voltage-control range; station corrections unavailable.",
-            "Null means unavailable, never safe zero. IEC 60909-0 is not supplied; no independent standards certification.",
+            "Peak/thermal duties for components without synchronous generators: radial single-source, or one-voltage-level meshes fed by external grids using method C (fc 20 Hz at 50 Hz, 24 Hz at 60 Hz); n=1.",
+            "LV c_min 0.95 for both tolerance classes (decision D10, Kasikci Table 1.1 p. 8); exactly 1 kV is unavailable because the engine applies MV factors there.",
+            "Minimum-case line resistance R = R20 (1 + 0.004 (theta_e - 20 C)) (Kasikci p. 12); Ith uses m from Kasikci eq. 13.2 at the requested frequency, with m = 2 at kappa = 2.",
+            "Synchronous Ik'' uses K_G = (Un/UrG) cmax / (1 + x''d sin phi) with zero voltage-control range; station corrections unavailable.",
+            "Null means unavailable, never safe zero. IEC 60909-0 is not owned; values follow Kasikci 1st ed (2002) and Peter's decisions; no independent standards certification.",
         ], "diagnostics": [d.to_dict() for d in notes],
         "provenance": provenance("pandapower", pp.__version__, hash_inputs({"network": network, "request": request}))}
     problems = validate(result, "power/shortcircuit-result")

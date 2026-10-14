@@ -77,3 +77,15 @@ def test_loadflow_report_states_method_and_closes_power_balance():
 
 def test_worked_reports_render_to_pdf(shortcircuit_report):
     assert render_pdf(shortcircuit_report).startswith(b"%PDF")
+
+
+def test_meshed_report_shows_method_c_line():
+    # WP-1.12: a mesh fed by a grid reports kappa by method C, not by the fault impedance's own R/X.
+    network, request, _ = _inputs("shortcircuit", "shortcircuit-request.json")
+    network["lines"].append({**network["lines"][0], "line_id": "b", "length_km": 1,
+                             "r_ohm_per_km": 0.5, "x_ohm_per_km": 0.3})
+    from qe_power.adapters.pandapower import solve_shortcircuit
+    result = solve_shortcircuit(network, request).value
+    report = render_shortcircuit_report(project_name="Mesh", network=network, request=request, result=result)
+    block = report.split("### Worked calculation: bus lv, maximum case", 1)[1].split("###", 1)[0]
+    assert "Method C" in block and "fc = 20 Hz" in block and "nodal solution" in block

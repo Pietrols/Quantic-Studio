@@ -39,17 +39,22 @@ def test_cli_success_writes_contract_result_and_full_report(tmp_path, transforme
 
 def test_partial_duties_exit_1_write_nulls_and_visible_diagnostics(tmp_path, capsys):
     folder = project(tmp_path)
-    path = folder / "shortcircuit-request.json"
-    request = json.loads(path.read_text())
-    request["frequency_hz"] = 60
-    path.write_text(json.dumps(request))
+    # A synchronous machine at lv makes the component near-to-generator: Ik'' is available but
+    # ip and Ith are withheld, so the study is partial.
+    network_path = folder / "network.json"
+    network = json.loads(network_path.read_text())
+    network["buses"][1]["bus_type"] = "pv"
+    network["generators"] = [{"generator_id": "g1", "bus_id": "lv", "p_mw": 1, "vm_setpoint_pu": 1,
+                              "sn_mva": 10, "vn_kv": 20, "xdss_pu": 0.2, "rdss_ohm": 0.4, "cos_phi": 0.8,
+                              "voltage_control_range_percent": 0}]
+    network_path.write_text(json.dumps(network))
     assert main(["study", "run", str(folder), "--study", "shortcircuit"]) == 1
     result = json.loads((folder / "out/results.json").read_text())
     assert validate(result, "power/shortcircuit-result") == []
     assert result["status"] == "partial"
-    assert "THERMAL_FREQUENCY_UNAVAILABLE" in capsys.readouterr().err
+    assert "NEAR_GENERATOR_DUTY" in capsys.readouterr().err
     report = (folder / "out/report.md").read_text()
-    assert "PARTIAL" in report and "n/a" in report and "THERMAL_FREQUENCY_UNAVAILABLE" in report
+    assert "PARTIAL" in report and "n/a" in report and "NEAR_GENERATOR_DUTY" in report
     assert "buses:hv.ith_ka" in report
 
 
