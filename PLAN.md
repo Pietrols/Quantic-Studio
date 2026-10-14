@@ -1009,7 +1009,7 @@ Change record: none
 
 ### WP-1.15 Node 26
 
-Status: [x] Done | implemented by Claude | commit 5c33c15 | 2026-10-14
+Status: [x] Done | implemented by Claude | commit 288c1d1 | 2026-10-14
 Lane: A (Claude)
 Depends on: WP-1.13
 Owned paths: `.nvmrc`, `package.json`, `apps/web/README.md`, `apps/web/package.json`, `pnpm-lock.yaml`
