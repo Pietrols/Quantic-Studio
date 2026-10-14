@@ -93,9 +93,9 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
             "project/manifest": ("0.1.0", "0.2.0", "0.3.0", "1.0.0"),
             "project/asset-registry": ("1.0.0",),
             "power/shortcircuit-request": ("0.2.0",),
-            "power/shortcircuit-result": ("0.2.0",),
+            "power/shortcircuit-result": ("0.2.0", "0.3.0"),
             "power/motorstart-request": ("0.3.0",),
-            "power/motorstart-result": ("0.3.0",),
+            "power/motorstart-result": ("0.3.0", "0.4.0"),
         }
         supported = versions.get(name, ("0.1.0",))
         if version is not None and version not in supported:
@@ -105,6 +105,10 @@ def validate(value, name: str, root: Path | None = None) -> list[Diagnostic]:
         if version == "0.1.0" and name in ("power/network", "project/manifest"):
             archive = "v0.1"
         elif version in ("0.2.0", "0.3.0") and name == "project/manifest":
+            archive = "v" + version.removesuffix(".0")
+        elif (name, version) in (("power/shortcircuit-result", "0.2.0"),
+                                 ("power/motorstart-result", "0.3.0")):
+            # CC-7 archived these result versions byte for byte; old results stay valid.
             archive = "v" + version.removesuffix(".0")
         schema = json.loads((root / archive / f"{name}.schema.json").read_text())
         validator = Draft202012Validator(schema, registry=Registry().with_resources(resources),

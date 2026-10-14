@@ -11,6 +11,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from .worked import loadflow_balance, loadflow_method
+
 MESSAGE_LIMIT = 160
 
 
@@ -205,8 +207,11 @@ def render_loadflow_report(
         "(set with --vmin and --vmax).",
         "- Losses are the sum of line and transformer series losses reported by the solver. "
         "Shunt consumption is not counted as a loss.",
-        "- Generator reactive power limits are checked by this report, not enforced by the "
-        "solver: a PV bus holds its voltage setpoint whatever reactive power that needs.",
+        ("- Generator reactive limits are enforced by the solver (PV to PQ switching) and also "
+         "checked by this report." if provenance["solver_name"] == "pandapower" else
+         "- Generator reactive power limits are checked by this report, not enforced by this "
+         "solver: a PV bus holds its voltage setpoint whatever reactive power that needs."),
+        "- Governing equations: section 10. Power balance check from the reported flows: section 11.",
         "",
     ]
 
@@ -307,4 +312,6 @@ def render_loadflow_report(
         ],
     )
     out.append("")
+    out += loadflow_method(provenance["solver_name"])
+    out += loadflow_balance(network, result, _table)
     return "\n".join(out)

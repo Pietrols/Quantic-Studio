@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:quantic-studio:contracts:0.3.0:power:motorstart-result",
+  "$id": "urn:quantic-studio:contracts:0.4.0:power:motorstart-result",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -19,7 +19,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "0.3.0"
+      "const": "0.4.0"
     },
     "result_id": {
       "type": "string",
@@ -164,6 +164,63 @@
     },
     "provenance": {
       "$ref": "urn:quantic-studio:contracts:0.1.0:common:provenance"
+    },
+    "motor_trace": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "bus_kv",
+        "rated_current_ka",
+        "locked_rotor_current_ka",
+        "z_lr_ohm",
+        "locked_rotor_angle_deg",
+        "r_lr_ohm",
+        "x_lr_ohm",
+        "shunt_p_mw",
+        "shunt_q_mvar"
+      ],
+      "properties": {
+        "bus_kv": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rated_current_ka": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_current_ka": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "z_lr_ohm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "r_lr_ohm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "shunt_p_mw": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "locked_rotor_angle_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 90
+        },
+        "x_lr_ohm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "shunt_q_mvar": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
     }
   }
 }

@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quantic-studio:contracts:0.2.0:power:shortcircuit-result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "result_id",
+    "network_id",
+    "fault_type",
+    "fault_duration_s",
+    "frequency_hz",
+    "lv_tolerance_percent",
+    "status",
+    "case_results",
+    "assumptions",
+    "diagnostics",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2.0"
+    },
+    "result_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fault_type": {
+      "const": "3ph"
+    },
+    "fault_duration_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "frequency_hz": {
+      "enum": [
+        50,
+        60
+      ]
+    },
+    "lv_tolerance_percent": {
+      "enum": [
+        6,
+        10
+      ]
+    },
+    "status": {
+      "enum": [
+        "success",
+        "partial",
+        "failed"
+      ]
+    },
+    "case_results": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case",
+          "status",
+          "bus_results",
+          "diagnostics"
+        ],
+        "properties": {
+          "case": {
+            "enum": [
+              "max",
+              "min"
+            ]
+          },
+          "status": {
+            "enum": [
+              "success",
+              "partial",
+              "failed"
+            ]
+          },
+          "bus_results": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "bus_id",
+                "voltage_factor",
+                "ikss_ka",
+                "ip_ka",
+                "ith_ka"
+              ],
+              "properties": {
+                "bus_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "voltage_factor": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "ikss_ka": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "ip_ka": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "ith_ka": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "ikss_ka": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "ip_ka": {
+                        "type": "null"
+                      },
+                      "ith_ka": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "diagnostics": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "success"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "bus_results": {
+                  "items": {
+                    "properties": {
+                      "voltage_factor": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "ikss_ka": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "ip_ka": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "ith_ka": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "bus_results": {
+                  "items": {
+                    "properties": {
+                      "ikss_ka": {
+                        "type": "null"
+                      },
+                      "ip_ka": {
+                        "type": "null"
+                      },
+                      "ith_ka": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                },
+                "diagnostics": {
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "partial"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "bus_results": {
+                  "contains": {
+                    "properties": {
+                      "ikss_ka": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                },
+                "diagnostics": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:quantic-studio:contracts:0.1.0:common:diagnostic"
+      }
+    },
+    "provenance": {
+      "$ref": "urn:quantic-studio:contracts:0.1.0:common:provenance"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "success"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "case_results": {
+            "items": {
+              "properties": {
+                "status": {
+                  "const": "success"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "case_results": {
+            "items": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

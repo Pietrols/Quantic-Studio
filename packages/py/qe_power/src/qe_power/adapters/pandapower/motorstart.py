@@ -33,7 +33,14 @@ def _motor_shunt(motor, bus_kv):
     power = bus_kv**2 / impedance.conjugate()
     if not all(math.isfinite(v) for v in (rated_ka, z_abs, power.real, power.imag)) or power.real <= 0:
         raise ValueError('Nameplate conversion is outside finite numerical range')
-    return power
+    # Worked calculation for the report (Fitzgerald 6th ed, section 6.6.2, pp. 333-334:
+    # the blocked-rotor input impedance at s = 1, R from P and X from Q).
+    trace = {'bus_kv': bus_kv, 'rated_current_ka': rated_ka,
+             'locked_rotor_current_ka': rated_ka * motor['locked_rotor_current_ratio'],
+             'z_lr_ohm': z_abs, 'locked_rotor_angle_deg': math.degrees(math.acos(pf)),
+             'r_lr_ohm': impedance.real, 'x_lr_ohm': impedance.imag,
+             'shunt_p_mw': power.real, 'shunt_q_mvar': power.imag}
+    return power, trace
 
 
 def solve_motorstart(network, request) -> Outcome[dict]:
@@ -66,9 +73,10 @@ def solve_motorstart(network, request) -> Outcome[dict]:
         shunt_id += '_'
     pre = stage(network, 'Pre-start')
     starting = {}
+    motor_trace = None
     if pre:
         try:
-            power = _motor_shunt(motor, buses[motor['bus_id']]['vn_kv'])
+            power, motor_trace = _motor_shunt(motor, buses[motor['bus_id']]['vn_kv'])
             connected = copy.deepcopy(network)
             connected['shunts'].append({'shunt_id': shunt_id, 'bus_id': motor['bus_id'],
                                         'p_mw': power.real, 'q_mvar': power.imag})
@@ -96,13 +104,14 @@ def solve_motorstart(network, request) -> Outcome[dict]:
                 {'element_type': 'buses', 'element_id': bus, 'field': 'dip_percent'}, 'warning'))
         rows.append(row)
     success = all(row['dip_percent'] is not None for row in rows)
-    result = {'schema_version': '0.3.0', 'result_id': request['request_id'] + '-pandapower',
+    result = {'schema_version': '0.4.0', 'result_id': request['request_id'] + '-pandapower',
               'network_id': network['network_id'], 'motor': copy.deepcopy(motor),
               'dip_limit_percent': request['dip_limit_percent'],
               'dip_definition': '100*(prestart_vm_pu-locked_rotor_vm_pu)/prestart_vm_pu',
               'status': 'success' if success else 'failed',
               'passes_limit': all(row['passes_limit'] for row in rows) if success else None,
-              'bus_results': rows, 'diagnostics': [d.to_dict() for d in notes],
+              'bus_results': rows, 'motor_trace': motor_trace if success else None,
+              'diagnostics': [d.to_dict() for d in notes],
               'assumptions': [
                   'Balanced steady locked-rotor snapshot, not acceleration, torque, thermal or run-up verification.',
                   'One initially disconnected motor is added; it must not also appear as a pre-existing load.',

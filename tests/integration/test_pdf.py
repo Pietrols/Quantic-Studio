@@ -117,7 +117,8 @@ def test_large_network_table_repeats_headers_and_retains_last_row():
     for page in reader.pages:
         page_text = page.extract_text()
         if re.search(r'bus-\d{4}', page_text):
-            assert 'Nominal kV' in page_text and 'V (pu)' in page_text
+            # Both bus tables (voltages, and the WP-1.11 power balance) repeat their headers.
+            assert ('Nominal kV' in page_text and 'V (pu)' in page_text) or 'P residual (MW)' in page_text
     assert f'Page {len(reader.pages)}' in reader.pages[-1].extract_text()
 
 

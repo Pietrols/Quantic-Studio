@@ -531,7 +531,7 @@ export interface Provenance {
 export type ShortcircuitResult = {
   [k: string]: unknown;
 } & {
-  schema_version: "0.2.0";
+  schema_version: "0.3.0";
   result_id: string;
   network_id: string;
   fault_type: "3ph";
@@ -600,7 +600,7 @@ export interface Provenance {
   timestamp: string;
 }
 export interface MotorstartResult {
-  schema_version: "0.3.0";
+  schema_version: "0.4.0";
   result_id: string;
   network_id: string;
   motor: {
@@ -642,6 +642,17 @@ export interface MotorstartResult {
   assumptions: [string, ...string[]];
   diagnostics: Diagnostic[];
   provenance: Provenance;
+  motor_trace?: {
+    bus_kv: number;
+    rated_current_ka: number;
+    locked_rotor_current_ka: number;
+    z_lr_ohm: number;
+    r_lr_ohm: number;
+    shunt_p_mw: number;
+    locked_rotor_angle_deg: number;
+    x_lr_ohm: number;
+    shunt_q_mvar: number;
+  } | null;
 }
 /**
  * A machine-readable explanation of a validation or study condition.
