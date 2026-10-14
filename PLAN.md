@@ -1124,7 +1124,7 @@ remote solver, vendor login, hardware, paid tooling or secrets required.
 
 ### WP-2.0 Contract Change CC-4: shared time series and stepping
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 84db0c8 | 2026-10-14
 Lane: B, serial Contract Change
 Depends on: WP-1.10
 Owned paths: `contracts/common/time-series.schema.json`, `contracts/common/signal.schema.json`, `contracts/common/time-step.schema.json`, `contracts/studies/time-stepped-request.schema.json`, `contracts/studies/time-stepped-result.schema.json`, `packages/py/qe_core/src/qe_core/time_series.py`, `packages/py/qe_core/tests/test_time_series_contracts.py`, `packages/ts/contracts/**`, `docs/specs/time-series-and-stepping.md`
