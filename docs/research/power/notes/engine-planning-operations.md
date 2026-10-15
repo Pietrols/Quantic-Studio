@@ -64,8 +64,14 @@ with a Gauss-Newton gain matrix G = Hᵀ R⁻¹ H.
 - PMU measurements;
 - robust estimators.
 
-Abur and Expósito's book is still the missing reference. pandapower has a state
-estimation module (WLS and robust variants). Verify its feature list before use.
+Abur and Expósito's book is still the missing reference. pandapower state estimation (docs read 2026-10-15,
+https://pandapower.readthedocs.io/en/latest/estimation.html):
+- algorithms: WLS (Gauss-Newton), WLS with zero-injection constraints, LAV via LP,
+  IRWLS with WLS or SHGM, and SciPy-based WLS, LAV, QL and QC;
+- measurements: v, p, q and i at buses, lines and transformers;
+- bad data: chi-square test plus the largest normalised residual (default threshold 3.0).
+  The docs call bad-data removal "not very robust at this time".
+This is enough for a Quantic SE feature without writing an estimator.
 
 **Mining relevance:** low. Possible later as a "digital twin from SCADA" feature (links
 to the SCADA and PLC suites).
@@ -106,8 +112,13 @@ solver from scratch. Quantic's value is setting up the problem, constraint repor
 - **Continuation power flow** (sec. 14.3.5, p. 1012): predictor-corrector with
   parameterisation by the load factor or a state variable. It traces the curve through
   the nose, where ordinary NR diverges. Ajjarapu's original paper (1992) is the standard
-  reference; Ajjarapu's book is still a gap. pandapower does not ship a CPF, as far as
-  its docs show; VeraGrid or GridCal has one (**to verify**).
+  reference; Ajjarapu's book is still a gap. **VeraGrid has a CPF** (verified 2026-10-15,
+  https://veragrid.readthedocs.io/en/latest/md_source/continuation_power_flow.html):
+  - an arc-length predictor-corrector with adaptive steps;
+  - stop at the nose or trace the full curve;
+  - targets as a uniform factor or time-series points;
+  - its docs do not mention Q-limit handling.
+  VeraGrid is MPL-2.0, so it can be used as a dependency.
 - **Dynamic analysis** (sec. 14.3.2): long-term simulation with OLTCs, overexcitation
   limiters and load recovery. This is the T1 engine with slow controls.
 - **Mining relevance:** high where mines hang off long weak feeders. The Q-V margin at
@@ -134,5 +145,5 @@ solver from scratch. Quantic's value is setting up the problem, constraint repor
    (continuation power flow). Suggested purchases in that order of value: Billinton
    first.
 2. IEEE 493 failure-rate data.
-3. Verify pandapower's state estimation and OPF capabilities, and VeraGrid's CPF, against
-   their current docs.
+3. pandapower state estimation and VeraGrid CPF were verified 2026-10-15. Still to check:
+   pandapower OPF options and CPF Q-limit handling.
