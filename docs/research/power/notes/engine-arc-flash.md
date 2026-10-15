@@ -136,8 +136,14 @@ per equipment class (see Das21 Tables 1.5 and 1.6, referenced on p. 81).
      own device time.
 
   Das21 (p. 199) states that **no commercial software** did this when the book was
-  written (2021). This is a candidate Quantic differentiator. To verify against current
-  ETAP and PowerFactory features before claiming it.
+  written (2021).
+
+  **Checked 2026-10-15: this is no longer true for ETAP.** The ETAP dossier
+  (`etap.md` sec. 5; `notes/etap-studies.md`, sources E13 and E14) records an automatic,
+  time-varying clearing time with generator AC decrement and motor decay. So this is
+  **parity, not a differentiator**. Quantic's possible edge is transparency: showing the
+  decrement curves, the interval integration and every intermediate value in the worked
+  trace, which ETAP does not publish. PowerFactory: not checked.
 
   It needs:
   - the machine decrement equations: Das21 ch. 6, and Das02 ch. 6, already noted in

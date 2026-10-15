@@ -283,10 +283,12 @@ These are the calculation engines ETAP's modules imply. Status against our code 
 3. **Read in later passes:** result analyzer, reports, motor-start alerts, ArcFault, DC
    arc flash, distribution packages, grid code, PV array, time-domain and quasi-dynamic
    flow, voltage stability, cable thermal and raceway, PMS, ILS, generator start-up.
-   **Still unread:** optimal capacitor placement and switching optimisation pages,
-   hosting capacity page, wind turbine generator, microgrid controller, eTraX,
-   transformer inrush, motor parameter estimation, control schematics, and the
-   transient stability and harmonics tutorials (fetch failed).
+   **Read 2026-10-15** (see `notes/etap-2026-and-remaining-modules.md`, E84 to E91):
+   capacitor placement, distribution optimisation package, wind turbine generators,
+   eTraX, transformer inrush, motor parameter estimation, control system diagram, and
+   the 2026 release notes (hosting capacity and microgrid controller items).
+   **Still unread:** a dedicated hosting capacity product page (only release notes and
+   webinars found), and the transient stability and harmonics tutorials (fetch failed).
 4. **Recent forum feedback** beyond Capterra is thin. To do: Eng-Tips, Reddit and
    LinkedIn posts from 2023 to 2026.
 5. **ETAP's V&V PDFs** were listed but not opened. Their benchmark sources (Anderson and

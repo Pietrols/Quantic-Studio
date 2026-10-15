@@ -85,3 +85,11 @@
 | E81 | https://platform.softwareone.com/product/motor-parameter-estimation/PCP-0237-0394 | ETAP motor parameter estimation (reseller listing) | reseller page |
 | E82 | https://nupet.daelt.ct.utfpr.edu.br/tcc/engenharia/doc-equipe/2024_1_07/2024_1_07_final.pdf | UTFPR undergraduate thesis comparing ETAP and PowerFactory (2024, Portuguese) | academic thesis |
 | E83 | https://engineersuniverse.com/studios/electrical/etap-vs-skm-power-system-analysis-comparison | ETAP versus SKM comparison article | independent article |
+| E84 | https://etap.com/en/product/transformer-inrush | Transformer inrush analysis product page (read 2026-10-15) | vendor page |
+| E85 | https://etap.com/docs/default-source/Brochures/fact-sheets/control-system-diagram.pdf?sfvrsn=8 | Control system diagram (CSD) fact sheet | vendor fact sheet |
+| E86 | https://etap.com/en/product/optimal-capacitor-placement | Optimal capacitor placement product page | vendor page |
+| E87 | https://etap.com/docs/default-source/faqs-tutorials/etap-tip-008.pdf | ETAP Tip 008: induction motor parameter estimation (2007, ETAP 5.5) | vendor tutorial |
+| E88 | https://etap.com/packages/distribution-network-optimization | Distribution network optimisation package (OPF, switching optimisation, capacitor placement, VVO) | vendor page |
+| E89 | https://etap.com/product/wind-turbine-generator-software | Wind turbine generator software page | vendor page |
+| E90 | https://etap.com/packages/traction-power-analysis-simulation | eTraX traction power package | vendor page |
+| E91 | https://etap.com/software/whats-new | What's new: ETAP 2026 series (2026.0.1 released 2026-10-08), read 2026-10-15 | vendor release notes |
