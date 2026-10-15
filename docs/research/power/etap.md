@@ -108,7 +108,7 @@ Common editor pattern [E34, E35]:
 |---|---|---|---|---|
 | Load flow | Newton-Raphson, adaptive NR, fast decoupled, accelerated Gauss-Seidel. User iterations and precision. LTC and AVR action, phase shifters, temperature correction. Loading categories, diversity factors. Combined 3-phase, 1-phase, panel and UPS solution. All islands in one run. AutoRun on change | Voltages, flows, currents, PF, losses, voltage drop. Critical and marginal alerts. Overload warnings. Result analyzer with baseline deviations | (vendor V&V vs IEEE 399, IEEE 3002.2, textbooks) | E2, E6, E7, E16 |
 | Unbalanced load flow | Current injection. 1-, 2- and 3-phase, 3- and 4-wire. Line constants and mutual coupling. Winding connections, grounding, sequence impedances | Phase and sequence results, unbalance factors and alerts | IEEE 13-node feeder (V&V) | E9, E36 |
-| Time-domain and quasi-dynamic load flow | AC and DC together with time-varying loads. 2026 adds time-series load flow | Time series | - | E22, E26 |
+| Time-domain and quasi-dynamic load flow | Unlimited profiles (hourly or minute steps, CSV import, 8,760-hour years, seasons, customer classes, irradiance). Multi-year growth. Devices switched in and out over the period. The quasi-dynamic add-on adds controllers: POI active power control, peak shaving, Q, V and PF control, storage, smoothing, islanded energy management, smart-inverter Q-V and P-V droop, user logic with communication delays, DNP3 hardware in the loop | Time series of current, drop, losses, demand, yield. Progress bar | - | E22, E71, E75 |
 | Optimal power flow | Interior point with log barrier on full AC flow. Objectives: losses, fuel or energy cost, shedding, security indices, multi-objective. Controls: generator P and Q, taps, capacitors | Optimal settings and changes | - | E8 |
 | Short circuit ANSI/IEEE | Three networks (1/2, 1.5 to 4, 30 cycles). Separate R and X for X/R, multiplying factors, NACD. Contact parting time | Momentary, interrupting, closing and latching duty. Symmetrical vs total rated. LV at maximum voltage. Generator breakers | IEEE C37.04, C37.010, C37.13, C37.013, C37.20.1, IEEE 399/141/242, UL 489 | E3, E10 |
 | Short circuit IEC | IEC 60909-0:2016. ip method A, B or C. User c. Max and min, near and far. KT, KG, KSO. Meshed Ib from machine contributions | Ik'', ip, Ib, Ik, idc. Device duty incl. 1- and 2-pole. LV service or ultimate capacity | IEC 60909, 62271-100/200/203, 60947-1/2, 60282-2, 60781 | E11 |
@@ -120,12 +120,13 @@ Common editor pattern [E34, E35]:
 | Motor acceleration | Static and dynamic. Event sequences. Starters: autotransformer, reactors, resistors, capacitors, star-delta, part winding, soft starter (4 modes), VFD. LTC and capacitor switching during start | Speed, torque, V, I, P, Q vs time. Worst-case analyzer | (V&V vs hand calc) | E4, E23, E24 |
 | Harmonics | Harmonic load flow (NR or GS fundamental) and frequency scan. Source library incl. interharmonics. Filters: single-tuned, high-pass, band-pass. Rule book of limits | THD, IHD, TIF, I*T, TDD, TRD, K-factor, spectra, waveforms | IEEE 519, IEC 61000-3-6/3-14, IEEE 1547, 2800 | E5 |
 | Transient stability | Synchronous and induction machines, exciters, governors, PSS, SVC, HVDC, IBR, relays. Unlimited events. User time step. Critical clearing time, fast bus transfer, load shedding, islanding, ride-through | Live plots, plot analyzer | (V&V vs Anderson-Fouad 9-bus, PSS/E, field data) | E16 |
-| Other dynamics | UDM block-diagram models. eMT (PSCAD EMTDC engine). eMTCoSim. Inrush. Generator start-up. Parameter estimation (NERC MOD-026/027). MotorPro | - | - | E17, E38, E39, E26 |
-| Voltage stability | P-V and Q-V | Margins | - | E22 |
+| Other dynamics | UDM block-diagram models. eMT (PSCAD EMTDC engine). eMTCoSim. Inrush. Generator start-up (cold and black start, saturation, field flashing, load pick-up). Parameter estimation (NERC MOD-026/027). MotorPro | - | - | E17, E38, E39, E26, E77 |
+| Operations | PMS: live monitoring, alarms, data reconciliation, predictive simulation, event playback, energy accounting, forecasting. Intelligent load shedding computes the shed set from the live model (vendor claims about 80 ms, against about 2 s for frequency relays) | Advisory actions | - | E73, E76 |
+| Voltage stability | P-V curves, Q-V curves, Q-V sensitivity, Q-V modal (eigenvalue) analysis | Loadability limit | - | E22, E72 |
 | Contingency | N-1 and N-2 with fast screening and ranking (voltage, overload, delta P and Q indices), then AC runs | Lost load, lost generation, customers, cost | - | E33 |
 | Reliability | State-based with switching restoration and load transfer. IEEE 493 and 3006.8 data, CDF costs | SAIFI, SAIDI, CAIDI, ASAI, EENS, ECOST and more. Sensitivity ranking | IEEE 493, 3006.8 | E31 |
 | Optimisation | Optimal capacitor placement, switching optimisation, VVO, hosting capacity | - | - | E22, E26 |
-| Cables | Sizing by ampacity, drop, motor-start voltage, short circuit, device, harmonics, let-through. Ampacity by 10 standards. Underground thermal (Neher-McGrath, IEC 60287). Pulling. Shock protection. PE sizing | Optimal and alternative sizes | IEEE 399, NEC, ICEA P-54-440, IEC 60502, 60364, 60092, BS 7671, NF C15-100, C13-200, AS/NZS 3008 | E18, E19, E22 |
+| Cables | Sizing by ampacity, drop, motor-start voltage, short circuit, device, harmonics, let-through. Ampacity by 10 standards. Underground raceway thermal (Neher-McGrath, IEC 287) in steady state and transient (dynamic thermal circuit), for duct banks and direct-buried cables, with heat sources, uniform-ampacity or uniform-temperature optimisation and rule-book auto layout. Pulling and tension. Shock protection. PE sizing | Optimal and alternative sizes, temperatures, thermal resistances, EMF | IEEE 399, NEC, ICEA P-54-440, IEC 60502, 60364, 60092, BS 7671, NF C15-100, C13-200, AS/NZS 3008 | E18, E19, E22, E70, E74 |
 | Transformer sizing | Load with growth, ambient, altitude, cooling stages. Impedance and BIL checks. Tap optimisation | MVA and impedance | ANSI C57.12/.92/.96, IEC 60076, 60726 | E20 |
 | DC and batteries | DC load flow (NR). Battery sizing (IEEE 485 duty cycle, aging, temperature, design margin). Discharge | Cells, strings, profiles | IEEE 308, 485, 946 | E21, E41, E42 |
 | Grounding | IEEE 80 and 81, IEEE 665. FEM for irregular grids. Two-layer soil from Wenner data | Step, touch, surface potentials, 3D plots | IEEE 80, 81, 665, EN 50522 | E32 |
@@ -167,6 +168,15 @@ Common editor pattern [E34, E35]:
 - Alert views split into marginal and critical.
 - Result analyzers comparing reports, cases and projects against a baseline.
 
+**Report detail** [E51 to E54, E64]:
+- Load flow: input, detailed and summary reports.
+- Short circuit: per-source contribution reports (symmetrical, asymmetrical, zero
+  sequence), phase and sequence profiles, impedance reports.
+- Motor starting alerts: failure to start; low voltage at motors, MOVs and buses (by bus
+  type and voltage level); generator and prime mover overload.
+- Alert views can be filtered by area, zone or region.
+- Alerts are critical at 100 % of a rating or more, and marginal above a user limit.
+
 **Reports** [E34, E37]:
 - 250+ Crystal Reports formats in six languages.
 - PDF, Word, Access and Excel export.
@@ -196,6 +206,21 @@ Common editor pattern [E34, E35]:
 - 3D network view.
 - Editing inside revisions, and revision comparison.
 - AI copilot for natural-language queries and edits.
+
+**Study setup patterns** [E63, E64, E66]:
+- Short-circuit and arc flash cases split buses into "Fault" and "Don't Fault" groups,
+  or set them by right-click on the one-line.
+- Arc flash data can be set globally in the study case, so each bus needs only an
+  equipment type. Clearing times come from device TCCs.
+- Motor starting uses events holding actions: by load, by starting category, and load
+  transition.
+- Static starting needs only no-load and full-load acceleration times. Dynamic starting
+  needs a model, a load model and inertia.
+
+**Training order** [E67 to E69]: model, load flow, cable sizing, ANSI then IEC short
+circuit and duty, motor starting, coordination and sequence of operation, arc flash,
+harmonics, cable thermal, ground grid. This is the industrial study chain users expect
+first.
 
 ## 7. What users value and dislike
 
@@ -248,10 +273,13 @@ These are the calculation engines ETAP's modules imply. Status against our code 
 2. **Numeric defaults are not public.** This covers convergence tolerances, iteration
    limits and alert thresholds. We must set our own and document them; we will not copy
    ETAP's.
-3. **Sub-pages not yet read:** load flow result analyzer and reporting; motor-starting
-   alerts; IEC 60909 details beyond the summary; ArcFault; DC arc flash; quasi-dynamic
-   load flow; voltage stability; optimal capacitor placement; hosting capacity; grid
-   code; wind; PV; microgrid; eTraX; ILS; PMS. To do in a second pass.
+3. **Read in later passes:** result analyzer, reports, motor-start alerts, ArcFault, DC
+   arc flash, distribution packages, grid code, PV array, time-domain and quasi-dynamic
+   flow, voltage stability, cable thermal and raceway, PMS, ILS, generator start-up.
+   **Still unread:** optimal capacitor placement and switching optimisation pages,
+   hosting capacity page, wind turbine generator, microgrid controller, eTraX,
+   transformer inrush, motor parameter estimation, control schematics, and the
+   transient stability and harmonics tutorials (fetch failed).
 4. **Recent forum feedback** beyond Capterra is thin. To do: Eng-Tips, Reddit and
    LinkedIn posts from 2023 to 2026.
 5. **ETAP's V&V PDFs** were listed but not opened. Their benchmark sources (Anderson and

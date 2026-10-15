@@ -143,8 +143,9 @@ From [P5, P7]:
 
 ## 6. Workflow and interface
 
-**Window and profiles** [P48, P36]:
-- Tabbed, flexible window layout.
+**Window and profiles** [P48, P36, P54]:
+- Tabbed, flexible window layout. Since 2025, panels can be arranged freely and
+  collapsed (output window, drawing toolbox, project overview). Dark mode is available.
 - Interface profiles add or hide buttons, menus, functions and models per user group.
 - Integrated script editor and report designer.
 - Categorised output window.
@@ -193,6 +194,23 @@ From [P5, P7]:
   ANAFAS.
 - DGS, its own two-way format over ASCII, XML, CSV and ODBC, used for GIS and SCADA.
 - CIM/CGMES, covered in a white paper [P33].
+
+**Training order** [P55, P57]:
+1. Interface and data structure.
+2. Type versus element data.
+3. Build an HV network.
+4. Simple busbars versus detailed substations.
+5. Load flow settings and results.
+6. Load flow control. Discrete taps, shunts and generator Q limits are handled in an
+   outer loop around the Newton-Raphson inner loop. Station controllers and taps.
+7. An MV extension as a separate grid, with templates.
+8. IEC 60909 short circuit for cable, busbar and breaker dimensioning.
+9. Complete method and multiple faults.
+10. Earthing concepts and single-phase faults.
+11. Grids, variations, expansion stages, operation scenarios and study cases.
+
+Advanced courses cover scripting, renewables, harmonics, protection, stability, DSL,
+Modelica, EMT, HVDC and every planning tool.
 
 ## 7. What users value and dislike
 
