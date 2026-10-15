@@ -136,6 +136,6 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | C3 | Cable pulling and tension | module | ? | none | - |
 | C4 | Transformer sizing | module | ? | none | - |
 | C5 | Battery sizing (IEEE 485) and discharge | module | ? | none | **gap** |
-| C6 | Ground grid (IEEE 80, FEM, soil model) | module | ? | none | Das 2010 (partial) |
+| C6 | Ground grid (IEEE 80, FEM, soil model) | module | ? | none | Morley IC 9258 ch. 7; spec in engine-grounding.md; gap IEEE 80 |
 | C7 | Panel schedules (NEC demand) | module | ? | none | - |
 | C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988; candidate linerate (licence to check) |
