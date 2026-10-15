@@ -1066,6 +1066,8 @@ Drafted by ChatGPT (WP-1.10, 2026-10-13) and revised by Claude after review on 2
 3. Claude WP-2.6 with ChatGPT WP-2.5.
 4. WP-2.7: Claude audits PV, ChatGPT audits PLC.
 
+**Research first, 2026-10-15, Peter's ruling:** building pauses while both models research the reference products in depth (WP-2.10, WP-2.11, then WP-2.12), for as long as it takes. In-progress engine WPs park on their branches.
+
 **Approval gate (original wording):** This section is a proposed implementation plan. Merging the
 WP-1.10 planning PR does not authorize its implementation. STOP after WP-1.10 and
 ask Peter to approve section 9 in chat. No section 9 WP starts before that approval.
@@ -1392,6 +1394,69 @@ Acceptance:
 - `uv run pytest packages/py/qe_plc -v` passes against the handwritten tables; results validate against the CC-6 schemas; full suite, ruff and guards pass; CI passes. No API, CLI, report, web, contract or root lock changes.
 
 Learning note: `docs/learning/plc-motor-starter-process.md`, explaining the process model, one-scan feedback and interlocks.
+Change record: none
+
+### WP-2.10 Power reference-product research: ETAP and PowerFactory
+
+Status: [ ] Not started
+Lane: A (Claude); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/power/etap.md`, `docs/research/power/powerfactory.md`, `docs/research/power/notes/**`
+
+Steps:
+
+1. Read every public ETAP and DIgSILENT PowerFactory source that can be found: product and module pages, brochures, published user manuals and help, release notes, technical references, webinars, papers and user articles.
+2. Write one dossier per product following `docs/research/power/README.md`, citing every claim, paraphrasing only.
+
+Reference: the sources listed in each dossier.
+
+Acceptance:
+
+- Both dossiers cover every template section, every claim cites a numbered source, the gaps list is explicit, text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.11 Power reference-product research: PowerWorld Simulator
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/power/powerworld.md`
+
+Steps:
+
+1. Read every public PowerWorld Simulator source: product and add-on pages, the online help, release notes, training material, papers and user articles.
+2. Write the dossier following `docs/research/power/README.md`, citing every claim, paraphrasing only.
+
+Reference: the sources listed in the dossier.
+
+Acceptance:
+
+- The dossier covers every template section, every claim cites a numbered source, the gaps list is explicit, text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.12 Power parity matrix and engine inventory
+
+Status: [ ] Not started
+Lane: A (Claude), with ChatGPT review
+Depends on: WP-2.10, WP-2.11
+Owned paths: `docs/research/power/parity-matrix.md`, `docs/research/power/engines.md`
+
+Steps:
+
+1. Merge the three dossiers into one capability matrix with our current status and the owned book that will verify each row.
+2. List every calculation engine the products imply, which we have, which we lack, and the owned books that cover each.
+
+Reference: the three dossiers and the owned library catalogue.
+
+Acceptance:
+
+- Every dossier capability appears in the matrix; every engine row names its sources; ChatGPT has reviewed it in the channel.
+
+Learning note: none.
 Change record: none
 
 **Implementer stop point:** A model stops after its assigned engine WP merges and
