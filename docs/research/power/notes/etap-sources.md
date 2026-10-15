@@ -49,3 +49,6 @@
 | E45 | https://etap.com/packages/data-exchange | Data exchange package | vendor page |
 | E46 | https://etap.com/product/etappy | etapPy | vendor page |
 | E47 | https://brainfiller.com/arcflashforum/viewtopic.php?p=3868 | Arc Flash Forum thread on ETAP versus SKM (2009) | user forum |
+| E48 | https://www.capterra.com/p/87535/ETAP-Software/reviews/ | Capterra ETAP reviews (about 30 of 82 visible, mostly 2019 to 2022) | user reviews |
+| E49 | https://www.g2.com/products/etap/reviews | G2 ETAP rating page (4.3 of 5, 22 reviews, cost rated highest band) | user reviews |
+| E50 | https://zipdo.co/best/load-flow-analysis-software/ | ZipDo load flow software list (generic pros and cons; low weight) | listicle |

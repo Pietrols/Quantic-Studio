@@ -52,3 +52,5 @@
 | P48 | https://www.digsilent.de/en/general-software-information.html | General software information | vendor page |
 | P49 | https://www.digsilent.de/en/system-parameter-identification.html | System parameter identification | vendor page |
 | P50 | https://www.digsilent.de/en/artificial-intelligence.html | Artificial intelligence | vendor page |
+| P51 | https://www.g2.com/sellers/digsilent | G2 DIgSILENT seller page (no reviews) | user reviews |
+| P52 | https://zipdo.co/best/load-flow-analysis-software/ | ZipDo load flow software list (generic; low weight) | listicle |

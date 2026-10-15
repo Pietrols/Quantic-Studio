@@ -131,3 +131,14 @@ sources, not ETAP's documents):
   missing option to enter bus duct impedance as Z% rather than X/R. Common advice:
   understand the IEEE calculations so software results can be judged. (Old thread;
   more recent user feedback still to collect.)
+
+## Review themes [E48, E49, E50]
+- Praised: approachable drag-and-drop modelling with sensible defaults; breadth of
+  studies in one tool; responsive support, webinars and training.
+- Criticised: incomplete libraries (regional cables, relays, breakers) and slow additions
+  via support tickets; expensive add-on modules and maintenance; dongle and licence
+  manager trouble; files not opening in older versions and model transfer problems;
+  unclear error messages; learning curve needing training; slow runs on a few hundred
+  buses without progress indication; report presentation, diagram printing and
+  difference reports; missing devices and languages in some versions. G2 rates cost in
+  its most expensive band. (ZipDo list is generic and weighted low.)
