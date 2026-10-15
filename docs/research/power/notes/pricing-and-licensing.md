@@ -57,7 +57,28 @@ date):**
 
 ## ETAP
 
-- **No vendor price list.** The only figures found are a third-party estimate [E98]
+**Official price structure, 2007 [E99] (a US GSA schedule filed by Operation
+Technology, Inc., ETAP's maker; price tables dated 2007-01-24; USD as usual for GSA):**
+
+- **Pricing is per module, in bus-count tiers:** 50, 100, 200, 300, 500, 1,000, 2,000,
+  5,000, 10,000, 20,000 and unlimited.
+- Separate lease (term) and perpetual prices, with lower prices for the 2nd to 7th and
+  8th copies.
+- **Maintenance is a percentage per year:** 12% for a single licence, 15% for nuclear,
+  and 15% plus per-copy fees for site licences.
+- **Example (first perpetual copy, 2007 prices):** a typical mining or industrial study
+  package (base, load flow, ANSI and IEC short circuit, arc flash, Star protection and
+  motor acceleration) cost **USD 5,169 at 50 buses** and **USD 18,227 unlimited**.
+- Adding transient stability and harmonics brings the unlimited package to USD 26,152.
+- Individual modules ranged from about USD 300 to 6,000.
+- **These are 2007 prices.** Adjust with an official CPI series before quoting them, and
+  expect list prices and packaging to have changed since (ETAP is now part of Schneider
+  Electric via AVEVA, whose ETAP software schedule of February 2024 appeared in search
+  but was not read).
+- The *structure* (modules times bus tiers, plus a maintenance percentage) matches what
+  buyers still describe today.
+
+**Recent figures:** no vendor price list. The only figures found are a third-party estimate [E98]
   ("starts at about USD 5,000 per user per year"; maintenance 15 to 20%). It gives no
   source and is internally inconsistent. **Indicative only; do not quote it to clients.**
 - **Licence facts from the dossier:** modules are sold separately. The bus-count and
@@ -91,6 +112,8 @@ date):**
 
 ## Gaps
 
-1. ETAP actual prices from a public record.
+1. A recent ETAP price from a public record. The 2007 GSA list is the best found so
+   far. A Guam Power Authority tender (GPA-019-25, ETAP upgrades and support) exists,
+   but the page did not load.
 2. Prices for PowerFactory advanced modules.
 3. Engineering Institution of Zambia (EIZ) CPD rules for training providers.

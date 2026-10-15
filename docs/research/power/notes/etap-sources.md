@@ -100,3 +100,5 @@
 | E96 | https://eng-tips.com/threads/etap-vs-easypower.461592 | Eng-Tips thread ETAP against EasyPower (December 2019) | user forum |
 | E97 | https://brainfiller.com/arcflashforum/viewtopic.php?p=4149 | Arc Flash Forum thread ETAP against EasyPower (December 2009) | user forum |
 | E98 | https://www.itqlick.com/etap/pricing | ITQlick ETAP pricing estimate (unsourced, internally inconsistent; indicative only) | third-party estimate |
+| E99 | https://www.gsaadvantage.gov/ref_text/GS35F0416T/0HR1FV.253VPP_GS-35F-0416T_SCHEDULEPRICELIST.PDF | US GSA schedule price list GS-35F-0416T, Operation Technology Inc. (ETAP), price tables dated 2007-01-24 | official government price list (old) |
+| E100 | https://etap.com/licensing | ETAP licensing page (commercial, nuclear, educational; prices only on request) | vendor page |
