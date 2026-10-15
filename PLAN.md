@@ -1250,10 +1250,10 @@ Change record: none
 
 ### WP-2.4 Service routing, report registry and workspace scaffolding
 
-Status: [~] In progress | ChatGPT | branch wp-2.4-phase2-routing | started 2026-10-14 | blocked by missing owned paths for import guard and uv.lock
+Status: [!] Changed design | due to PR #51 being merged before the required import guard and dependency metadata were completed, while original was one fully completed PR per WP, as it was better for completing approved routing infrastructure in a follow-up on the existing branch before either engine lane starts | ChatGPT | 2026-10-15
 Lane: B, serial shared infrastructure; runs beside WP-2.9
 Depends on: WP-2.2, WP-2.3
-Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`
+Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`, `uv.lock`
 
 Steps:
 
@@ -1270,7 +1270,7 @@ Acceptance:
 - Generated types, full Python/web tests, build and existing real power browser flows pass. Stub workspaces report unavailable engines correctly. Owned-path sets for 2.5/2.6 have zero intersection; all common acceptance checks pass.
 
 Learning note: `docs/learning/phase2-routing.md`, explaining common execution infrastructure and how a suite plugs in.
-Change record: none
+Change record: due to PR #51 being merged before the required import guard and dependency metadata were completed, while original was one fully completed PR per WP, as it was better for completing approved routing infrastructure in a follow-up on the existing branch before either engine lane starts | ChatGPT | 2026-10-15
 
 ### WP-2.5 Solar PV first end-to-end yield slice
 
