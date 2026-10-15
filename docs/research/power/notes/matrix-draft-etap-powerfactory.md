@@ -67,7 +67,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | S7 | Voltage-dependent loads (ZIP, exponential) | yes | yes | none | Sauer 2006, Kundur 1994 |
 | S8 | Temperature correction of conductor R | yes | yes | none | Anders 2005 |
 | S9 | Multiple islands, each with its own slack | yes | yes | ? | - |
-| S10 | Unbalanced three-phase load flow (1, 2, 3 phase; 3 and 4 wire) | module | yes | none | **gap: Kersting** |
+| S10 | Unbalanced three-phase load flow (1, 2, 3 phase; 3 and 4 wire) | module | yes | none | Das 2002 ch. 14; spec in engine-load-flow-extensions.md; base OpenDSS; gap Kersting |
 | S11 | Line constants from geometry, mutual coupling | yes | yes | none | Grainger 1994, Arrillaga 2003 |
 | S12 | DC load flow (batteries, chargers) and AC/DC unified | yes | yes | none | - |
 | S13 | Time-series and quasi-dynamic load flow | module | module | none | - |
@@ -96,7 +96,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | F5 | DC faults (IEC 61660, IEEE 946) | yes | yes | none | Das 2002 ch. 9; spec in engine-dc-short-circuit.md; gap IEC 61660 curves |
 | F6 | Complete (superposition) method on load flow | ? | yes | none | Kasikci 2002 |
 | F7 | Device duty against library ratings | yes | partial | none | Das 2002, Das 2021 (LV test X/R) |
-| F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Grainger 1994 |
+| F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Das 2002 sec. 2.8 and 14.1 (phase-coordinate method) |
 | P1 | TCC plotting with device libraries | yes | yes | none | Alstom 2011, Das 2021; spec in engine-protection-tcc.md; pandapower protection as base |
 | P2 | Damage curves (cable, transformer, motor start) | ? | yes | none | Alstom 2011 |
 | P3 | Automatic coordination checks or audit by rules | yes | yes | none | Alstom 2011 |
