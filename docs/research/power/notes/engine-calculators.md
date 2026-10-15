@@ -67,6 +67,34 @@ machine equations above. The motor decrement follows Das02 sec. 6.10 and Das21 c
 
 Pair it with `linerate` (MIT) for the ampacity side.
 
+**What Gonen88 actually gives (read on the page images, pdf pp. 641 to 662,
+2026-10-15):**
+
+- Sec. 10.2 gives the two strain terms **separately**: thermal, Δl = l0·α·Δt
+  (eq. 10.2), and elastic, Δl = l0·ΔT/(M·A) (eq. 10.3). It does **not** combine them
+  into a change-of-state equation and has no worked change-of-state example.
+- Combining them with the parabolic length l = L·(1 + w²L²/(24H²)) (eq. 10.8) gives the
+  usual cubic in the new horizontal tension. That combination is **our derivation**,
+  so it needs an external worked example before release (manufacturer stringing tables
+  or a utility design manual; to fetch).
+- Sec. 10.3 states the parabola error: under 0.5% in sag when sag is under 6% of span,
+  about 2% at 10%. The engine should use the catenary throughout and report the
+  parabolic value only as a check.
+- Creep is treated qualitatively (sag template section, p. 650 onward): aluminium
+  conductors creep for the life of the line, and the correction comes from
+  **manufacturer creep curves**. Another manufacturer-data input.
+
+**Worked examples recomputed:**
+
+- Example 10.1 (p. 636): c = 1600 ft, L = 500 ft. Catenary length: book 502.032 ft,
+  ours 502.037 ft (the book rounded sinh); parabolic length 502.0345 ft agrees exactly.
+  Sag by catenary: 19.57 ft.
+- Example 10.2 (p. 645, 795 kcmil ACSR, heavy loading): ice 0.9956 lb/ft, vertical
+  2.0181 lb/ft, wind 0.6977 lb/ft, resultant 2.1353 lb/ft, design tension 14,250 lb
+  (half the ultimate strength), sag 4.68 ft. All agree.
+
+Both are in imperial units. The engine works in SI and the tests convert the inputs.
+
 ## 3. Transformer sizing and loading (C4)
 
 - ETAP added "transformer load capability analysis" to IEEE C57.91 in 2026 (E91).
@@ -102,4 +130,6 @@ Pair it with `linerate` (MIT) for the ampacity side.
 
 1. IEC 61363-1, IEEE C57.91 / IEC 60076-7, IEEE 485 (paid).
 2. Manufacturer battery Kt curves; cable pulling limits.
-3. Gonen88 ch. 10 change-of-state equation: read the full section before coding.
+3. Gonen88 ch. 10 was read (sec. 2): it gives the strain components but no combined
+   change-of-state equation or example. We need an external worked change-of-state
+   case and manufacturer creep curves.

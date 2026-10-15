@@ -145,6 +145,57 @@ Linearise the same DAE at the operating point, then compute eigenvalues,
 participation factors and mode shapes (Kundur94 ch. 12). Reusing the transient model
 Jacobian (sec. 5b) gives T3 almost free once T1 exists.
 
+## 7a. Verification cases with complete data (checked on the page images, 2026-10-15)
+
+**Kundur94 Example 13.1** (printed pp. 843 to 848, pdf pp. 865 to 870): one equivalent
+classical generator (4 × 555 MVA, X'd = 0.3, H = 3.5, KD = 0) feeding an infinite bus
+through a transformer (j0.15) and two circuits (j0.5 and j0.93), all on 2220 MVA.
+Initial condition P = 0.9, Q = 0.436, Et = 1.0∠28.34°, EB = 0.90081∠0. A solid
+three-phase fault on circuit 2 is cleared by tripping that circuit.
+
+- Book results: E' = 1.1626∠41.77°; critical clearing time 0.0865 ± 0.0005 s; critical
+  clearing angle 52.17° ± 0.13° by integration and 52.29° by equal area; maximum swing
+  125.27°.
+- **Our independent recomputation** (equal area, P_e = 0 during the fault, so
+  δ(t) = δ0 + ω0·P·t²/(4H)): δ0 = 41.77°, δmax = 125.27°, δc = 52.24°, t_cc = 0.0868 s.
+  This agrees with the book to rounding (the 0.05° difference in δc comes from rounded
+  intermediate values).
+- Use: the first unit test of the integrator. A bisection on clearing time must return
+  0.086 to 0.087 s.
+
+**Kundur94 Example 13.2** (pp. 864 onward): the same system with rotor-circuit dynamics
+and excitation control (to read before the subtransient model WP). **Example 13.6**
+(p. 926): apparent impedance seen by a distance relay during the unstable case of
+Example 13.2. That is a test for the protection-during-swings feature.
+
+**Kundur94 Example 12.6, the two-area system** (printed pp. 813 to 816, pdf pp. 835 to
+838). The data is complete:
+
+- four 900 MVA, 20 kV units with full subtransient parameters and saturation
+  (A_sat = 0.015, B_sat = 9.6, ψ_T1 = 0.9); H = 6.5 for G1 and G2, 6.175 for G3 and G4;
+- step-up transformers j0.15 on 900 MVA;
+- 230 kV lines with r = 0.0001, x = 0.001 and b = 0.00175 pu/km on 100 MVA, and the
+  line lengths in Figure E12.8 (25, 10, 110, 110, 10, 25 km);
+- the generator dispatch and terminal voltages;
+- loads and shunt capacitors at buses 7 and 9, with load models stated (constant
+  current P, constant impedance Q);
+- four excitation variants: a self-excited DC exciter, a high-gain thyristor exciter,
+  a thyristor exciter with TGR, and a thyristor exciter with PSS (Figure E12.9).
+
+Published results: Table E12.3 (all 24 eigenvalues, manual excitation) and Table E12.4
+(rotor modes for each exciter variant). With manual excitation, the interarea mode is
+−0.111 ± j3.43 (0.545 Hz, ζ = 0.032) and the local modes are −0.492 ± j6.82
+(1.087 Hz) and −0.506 ± j7.02 (1.117 Hz), both ζ = 0.072. We recomputed f = ω/2π and
+ζ = −σ/|λ| from the printed eigenvalues and they agree. The high-gain thyristor case
+makes the interarea mode unstable (+0.031 ± j3.84); adding the PSS gives
+−0.501 ± j3.77 (ζ = 0.13).
+
+This is the standard benchmark in the literature, and the same network is reused in
+Kundur94 ch. 17 (Figures 17.15 and 17.22, including a parallel HVDC tie). It is
+the acceptance test for T3 (small-signal) and the time-domain cross-check for T1. It
+is also how PowerFactory and PSS/E users judge a new tool, so a published Quantic
+reproduction has sales value.
+
 ## 8. Open-source route
 
 See `open-source-foundations.md`:
@@ -172,5 +223,5 @@ See `open-source-foundations.md`:
    Dynawo documentation (public).
 2. WECC renewable model specifications (public, to fetch).
 3. Diesel genset governor and AVR models for mine gensets.
-4. Kundur94 example systems for verification: identify which examples give complete
-   data (for example the two-area system in ch. 12).
+4. ~~Kundur94 example systems for verification~~: resolved in sec. 7a (Examples 13.1,
+   13.2, 13.6 and 12.6 have complete data).

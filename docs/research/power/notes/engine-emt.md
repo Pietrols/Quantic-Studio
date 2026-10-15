@@ -76,6 +76,37 @@ Paraphrased from owned references.
   interaction (also H1 time-domain).
 - **Bus transfer, motor reacceleration and torsional dynamics** (Das10 ch. 16).
 
+## 3a. Capacitor switching cases in Das10 ch. 6 (checked on the page images, 2026-10-15)
+
+Example 6-1 (printed p. 124, pdf p. 139) gives the circuit:
+
+- a 6 Mvar ungrounded bank on a 13.8 kV bus;
+- a source of Z = 0.0115 + j0.1056 pu on 100 MVA;
+- 138 kV utility, a 30 MVA transformer, a 35.3 MVA generator and a composite load
+  (Fig. 6-1).
+
+The undamped inrush formulas are eq. 6-7, i_peak = √(2/3)·E_LL·√(C/L), and eq. 6-8,
+f = 1/(2π√(LC)).
+
+Our recomputation:
+
+| Quantity | Book | Ours | Note |
+| --- | --- | --- | --- |
+| C of 6 Mvar at 13.8 kV | 83.6 µF (eq. 6-1) | 83.57 µF | agrees |
+| Source R | 2.19 × 10⁻² Ω | 0.0219 Ω | agrees |
+| Source L | 5.08 × 10⁻⁴ H (eq. 6-1) | 0.533 mH | **book 5% low**; 0.1056 pu on 1.9044 Ω at 60 Hz is 0.533 mH |
+| Ex. 6-5, f with a 3.8 mH reactor | 264 Hz | 264.5 Hz | agrees |
+| Ex. 6-5, inrush peak with the reactor | 1633 A | 1565 A | **book 4% high**; eq. 6-7 does not reproduce it. The EMTP plot (Fig. 6-16) shows a first peak near 1500 A, closer to ours |
+
+The back-to-back paragraph of Example 6-5 (a minimum inductance of "14.32 mH" giving
+2000 Hz and 5.089 kA) does not reproduce from eqs 6-7 and 6-8 with any combination of
+the stated values that we tried. Do not use it as a test.
+
+**Use:** our EMT core's first tests should be the analytic series RLC energisation
+(eqs 6-6 to 6-9), compared with our own closed form, not the printed numbers. Das10's
+EMTP waveforms (Figs 6-2, 6-16) are useful only as a qualitative shape check, because
+the full network data behind them is not given.
+
 ## 4. Open-source route
 
 - No mature, permissive power-system EMT engine was confirmed in this pass.
