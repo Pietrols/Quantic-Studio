@@ -60,6 +60,8 @@ def test_reference_guard(repo, name):
         ("qe_power", "import pandapower"),
         ("qe_api", "import pandapower"),
         ("qe_api", "import qe_cli"),
+        ("qe_api", "import qe_circuit"),
+        ("qe_api", "import qe_unknown"),
         ("qe_core", "importlib.import_module('qe_power')"),
     ],
 )
@@ -76,7 +78,7 @@ def test_allowed_dependencies(repo):
         "qe_power/src/qe_power/model.py": "from qe_core import units",
         "qe_power/src/qe_power/adapters/pandapower/run.py": "import pandapower",
         "qe_cli/src/qe_cli/cli.py": "import qe_power",
-        "qe_api/src/qe_api/service.py": "import qe_power\nimport qe_report",
+        "qe_api/src/qe_api/service.py": "import qe_power\nimport qe_report\nimport qe_pv\nfrom qe_plc import run_scan_study",
         "qe_report/src/qe_report/report.py": "import qe_power",
     }.items():
         add(repo, "packages/py/" + name, source.encode())

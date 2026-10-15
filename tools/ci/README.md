@@ -49,7 +49,11 @@ Phase 2 adds `pvlib` to the named-engine map. It may be imported only below
 orchestration. Domain packages (`qe_power`, `qe_pv`, `qe_circuit`, `qe_plc`)
 may depend internally only on `qe_core`. The guard checks their tracked
 pyproject dependencies as well as imports. Core has no internal dependency.
-API permission to orchestrate new suites is a later WP-2.4 change.
+WP-2.4 allows `qe_api` to orchestrate `qe_core`, `qe_power`, `qe_report`,
+`qe_pv` and `qe_plc` only. API imports of `qe_cli`, `qe_circuit`, unknown
+internal packages, and raw `pvlib` or `pandapower` remain forbidden.
+CLI/API package metadata explicitly declares both new domain dependencies;
+the workspace lock retains the already reviewed third-party versions.
 
 The runtime and guard oracles run with:
 `uv run pytest packages/py/qe_core/tests/test_stepping.py tools/ci/tests -v`.
