@@ -309,7 +309,10 @@ DGUV fits the home market better than an IEEE-only tool.
   citations and keep the PDF in QE-References. Peter should add it there (the
   workspace's network cannot fetch arbitrary PDFs).
 - **Before coding:** read Annex 3 (kP values) and the worked examples in full from the
-  PDF.
+  PDF. A second fetch (2026-10-15) found that the guide gives kP as a reference table
+  (A 3-2) and an exact method from Schau, Halinka and Winkler. A garbled fragment
+  suggests a power law of the form kP ≈ 0.29/(R/X)^0.17, with dependence on the
+  electrode gap d. **Unverified; do not use until read on the page.**
 
 ## 7. Above 15 kV and DC (A3, A4)
 
