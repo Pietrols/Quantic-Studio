@@ -87,3 +87,4 @@
 | P83 | https://www.digsilent.de/en/software-editions-licensing.html | Software editions and licensing (editions, licence types, technologies, models) | vendor page |
 | P84 | https://smlouvy.gov.cz/smlouva/soubor/40297804/9-25-440-01.pdf?backlink=hbsho | Czech public contract register: VSB-TU Ostrava purchase of PowerFactory Multi-User 250 nodes (offer 2025-03-10, order 2025-04-24) | public procurement record |
 | P85 | https://digsilent.co.za/wp-content/uploads/2024/01/DIgSILENT-PowerFactory-Training-Course-Price-List-2024-1.pdf | DIgSILENT Buyisa (South Africa) training price list 2024 | regional vendor price list |
+| P86 | https://www.digsilent.de/en/general-software-information.html | General software information (Windows 64-bit; Unicode; multilingual GUI; details in the non-public product specification) | vendor page |

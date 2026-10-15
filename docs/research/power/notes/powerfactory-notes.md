@@ -620,3 +620,10 @@ native Python API "with improved syntax and functionality". Its stated aims:
 When a major research institute maintains a wrapper, the native API is evidently hard to
 use. Quantic implication: a clean, documented, versioned API from day one (we have JSON
 contracts and REST) is an advantage worth stating, and needs keeping.
+
+## Platform (P86; read 2026-10-15)
+
+PowerFactory is "fully compatible with MS Windows 64-bit". No Linux or macOS support is
+stated. Detailed requirements are in the Product Specification Document, which still
+would not open (dossier gap 1). Like ETAP, it is Windows-bound, so a browser-based
+Quantic workbench differs from both on platform reach.

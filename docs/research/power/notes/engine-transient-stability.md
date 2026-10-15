@@ -83,6 +83,22 @@ files**, so customers' existing model data can be reused. ANDES and Dynawo both 
   for PV and BESS on mine sites, which links to Quantic's PV suite. **Gap:** not in our
   books. The model specification is public in WECC documents. To fetch.
 
+## 4a. User-defined models (T2)
+
+- **What the vendors offer:**
+  - ETAP has a User-Defined Dynamic Model (UDM) block-diagram compiler (dossier);
+  - PowerFactory has DSL plus Modelica and FMI (its FAQ tags include Modelica and FMI;
+    `powerfactory-notes.md` P76).
+- **Quantic route:** the **FMI 2.0/3.0 standard** (Functional Mock-up Units). Users bring
+  models from any Modelica tool, Simulink or vendor exporters. We co-simulate or
+  model-exchange them in our integrator.
+- **Python libraries** (licences checked 2026-10-15 from PyPI and wheels):
+  - **FMPy** 0.3.32: BSD-2-Clause (some bundled assets are CC BY 4.0 or MIT). Suitable.
+  - PyFMI 2.5: LGPL. Usable only as a separately linked library; prefer FMPy.
+  - OMPython 4.1.0: OpenModelica's OSMC licence. Separate process only.
+- **Block diagrams in the workbench** compile to the same internal representation as
+  the PLC suite's function blocks: a cross-domain reuse opportunity.
+
 ## 5. Numerical solution (Kundur94 sec. 13.2 and 13.3.6; Sauer06 sec. 7.7 and 7.8)
 
 **(a) Partitioned, explicit** (RK4 or modified Euler):

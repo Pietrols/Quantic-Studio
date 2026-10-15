@@ -22,6 +22,7 @@ processes).
 | pypacity (U. Cantabria) | GPL-3.0-only | IEEE 738 and CIGRE TB 601 (alpha) | Not to be imported; prefer linerate | https://pypi.org/project/pypacity/ |
 | PowerSimulationsDynamics.jl (NREL) | BSD-3-Clause (repository) | Julia dynamics with inverter-based resources | Reference for IBR dynamics; Julia, so a separate process | https://github.com/NREL-SIIP/PowerSimulationsDynamics.jl |
 | pandapower protection | BSD-3 (part of pandapower) | OC relays (DTOC, IDMT, IDTOC), fuses with library and PCHIP curves | Base for P1 and P4 (`engine-protection-tcc.md`) | https://pandapower.readthedocs.io/en/latest/protection/oc_relay.html |
+| FMPy (Dassault Systèmes / CATIA-Systems) | BSD-2-Clause (wheel LICENSE.txt, v0.3.32, checked 2026-10-15) | FMI 2.0/3.0 model exchange and co-simulation | User-defined dynamic models (T2) | https://github.com/CATIA-Systems/FMPy |
 | powfacpy (Fraunhofer IEE) | MIT | Wrapper for the PowerFactory Python API | Evidence of PowerFactory API pain; not a dependency | https://pypi.org/project/powfacpy/0.3.3 |
 
 **OpenDSS packaging (checked 2026-10-15 by inspecting the wheels):**
