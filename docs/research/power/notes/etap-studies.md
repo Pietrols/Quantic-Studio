@@ -579,3 +579,31 @@ Core analysis groups and modules, as ETAP structures them:
   PF and torque, full-load PF, efficiency and slip, and maximum torque, by curve fitting;
   single cage with deep bar result; torque-, current- and PF-slip curves; editor updated
   automatically.
+
+## Star workflow and ARTTS (E101, E102; read 2026-10-15)
+
+- **Workflow taught in the tutorial [E101]:**
+  1. In Edit mode, drop a relay on the one-line.
+  2. In the relay editor's OCR page, pick a library device through "Library Quick Pick"
+     (example: GE Multilin 735/737). Settings levels have "link TOC + IOC" options.
+  3. Enter CT ratios on the Input page (needed for calculations, not for viewing the
+     TCC).
+  4. Switch to Star mode and use "Create Star View" for a TCC.
+  5. Add more devices with "Append to Star view", or Shift-drag from the one-line.
+  6. Fuses are picked by manufacturer, model, speed and size.
+- **Star capabilities [E102]:**
+  - an intelligent alert view explains why a curve is missing data;
+  - normalised (shifted) TCCs;
+  - curve families: transformer damage and inrush, motor starting and stator damage,
+    generator decrement, and arc flash energy curves;
+  - device types: fuses, OC/OL/differential relays, reclosers, electronic controllers,
+    HV and LV breakers, solid-state trips, thermal-magnetic, MCPs, overload heaters;
+  - export of settings and short-circuit data to relay test sets.
+- **ARTTS:** compares the relay's steady-state and transient responses against the
+  manufacturer curves and reports the deviation, with COMTRADE export of fault
+  waveforms.
+- **Quantic implications:**
+  - library pick-lists with manufacturer/model/size cascades are the core UX;
+  - "why is this curve missing" alerts suit our diagnostics-with-field approach;
+  - COMTRADE export (IEEE C37.111) of simulated faults is a cheap, valued feature that
+    links protection to EMT (`engine-emt.md`).

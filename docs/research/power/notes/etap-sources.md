@@ -102,3 +102,5 @@
 | E98 | https://www.itqlick.com/etap/pricing | ITQlick ETAP pricing estimate (unsourced, internally inconsistent; indicative only) | third-party estimate |
 | E99 | https://www.gsaadvantage.gov/ref_text/GS35F0416T/0HR1FV.253VPP_GS-35F-0416T_SCHEDULEPRICELIST.PDF | US GSA schedule price list GS-35F-0416T, Operation Technology Inc. (ETAP), price tables dated 2007-01-24 | official government price list (old) |
 | E100 | https://etap.com/licensing | ETAP licensing page (commercial, nuclear, educational; prices only on request) | vendor page |
+| E101 | https://etap.com/docs/default-source/faqs-tutorials/protective-device-coordination-star.pdf | Star protective device coordination tutorial | vendor tutorial PDF |
+| E102 | https://etap.com/docs/default-source/Brochures/fact-sheets/star_artts.pdf?sfvrsn=8 | Star and ARTTS fact sheet | vendor fact sheet |
