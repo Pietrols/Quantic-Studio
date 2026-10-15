@@ -17,7 +17,7 @@ effort.
 | Unbalanced faults | engine-unbalanced-faults | F2 | Grainger94 ch. 11 to 12, Glover17 9.5, Kasikci02 | pp (1ph, 2ph only; LLG rejected by `calc_sc`) + own (LLG, ANSI) | none | high | 1 |
 | Motor starting and acceleration | engine-motors | M1 to M4, S7 | Das02 12.10 to 12.11, Fitz03 ch. 6, Krause23 | own ODE + pp per step | datasheet fitting source | very high | 1 |
 | Protection, TCC | engine-protection-tcc | P1 to P5 | NPAG ch. 9, Das21 ch. 7, 11 | own (pp protection reviewed: teaching model only) | C37.112 form; manufacturer curve data | very high | 2 |
-| Arc flash | engine-arc-flash | A1 to A4 | Das21 ch. 3, 5, 6 (tables unreliable); DGUV-I 203-077 | `arcflash-calc` (MIT, verified against Annex D.1), pending Peter's decision; DGUV method own | IEEE 1584 coefficients decision | very high (paid service) | 2 |
+| Arc flash | engine-arc-flash | A1 to A4 | Das21 ch. 3, 5, 6 (tables unreliable); DGUV-I 203-077 | `arcflash-calc` (MIT, verified against Annex D.1; approved by Peter 2026-10-15); DGUV method own | none (decided); DGUV kP check against DGUV-I 203-077 text | very high (paid service) | 2 |
 | Cable sizing and ampacity | engine-cables | C1, C2, C8, S8 | Anders05 ch. 1, Morley ch. 8 | own (IEC 60287); linerate (licence to check) for overhead | IEC 60287 tables; K constants; local mine rules | high | 2 |
 | ANSI C37 duty | engine-ansi-short-circuit | F3, F7 | Das02 ch. 5, 7; Das21 ch. 5, 7 | own | C37.010 local curves; X/R 15 or 17 | medium (US-style plants) | 3 |
 | Grounding and ground grid | engine-grounding | C6 | Morley ch. 7 | own (analytic now, MoM later) | IEEE 80; local mine rules | high | 3 |
@@ -55,7 +55,7 @@ effort.
 3. **Paid standards block constants, not methods.** Every engine can be built from the
    books and open libraries; the standards are needed for certification-grade constants
    and verification cases. Suggested purchase order:
-   1. IEEE 1584-2018 (unless `arcflash` is accepted);
+   1. IEEE 1584-2018 (now optional: Peter approved `arcflash-calc` on 2026-10-15);
    2. IEC 60909-0:2016;
    3. IEEE 80;
    4. IEEE C37.010;

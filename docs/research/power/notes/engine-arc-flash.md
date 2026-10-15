@@ -181,6 +181,12 @@ reproduce IEEE 1584-2018). Options:
 My recommendation is option 1 for the engine, with option 2 as the long-term clean path.
 This is Peter's call (licence and source question, README rule 7).
 
+**Decision (Peter, 2026-10-15, in chat):** option 1. The arc flash engine depends on
+`arcflash-calc` (MIT) for the IEEE 1584-2018 coefficients and model, verified as in
+sec. 6b, and Quantic implements the DGUV-I 203-077 method (sec. 6a) itself for IEC
+markets. Option 2 stays the long-term path if a client needs a standard-sourced
+coefficient set.
+
 ## 6b. Verification of the coefficient sources (done 2026-10-15)
 
 **`arcflash` facts, checked by cloning the repository** (github.com/LiaungYip/arcflash,
