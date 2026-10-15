@@ -14,7 +14,8 @@ what was found on 2026-10-15. All documents are public on the Energy Regulation 
 | DZS418 | DZS 418-1 and -2:2024, *Electrical Safety Code* (construction, installation and commissioning; operation and maintenance) | draft for comment; replaces ZS 418:2013 | https://www.erb.org.zm/wp-content/uploads/files/standards/Draft-Revised-Standard-DZS-418-Part-1-2024-Draft-for-Public-Comments.pdf |
 | DZS387 | DZS 387 parts 1 to 4, *Power Quality and Reliability* (supply quality; measurement and reporting; application guide; instrument requirements) | draft, comments closed 2022-05-27 | https://www.erb.org.zm/request-for-public-comments-on-draft-zambian-standard-for-power-quality-and-reliability-standard-dzs-387-parts-1-4/ (ZIP: https://www.erb.org.zm/wp-content/uploads/DZS_387.zip) |
 | DZS397 | DZS 397:2023, *Quality of Consumer Service* | draft; replaces ZS 397:2017 | https://www.erb.org.zm/wp-content/uploads/files/standards/Draft-Zambian-Standard-DZS-397-2023.pdf |
-| ZGC | Zambian Grid Code (transmission). Referenced by the ZDGC for generators above 10 MVA | to find | - |
+| ZGC | Zambian Grid Code (transmission). Referenced by the ZDGC for generators above 10 MVA. An amended draft with VRE connection requirements was submitted to the ERB on 2022-07-22 (ZESCO System Operator news, 2023-08-01); no public link found | amended draft pending | https://systemoperator.zesco.co.zm/blog/3 |
+| PQMF | ERB *Revised Power Quality Management Framework*, February 2026, for stakeholder consultation. Ten directives for licensees; limits deferred to ZS 387 | consultation draft | https://www.erb.org.zm/wp-content/uploads/files/Power-Quality-Management-Framework.pdf |
 
 Also found but not read: Statutory Instrument No. 2 of 2026 under the Electricity Act
 (zambialii); the Mines and Minerals Development (General) Regulations 2016 (the PDF did
@@ -91,6 +92,26 @@ studies, arc flash, protection) in Zambia needs the company registered with the 
 registered and practising engineer. Selling the *software* may also count as an
 "engineering product" under s.18(1); confirm with EIZ. This is a business prerequisite
 to plan alongside the software.
+
+## Power quality framework (PQMF, February 2026; paraphrased)
+
+- **Limits:** none of its own. All power quality limits (voltage regulation, harmonics,
+  flicker, dips, unbalance) **defer to ZS 387**. The only figure it states itself is
+  that a generator must keep its negative-sequence voltage contribution at the point of
+  connection below 1% unless agreed (cl. 2.3.1).
+- **Large customers (mines):**
+  - emission limits are set under ZS 387, calculated by the utility with ZS 387 methods
+    if the contract is silent, negotiable, with appeal to the ERB (cl. 2.7.1 to 2.7.2);
+  - customers must not pollute beyond ZS 387, must provide their own surge protection,
+    and should design for dip immunity.
+- **Renewable generators above 5 MW** must measure the ZS 387 parameters, including
+  harmonics (Directive 10).
+- No reference to NRS 048 or IEC 61000 by name. Benchmarking against international
+  standards is promised (cl. 3.1).
+- **Implication:** a harmonic study for a mine (VFDs, mills) is judged against ZS 387
+  emission limits allocated by ZESCO. **ZS 387 is the key document to obtain** (the
+  DZS 387 ZIP above). The harmonics engine (`engine-harmonics.md`) must take ZS 387
+  emission allocation as data.
 
 ## What this means for Quantic
 
