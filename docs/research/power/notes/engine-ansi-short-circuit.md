@@ -168,7 +168,10 @@ a linear interpolation:
 
     MF_w = NACD · MF_remote + (1 - NACD) · MF_local
 
-Das02 Fig. 7-11 tabulates interpolated values from another reference (its Ref. 6). This
+Das02 Fig. 7-11 and Das21 Fig. 5.3 tabulate interpolated values from W. C. Huening Jr.,
+"Interpretation of new American standards for power circuit breaker applications", IEEE
+Trans. IGA-5, pp. 121 to 143, 1969 (named in Das21 ch. 5 ref. 12). That paper is a
+candidate source for the local curves and the weighting. This
 reading is consistent with two book results (section 7), but the formula itself is
 **my inference**, to confirm against C37.010 before coding.
 
@@ -187,6 +190,13 @@ still capped at K times (Das02 p. 163).
 - If X/R > 15 and E/X ≤ 80% of the rating, the breaker passes with no X/R work.
 
 Use these as screening flags only, never as the reported duty.
+
+**Conflict on the threshold.** Das21 sec. 5.5.1 to 5.5.2 (printed pp. 136 to 137)
+gives the same two shortcuts with X/R **17** instead of 15. For line-to-ground faults it
+uses (2X1+X0)/(2R1+R0). Both books cite C37.010-1999. A 45 ms dc time constant at 60 Hz
+corresponds to X/R about 17, which points to a newer rating basis, but that is my
+reading. **Gap: confirm in the current C37.010 before coding. Until then, the threshold
+is a parameter that cites its source.**
 
 **Validity limit.** The E/X method with decrement adjustments is stated valid up to
 X/R 45 at 60 Hz (dc time constant 120 ms). Above that, the engine must emit a diagnostic
@@ -250,6 +260,7 @@ without a source.
 | Crest MF, generator | X/R 123 | 2.793 | 2.789 (p. 256) | ok |
 | Half-cycle rms MF | X/R 74.89 / 15.94 / 123 | 1.685 / 1.532 / 1.703 | 1.685 / 1.532 / 1.70 | ok |
 | Crest and rms MF, Ex. 7.1 F1 | X/R 16.27 | 2.582 and 1.536 | 2.514 and 1.487 (Table 7-5, p. 257) | **book inconsistency** |
+| Das21 eq. 5.7 as printed (no 1/S) | X/R 40, C 3 | 1.334 | 1.21 (Das21 p. 138) | **printed equation omits 1/S; 1.21 needs S = 1.1 as in Das02 eq. 7.1** |
 | S from α | α 1.3 | 2.093 | 2.09 (p. 249) | ok |
 | LVPCB unfused / fused | X/R 20 | 1.145 / 1.255 | 1.14 / 1.26 (Das21 Table 7.7) | ok |
 | LVPCB unfused / fused | X/R 9.95 | 1.068 / 1.149 | 1.07 / 1.15 | ok |

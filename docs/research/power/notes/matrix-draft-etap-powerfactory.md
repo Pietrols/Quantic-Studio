@@ -105,7 +105,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | P6 | Distance protection, R-X, zones | module | module | none | Alstom 2011, Blackburn 2006 |
 | P7 | Differential protection | yes | yes | none | Alstom 2011 |
 | P8 | CT and VT models with saturation | yes | yes | none | Alstom 2011 |
-| A1 | Arc flash IEEE 1584-2018 with auto clearing time | module | module | none | Das 2021 |
+| A1 | Arc flash IEEE 1584-2018 with auto clearing time | module | module | none | Das 2021; spec in engine-arc-flash.md; candidate engine arcflash (MIT) |
 | A2 | Arc flash labels and work permits | yes | yes (labels) | none | Das 2021 |
 | A3 | DC arc flash | yes | yes | none | Das 2021 |
 | A4 | HV arc flash (above 15 kV) | yes | ? | none | Das 2021 |
