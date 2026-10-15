@@ -104,3 +104,8 @@
 | E100 | https://etap.com/licensing | ETAP licensing page (commercial, nuclear, educational; prices only on request) | vendor page |
 | E101 | https://etap.com/docs/default-source/faqs-tutorials/protective-device-coordination-star.pdf | Star protective device coordination tutorial | vendor tutorial PDF |
 | E102 | https://etap.com/docs/default-source/Brochures/fact-sheets/star_artts.pdf?sfvrsn=8 | Star and ARTTS fact sheet | vendor fact sheet |
+| E103 | https://etap.com/resources/16 | ETAP resource library (about 743 items: brochures, fact sheets, papers, tutorials, webinars, V&V) | vendor resource index |
+| E104 | https://etap.com/docs/default-source/brochures/fact-sheets/eprotect.pdf?sfvrsn=d19c2c7c_27 | eProtect fact sheet (enterprise protection settings and asset management) | vendor fact sheet |
+| E105 | https://etap.com/docs/default-source/etap-system-requirements/etap_2026-1_software_requirements.pdf?sfvrsn=73bc37c_19 | ETAP 26.0.1 software requirements | vendor requirements sheet |
+| E106 | https://etap.com/docs/default-source/brochures/fact-sheets/arcsafety-star-fact-sheet-3-web.pdf?sfvrsn=d1e53e7c_29 | ArcSafety and Star fact sheet | vendor fact sheet |
+| E107 | https://etap.com/product/ground-grid-systems | Ground grid systems product page (IEEE 80 and FEM) | vendor page |

@@ -204,3 +204,59 @@ sources, not ETAP's documents):
   3. Report quality is a visible differentiator.
   4. Built-in learning material and the worked trace reduce the "one trained person"
      risk. This matches the learning notes Quantic already writes.
+
+## Technology stack (E105, ETAP 26.0.1 requirements; read 2026-10-15)
+
+- **OS:** 64-bit Windows only (Windows 10 and 11, Server 2019 to 2025). Windows on ARM
+  and Parallels on Apple M3 are "tested, not fully supported".
+- **Runtimes:** both .NET Framework 4.8 and .NET 8 (desktop and ASP.NET Core), which
+  points to a legacy WinForms/WPF core plus newer web services.
+- **Data:** SQL Server 2022 Express LocalDB (installed), SQLite, the Access engine and
+  MongoDB, with ODBC and OLE DB drivers. Several storage generations coexist.
+- **Calculation engines:** the Intel Fortran runtime is required, which suggests at least
+  some solvers are Fortran.
+- **Other components:**
+  - reporting: SAP Crystal Reports runtime;
+  - licensing: Thales Sentinel RTE, network or USB key;
+  - graphics: Direct2D;
+  - Python 3.13 and Node.js 24 present (scripting, etapPy, web tooling).
+- **Hardware:** sized by bus count (8 GB at 100 to 500 buses, 32 GB at 10,000+);
+  recommended **dual 4K monitors**; NVMe for 20,000+ buses.
+- **Quantic implications:**
+  1. ETAP is Windows-bound with heavy installs (30 to 100 GB). A browser-based
+     workbench with a Python engine runs on any OS, including Peter's Mac and site
+     laptops. That is a real distribution advantage.
+  2. Their mixed storage shows the cost of decades of growth. Our single JSON contract
+     plus git is simpler, and we must keep it that way (one source of truth).
+  3. Dual-4K recommendations show how dense the ETAP UI is. Peter's "plain, less
+     cluttered" direction is a deliberate contrast.
+
+## Enterprise protection management: eProtect (E104)
+
+A central relay settings database across sites:
+
+- as-found against as-designed comparison;
+- change notifications and a tracking dashboard;
+- settings download and upload over FTP, SFTP and IEC 61850;
+- vendor software integration and automatic setting-file generation;
+- asset lifecycle and maintenance planning;
+- NERC compliance reporting;
+- a mobile web interface;
+- multi-user access control.
+
+It is the ETAP counterpart of PowerFactory's StationWare (P71). Both vendors sell
+settings management as a separate enterprise product. For mines with hundreds of relays
+it is a natural later Quantic product built on the protection device library.
+
+## Arc flash scope (E106)
+
+- **Standards:** IEEE 1584-2018 and 2002, NFPA 70E (including DC annexes), German BGI/GUV
+  5188E (the predecessor of DGUV-I 203-077), Australian ENA NENS 09-2014.
+- **Workflow:** auto-evaluation at many locations; mitigation comparisons; multilingual
+  labels; work permits; PPE approval.
+- **DC methods:** maximum power, Stokes and Oppenlander, Paukert.
+- **HV:** 1 to 800 kV, approach distances (OSHA 1910.269, NESC), arc-in-a-box from 15 to
+  36 kV.
+- **Integration:** flags device mis-operation due to arc flash; integrates with Star TCC.
+- Confirms that the IEC-world method (DGUV and its predecessor) is a mainstream option,
+  supporting `engine-arc-flash.md` sec. 6a.
