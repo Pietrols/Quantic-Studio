@@ -131,6 +131,29 @@ PowerFactory both offer it). pandapower supports it with `use_pre_fault_voltage`
 ("type C" in its docs). Quantic can expose IEC, ANSI and complete as three methods on
 one network, which is what PowerFactory does.
 
+## 6a. What pandapower 3.5.6 actually provides (source review, 2026-10-15)
+
+Read from the installed package (`pandapower/shortcircuit/`), not from its docs:
+
+- `calc_sc` accepts only `fault` in `["3ph", "2ph", "1ph"]` (`calc_sc.py` line 108).
+  **There is no two-phase-to-earth (LLG) fault.** Quantic adds it from the sequence
+  networks (`engine-unbalanced-faults.md`).
+- Results are Ik'' (`ikss_ka`), ip (`ip_ka`) and Ith (`ith_ka`) for buses, lines and
+  bus-bar switches.
+- **Ib is not available.** `_calc_ib_generator` in `currents.py` (lines 235 to 299) is
+  commented out in full. Its μ expressions match Das02 eq. 8.22, so the intended
+  method is the one in sec. 4 above, but we must implement and test it ourselves.
+- **Ik (steady state) is not computed.** No λ-based result exists. Sec. 5 stays an
+  own implementation.
+- **Power station unit correction is present:** `ppc_conversion.py` builds K_G, K_SG,
+  K_T and K_ST from `gen.power_station_trafo` and `pg_percent`, with separate paths for
+  on-load and off-load tap changers (lines 211 to 266). Quantic can reuse this for
+  generator-transformer units instead of re-deriving the KS and KSO factors.
+
+Consequence for wave A: pandapower supplies the impedance network, correction factors
+and Ik'', ip and Ith. Quantic adds Ib (μ and q), Ik (λ) and LLG on top, reading
+pandapower's ppci matrices rather than forking the package.
+
 ## 7. Verification cases
 
 - Das02 Example 8.x and sec. 8.7 compare IEC and ANSI on the same network (pdf

@@ -13,8 +13,8 @@ effort.
 | Engine | Spec note | Matrix rows | Book basis | Base | Blocking gap | Mining value | Proposed priority |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Balanced load flow and controls | engine-load-flow-extensions | S1 to S9 | Das02 ch. 11 to 13, Glover17 ch. 6 | pp (done for S1, S3) | none | high | 1 (finish taps, shunts, islands) |
-| IEC 60909 Ib and Ik | engine-iec60909-extensions | F1 | Das02 ch. 8, Kasikci02 | pp | q at tmin ≥ 0.25 s; λ curves (IEC 60909) | high | 1 |
-| Unbalanced faults | engine-unbalanced-faults | F2 | Grainger94 ch. 11 to 12, Glover17 9.5, Kasikci02 | pp (1ph, 2ph) + own (LLG, ANSI) | none | high | 1 |
+| IEC 60909 Ib and Ik | engine-iec60909-extensions | F1 | Das02 ch. 8, Kasikci02 | pp for Ik'', ip, Ith and power station units; own for Ib and Ik (pp 3.5.6 has Ib commented out and no Ik) | q at tmin ≥ 0.25 s; λ curves (IEC 60909) | high | 1 |
+| Unbalanced faults | engine-unbalanced-faults | F2 | Grainger94 ch. 11 to 12, Glover17 9.5, Kasikci02 | pp (1ph, 2ph only; LLG rejected by `calc_sc`) + own (LLG, ANSI) | none | high | 1 |
 | Motor starting and acceleration | engine-motors | M1 to M4, S7 | Das02 12.10 to 12.11, Fitz03 ch. 6, Krause23 | own ODE + pp per step | datasheet fitting source | very high | 1 |
 | Protection, TCC | engine-protection-tcc | P1 to P5 | NPAG ch. 9, Das21 ch. 7, 11 | own (pp protection reviewed: teaching model only) | C37.112 form; manufacturer curve data | very high | 2 |
 | Arc flash | engine-arc-flash | A1 to A4 | Das21 ch. 3, 5, 6 (tables unreliable); DGUV-I 203-077 | `arcflash-calc` (MIT, verified against Annex D.1), pending Peter's decision; DGUV method own | IEEE 1584 coefficients decision | very high (paid service) | 2 |
