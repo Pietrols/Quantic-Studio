@@ -503,3 +503,47 @@ Core analysis groups and modules, as ETAP structures them:
   conservative), else the bus user FCT; option to write results back to each bus;
   reports, labels per device location and bus; AF Result Analyzer with worst case,
   labels, permits and data sheets.
+
+## Third pass [E70 to E73]
+- Cable thermal: Neher-McGrath and IEC 60287 steady state; transient by dynamic thermal
+  circuit model for emergency loading; multiple duct banks and direct-buried conduits
+  over several cross-sections; mixed sizes per raceway, phases in separate conduits,
+  asymmetric layouts; cables dragged in from the one-line; user cable construction
+  (insulation, screens, armour, sheath, jacket); derated ampacity and sizing with
+  uniform-ampacity or uniform-temperature methods; fixed size or loading options;
+  raceway rule book auto-layout; heat from neighbours and external sources; dielectric
+  losses, loss factors, unbalanced load factors; outputs: dimensioned layouts, critical
+  and marginal temperature flags, thermal resistances, EMF intensity, transient plots.
+- Time-domain unified load flow: unlimited load and generation profiles, hourly or
+  minute steps, CSV import, 8,760-hour years, seasons and holidays, blended customer
+  classes, irradiance patterns, per-customer or meter profiles; single and multi-year
+  growth; devices in or out of service over the period; smart inverters, STATCOMs,
+  SVCs, VFDs; progress bar with elapsed and remaining time; time-series plots of current,
+  drop, losses, demand, yield; Python custom reports.
+- Voltage stability: four static methods: P-V curves, Q-V curves, Q-V sensitivity, Q-V
+  modal (eigenvalue) analysis; loadability limit point.
+- Intelligent load shedding white paper: conventional frequency relays act after about
+  2 s and shed uncontrolled amounts, needing extra spinning reserve; ILS computes the
+  exact load combination from the live system model and sheds within 80 ms, reprioritises
+  continuously, verifies signals, and warns operators; cited example protects large SAG
+  mills (mining) that take about a day to restart. (Vendor claims, not verified.)
+
+## Fourth pass [E74 to E77]
+- Underground raceway: Neher-McGrath and IEC 287; steady temperature, ampacity
+  optimisation, automatic sizing, transient temperature from load profiles; tension and
+  pulling analysis linked; grounded or ungrounded shields; armoured cables; thermal
+  resistance and dielectric loss terms (Yc, Ys); unlimited cross-sections.
+- Quasi-dynamic analysis: time-domain unbalanced load flow with a control system model:
+  POI active power control, peak shaving, Q, V and PF control, storage management,
+  renewable smoothing, islanded microgrid energy management, smart inverter Q-V and
+  P-V droop with P-Q limits, user control logic, controller communication with delays,
+  digital twins of plant and microgrid controllers, DNP3 for hardware in the loop.
+- PMS (operations): real-time monitoring on one-lines and operator screens with alarm
+  management; electrical and non-electrical tags; pseudo measurements; OPC; data
+  reconciliation and bad data correction; predictive "what if" simulation on live data;
+  event playback; energy accounting with tariffs; load forecasting; advisory corrective
+  actions.
+- Generator start-up: cold starts normal and emergency, frequency-dependent machine and
+  network models, special turbine behaviour, saturation correction, field flashing,
+  governor detail, relays (V, f, V/Hz, df/dt), motor acceleration under low V and f,
+  load pick-up sequencing for black start.

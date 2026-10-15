@@ -71,3 +71,11 @@
 | E67 | https://etap.com/singleevent/2025/06/02/workshop-by-etap/etap-114-us-irvine-060225 | ETAP 114 Power Systems Analysis workshop agenda | vendor training page |
 | E68 | https://etap.com/singleevent/2026/06/01/workshop-by-partner/etap-155-ph-pasay-060126 | ETAP 155 Arc Flash workshop agenda | vendor training page |
 | E69 | https://etap.com/singleevent/2025/05/07/workshop-by-partner/etap-113-es-madrid-050725 | ETAP 113 workshop agenda | vendor training page |
+| E70 | https://etap.com/product/cable-thermal-software | Cable thermal analysis | vendor page |
+| E71 | https://etap.com/product/time-domain-unified-load-flow-software | Time-domain unified load flow | vendor page |
+| E72 | https://etap.com/es/product/voltage-stability-software | Voltage stability (Spanish page) | vendor page |
+| E73 | https://etap.com/docs/default-source/white-papers/load-shedding-benefits-savings.pdf | White paper: load shedding benefits | vendor white paper |
+| E74 | https://etap.com/docs/default-source/Brochures/fact-sheets/underground-raceway-systems.pdf | Underground raceway systems fact sheet | vendor brochure |
+| E75 | https://platform.softwareone.com/product/quasi-dynamic-analysis/PCP-7927-1144 | ETAP quasi-dynamic analysis (reseller listing) | reseller page |
+| E76 | https://etap.com/packages/monitoring-simulation | Power management system | vendor page |
+| E77 | https://etap.com/product/generator-start-up-software | Generator start-up | vendor page |
