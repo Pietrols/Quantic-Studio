@@ -71,3 +71,5 @@
 | P67 | https://www.digsilent.de/en/faq-reader-powerfactory/what-is-the-effect-of-a-tap-changer-on-the-hv-or-lv-transformer-voltage.html | FAQ: tap changer effect | vendor FAQ |
 | P68 | https://www.digsilent.de/en/faq-reader-powerfactory/how-do-you-model-the-transformer-grounding-in-powerfactory.html | FAQ: transformer grounding | vendor FAQ |
 | P69 | https://www.digsilent.de/en/faq-powerfactory/tags/protection.html | FAQ tag index: protection (27 entries) | vendor FAQ |
+| P70 | https://www.digsilent.de/en/newsreader/digsilent-releases-new-service-packs-for-powerfactory-2026-2025-and-2024.html | Service packs 2026 SP1, 2025 SP5, 2024 SP8 (2026-03-11) | vendor news |
+| P71 | https://www.digsilent.de/en/products.html | DIgSILENT product overview (StationWare, PFM monitoring, PFM300-GCC) | vendor page |

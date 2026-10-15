@@ -527,3 +527,20 @@ references need a registered account (not used).
   neutrals, interlocking schemes, fuses from manufacturer curves, UFLS schemes, LV
   breaker releases (ACB, MCCB, MCB), transfer tripping for distance protection,
   anti-islanding for converters, adding all relays to a graphic, relay result boxes.
+
+## Product family and support policy (P70, P71; read 2026-10-15)
+
+- 2026 SP1 (2026-03-11): the interface is localised into English, German, Spanish,
+  Turkish and Chinese; the manual is in English and German. Other changes are only in
+  the release notes, which are not public.
+- Support window: three versions at a time (2026, 2025 and 2024 supported; 2023 ended).
+  Service packs continue for each supported version.
+- Products besides PowerFactory:
+  - **StationWare:** central protection settings database.
+  - **PFM monitoring devices:** recording, power quality, fault recording.
+  - **PFM300-GCC:** continuous grid code compliance monitoring.
+  - A certification test laboratory (a service).
+- Quantic implication: a **protection settings database** (StationWare-like) is a
+  separate product line that utilities and mines pay for. It ties naturally to our
+  device library and TCC engine (`engine-protection-tcc.md`). Record it as a later
+  product idea, not a WP.
