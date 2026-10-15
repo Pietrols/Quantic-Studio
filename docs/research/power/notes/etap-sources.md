@@ -83,3 +83,5 @@
 | E79 | https://platform.softwareone.com/product/switching-optimization/PCP-5964-5872 | ETAP switching optimisation (reseller listing) | reseller page |
 | E80 | https://etap.com/docs/default-source/Brochures/dynamics-transients.pdf | Dynamics and transients brochure | vendor brochure |
 | E81 | https://platform.softwareone.com/product/motor-parameter-estimation/PCP-0237-0394 | ETAP motor parameter estimation (reseller listing) | reseller page |
+| E82 | https://nupet.daelt.ct.utfpr.edu.br/tcc/engenharia/doc-equipe/2024_1_07/2024_1_07_final.pdf | UTFPR undergraduate thesis comparing ETAP and PowerFactory (2024, Portuguese) | academic thesis |
+| E83 | https://engineersuniverse.com/studios/electrical/etap-vs-skm-power-system-analysis-comparison | ETAP versus SKM comparison article | independent article |

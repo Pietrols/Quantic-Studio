@@ -162,3 +162,20 @@ sources, not ETAP's documents):
 - Reading: the core workflow every ETAP user learns is model, load flow, cable sizing,
   short circuit and duty, motor starting, coordination, arc flash. This is the industrial
   study chain a recreation must cover first, in this order.
+
+## Comparisons [E82, E83]
+- A 2024 thesis comparing ETAP and PowerFactory finds no universally better tool.
+  PowerFactory splits a generator into a reusable type and a diagram element (flexible
+  for complex systems); ETAP keeps one object with pages (Info, Rating, Imp/Model,
+  Protection), which is practical. ETAP's "Typical Data" fills impedances when
+  equipment data is incomplete in early project phases; generation categories give
+  several operating profiles per machine; strong decrement curves. PowerFactory derives
+  the generator damage curve from machine parameters and has a dedicated IEC 60909 page.
+- ETAP versus SKM: ETAP's single integrated one-line model feeds all studies, has broad
+  specialty modules and live plant links (utilities, EPC, heavy industry); SKM's
+  coordination and TCC workflow is fast and its core package cheaper (consultants doing
+  coordination and arc flash); neither imports the other's native files, so switching
+  means rebuilding the model.
+- Design lesson for us: offer both styles (one element with typical data for early
+  phases, plus reusable types for detailed work), and import competitors' files so
+  switching does not mean rebuilding.
