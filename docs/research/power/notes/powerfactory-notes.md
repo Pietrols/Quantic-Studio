@@ -485,3 +485,23 @@ references need a registered account (not used).
   models per authority with boundaries; full and difference models; network reduction
   to anonymise; scripted engine use for day-ahead and intraday processes; extension data
   kept and processable by scripts.
+
+## GIS, hosting capacity service, smart meters [P62 to P64]
+- GIS conversion to DGS (open format, file or database, partitioned) loaded by the
+  standard importer; Python import GUI picking model parts by list or map; post-import
+  scripts (for example assign profiles by load type); custom validation rules;
+  topology from coordinates plus object references; automatic geographic, station and
+  feeder diagrams; cleaning rules for isolated customers; fill missing impedances from
+  library types; trace from each transformer to open points to assign model parts.
+- Indicative hosting capacity service: headless engines on servers run per node maximum
+  additional P and Q (at an assumed PF) under user constraints (loading, voltage,
+  protection, harmonics), globally or per element or region, balanced or unbalanced,
+  standard or stochastic LV load flow, many scenarios (switching, seasons), in parallel;
+  reports limiting element and violated constraint; a Windows "Connector Service"
+  schedules runs (periodic or on model change) and shows results in a browser; inputs
+  from CGMES, DGS or other tools; versioned models for reruns.
+- Smart meters: any parameter can carry a characteristic; time characteristics by study
+  time; profile characteristics by day type and season; built from tables, result
+  files, CSV or text files, or databases (Oracle, PostgreSQL, SQL Server, ODBC); P and Q
+  series assigned to loads; quasi-dynamic runs give time curves and min and max
+  statistics; future cases by growth factors or added elements with profiles.

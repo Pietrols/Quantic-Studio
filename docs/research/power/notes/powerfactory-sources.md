@@ -63,3 +63,6 @@
 | P59 | https://www.digsilent.de/en/paper-reader-pf-en/analysis-of-low-voltage-networks.html | White paper: analysis of LV networks | vendor white paper |
 | P60 | https://www.digsilent.de/en/paper-reader-pf-en/network-planning-it-s-about-more-than-just-analysis.html | White paper: network planning | vendor white paper |
 | P61 | https://www.digsilent.de/en/paper-reader-pf-en/cim-and-cgmes-capabilities-of-powerfactory-to-support-the-cim-standard.html | White paper: CIM and CGMES | vendor white paper |
+| P62 | https://www.digsilent.de/en/paper-reader-pf-en/gis-integration.html | White paper: GIS integration | vendor white paper |
+| P63 | https://www.digsilent.de/en/paper-reader-pf-en/indicative-capacity-analysis-automated-calculation-of-hosting-capacity-of-distribution-networks-for-distributed-energy-resources-and-additional-loads.html | White paper: indicative hosting capacity | vendor white paper |
+| P64 | https://www.digsilent.de/en/paper-reader-pf-en/smart-meter-data-in-powerfactory.html | White paper: smart meter data | vendor white paper |
