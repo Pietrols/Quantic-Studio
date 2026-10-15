@@ -52,3 +52,15 @@
 | E48 | https://www.capterra.com/p/87535/ETAP-Software/reviews/ | Capterra ETAP reviews (about 30 of 82 visible, mostly 2019 to 2022) | user reviews |
 | E49 | https://www.g2.com/products/etap/reviews | G2 ETAP rating page (4.3 of 5, 22 reviews, cost rated highest band) | user reviews |
 | E50 | https://zipdo.co/best/load-flow-analysis-software/ | ZipDo load flow software list (generic pros and cons; low weight) | listicle |
+| E51 | https://etap.com/load-flow/load-flow-software-result-analyzer | Load flow result analyzer | vendor page |
+| E52 | https://etap.com/load-flow/load-flow-software-reporting | Load flow reporting | vendor page |
+| E53 | https://etap.com/motor-starting/motor-starting-alerts-reporting | Motor starting alerts and reporting | vendor page |
+| E54 | https://etap.com/short-circuit/short-circuit-reporting/ | Short circuit reporting | vendor page |
+| E55 | https://etap.com/product/arcfault | ArcFault (HV arc flash) | vendor page |
+| E56 | https://etap.com/product/dc-arc-flash-software | DC arc flash | vendor page |
+| E57 | https://etap.com/solutions/distribution-network-analysis | Distribution network analysis | vendor page |
+| E58 | https://etap.com/solutions/gridcode | Grid code compliance | vendor page |
+| E59 | https://etap.com/packages/distribution-simulation-analysis | Distribution simulation package | vendor page |
+| E60 | https://etap.com/packages/distribution-network-optimization | Distribution optimisation package | vendor page |
+| E61 | https://etap.com/packages/etap-base-package | ETAP base package | vendor page |
+| E62 | https://etap.com/product/photovoltaic-array-solar-panel | PV array | vendor page |

@@ -416,3 +416,47 @@ Core analysis groups and modules, as ETAP structures them:
 - Datablocks: templates applied by device type, showing input data and results of several
   studies; contouring of voltage or flow; embedded live plots overlaid on earlier
   results; result precision and visibility adapt to zoom level.
+
+## Second pass: reports, alerts and packages [E51 to E62]
+- Load flow reports: input data, detailed and summary; voltage drop, losses, flows, PF,
+  branch losses and loading; alert view filterable by area, zone or region; multi-report
+  analyzer with a reference report, side-by-side results, cross-project comparison,
+  jump to element, Excel export.
+- Short-circuit reports: load terminal fault currents; per-source contributions
+  (symmetrical, asymmetrical, zero sequence); totals and summary; phase and sequence
+  voltage and current profiles; phase and sequence impedance reports; alert view.
+- Motor starting alerts: motor fails to start; low voltage at starting motors and MOVs;
+  low bus voltage with thresholds by bus type and voltage level; generator and prime
+  mover overload; user marginal and critical limits; sort by area, zone, region. Plots
+  for motors, MOVs, static loads, capacitors, generators and buses (voltage, torque,
+  power, slip, current), combinable, with line, bar, 3D, scatter.
+- ArcFault: 15 kV and above (applicable 1 to 800 kV); custom equations; internal short
+  circuit and device times; working and minimum approach distance; altitude and
+  transient overvoltage adjustment; arc-in-a-box; current-limiting fuses; time-varying
+  clearing and decay; OSHA 1910.269 App. E, NESC C2 2012 to 2023, extended IEEE
+  1584-2002.
+- DC arc flash: maximum power, Stokes and Oppenlander, Paukert, DGUV-I 203-077 worst case
+  and iterative, transient DCAF per IEC 61660; BESS with SOC-based short-circuit model;
+  PV with IV curves and irradiance; UPS, DC motors, converters, chargers with user
+  short-circuit curves; mis-operation detection; NFPA 70E 2024 labels.
+- Distribution package: unbalanced load flow, time-series unified power flow (AC and DC),
+  load allocation from metering (technical and non-technical losses), unbalanced short
+  circuit incl. simultaneous faults, FLISR, arc flash, motor acceleration, reliability,
+  quasi-dynamic add-on. Optimisation package: OPF, switching optimisation (tie points),
+  optimal capacitor placement (installation and operating cost), VVO coordinating taps,
+  regulators, capacitors and inverters.
+- Grid code: rulebooks (built in and user); ride-through, P and Q control, dynamic
+  support, P-Q capability, harmonics and resonance at the point of measurement and per
+  inverter; submission-ready Excel tables.
+- Base package: digital twin platform (presentations, configurations, revisions,
+  wizards); network editor (1-phase, 3-phase, DC, grounding, templates, tracing, GIS
+  sync); element library; smart data entry and multi-level error checks; auto-build,
+  data blocks, calculators, rulebooks, switching interlock checks; data, theme, plot and
+  report managers; cable ampacity, sizing and impedance; cable manager; schedules;
+  Python; Gantt project tracking; DXF export; DataHub packaging; 140,000+ library models
+  and sizes; multilingual editions.
+- PV array: any number of panels in series and parallel; 17,000+ panel models from the
+  California Energy Commission list; I-V and P-V from datasheet values fitted with one-
+  or two-diode models; sun-position irradiance from date, time and location; time-series
+  output; temperature coefficients; built-in inverter with MPPT and user dynamic
+  logic; solar farm design incl. collectors, combiners and grounding; hosting capacity.
