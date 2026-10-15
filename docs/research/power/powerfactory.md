@@ -31,7 +31,7 @@ to `notes/powerfactory-sources.md`; the fuller working notes are
 
 ## 2. Sources
 
-Fifty numbered sources are listed in `notes/powerfactory-sources.md`, all accessed
+69 numbered sources are listed in `notes/powerfactory-sources.md`, all accessed
 2026-10-15:
 - vendor function pages;
 - the 2026 release note;
@@ -242,7 +242,15 @@ That listicle is weighted low, and the gap is recorded below.
 | Planning | Reliability state enumeration with restoration. Monte Carlo adequacy. Hosting capacity. Tie open point and phase balancing optimisation. Techno-economic NPV |
 | Design | Cable sizing to European and IEC standards. IEC 60287 and Neher-McGrath ampacity. Harmonic indices and filters. Flicker. Connection-request rules |
 
-## 9. Gaps
+## 9. Related working notes
+
+- `notes/matrix-draft-etap-powerfactory.md`: draft capability matrix.
+- `notes/engines-library-map.md`: engines against Peter's books.
+- `notes/open-source-foundations.md`: open engines we can build on.
+- `notes/powerfactory-notes.md`: calculation conventions from the FAQ, for example
+  loading definitions and the loss split.
+
+## 10. Gaps
 
 1. **Product specification, brochures, highlights and papers** in the public download
    area did not open with our fetch tool [P2]. Next pass: try alternative links or ask

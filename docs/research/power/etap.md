@@ -25,7 +25,7 @@ refers to `notes/etap-sources.md`. Fuller working notes:
 
 ## 2. Sources
 
-Fifty numbered sources are listed in `notes/etap-sources.md`, accessed 2026-10-15:
+83 numbered sources are listed in `notes/etap-sources.md`, accessed 2026-10-15:
 - vendor product pages and fact sheets;
 - vendor tutorials (getting started, load flow, element properties);
 - the vendor's V&V case list;
@@ -263,7 +263,14 @@ These are the calculation engines ETAP's modules imply. Status against our code 
 | Planning | Reliability by state enumeration with restoration. Optimal capacitor placement. Switching optimisation. Hosting capacity |
 | Design calculators | Cable sizing and ampacity per many standards. Neher-McGrath and IEC 60287 thermal. Transformer sizing. Battery sizing (IEEE 485). Ground grid (IEEE 80 analytic and FEM). Line sag-tension and IEEE 738 ampacity. Panel schedule demand calculation |
 
-## 9. Gaps
+## 9. Related working notes
+
+- `notes/matrix-draft-etap-powerfactory.md`: draft capability matrix with our status.
+- `notes/engines-library-map.md`: engines against Peter's books.
+- `notes/open-source-foundations.md`: open engines we can build on.
+- Comparisons with PowerFactory and SKM are in `notes/etap-platform.md`.
+
+## 10. Gaps
 
 1. **Full user guide and editor field lists are not public.** Only a few editor pages are
    known [E35]. Close by:
