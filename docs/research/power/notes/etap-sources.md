@@ -97,3 +97,5 @@
 | E93 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults_scansi2.pdf?sfvrsn=7149ba7f_46 | V&V case: unbalanced short circuit against Anderson 1973 pp. 38 to 40 | vendor V&V document |
 | E94 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults.pdf | Combined V&V cases document (listed, not read in full) | vendor V&V document |
 | E95 | https://publikationen.dguv.de/widgets/pdf/download/article/4026 | DGUV-I 203-077 English edition (2021): arc flash PPE selection by box-test method (benchmark used by ETAP) | public guide (free download, copyrighted) |
+| E96 | https://eng-tips.com/threads/etap-vs-easypower.461592 | Eng-Tips thread ETAP against EasyPower (December 2019) | user forum |
+| E97 | https://brainfiller.com/arcflashforum/viewtopic.php?p=4149 | Arc Flash Forum thread ETAP against EasyPower (December 2009) | user forum |

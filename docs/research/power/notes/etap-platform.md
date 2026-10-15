@@ -179,3 +179,28 @@ sources, not ETAP's documents):
 - Design lesson for us: offer both styles (one element with typical data for early
   phases, plus reusable types for detailed work), and import competitors' files so
   switching does not mean rebuilding.
+
+## User feedback from forums (E96, E97; read 2026-10-15; old threads, treat as indicative)
+
+- **2019 Eng-Tips [E96]:**
+  - EasyPower is praised for ease of use and fast support, including adding library
+    devices.
+  - Licences come in bus-count tiers and module bundles you may not need.
+  - SKM is mandated by many specifications in some regions.
+  - A plant buyer's real concern: the model changes often (half the flows reshuffled,
+    yearly major reconfiguration), so **ease of editing and model maintenance matter
+    more than features**.
+  - Another member warns that firms train one person, keep paying maintenance, and lose
+    the know-how when that person leaves.
+- **2009 Arc Flash Forum [E97]:**
+  - users found EasyPower and SKM friendlier, with better printed output, than ETAP;
+  - SKM is valued for its pre-modelled equipment library (including European types);
+  - ETAP is more common in utilities.
+- **Quantic implications:**
+  1. Model maintenance (diff, merge, bulk edit; our git and JSON approach) is a buying
+     reason.
+  2. Bus-count and module tiers frustrate buyers. A simple, transparent pricing story
+     helps.
+  3. Report quality is a visible differentiator.
+  4. Built-in learning material and the worked trace reduce the "one trained person"
+     risk. This matches the learning notes Quantic already writes.

@@ -606,3 +606,17 @@ It runs in **RMS and EMT** dynamic simulation, selected per study case. Separate
 examples cover a VSD template and a synchronous motor with asynchronous starting.
 Quantic: confirms the M3 starter list in `engine-motors.md` sec. 5. Synchronous motor
 asynchronous starting (relevant to large mine mills) should be added there.
+
+## Scripting pain points (P81; read 2026-10-15)
+
+`powfacpy` (MIT, maintained mainly by Fraunhofer IEE) exists to wrap PowerFactory's
+native Python API "with improved syntax and functionality". Its stated aims:
+
+- readability and productivity;
+- avoiding known problems, errors and obscurities of the native API;
+- standardising how organisations work (for example, result export formats);
+- tutorials for newcomers.
+
+When a major research institute maintains a wrapper, the native API is evidently hard to
+use. Quantic implication: a clean, documented, versioned API from day one (we have JSON
+contracts and REST) is an advantage worth stating, and needs keeping.
