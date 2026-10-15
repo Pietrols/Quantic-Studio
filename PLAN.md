@@ -1398,7 +1398,7 @@ Change record: none
 
 ### WP-2.10 Power reference-product research: ETAP and PowerFactory
 
-Status: [ ] Not started
+Status: [~] In progress | Claude | branch wp-2.10-etap-powerfactory-research | started 2026-10-15
 Lane: A (Claude); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/power/etap.md`, `docs/research/power/powerfactory.md`, `docs/research/power/notes/**`
