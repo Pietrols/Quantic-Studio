@@ -132,10 +132,10 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | ID | Capability | ETAP | PowerFactory | Quantic | Verifying book |
 |---|---|---|---|---|---|
 | C1 | Cable sizing (ampacity, drop, short circuit, motor start) to many standards | yes | module | none | Anders 2005, Morley |
-| C2 | Cable ampacity Neher-McGrath and IEC 60287, duct banks | module | module | none | Anders 2005 |
+| C2 | Cable ampacity Neher-McGrath and IEC 60287, duct banks | module | module | none | Anders 2005; spec in engine-cables.md; no permissive library, implement |
 | C3 | Cable pulling and tension | module | ? | none | - |
 | C4 | Transformer sizing | module | ? | none | - |
 | C5 | Battery sizing (IEEE 485) and discharge | module | ? | none | **gap** |
 | C6 | Ground grid (IEEE 80, FEM, soil model) | module | ? | none | Das 2010 (partial) |
 | C7 | Panel schedules (NEC demand) | module | ? | none | - |
-| C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988 |
+| C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988; candidate linerate (licence to check) |
