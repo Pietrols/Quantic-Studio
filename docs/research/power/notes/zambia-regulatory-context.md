@@ -62,6 +62,36 @@ post `?p=6865`).
 interharmonics, flicker, unbalance, dips, regulation, surges) (2.6.3.1). The numeric
 limits are in ZS 387, not the code.
 
+## Who may do and sign the studies: EIZ Act 2010 (paraphrased; read 2026-10-15)
+
+Source: Engineering Institution of Zambia Act No. 17 of 2010,
+https://portal.eiz.org.zm/portal_assets/media/doc/EIZ_ACT.pdf. This is research, not
+legal advice; confirm with EIZ.
+
+- **Individuals:**
+  - categories are Engineer, Technologist, Technician and Craftsperson (R.Eng, R.Teg,
+    R.Tec, R.Cra) (s.2, s.17, s.20);
+  - practising needs EIZ membership plus registration (s.15) **and** an annual practising
+    certificate (s.25, s.26, s.29);
+  - regulations may tie certificates to CPD (s.31(b)).
+- **Organisations:**
+  - an engineering organisation or unit **may not provide any engineering service or
+    product unless registered** (s.18(1)), with titles R.Eng.O and R.Eng.U;
+  - registration requires an office in Zambia and declared fields of practice (for
+    example electrical, mining);
+  - **consulting firms must belong to the Association of Consulting Engineers of Zambia
+    and have registered engineers as partners with suitable experience** (s.19).
+- **Penalties:** practising, or an organisation providing services, while unregistered
+  carries heavy fines in penalty units and possible imprisonment (s.15(2), s.18(2),
+  s.25(2), s.41).
+
+**Implication for Quantic Engineering Limited:** selling study *services* (connection
+studies, arc flash, protection) in Zambia needs the company registered with the Board
+(and ACEZ membership if it acts as a consulting firm), with studies signed by a
+registered and practising engineer. Selling the *software* may also count as an
+"engineering product" under s.18(1); confirm with EIZ. This is a business prerequisite
+to plan alongside the software.
+
 ## What this means for Quantic
 
 1. **There is a regulated demand for studies.** Every mine or industrial site adding
@@ -93,5 +123,12 @@ limits are in ZS 387, not the code.
    - the mining regulations' electrical part.
 2. Confirm which drafts have become final ZS standards (ZABS catalogue).
 3. Read ZS 387 for the numeric voltage, harmonic and flicker limits.
-4. Engineering Institution of Zambia (EIZ) rules: who may sign such studies (registered
-   engineer). This matters for Quantic's service model and for Peter's own registration.
+4. EIZ: confirm the organisation registration route for Quantic, Peter's own category
+   and route to R.Eng, the CPD rules, and whether software counts as an "engineering
+   product" under s.18.
+5. Draft **DZS 1191-2, *Inverter Systems for Embedded Generation*** (ERB call for
+   comments, 2026-08-12, comments closed 2026-09-11): LV (230/400 V) grid-following,
+   multi-mode and grid-forming inverters below 1,000 kVA for mini-grids and embedded
+   generation. ZIP:
+   https://www.erb.org.zm/wp-content/uploads/files/call_for_comments/standards-to-govern-inverter-systems-for-embedded-generation.zip.
+   Relevant to the PV suite and to mine solar.
