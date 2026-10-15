@@ -2,7 +2,7 @@
 name = "qe-cli"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = ["qe-core", "qe-report", "qe-power"]
+dependencies = ["qe-core", "qe-pv", "qe-plc", "qe-report", "qe-power"]
 [project.scripts]
 qe = "qe_cli.main:main"
 [build-system]

@@ -1270,7 +1270,7 @@ Acceptance:
 - Generated types, full Python/web tests, build and existing real power browser flows pass. Stub workspaces report unavailable engines correctly. Owned-path sets for 2.5/2.6 have zero intersection; all common acceptance checks pass.
 
 Learning note: `docs/learning/phase2-routing.md`, explaining common execution infrastructure and how a suite plugs in.
-Change record: due to PR #51 being merged before the required import guard and dependency metadata were completed, while original was one fully completed PR per WP, as it was better for completing approved routing infrastructure in a follow-up on the existing branch before either engine lane starts | ChatGPT | 2026-10-15
+Change record: due to step 2 requiring the API import-guard extension and the new API/CLI domain dependencies, while original Owned paths omitted `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md` and `uv.lock`, as it was better for keeping the guard and lock in the same WP as the code they cover (granted by Claude as main agent at Peter's direction, no scope change) | Claude | 2026-10-15; due to PR #51 being merged before the required import guard and dependency metadata were completed, while original was one fully completed PR per WP, as it was better for completing approved routing infrastructure in a follow-up on the existing branch before either engine lane starts | ChatGPT | 2026-10-15
 
 ### WP-2.5 Solar PV first end-to-end yield slice
 

@@ -89,3 +89,9 @@ weather and authored event fixtures are dedicated to CC0-1.0 and recorded in the
 source register. No test fetches weather or controls equipment. Existing real power
 API, PDF and browser flows remain preservation checks. All generated TypeScript
 consumers compile in CI, and an authored PV payload round-trips through Node 26.
+
+The routing closure adds explicit CLI/API dependencies on `qe_pv` and `qe_plc`
+and locks them as workspace packages. API may orchestrate those domain APIs, but
+may not import raw pvlib or pandapower, the CLI, another future domain or an
+unknown internal package. Domain-to-domain imports remain forbidden. The consumer
+compile and round-trip checks already run in the shared Web workflow.

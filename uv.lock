@@ -946,7 +946,9 @@ source = { editable = "packages/py/qe_api" }
 dependencies = [
     { name = "fastapi" },
     { name = "qe-core" },
+    { name = "qe-plc" },
     { name = "qe-power" },
+    { name = "qe-pv" },
     { name = "qe-report" },
     { name = "uvicorn" },
 ]
@@ -955,7 +957,9 @@ dependencies = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115,<1" },
     { name = "qe-core", editable = "packages/py/qe_core" },
+    { name = "qe-plc", editable = "packages/py/qe_plc" },
     { name = "qe-power", editable = "packages/py/qe_power" },
+    { name = "qe-pv", editable = "packages/py/qe_pv" },
     { name = "qe-report", editable = "packages/py/qe_report" },
     { name = "uvicorn", specifier = ">=0.30,<1" },
 ]
@@ -966,14 +970,18 @@ version = "0.1.0"
 source = { editable = "packages/py/qe_cli" }
 dependencies = [
     { name = "qe-core" },
+    { name = "qe-plc" },
     { name = "qe-power" },
+    { name = "qe-pv" },
     { name = "qe-report" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "qe-core", editable = "packages/py/qe_core" },
+    { name = "qe-plc", editable = "packages/py/qe_plc" },
     { name = "qe-power", editable = "packages/py/qe_power" },
+    { name = "qe-pv", editable = "packages/py/qe_pv" },
     { name = "qe-report", editable = "packages/py/qe_report" },
 ]
 

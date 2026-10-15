@@ -92,7 +92,7 @@ def boundary_guard(root, paths):
             target = module.split(".")[0]
             if target.startswith("qe_") and target != owner:
                 allowed = owner in {"qe_cli", "qe_report"} or (
-                    owner == "qe_api" and target in {"qe_core", "qe_power", "qe_report"}
+                    owner == "qe_api" and target in {"qe_core", "qe_power", "qe_report", "qe_pv", "qe_plc"}
                 ) or (
                     owner in {"qe_power", "qe_pv", "qe_circuit", "qe_plc"} and target == "qe_core"
                 )
