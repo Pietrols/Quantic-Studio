@@ -260,7 +260,10 @@ That listicle is weighted low, and the gap is recorded below.
    standards.
 3. **Element dialog fields and default values** are not public, except a few named in
    the FAQ.
-4. **Independent user feedback** was not found.
-5. **Remaining reading:** the rest of the public FAQ entries (about 70 tags) and the
-   remaining white papers (CIM, LV analysis, GIS, network planning, smart meter data,
-   UI customisation).
+4. **Independent user feedback** is still thin. Indirect evidence: Fraunhofer IEE
+   maintains `powfacpy` to work around the native Python API (P81; see
+   `notes/powerfactory-notes.md`).
+5. **Remaining reading:** the FAQ tags for protection, controller, motor starting and
+   cable sizing were read (P69 to P80). Other tags and the white papers (CIM, LV
+   analysis, GIS, network planning, smart meter data, UI customisation) are still
+   unread.

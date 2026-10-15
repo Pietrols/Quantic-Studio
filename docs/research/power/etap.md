@@ -289,8 +289,9 @@ These are the calculation engines ETAP's modules imply. Status against our code 
    the 2026 release notes (hosting capacity and microgrid controller items).
    **Still unread:** a dedicated hosting capacity product page (only release notes and
    webinars found), and the transient stability and harmonics tutorials (fetch failed).
-4. **Recent forum feedback** beyond Capterra is thin. To do: Eng-Tips, Reddit and
-   LinkedIn posts from 2023 to 2026.
+4. **Forum feedback:** two older threads were read (E96 from 2019, E97 from 2009;
+   summary in `notes/etap-platform.md`). Recent (2023 to 2026) threads are still
+   missing: search results surface mostly Capterra and old forum posts.
 5. **ETAP's V&V cases** were catalogued 2026-10-15 (23 cases, E36, E92 to E94) and
    mapped to what Quantic can reproduce in `notes/verification-benchmarks.md`. Two
    documents were read in detail. The rest of the combined PDF (E94) is still unread.
