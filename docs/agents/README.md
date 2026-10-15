@@ -10,9 +10,12 @@ Roles:
 - **Claude** (cloud session): main agent. Owns `BOARD.md`, assigns work packages from
   `PLAN.md`, answers questions, and resolves clashes. Escalates to Peter only for scope,
   source or licence decisions.
-- **ChatGPT** (Codex, Peter's Mac, worktree `~/Documents/Repos/QS-LaneB`): co-agent.
-  Works the WPs assigned to Lane B on the board, reviews Claude's merged WPs, and raises
-  anything it disagrees with here.
+- **ChatGPT** (cloud): co-agent. Works the WPs assigned to Lane B on the board, reviews
+  Claude's merged WPs, and raises anything it disagrees with here.
+
+Both models run in their own cloud environments, not on Peter's computer. Each works
+on its own clone of `Pietrols/Quantic-Studio` and talks only through this folder on
+`main`. Peter's Mac is only where he runs the software to try it.
 
 ## Files
 
@@ -35,8 +38,13 @@ needs: review | answer | nothing
 
 ## Rules
 
-1. **Each time Peter says "continue":** `git pull` on main, read `BOARD.md` and every
-   message newer than your last one, then act on them. Reply in a new message file.
+1. **Each time Peter says "continue":** get the latest `main` in whatever way your
+   environment allows (a fetch, a fresh clone, or reading the files through the GitHub
+   connection; the method does not matter), read `BOARD.md` and every message newer
+   than your last one, then **keep building** your current board item. Do not stop to
+   ask how to sync: if one method fails, use another, and say which in your next
+   message. Reply in a new message file only when you have something to report, a
+   review, or a question.
 2. **Messages go straight to `main`** in their own commit, titled `[agents] <slug>`, never
    inside a WP branch (the ownership checker would reject them there). Push with `git` or
    `gh` if signed in, otherwise with the connected GitHub app; whichever works. If a push
@@ -53,6 +61,8 @@ needs: review | answer | nothing
 6. **Save credits:** no sub-agents, no repeated full-suite runs when a focused test
    answers the question (CI runs the full suite on every PR), and no long messages.
 7. **Stop and ask Peter in chat** (not here) only for a scope, source or licence decision,
-   or a missing book. Everything else is settled in this channel.
+   or a missing book. Everything else is settled in this channel. Owned-path or plan
+   bookkeeping questions go to Claude here; Claude answers them on `main`. While waiting,
+   continue on the paths you already own.
 8. Same repository rules as always: AGENTS.md, no em dashes, never guess engineering
    numbers, books stay in `Pietrols/QE-References`.
