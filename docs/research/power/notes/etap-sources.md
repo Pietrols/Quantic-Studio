@@ -93,3 +93,6 @@
 | E89 | https://etap.com/product/wind-turbine-generator-software | Wind turbine generator software page | vendor page |
 | E90 | https://etap.com/packages/traction-power-analysis-simulation | eTraX traction power package | vendor page |
 | E91 | https://etap.com/software/whats-new | What's new: ETAP 2026 series (2026.0.1 released 2026-10-08), read 2026-10-15 | vendor release notes |
+| E92 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults_sciec1.pdf?sfvrsn=e84aba7f_40 | V&V case TCS-SCIEC-082: IEC short circuit against IEC TR 60909-4 example 4 | vendor V&V document |
+| E93 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults_scansi2.pdf?sfvrsn=7149ba7f_46 | V&V case: unbalanced short circuit against Anderson 1973 pp. 38 to 40 | vendor V&V document |
+| E94 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults.pdf | Combined V&V cases document (listed, not read in full) | vendor V&V document |
