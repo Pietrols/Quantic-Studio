@@ -354,3 +354,54 @@ references need a registered account (not used).
   topology changes, expansion stages and planned outages.
 - Reports: loadings, voltage violations, lost load and generation, islanding; results
   file readable by scripts.
+
+## FAQ details [P38 to P41]
+- The public FAQ is organised by category (dynamic simulation, load flow, equipment
+  models, quasi-dynamic, scripting) and by about 70 tags (from API and Battery to Wind
+  Power). Most answers are short and point to the Technical References (registered).
+- Objects are typed classes: element versus type objects (for example a load element
+  references a load type "TypLod"); commands are objects too (load flow command
+  "ComLdf"). Voltage dependence of loads is set in the load type as a polynomial with
+  coefficients and exponents for P and Q separately; the load's P and Q are values at
+  nominal voltage; the load flow command has an option to consider voltage dependency.
+- Result and input variables are addressed by names (for example "b:ipat" for the
+  isolated area index of a bus) and can be added as columns to Flexible Data pages.
+- Losses: line total = Pi + Pj; line no-load = Ui^2 B1/2 + Uj^2 B1/2; load losses = total
+  minus no-load. Transformer total = sum of terminal P; no-load = voltage times
+  magnetising current; load = total minus no-load. Other elements: no-load zero. Grid and
+  zone totals are sums.
+- Isolated areas: groups of connected nodes with no link to the rest; each needs and gets
+  its own slack; indexed per bus. Unsupplied areas: edge elements (loads, branches) with
+  no source; diagrams can be coloured by isolated area.
+
+## Further functions [P42 to P50]
+- Network reduction: boundary definition tool; AC or DC load flow and short-circuit
+  equivalents; load, Ward, extended Ward or REI-DIMO equivalents; region by region;
+  dynamic equivalents for RMS; aggregation of nonlinear elements; switch original and
+  reduced grid via variations.
+- Probabilistic load flow (and OPF): unlimited random inputs with distributions
+  (discrete and continuous), correlations, fitted from history; Monte Carlo and
+  quasi-Monte Carlo; statistics with confidence intervals, extremes, moments; analyzer
+  for worst or typical cases.
+- Unit commitment and dispatch: AC, DC or both; hydro, storage, phase shifters, HVDC;
+  costs incl. emissions and start-up; curtailment and shedding; ramping, minimum up and
+  down times, spinning reserve; contingency-constrained with preventive and curative
+  redispatch; generates optimal scenarios and time series; CPLEX or Gurobi optional.
+- Economics: techno-economic NPV of expansion strategies (investment, losses,
+  interruption costs, timing; best investment year); power park energy analysis by
+  Weibull, time series, or probabilistic methods.
+- Interfaces: API; OPC DA/UA to SCADA; IEEE C37.118 PMU stream simulation; FMI 2.0
+  co-simulation with third-party RMS or EMT tools.
+- General: 64-bit Windows; persistent database; multilingual UI with UTF-8; tabbed
+  flexible window layout; customisable toolbars, dialogs and context menus per profile;
+  categorised output window; integrated script editor and report designer; user manual
+  over 1,500 pages plus technical references per model; interactive tutorial; examples
+  with videos.
+- Parameter identification: estimate multiple parameters from measured or simulated
+  signals for load flow, quasi-dynamic, RMS and EMT models; gradient, swarm, pattern
+  search and global optimisers; bounds; tune for example PSS to a target response.
+- AI: neural networks trained (GPU) on generated data to approximate load flow during
+  quasi-dynamic simulation.
+- Academic tutorials [P42] build the Anderson and Fouad 9-bus system step by step,
+  study cases for transients, modal analysis, versions and derived projects, wind
+  turbine DSL models, file-driven inputs (ElmFile), MATLAB coupling.

@@ -39,3 +39,16 @@
 | P35 | https://www.digsilent.de/en/paper-reader-pf-en/network-model-diagrams-in-powerfactory.html | White paper: Network model diagrams | vendor white paper |
 | P36 | https://www.digsilent.de/en/paper-reader-pf-en/working-in-a-team-capabilities-of-powerfactory-to-support-cooperative-work-on-shared-data.html | White paper: Working in a team | vendor white paper |
 | P37 | https://www.digsilent.de/en/paper-reader-pf-en/contingency-analysis-analysing-n-1-n-k-fault-outages.html | White paper: Contingency analysis | vendor white paper |
+| P38 | https://www.digsilent.de/en/faq-powerfactory/tags/controller.html | Public FAQ, tag index (FAQ categories and tags) | vendor FAQ |
+| P39 | https://www.digsilent.de/en/faq-reader-powerfactory/how-can-i-model-voltage-dependence-of-loads-and-consider-it-in-the-load-flow-calculation.html | FAQ: voltage dependence of loads | vendor FAQ |
+| P40 | https://www.digsilent.de/en/faq-reader-powerfactory/how-are-the-load-and-no-load-losses-of-the-network-components-calculated.html | FAQ: load and no-load losses | vendor FAQ |
+| P41 | https://www.digsilent.de/en/faq-reader-powerfactory/what-do-unsupplied-areas-and-isolated-areas-mean.html | FAQ: unsupplied and isolated areas | vendor FAQ |
+| P42 | https://fglongatt.org/OLD/Tutorial_DigSilent_EN.html | Gonzalez-Longatt PowerFactory tutorials index | academic tutorial site |
+| P43 | https://www.digsilent.de/en/network-reduction.html | Network reduction | vendor page |
+| P44 | https://www.digsilent.de/en/probabilistic-analysis.html | Probabilistic analysis | vendor page |
+| P45 | https://www.digsilent.de/en/unit-commitment-and-dispatch-optimisation.html | Unit commitment and dispatch | vendor page |
+| P46 | https://www.digsilent.de/en/economic-analysis-tools.html | Economic analysis tools | vendor page |
+| P47 | https://www.digsilent.de/en/interfaces.html | Interfaces | vendor page |
+| P48 | https://www.digsilent.de/en/general-software-information.html | General software information | vendor page |
+| P49 | https://www.digsilent.de/en/system-parameter-identification.html | System parameter identification | vendor page |
+| P50 | https://www.digsilent.de/en/artificial-intelligence.html | Artificial intelligence | vendor page |
