@@ -4,7 +4,8 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 `parity-matrix.md`.
 
 **Cell values:** `yes` (the source states it), `module` (a separately licensed add-on),
-`?` (not found yet). Sources are in `etap.md` and `powerfactory.md`.
+`partial`, `no evidence` (not found in any source read so far, which is not proof of
+absence), `?` (not yet searched). Sources are in `etap.md` and `powerfactory.md`.
 
 **Quantic status** reflects main as of 2026-10-15:
 - balanced load flow with Q-limit handling (pandapower);
@@ -59,27 +60,27 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | ID | Capability | ETAP | PowerFactory | Quantic | Verifying book |
 |---|---|---|---|---|---|
 | S1 | Balanced AC load flow (NR) | yes | yes | done | Glover 2017, Grainger 1994 |
-| S2 | Gauss-Seidel and fast decoupled methods | yes | ? (NR only stated) | none | Glover 2017 |
+| S2 | Gauss-Seidel and fast decoupled methods | yes | no evidence (non-decoupled NR and linear DC only stated) | partial (pandapower offers gs, fdbx, fdxb; not exposed) | Glover 2017, Das 2002 ch. 11 to 12 |
 | S3 | Generator Q limits and PV to PQ switching | yes | yes (capability curves) | done | Glover 2017 |
 | S4 | LTC and regulator control (local, remote bus) | yes | yes | none | Kundur 1994, Glover 2017 |
 | S5 | Phase-shifting transformers | yes | yes | none | Grainger 1994 |
 | S6 | Station or distributed slack, droop, primary and secondary control | partial | yes | none | Kundur 1994 |
 | S7 | Voltage-dependent loads (ZIP, exponential) | yes | yes | none | Sauer 2006, Kundur 1994 |
 | S8 | Temperature correction of conductor R | yes | yes | none | Anders 2005 |
-| S9 | Multiple islands, each with its own slack | yes | yes | ? | - |
+| S9 | Multiple islands, each with its own slack | yes | yes | untested (pandapower supports islands; our contract behaviour not tested) | - |
 | S10 | Unbalanced three-phase load flow (1, 2, 3 phase; 3 and 4 wire) | module | yes | none | Das 2002 ch. 14; spec in engine-load-flow-extensions.md; base OpenDSS; gap Kersting |
 | S11 | Line constants from geometry, mutual coupling | yes | yes | none | Grainger 1994, Arrillaga 2003 |
 | S12 | DC load flow (batteries, chargers) and AC/DC unified | yes | yes | none | - |
 | S13 | Time-series and quasi-dynamic load flow | module | module | none | - |
 | S14 | Optimal power flow (AC interior point) | module | module | none | Glover 2017, Das 2002 |
 | S15 | Contingency analysis (N-1, N-2, screening, RAS) | module | module | none | Grainger 1994 |
-| S16 | Sensitivities and distribution factors (PTDF, LODF) | ? | yes | none | Grainger 1994 |
+| S16 | Sensitivities and distribution factors (PTDF, LODF) | no evidence (Q-V sensitivity only) | yes | none | Grainger 1994 ch. 14 |
 | S17 | Voltage stability P-V and Q-V, modal | module | module | none | Kundur 1994 |
 | S18 | State estimation | yes (ADMS) | module | none | Grainger 1994; gap Abur |
 | S19 | Hosting capacity | yes (2026) | module | none | - |
 | S20 | Optimal capacitor placement | module | module | none | - |
 | S21 | Switching and tie-point optimisation, phase balancing | module | module | none | - |
-| S22 | Probabilistic load flow | ? | module | none | - |
+| S22 | Probabilistic load flow | no evidence | module | none | - |
 | S23 | Reliability indices and restoration | module | module | none | Glover 2017 (thin); gap Billinton |
 | S24 | Network reduction (Ward, REI) | yes (2026, E91) | module | none | Grainger 1994 sec. 14.6 |
 | S25 | Load allocation from meters | yes | yes (feeder scaling) | none | - |
@@ -101,7 +102,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | P2 | Damage curves (cable, transformer, motor start) | yes (E102) | yes | none | Alstom 2011, Das 2021 ch. 11 |
 | P3 | Automatic coordination checks or audit by rules | yes | yes | none | Alstom 2011 |
 | P4 | Sequence of operation with animation and backup | yes | yes (short-circuit trace) | none | Blackburn 2006 |
-| P5 | Automatic setting calculation | ? | yes | none | Alstom 2011 |
+| P5 | Automatic setting calculation | partial (AFAS relay setting assistance via Python, 2026, E91) | yes | none | Alstom 2011 |
 | P6 | Distance protection, R-X, zones | module | module | none | Alstom 2011, Blackburn 2006 |
 | P7 | Differential protection | yes | yes | none | Alstom 2011 |
 | P8 | CT and VT models with saturation | yes | yes | none | Alstom 2011 |
@@ -120,7 +121,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | M4 | Motor parameter estimation from datasheet | yes | yes | none | Krause 2023, Fitzgerald 2003 |
 | T1 | RMS transient stability with machines, exciters, governors, PSS | module | module | none | Kundur 1994, Sauer 2006; spec in engine-transient-stability.md |
 | T2 | User-defined dynamic models (block diagrams) | yes (UDM) | yes (DSL, Modelica, FMI) | none | Ogata 2002; route FMI via FMPy (engine-transient-stability.md sec. 4a) |
-| T3 | Small-signal eigenvalue analysis | ? | module | none | Kundur 1994 |
+| T3 | Small-signal eigenvalue analysis | no evidence (frequency response estimation from time domain, 2026, E91; Q-V modal only) | module | none | Kundur 1994 ch. 12 |
 | T4 | EMT simulation | module (PSCAD engine) | module | none | Das 2010, Najm 2010; spec in engine-emt.md |
 | T5 | Load shedding, fast bus transfer, generator start | yes | yes | none | Kundur 1994 |
 | H1 | Harmonic load flow and frequency scan | module | module | none | Das 2002 ch. 19 and 20, Arrillaga 2003; spec in engine-harmonics.md; base OpenDSS harmonic mode |
@@ -133,9 +134,9 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 |---|---|---|---|---|---|
 | C1 | Cable sizing (ampacity, drop, short circuit, motor start) to many standards | yes | module | none | Anders 2005, Morley |
 | C2 | Cable ampacity Neher-McGrath and IEC 60287, duct banks | module | module | none | Anders 2005; spec in engine-cables.md; no permissive library, implement |
-| C3 | Cable pulling and tension | module | ? | none | - |
-| C4 | Transformer sizing | module | ? | none | - |
-| C5 | Battery sizing (IEEE 485) and discharge | module | ? | none | **gap** |
-| C6 | Ground grid (IEEE 80, FEM, soil model) | module (IEEE 80 and FEM, E107) | ? | none | Morley IC 9258 ch. 7; DZS 691 (Zambian, IEEE 80 equivalent); spec in engine-grounding.md |
-| C7 | Panel schedules (NEC demand) | module | ? | none | - |
-| C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988 ch. 10; linerate (MIT); spec in engine-calculators.md |
+| C3 | Cable pulling and tension | module | no evidence | none | - |
+| C4 | Transformer sizing | module (plus C57.91 load capability, 2026) | no evidence | none | engine-calculators.md |
+| C5 | Battery sizing (IEEE 485) and discharge | module | no evidence | none | **gap** (IEEE 485); Das 2002 ch. 9 for battery short circuit |
+| C6 | Ground grid (IEEE 80, FEM, soil model) | module (IEEE 80 and FEM, E107) | no evidence | none | Morley IC 9258 ch. 7; DZS 691 (Zambian, IEEE 80 equivalent); spec in engine-grounding.md |
+| C7 | Panel schedules (NEC demand) | module | no evidence | none | engine-calculators.md |
+| C8 | Line sag, tension and ampacity (IEEE 738) | module | no evidence | none | Gonen 1988 ch. 10; linerate (MIT); spec in engine-calculators.md |
