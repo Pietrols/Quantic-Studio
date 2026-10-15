@@ -99,3 +99,4 @@
 | E95 | https://publikationen.dguv.de/widgets/pdf/download/article/4026 | DGUV-I 203-077 English edition (2021): arc flash PPE selection by box-test method (benchmark used by ETAP) | public guide (free download, copyrighted) |
 | E96 | https://eng-tips.com/threads/etap-vs-easypower.461592 | Eng-Tips thread ETAP against EasyPower (December 2019) | user forum |
 | E97 | https://brainfiller.com/arcflashforum/viewtopic.php?p=4149 | Arc Flash Forum thread ETAP against EasyPower (December 2009) | user forum |
+| E98 | https://www.itqlick.com/etap/pricing | ITQlick ETAP pricing estimate (unsourced, internally inconsistent; indicative only) | third-party estimate |

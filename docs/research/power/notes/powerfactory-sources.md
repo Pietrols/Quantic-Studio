@@ -84,3 +84,6 @@
 | P80 | https://www.digsilent.de/en/faq-powerfactory/tags/motor-starting.html | FAQ tag: motor starting (VSD template, starting devices, synchronous motor asynchronous starting) | vendor FAQ |
 | P81 | https://pypi.org/project/powfacpy/0.3.3 | powfacpy: MIT wrapper for the PowerFactory Python API, maintained mainly by Fraunhofer IEE | open-source package page |
 | P82 | https://www.digsilent.de/en/paper-reader-pf-en/customising-the-powerfactory-user-interface.html | Paper: Customising the PowerFactory user interface (page summary; PDF not opened) | vendor white paper |
+| P83 | https://www.digsilent.de/en/software-editions-licensing.html | Software editions and licensing (editions, licence types, technologies, models) | vendor page |
+| P84 | https://smlouvy.gov.cz/smlouva/soubor/40297804/9-25-440-01.pdf?backlink=hbsho | Czech public contract register: VSB-TU Ostrava purchase of PowerFactory Multi-User 250 nodes (offer 2025-03-10, order 2025-04-24) | public procurement record |
+| P85 | https://digsilent.co.za/wp-content/uploads/2024/01/DIgSILENT-PowerFactory-Training-Course-Price-List-2024-1.pdf | DIgSILENT Buyisa (South Africa) training price list 2024 | regional vendor price list |
