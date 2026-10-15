@@ -83,3 +83,4 @@
 | P79 | https://www.digsilent.de/en/faq-reader-powerfactory/would-you-have-an-example-project-for-different-motor-starting-devices.html | FAQ: motor starting devices example (star-delta, rotor resistance, autotransformer, soft starter, VSD; RMS and EMT) | vendor FAQ |
 | P80 | https://www.digsilent.de/en/faq-powerfactory/tags/motor-starting.html | FAQ tag: motor starting (VSD template, starting devices, synchronous motor asynchronous starting) | vendor FAQ |
 | P81 | https://pypi.org/project/powfacpy/0.3.3 | powfacpy: MIT wrapper for the PowerFactory Python API, maintained mainly by Fraunhofer IEE | open-source package page |
+| P82 | https://www.digsilent.de/en/paper-reader-pf-en/customising-the-powerfactory-user-interface.html | Paper: Customising the PowerFactory user interface (page summary; PDF not opened) | vendor white paper |
