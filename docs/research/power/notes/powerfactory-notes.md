@@ -577,3 +577,32 @@ references need a registered account (not used).
   Ampacity, State Estimation, Flicker, Frequency Sweep, Phase Technology and Tower. This
   confirms PowerFactory's breadth matches the matrix rows already drafted. **FMI and
   Modelica are matrix row T2 evidence.**
+
+## Cables and motor starting in PowerFactory (P77 to P80; read 2026-10-15)
+
+**Cables [P77, P78]:** two tools.
+
+- **Cable Sizing:** simplified derating from the line type's electrical data, for
+  planning. Two methods:
+  - "International Standards": recommend or verify by the selected standard, with no
+    load flow needed;
+  - "Cable Reinforcement": verify or recommend from the project's own library against
+    user constraints.
+- **Cable Ampacity:** a detailed geometric thermal model of the cable system type
+  (IEC 60287 style) giving exact ampacity.
+- The FAQ does not name the standards supported.
+- This matches the split in `engine-cables.md` (tabulated sizing against an IEC 60287
+  calculation).
+
+**Motor starting [P79, P80]:** an example project with:
+
+- star-delta switching (a parameter flag);
+- added rotor resistance (stepped or continuous);
+- an autotransformer via the transformer tap;
+- a soft starter as an external device;
+- a VSD.
+
+It runs in **RMS and EMT** dynamic simulation, selected per study case. Separate
+examples cover a VSD template and a synchronous motor with asynchronous starting.
+Quantic: confirms the M3 starter list in `engine-motors.md` sec. 5. Synchronous motor
+asynchronous starting (relevant to large mine mills) should be added there.

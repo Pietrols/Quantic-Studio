@@ -122,6 +122,12 @@ model needs:
 - a soft starter as a voltage-ramp or current-limit controller;
 - a VFD as a current-limited source with a power-factor model.
 
+**Also needed:** synchronous motors started asynchronously on their damper (amortisseur)
+winding, then synchronised by field application. Large SAG and ball mill drives use this
+(PowerFactory example, `powerfactory-notes.md`, P80). It needs a synchronous machine
+model with damper circuits during run-up (Kundur94 ch. 3 to 5) and a field-application
+event.
+
 **Gap:** read Bose02 for soft-starter and VFD control models, and Das21 or Das02 for
 transient torques at star-delta transition.
 

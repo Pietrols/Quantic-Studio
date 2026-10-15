@@ -78,3 +78,7 @@
 | P74 | https://www.digsilent.de/en/faq-reader-powerfactory/how-can-i-setup-an-under-frequency-load-shedding-ufls-scheme.html | FAQ: UFLS example on 39-bus New England system | vendor FAQ |
 | P75 | https://www.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-for-a-co-generation-of-a-pv-system-and-a-diesel-engine.html | FAQ: PV and diesel co-generation, quasi-dynamic example | vendor FAQ |
 | P76 | https://www.digsilent.de/en/faq-powerfactory/tags/controller.html | FAQ full tag cloud (about 70 tags) and categories (re-read for tag list) | vendor FAQ |
+| P77 | https://www.digsilent.de/en/faq-reader-powerfactory/what-is-the-difference-of-the-cable-analysis-tools-cable-sizing-and-cable-ampacity.html | FAQ: Cable Sizing against Cable Ampacity tools | vendor FAQ |
+| P78 | https://www.digsilent.de/en/faq-reader-powerfactory/what-can-the-different-methods-in-the-cable-sizing-calculation-be-used-for.html | FAQ: cable sizing methods (international standards; cable reinforcement) | vendor FAQ |
+| P79 | https://www.digsilent.de/en/faq-reader-powerfactory/would-you-have-an-example-project-for-different-motor-starting-devices.html | FAQ: motor starting devices example (star-delta, rotor resistance, autotransformer, soft starter, VSD; RMS and EMT) | vendor FAQ |
+| P80 | https://www.digsilent.de/en/faq-powerfactory/tags/motor-starting.html | FAQ tag: motor starting (VSD template, starting devices, synchronous motor asynchronous starting) | vendor FAQ |
