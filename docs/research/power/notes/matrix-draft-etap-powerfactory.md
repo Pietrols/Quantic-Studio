@@ -93,7 +93,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | F2 | Unbalanced faults (SLG, LL, LLG) | yes | yes | none | Grainger 1994, Glover 2017 |
 | F3 | ANSI C37 three networks, X/R multipliers, duty | yes | yes | none | Das 2002, Das 2021; spec in engine-ansi-short-circuit.md; gap C37.010 local curves |
 | F4 | IEC 61363 transient decay | yes | yes | none | - |
-| F5 | DC faults (IEC 61660, IEEE 946) | yes | yes | none | **gap** |
+| F5 | DC faults (IEC 61660, IEEE 946) | yes | yes | none | Das 2002 ch. 9; spec in engine-dc-short-circuit.md; gap IEC 61660 curves |
 | F6 | Complete (superposition) method on load flow | ? | yes | none | Kasikci 2002 |
 | F7 | Device duty against library ratings | yes | partial | none | Das 2002, Das 2021 (LV test X/R) |
 | F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Grainger 1994 |
