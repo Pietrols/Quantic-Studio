@@ -16,7 +16,7 @@ effort.
 | IEC 60909 Ib and Ik | engine-iec60909-extensions | F1 | Das02 ch. 8, Kasikci02 | pp | q at tmin ≥ 0.25 s; λ curves (IEC 60909) | high | 1 |
 | Unbalanced faults | engine-unbalanced-faults | F2 | Grainger94 ch. 11 to 12, Glover17 9.5, Kasikci02 | pp (1ph, 2ph) + own (LLG, ANSI) | none | high | 1 |
 | Motor starting and acceleration | engine-motors | M1 to M4, S7 | Das02 12.10 to 12.11, Fitz03 ch. 6, Krause23 | own ODE + pp per step | datasheet fitting source | very high | 1 |
-| Protection, TCC | engine-protection-tcc | P1 to P5 | NPAG ch. 9, Das21 ch. 7, 11 | own + pp protection (check) | C37.112 form; manufacturer curve data | very high | 2 |
+| Protection, TCC | engine-protection-tcc | P1 to P5 | NPAG ch. 9, Das21 ch. 7, 11 | own (pp protection reviewed: teaching model only) | C37.112 form; manufacturer curve data | very high | 2 |
 | Arc flash | engine-arc-flash | A1 to A4 | Das21 ch. 3, 5, 6 (tables unreliable); DGUV-I 203-077 | `arcflash-calc` (MIT, verified against Annex D.1), pending Peter's decision; DGUV method own | IEEE 1584 coefficients decision | very high (paid service) | 2 |
 | Cable sizing and ampacity | engine-cables | C1, C2, C8, S8 | Anders05 ch. 1, Morley ch. 8 | own (IEC 60287); linerate (licence to check) for overhead | IEC 60287 tables; K constants; local mine rules | high | 2 |
 | ANSI C37 duty | engine-ansi-short-circuit | F3, F7 | Das02 ch. 5, 7; Das21 ch. 5, 7 | own | C37.010 local curves; X/R 15 or 17 | medium (US-style plants) | 3 |

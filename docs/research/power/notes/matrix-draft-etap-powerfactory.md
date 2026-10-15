@@ -98,7 +98,7 @@ absence), `?` (not yet searched). Sources are in `etap.md` and `powerfactory.md`
 | F6 | Complete (superposition) method on load flow | no evidence | yes (internal load flow, P88) | none (pandapower supports it) | Kasikci 2002; pandapower use_pre_fault_voltage |
 | F7 | Device duty against library ratings | yes | partial | none | Das 2002, Das 2021 (LV test X/R) |
 | F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Das 2002 sec. 2.8 and 14.1 (phase-coordinate method) |
-| P1 | TCC plotting with device libraries | yes | yes | none | Alstom 2011, Das 2021; spec in engine-protection-tcc.md; pandapower protection as base |
+| P1 | TCC plotting with device libraries | yes | yes | none | Alstom 2011, Das 2021; spec in engine-protection-tcc.md (pandapower protection reviewed: not sufficient) |
 | P2 | Damage curves (cable, transformer, motor start) | yes (E102) | yes | none | Alstom 2011, Das 2021 ch. 11 |
 | P3 | Automatic coordination checks or audit by rules | yes | yes | none | Alstom 2011 |
 | P4 | Sequence of operation with animation and backup | yes | yes (short-circuit trace) | none | Blackburn 2006 |

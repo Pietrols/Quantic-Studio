@@ -190,6 +190,48 @@ method (fixed | calculated) with its parameters, and the fault cases.
 - **P8, CT saturation:** C-class and knee-point checks, transient saturation. Source:
   Das21 ch. 12 (secs 12.3, 12.9), NPAG ch. 6.
 
+## 7a. pandapower protection: source-code review (pandapower 3.5.6, installed in our environment; 2026-10-15)
+
+**OC relay** (`protection/protection_devices/ocrelay.py`, 489 lines):
+
+- **Element types:** DTOC, IDMT and IDTOC.
+- **IDMT curves:** IEC constants for standard, very, extremely and long inverse
+  (0.14/0.02, 13.5/1, 80/2, 120/1). These match NPAG Table 9.1 (sec. 3 above). There are
+  no IEEE/ANSI families and no user curves.
+- **IDMT time:** computed as TMS·k/((I/Is)^α − 1) **plus a grading offset t_grade**. The
+  added offset is not part of the IEC equation; it is pandapower's own grading device.
+- **Settings are derived automatically:**
+  - pickups from line thermal ratings times factors;
+  - instantaneous settings from a **three-phase** short circuit computed at a fixed
+    fraction (default 0.95) along the protected line.
+- **Time grading** is topological: the number of lines from the external grid along the
+  longest path times a fixed step. Currents are not compared with each other. **There
+  is no current-dependent coordination check**, and the model assumes radial paths.
+- **Possible bug:** the relay accepts a switch when
+  `net.switch.et.at[i] == "t" or "b"`. In Python this is always true, because `"b"` is
+  truthy. Any closed non-line switch is accepted as a transformer or bus switch. It
+  looks unintended; report it upstream if we use the module.
+
+**Fuse** (`fuse.py`, 178 lines):
+
+- **Library:** 31 standard types: 14 "HV x A" generic types and 17 Siemens NH types
+  (NH-1 16 to 160 A; NH-2 200 to 1000 A), each with optional minimum-melt and total-clear
+  points.
+- **Interpolation:** PCHIP on a log scale (`LogSplineCharacteristic`).
+- **Trip check:** the fault current through the switch against the selected curve.
+
+**Verdict:** a useful small teaching model and a reference for PCHIP log interpolation.
+It is **not** a coordination engine:
+
+- no IEEE curves;
+- no margin checks across the current range;
+- three-phase faults only for settings;
+- no LV trip units;
+- only 31 library fuses.
+
+Quantic should write its own protection engine (as planned in sec. 2 to 6) and may reuse
+the log-PCHIP idea. This replaces "candidate base" in sec. 8 item 4.
+
 ## 8. Gaps
 
 1. The exact IEEE C37.112 equation form and reset equations; we need the standard.
@@ -204,8 +246,6 @@ method (fixed | calculated) with its parameters, and the fault cases.
      NH-1-100") and PCHIP-interpolated melting curves (minimum and total);
    - `calculate_protection_times(net, scenario='sc'|'pp')`.
 
-   The docs do not state the curve families, the grading logic or the fault types, so
-   read the tutorials and source before relying on it. It is a candidate base for P1 and
-   P4, with our curve families, margins and trace on top.
+   **Source reviewed 2026-10-15 (sec. 7a): not a coordination engine; reference only.**
    Docs: https://pandapower.readthedocs.io/en/latest/protection/oc_relay.html and
    .../protection/fuse.html.
