@@ -119,7 +119,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | M3 | Starters: autotransformer, star-delta, reactor, resistor, capacitor, soft starter, VFD | yes | yes (most) | none | Bose 2002, Krause 2023 |
 | M4 | Motor parameter estimation from datasheet | yes | yes | none | Krause 2023, Fitzgerald 2003 |
 | T1 | RMS transient stability with machines, exciters, governors, PSS | module | module | none | Kundur 1994, Sauer 2006; spec in engine-transient-stability.md |
-| T2 | User-defined dynamic models (block diagrams) | yes (UDM) | yes (DSL, Modelica) | none | Ogata 2002 |
+| T2 | User-defined dynamic models (block diagrams) | yes (UDM) | yes (DSL, Modelica, FMI) | none | Ogata 2002; route FMI via FMPy (engine-transient-stability.md sec. 4a) |
 | T3 | Small-signal eigenvalue analysis | ? | module | none | Kundur 1994 |
 | T4 | EMT simulation | module (PSCAD engine) | module | none | Das 2010, Najm 2010; spec in engine-emt.md |
 | T5 | Load shedding, fast bus transfer, generator start | yes | yes | none | Kundur 1994 |
