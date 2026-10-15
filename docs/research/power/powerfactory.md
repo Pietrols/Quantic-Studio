@@ -196,9 +196,9 @@ From [P5, P7]:
 
 ## 7. What users value and dislike
 
-Public user reviews are scarce: G2 lists no reviews [P50 area, G2 page noted in notes].
+Public user reviews are scarce: G2 lists no reviews [P51].
 
-The only comparison found was a generic listicle, which mentions:
+The only comparison found was a generic listicle [P52], which mentions:
 - several solvers with convergence control;
 - unbalanced capability;
 - a heavy data-governance load on large models;
