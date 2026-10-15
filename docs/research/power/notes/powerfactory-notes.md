@@ -415,3 +415,39 @@ references need a registered account (not used).
   plots with tolerances.
 - The full function list with base versus licensed split is in the public brochure
   [P53]; our fetch tool could not download it (see gaps).
+
+## Training syllabi (scope as the vendor teaches it) [P55, P57]
+- Introductory course sequence: interface and data structure (menus, drawing tools,
+  output window, data manager, users and projects); network data versus diagrams versus
+  library; type versus element data; Network Model Manager; build an HV network; simple
+  busbars versus detailed substations and sites with bays; load flow methods, settings,
+  results, colouring, NMM analysis and PDF reports for overloads and violations; load
+  flow control with **inner and outer loops**, limits, voltage and Q control, station
+  controllers, automatic taps, generator Q limits; extending an MV network as a
+  separate grid with templates; short circuit per IEC 60909 for thermal and mechanical
+  stress of cables and busbars and breaker dimensioning; complete method, multiple
+  faults, dynamic voltage support; star-point earthing concepts and single-phase faults
+  in MV; grouping and connecting grids; variations and expansion stages; operation
+  scenarios; study cases combining them.
+- All courses: Python scripting (objects, commands, navigation, reports, result files,
+  diagrams, add-on variables); grid connection of wind (full converter, DFIG) and PV in
+  load flow, short circuit, harmonics and dynamics with Q capability curves; advanced
+  handling (diagram customisation, load flow troubleshooting, merge and compare, DGS,
+  data extensions, task automation); connection assessment and hosting capacity
+  (German); harmonics (frequency-dependent models, sweeps, filters, IEC 61000, flicker);
+  protection (overcurrent with fuses, breakers, directional relays, earth fault,
+  distance zones with infeed and parallel lines, transformer differential, audits,
+  communication schemes); time-domain basics (initial conditions, variables, events,
+  scans, RMS and EMT, FFT, composite models); stability (transient, oscillatory,
+  voltage, frequency); DSL; Modelica and FMI for inverter controls; EMT (temporary,
+  slow-front and fast-front overvoltages, saturation and energisation, capacitor
+  switching, TRV, frequency-dependent line and cable geometry, lightning); HVDC (LCC,
+  MMC); arc flash; cable analysis (multi-circuit trenches, wind farm cables); contingency
+  (time phases, post-fault actions, sweeps, short-term ratings, RAS); database
+  administration; distribution tools; motor starting (DOL, star-delta, rotor
+  resistance, autotransformer, series reactor, VSD by dynamic simulation); network
+  reduction (Ward, REI, coherent generator dynamic reduction); OPF (interior point,
+  LP, contingency constrained, marginal and shadow prices); PSS tuning (Bode, root
+  locus); probabilistic analysis; quasi-dynamic and QDSL (P(U), custom taps, EV
+  charging states); reliability (failure models, indices, vulnerability, costs);
+  techno-economics (NPV, IRR, payback); transmission tools; unit commitment.

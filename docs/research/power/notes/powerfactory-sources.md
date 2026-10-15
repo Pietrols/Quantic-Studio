@@ -56,3 +56,6 @@
 | P52 | https://zipdo.co/best/load-flow-analysis-software/ | ZipDo load flow software list (generic; low weight) | listicle |
 | P53 | https://digsilent.de/en/faq-reader-powerfactory/where-can-i-get-an-overview-list-showing-all-powerfactory-functions.html | FAQ: overview list of all functions (points to brochure) | vendor FAQ |
 | P54 | https://www.digsilent.de/en/newsreader/digsilent-releases-powerfactory-2025.html | PowerFactory 2025 release | vendor news |
+| P55 | https://webshop.digsilent.de/wp-content/uploads/2025/07/Basic.EN_.pdf | Training syllabus: load flow and short circuit (PF2025) | vendor training PDF |
+| P56 | https://digsilent.de/en/base-package.html | Base package | vendor page |
+| P57 | https://webshop.digsilent.de/wp-content/uploads/2026/01/2025_Training_OV.pdf | Training overview, all courses | vendor training PDF |
