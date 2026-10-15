@@ -44,6 +44,9 @@ effort.
    - Das02 eq. 19.31 (r2h) and eq. 19.21 (X) are doubtful as printed;
    - Das02 Example 7.1 motor M3 multiplier class;
    - Das21's 2021 claim about arc flash decay is out of date for ETAP.
+   - Das10 eq. 6-1 source inductance (5.08 × 10⁻⁴ H printed, 0.533 mH from the stated
+     impedance) and Example 6-5 inrush (1633 A printed, 1565 A from eq. 6-7);
+   - Gonen88 Example 10.1 catenary length (502.032 ft printed, 502.037 ft; rounding).
    - **Das21 Table 3.1 (IEEE 1584 arcing-current coefficients) has errors that put MV
      arcing current off by 30 to 60%.** Proven against IEEE Annex D.1 values
      (`engine-arc-flash.md` sec. 6b). Never key coefficients from Das21.

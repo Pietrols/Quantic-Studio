@@ -60,7 +60,10 @@ like-for-like accuracy. We reproduce the original publications, not ETAP's docum
 | Das02 Example 9.2 (battery IEC; with the decimal erratum) | Das02 | F5 |
 | Das02 Examples 19.1 and 20.1 (harmonics and filter) | Das02 | H1, H2 |
 | Das21 Tables 3.8 and 3.9 (IEEE 1584-2018 examples) | Das21 | A1 |
-| Kundur94 two-area system (ch. 12) and ch. 13 examples | Kundur94 | T1, T3 |
+| Kundur94 Example 12.6 two-area system: data complete, 24 eigenvalues published (Tables E12.3, E12.4); mode f and ζ recomputed | Kundur94 | T3, T1 |
+| Kundur94 Example 13.1 critical clearing (0.0865 s, 52.2°); our equal-area recomputation gives 0.0868 s | Kundur94 | T1 |
+| Gonen88 Examples 10.1 and 10.2 (catenary length, loaded sag); recomputed and agree | Gonen88 | C8 |
+| Das10 ch. 6 capacitor energisation: use the analytic RLC (eqs 6-6 to 6-9) only; printed Example 6-5 current is 4% off | Das10 | T4 |
 | WSCC 9-bus (Anderson and Fouad data, public) | pandapower `case9` and literature | S1, T1 |
 | IEEE 13-node feeder | IEEE PES (free) | S10 |
 | Anders05 "model cable No. 1" | Anders05 | C2 |
