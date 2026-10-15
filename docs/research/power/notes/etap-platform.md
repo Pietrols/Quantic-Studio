@@ -111,3 +111,23 @@ sources, not ETAP's documents):
   and 5.8 (AC and DC).
 - Scale of regression testing stated: over 1,600 motor-starting and 1,100 IEC
   short-circuit scenarios per release.
+
+## Data exchange and scripting [E45, E46]
+- Exchange: Excel and Access worksheet mapping; ArcFM CIM XML import with GIS diagram
+  generation; ESRI ArcGIS conversion; SKM PowerTools (Dapper, Captor) conversion; legacy
+  converters; Revit import; AVEVA Electrical; SmartPlant Electrical two-way sync; eXCAD;
+  universal mapping between databases.
+- etapPy: Python inside ETAP (bundled IDLE or external IDE); batch studies across
+  revisions, configurations and study cases; read project data (bus and element names,
+  configurations, revisions, one-line XML); load flow, unbalanced load flow, harmonics,
+  transient stability, motor starting, voltage stability, short circuit and any
+  scenario-wizard study; local or remote ETAP instances; distribution of runs across
+  machines; Excel templates for some studies.
+
+## What users say [E47]
+- 2009 Arc Flash Forum thread: ETAP judged friendlier and more flexible than SKM, with an
+  inspectable Access-compatible database; complaints about bugs in a major release
+  (arc flash, aluminium cable ampacity, reports), late releases, uneven support, and a
+  missing option to enter bus duct impedance as Z% rather than X/R. Common advice:
+  understand the IEEE calculations so software results can be judged. (Old thread;
+  more recent user feedback still to collect.)

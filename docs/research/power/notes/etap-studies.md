@@ -375,3 +375,44 @@ Core analysis groups and modules, as ETAP structures them:
   indices on bus voltage, branch overload and changes in P and Q flow; detailed AC runs
   for the ranked cases; outputs: comparisons against base case, lost generation, lost
   load, customers interrupted, cost of lost power.
+
+## eMT and UDM [E38, E39]
+- eMT runs on the PSCAD EMTDC engine (as the page states); wideband line and cable
+  models; machines, shunt compensation, STATCOM, power electronics, HVDC, FACTS.
+  Studies: deterministic and statistical switching, single-pole switching and fast
+  reclosing, capacitor switching, fault clearing, TRV, insulation coordination, lightning
+  (backflash, induced, incoming surges, arresters), ferroresonance, inrush, shaft
+  torsional stress and SSR, current chopping, delayed current zero. Parallel runs on
+  8 to 64 cores; editions limited by node count (200 or unlimited).
+- UDM: graphical block-diagram editor with transfer-function blocks and ports; compiler
+  with initialisation; built-in load acceptance, rejection and fault tests; library of
+  AVR, PSS, exciter, turbine, governor, shunt device, dynamic load, wind, PV, storage,
+  fuel cell models; Norton or Thevenin interface for inverters; vendor DLL black boxes.
+
+## Panels, batteries, DC short circuit [E40 to E43]
+- Panel schedules: graphical panels and boards with unlimited branch circuits and
+  sub-panels; upstream totals update; NEC demand factors and user factors with editable
+  load-code tables; continuous and non-continuous loads; 3-phase 4-wire, 3-wire, 1-phase
+  2-wire and 3-wire; Revit load code mapping; panel schedule reports.
+- Battery sizing: IEEE 308, 485, 946; duty cycle from individual loads in 1-minute
+  steps, random and non-random loads, diversity; duty cycle summation or load flow
+  method with losses and drops; temperature, aging, initial capacity and design margin
+  factors; selectable curve interpolation; result: strings, cells per string, cell size,
+  checked by discharge simulation; IEEE 485 format report.
+- Battery discharge: DC load flow or summation method; random load added at the lowest
+  terminal voltage; Class 1E DC models; control system driven by battery voltage;
+  capacity, voltage, current and power plots.
+- DC short circuit: IEEE 946 basis; total and per-source contributions, rise time and
+  decay; bus and branch contributions; device rating checks.
+
+## Intelligent one-line [E44]
+- Themes (unlimited) colouring by phase, voltage, area, feeder, grounding, earthing system
+  (TT, TN, IT); display layers; nested composite views.
+- Rule-based auto-build of diagrams with automatic spacing and alignment.
+- Orthogonal or diagonal connectors; continuity shading of de-energised parts; topology
+  processing updates the drawing after switching; tracing source to load and point to
+  point; split buses; remote connections.
+- Symbol sets, custom symbols and shared templates.
+- Datablocks: templates applied by device type, showing input data and results of several
+  studies; contouring of voltage or flow; embedded live plots overlaid on earlier
+  results; result precision and visibility adapt to zoom level.

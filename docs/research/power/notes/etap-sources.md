@@ -39,3 +39,13 @@
 | E35 | https://etap.com/docs/default-source/faqs-tutorials/element-properties.pdf | Element properties tutorial | vendor tutorial PDF |
 | E36 | https://etap.com/products/quality-assurance/qa-verification-validation-cases | QA verification and validation cases | vendor page |
 | E37 | https://etap.com/de/product/system-managers | System managers | vendor page |
+| E38 | https://etap.com/product/electromagnetic-transients-program | eMT electromagnetic transients | vendor page |
+| E39 | https://etap.com/product/user-defined-dynamic-models | User-defined dynamic models | vendor page |
+| E40 | https://etap.com/product/panel-systems-software | Panel systems | vendor page |
+| E41 | https://etap.com/de/product/battery-sizing-software | Battery sizing | vendor page |
+| E42 | https://etap.com/product/battery-discharge-software | Battery discharge | vendor page |
+| E43 | https://etap.com/product/dc-short-circuit-software | DC short circuit | vendor page |
+| E44 | https://etap.com/solutions/intelligent-single-line-diagram | Intelligent single-line diagram | vendor page |
+| E45 | https://etap.com/packages/data-exchange | Data exchange package | vendor page |
+| E46 | https://etap.com/product/etappy | etapPy | vendor page |
+| E47 | https://brainfiller.com/arcflashforum/viewtopic.php?p=3868 | Arc Flash Forum thread on ETAP versus SKM (2009) | user forum |
