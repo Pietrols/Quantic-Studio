@@ -25,6 +25,7 @@ effort.
 | DC short circuit | engine-dc-short-circuit | F5, S12 | Das02 ch. 9 | own (time-domain RLC) | IEC 61660 curves (optional) | medium (traction, batteries) | 4 |
 | Unbalanced and distribution load flow | engine-load-flow-extensions | S10, F8 | Das02 ch. 14 | DSS | Kersting | medium | 4 |
 | Transient stability | engine-transient-stability | T1 to T3, T5 | Kundur94 ch. 13, Sauer06 ch. 5 to 7 | own core; ANDES (external) to verify; Dynawo later | IEEE 421.5 models; WECC and IEC 61400-27 IBR models; genset governors | high (islanded mines) | 4 |
+| EMT (switching, inrush, TRV, lightning) | engine-emt | T4 | Das10, Najm10 | own MNA and trapezoidal core shared with qe_circuit; VeraGrid EMT to evaluate | frequency-dependent line models; TRV envelopes | high (capacitor and VFD interaction, inrush) | 5 |
 | Contingency, PTDF, LODF | engine-planning-operations | S15, S16, S24 | Grainger94 ch. 14 | pp DC and AC | none | medium | 5 |
 | Voltage stability | engine-planning-operations | S17 | Kundur94 ch. 14 | VG CPF | Q-limit handling check | medium to high (weak feeds) | 5 |
 | State estimation | engine-planning-operations | S18 | Grainger94 ch. 15 | pp estimation | Abur and Expósito | low | 6 |

@@ -121,7 +121,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | T1 | RMS transient stability with machines, exciters, governors, PSS | module | module | none | Kundur 1994, Sauer 2006; spec in engine-transient-stability.md |
 | T2 | User-defined dynamic models (block diagrams) | yes (UDM) | yes (DSL, Modelica) | none | Ogata 2002 |
 | T3 | Small-signal eigenvalue analysis | ? | module | none | Kundur 1994 |
-| T4 | EMT simulation | module (PSCAD engine) | module | none | Das 2010 |
+| T4 | EMT simulation | module (PSCAD engine) | module | none | Das 2010, Najm 2010; spec in engine-emt.md |
 | T5 | Load shedding, fast bus transfer, generator start | yes | yes | none | Kundur 1994 |
 | H1 | Harmonic load flow and frequency scan | module | module | none | Das 2002 ch. 19 and 20, Arrillaga 2003; spec in engine-harmonics.md; base OpenDSS harmonic mode |
 | H2 | Filter design and IEEE 519 or IEC 61000 limits | yes | yes | none | Arrillaga 2003, Das 2010 |
