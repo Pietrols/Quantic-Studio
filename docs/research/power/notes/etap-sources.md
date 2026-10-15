@@ -1,0 +1,41 @@
+# ETAP sources (accessed 2026-10-15 unless noted)
+
+| # | URL | Title | Type |
+|---|---|---|---|
+| E1 | https://etap.com/solutions/power-system-analysis | Power System Analysis solutions | vendor page |
+| E2 | https://etap.com/product/load-flow-software | ETAP Load Flow software | vendor product page |
+| E3 | https://etap.com/product/short-circuit-software | ETAP Short Circuit software | vendor product page |
+| E4 | https://etap.com/product/motor-acceleration-software | ETAP Motor Starting / Acceleration | vendor product page |
+| E5 | https://etap.com/product/harmonic-analysis-software | ETAP Harmonic Analysis | vendor product page |
+| E6 | https://etap.com/docs/default-source/faqs-tutorials/load-flow-analysis.pdf | Load Flow Analysis tutorial | vendor tutorial PDF |
+| E7 | https://etap.com/docs/default-source/brochures/fact-sheets/load-flow.pdf | Load Flow fact sheet | vendor brochure |
+| E8 | https://etap.com/docs/default-source/brochures/fact-sheets/optimal-power-flow.pdf | Optimal Power Flow fact sheet | vendor brochure |
+| E9 | https://etap.com/docs/default-source/brochures/fact-sheets/unbalanced-load-flow.pdf | Unbalanced Load Flow fact sheet | vendor brochure |
+| E10 | https://etap.com/short-circuit/short-circuit-software-ansi-ieee | Short circuit ANSI/IEEE | vendor page |
+| E11 | https://etap.com/short-circuit/short-circuit-software-iec-60909 | Short circuit IEC 60909 | vendor page |
+| E12 | https://etap.com/short-circuit/short-circuit-software-iec-61363 | Short circuit IEC 61363 | vendor page |
+| E13 | https://etap.com/solutions/arcflash | Arc flash solutions | vendor page |
+| E14 | https://etap.com/product/arc-flash-software | AC arc flash software | vendor page |
+| E15 | https://etap.com/solutions/protection-coordination | Protection and coordination (Star) | vendor page |
+| E16 | https://etap.com/product/transient-stability-software | Transient stability | vendor page |
+| E17 | https://etap.com/packages/dynamics-transients | Dynamics and transients package | vendor page |
+| E18 | https://etap.com/product/cable-sizing | Cable sizing | vendor page |
+| E19 | https://etap.com/packages/cable-ampacity | Cable ampacity package | vendor page |
+| E20 | https://etap.com/product/transformer-sizing-software | Transformer sizing | vendor page |
+| E21 | https://etap.com/product/dc-load-flow-software | DC load flow | vendor page |
+| E22 | https://etap.com/docs/default-source/brochures/etap-solutions-overview.pdf | ETAP Solutions Catalog | vendor brochure PDF |
+| E23 | https://etap.com/motor-starting/libraries-modeling | Motor starting: libraries and modelling | vendor page |
+| E24 | https://etap.com/motor-starting/motor-starters | Motor starting: motor starters | vendor page |
+| E25 | https://etap.com/solutions/system-modeling-visualization | System modelling and visualisation | vendor page |
+| E26 | https://etap.com/product-releases/etap-2026-release | ETAP 2026 release | vendor release page |
+| E27 | https://etap.com/product/libraries | Engineering libraries | vendor page |
+| E28 | https://etap.com/product/star-auto-evaluation | Star Auto-Evaluation | vendor page |
+| E29 | https://etap.com/product/star-sequence-of-operation | Star Sequence of Operation | vendor page |
+| E30 | https://etap.com/product/starz-distance-relay-coordination | StarZ distance relay coordination | vendor page |
+| E31 | https://etap.com/en/product/distribution-reliability-assessment | Distribution reliability assessment | vendor page |
+| E32 | https://etap.com/es/product/ground-grid-systems-software | Ground grid systems (Spanish page) | vendor page |
+| E33 | https://platform.softwareone.com/product/contingency-analysis/PCP-1632-2798 | ETAP contingency analysis (reseller listing) | reseller page |
+| E34 | https://etap.com/docs/default-source/what's-new/etap-16-getting-started.pdf | ETAP 16 Getting Started guide | vendor guide PDF |
+| E35 | https://etap.com/docs/default-source/faqs-tutorials/element-properties.pdf | Element properties tutorial | vendor tutorial PDF |
+| E36 | https://etap.com/products/quality-assurance/qa-verification-validation-cases | QA verification and validation cases | vendor page |
+| E37 | https://etap.com/de/product/system-managers | System managers | vendor page |
