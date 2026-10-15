@@ -81,7 +81,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | S21 | Switching and tie-point optimisation, phase balancing | module | module | none | - |
 | S22 | Probabilistic load flow | ? | module | none | - |
 | S23 | Reliability indices and restoration | module | module | none | Glover 2017 (thin); gap Billinton |
-| S24 | Network reduction (Ward, REI) | ? | module | none | - |
+| S24 | Network reduction (Ward, REI) | yes (2026, E91) | module | none | Grainger 1994 sec. 14.6 |
 | S25 | Load allocation from meters | yes | yes (feeder scaling) | none | - |
 | S26 | Unit commitment and economic dispatch | yes (GMS) | module | none | Glover 2017, Grainger 1994 |
 
@@ -94,11 +94,11 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | F3 | ANSI C37 three networks, X/R multipliers, duty | yes | yes | none | Das 2002, Das 2021; spec in engine-ansi-short-circuit.md; gap C37.010 local curves |
 | F4 | IEC 61363 transient decay | yes | yes | none | - |
 | F5 | DC faults (IEC 61660, IEEE 946) | yes | yes | none | Das 2002 ch. 9; spec in engine-dc-short-circuit.md; gap IEC 61660 curves |
-| F6 | Complete (superposition) method on load flow | ? | yes | none | Kasikci 2002 |
+| F6 | Complete (superposition) method on load flow | ? | yes (internal load flow, P88) | none | Kasikci 2002; pandapower use_pre_fault_voltage |
 | F7 | Device duty against library ratings | yes | partial | none | Das 2002, Das 2021 (LV test X/R) |
 | F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Das 2002 sec. 2.8 and 14.1 (phase-coordinate method) |
 | P1 | TCC plotting with device libraries | yes | yes | none | Alstom 2011, Das 2021; spec in engine-protection-tcc.md; pandapower protection as base |
-| P2 | Damage curves (cable, transformer, motor start) | ? | yes | none | Alstom 2011 |
+| P2 | Damage curves (cable, transformer, motor start) | yes (E102) | yes | none | Alstom 2011, Das 2021 ch. 11 |
 | P3 | Automatic coordination checks or audit by rules | yes | yes | none | Alstom 2011 |
 | P4 | Sequence of operation with animation and backup | yes | yes (short-circuit trace) | none | Blackburn 2006 |
 | P5 | Automatic setting calculation | ? | yes | none | Alstom 2011 |
@@ -107,8 +107,8 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | P8 | CT and VT models with saturation | yes | yes | none | Alstom 2011 |
 | A1 | Arc flash IEEE 1584-2018 with auto clearing time | module | module | none | Das 2021; spec in engine-arc-flash.md; candidate engine arcflash (MIT) |
 | A2 | Arc flash labels and work permits | yes | yes (labels) | none | Das 2021 |
-| A3 | DC arc flash | yes | yes | none | Das 2021 |
-| A4 | HV arc flash (above 15 kV) | yes | ? | none | Das 2021 |
+| A3 | DC arc flash | yes (Maximum power, Stokes-Oppenlander, Paukert; E106) | yes (NFPA 70E, DGUV; P87) | none | Das 2021 ch. 15; DGUV-I 203-077 |
+| A4 | HV arc flash (above 15 kV) | yes (1 to 800 kV, E106) | partial (EPRI method listed, P87; range not stated) | none | Das 2021 |
 
 ## Dynamics and power quality
 
@@ -136,6 +136,6 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | C3 | Cable pulling and tension | module | ? | none | - |
 | C4 | Transformer sizing | module | ? | none | - |
 | C5 | Battery sizing (IEEE 485) and discharge | module | ? | none | **gap** |
-| C6 | Ground grid (IEEE 80, FEM, soil model) | module | ? | none | Morley IC 9258 ch. 7; spec in engine-grounding.md; gap IEEE 80 |
+| C6 | Ground grid (IEEE 80, FEM, soil model) | module (IEEE 80 and FEM, E107) | ? | none | Morley IC 9258 ch. 7; DZS 691 (Zambian, IEEE 80 equivalent); spec in engine-grounding.md |
 | C7 | Panel schedules (NEC demand) | module | ? | none | - |
-| C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988; candidate linerate (licence to check) |
+| C8 | Line sag, tension and ampacity (IEEE 738) | module | ? | none | Gonen 1988 ch. 10; linerate (MIT); spec in engine-calculators.md |

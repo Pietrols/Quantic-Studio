@@ -88,3 +88,5 @@
 | P84 | https://smlouvy.gov.cz/smlouva/soubor/40297804/9-25-440-01.pdf?backlink=hbsho | Czech public contract register: VSB-TU Ostrava purchase of PowerFactory Multi-User 250 nodes (offer 2025-03-10, order 2025-04-24) | public procurement record |
 | P85 | https://digsilent.co.za/wp-content/uploads/2024/01/DIgSILENT-PowerFactory-Training-Course-Price-List-2024-1.pdf | DIgSILENT Buyisa (South Africa) training price list 2024 | regional vendor price list |
 | P86 | https://www.digsilent.de/en/general-software-information.html | General software information (Windows 64-bit; Unicode; multilingual GUI; details in the non-public product specification) | vendor page |
+| P87 | https://www.digsilent.de/en/arc-flash-analysis.html | Arc-flash analysis function page (IEEE 1584-2002 and 2018, NFPA 70E-2021, DGUV 203-077, EPRI; DC per NFPA 70E and DGUV) | vendor page |
+| P88 | https://www.digsilent.de/en/faq-reader-powerfactory/how-are-the-pre-fault-voltages-for-the-different-short-circuit-analysis-methods-determinated.html?v=44016df1 | FAQ: pre-fault voltages per short-circuit method (IEC c-factor; ANSI user c; complete method from internal load flow) | vendor FAQ |
