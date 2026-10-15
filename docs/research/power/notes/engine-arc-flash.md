@@ -181,6 +181,60 @@ reproduce IEEE 1584-2018). Options:
 My recommendation is option 1 for the engine, with option 2 as the long-term clean path.
 This is Peter's call (licence and source question, README rule 7).
 
+## 6b. Verification of the coefficient sources (done 2026-10-15)
+
+**`arcflash` facts, checked by cloning the repository** (github.com/LiaungYip/arcflash,
+last commit 2025-07-21):
+
+- the licence is MIT (LICENSE.txt);
+- the PyPI distribution name is **`arcflash-calc`**;
+- the module docstring states that the coefficient tables were copied from IEEE
+  1584-2018 itself;
+- the repository includes tests against Annex D.1 and D.2 and a CSV of IEEE spreadsheet
+  results.
+
+**Warning: the PyPI name `arcflash` is an unrelated package** (a ROM-board tool for
+Acorn computers, Apache licence). Installing "arcflash" from PyPI would pull the wrong
+code. Pin the dependency by name `arcflash-calc` and version, or by Git commit.
+
+**Das21 against IEEE.** The tables in Das21 sec. 3 were compared cell by cell (rendered
+pdf pp. 95, 97 and 99) with the `arcflash` tables. The arcing-current equation (Das21
+eq. 3.1) was then computed for the IEEE 1584-2018 Annex D.1 case (VCB, 4.16 kV, 15 kA,
+104 mm gap), whose intermediate results are recorded in `arcflash`'s tests:
+
+| Quantity (Annex D ref.) | Annex value | With `arcflash` coefficients | With Das21 Table 3.1 as printed |
+| --- | --- | --- | --- |
+| Iarc at 600 V (D.9) | 11.117 kA | 11.117 | 11.117 (row identical) |
+| Iarc at 2700 V (D.11) | 12.816 kA | 12.816 | **5.062** (VCB 2700 V k3 printed as −0.224; IEEE −0.024) |
+| Iarc at 14,300 V (D.13) | 14.116 kA | 14.116 | **18.507** (VCB 14,300 V k2 printed as 1.115; IEEE 1.015) |
+| E at 2700 V (D.26) | 11.977 J/cm² | 11.976 | n/a (Table 3.4 matches) |
+| E at 14,300 V (D.28) | 13.367 J/cm² | 13.366 | 13.366 (Table 3.5 differences are rounding-scale for VCB) |
+| VarCf (D.43) | 0.047 | 0.0469 | 0.0469 |
+
+**Conclusion:** Das21 Table 3.1 contains printing errors large enough to put
+medium-voltage arcing current off by 30 to 60%.
+
+Other cells in Das21 differ from `arcflash`. They are not exercised by Annex D, so they
+are unconfirmed but probably Das21 slips too:
+
+- Table 3.1: VCBB 600 V k6, VCBB 2700 V k3, HCB 600 V k3, HCB 2700 V k8, HCB 14,300 V k5,
+  k7 and k9, and VOA 600 V k5 (a value apparently shifted from the HCB row);
+- Table 3.2: VCBB k2 (exponent sign lost), HOA k6;
+- Table 3.5: VCBB k9, HCB k6 and k9, and k9 rounding in other rows;
+- Tables 3.4 and 3.5 are both headed "600 V", where they should be 2700 V and 14,300 V.
+
+**Rules for Quantic:**
+
+1. **Never key IEEE 1584 coefficients from Das21.**
+2. If `arcflash-calc` is used, our tests reproduce Annex D.1 and D.2 (from its test file,
+   which cites the annex equations) and Das21's worked Tables 3.8 and 3.9 at system
+   level.
+3. If Peter buys IEEE 1584-2018, re-check every cell against the standard and its
+   published corrigenda.
+
+This strengthens the recommendation for option 1 (section 6): `arcflash-calc`, pinned,
+verified.
+
 ## 6a. Second method for IEC markets: DGUV-I 203-077 (box-test method)
 
 **Source (read 2026-10-15):** DGUV Information 203-077, *Thermal hazards due to electric
