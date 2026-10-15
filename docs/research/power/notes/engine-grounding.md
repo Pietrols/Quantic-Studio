@@ -22,6 +22,43 @@ The standards are IEEE 80 (AC substation grounding safety), IEEE 81 (soil and gr
 impedance measurement), IEEE 142 (Green Book), IEC 60479 (effects of current on the
 body) and the national mine regulations. We do not own them.
 
+## 1a. Zambian standards (found 2026-10-15)
+
+| Key | Document | Where |
+| --- | --- | --- |
+| DZS691 | Draft Zambian Standard DZS 691:2023, *Safety in AC Substation Earthing*, 1st ed., Zambia Bureau of Standards. The foreword states it is "technically equivalent to IEEE Std 80-2013". 50 Hz outdoor AC substations (conventional and GIS), distribution, transmission and generation | https://www.erb.org.zm/wp-content/uploads/files/standards/Draft-Zambian-Standard-DZS-691.pdf |
+| DZS418 | Draft Zambian Standard DZS 418-1:2024, *Electrical Safety Code, Part 1: construction, installation and commissioning* (part 2 covers operation and maintenance). Replaces ZS 418-1:2013. May be adapted for mines; the Mines Safety Department sits on the committee | https://www.erb.org.zm/wp-content/uploads/files/standards/Draft-Revised-Standard-DZS-418-Part-1-2024-Draft-for-Public-Comments.pdf (Part 2 at the same path with "Part-2") |
+
+**Safety criteria in DZS 691** (read from the fetched text; clause 8; checked against
+the Dalziel relation in Morley sec. 3):
+
+- **Tolerable body current:** IB = k/√ts, with k = 0.116 for 50 kg (SB = 0.0135) and
+  k = 0.157 for 70 kg (SB = 0.0246). Use 70 kg only where the average population weight
+  can be expected to be at least 70 kg.
+- **Body resistance:** 1000 Ω. The foot is a 0.08 m radius disc on the surface.
+- **Step limit:** (1000 + 6·Cs·ρs)·k/√ts.
+- **Touch limit:** (1000 + 1.5·Cs·ρs)·k/√ts.
+- **Cs** is the surface-layer derating, from a chart or an empirical expression in the
+  soil and surface-layer resistivities and the layer thickness. Cs = 1 with no surface
+  layer.
+- **Metal-to-metal touch:** 116/√ts (50 kg) or 157/√ts (70 kg). GIS adds an
+  enclosure-voltage term.
+- **Fault current split:** Ig = Sf·If; design current IG = Df·Ig with the decrement
+  factor Df; GPR = IG·Rg.
+
+**Not yet read:** clauses 12 to 14 (soil measurement per IEEE 81, grid resistance, mesh
+and step voltage factors) were not in the fetched text. Read the full PDF.
+
+**Implications:**
+
+- For Zambian clients, Quantic's grounding module should cite **DZS 691**, which is a
+  Zambian national standard. That is better than citing IEEE 80 and avoids buying
+  IEEE 80 for the home market.
+- Status: the document is a **draft** for public comment. Check whether the final
+  ZS 691 is published (ZABS catalogue), and cite the edition used.
+- Peter should add both PDFs to QE-References (free downloads, but ZABS copyright
+  applies; verify only, do not copy).
+
 ## 2. System grounding methods (Morley pdf pp. 185 to 186; Das21 ch. 4)
 
 | Method | Fault current | Notes |
@@ -146,9 +183,12 @@ formulas and Table 7.3 shapes were not checked yet.
 
 ## 7. Gaps
 
-1. IEEE 80 (paid): tolerable limits, Cs derating, Em/Es factors, annex examples. A
-   recommended purchase, alongside IEEE 1584, IEC 60909 and C37.010.
-2. Zambian and South African mine grounding rules.
+1. IEEE 80 is largely covered for Zambia by **DZS 691** (sec. 1a): tolerable limits and
+   Cs are confirmed; Em/Es factors and grid resistance are still to read in the full
+   PDF. IEEE 80 itself is only needed for non-Zambian clients.
+2. Mine-specific grounding rules. DZS 418 (Electrical Safety Code) applies generally,
+   with mine rules on top. Find the Zambian mining regulations' electrical part and
+   South African rules (SANS 10108 and others).
 3. Clean reads of Morley's ground-bed equations (render pdf pp. 193 to 195).
 4. Open-source: no permissive ground grid solver was identified in this pass. To
    search (for example, Python method-of-moments grounding codes on GitHub).
