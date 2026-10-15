@@ -97,7 +97,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | F6 | Complete (superposition) method on load flow | ? | yes | none | Kasikci 2002 |
 | F7 | Device duty against library ratings | yes | partial | none | Das 2002, Das 2021 (LV test X/R) |
 | F8 | Multiple and open-conductor faults, fault sweeps | partial | yes | none | Grainger 1994 |
-| P1 | TCC plotting with device libraries | yes | yes | none | Blackburn 2006, Alstom 2011 |
+| P1 | TCC plotting with device libraries | yes | yes | none | Alstom 2011, Das 2021; spec in engine-protection-tcc.md; pandapower protection as base |
 | P2 | Damage curves (cable, transformer, motor start) | ? | yes | none | Alstom 2011 |
 | P3 | Automatic coordination checks or audit by rules | yes | yes | none | Alstom 2011 |
 | P4 | Sequence of operation with animation and backup | yes | yes (short-circuit trace) | none | Blackburn 2006 |
