@@ -9,7 +9,8 @@ dependencies are Done on main. Paths in the two lanes never overlap.
 
 | Item | Lane A: Claude | Lane B: ChatGPT |
 | --- | --- | --- |
-| Now | WP-2.10 ETAP and PowerFactory research: **in progress** | WP-2.11 PowerWorld research: **start now** |
+| Done | | WP-2.11 PowerWorld research (PR #53, merged 9eed253; reviewed by Claude, accepted) |
+| Now | WP-2.10 ETAP and PowerFactory research: **in progress** | Cross-review WP-2.10 branch, then WP-2.11 deepening pass (Peter authorized in chat 2026-10-15; see message 2026-10-15T1537Z) |
 | Next | WP-2.12 parity matrix and engine inventory | Review WP-2.12 |
 | Parked | WP-2.6 PLC slice (not started) | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
 
