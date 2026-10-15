@@ -1,6 +1,6 @@
 # PowerWorld Simulator research dossier
 
-Research date: 2026-10-15. Owner: Lane B, ChatGPT. WP-2.11.
+Research date: 2026-10-15. Owner: Lane B, ChatGPT. WP-2.11, including authorized deepening pass.
 
 This is a public-documentation study, not an executable-product benchmark. Statements
 about availability describe the cited documentation; no licensed Simulator instance
@@ -31,9 +31,30 @@ results-storage fixes. We do not infer an unreleased Version 25. [W2][W3][W5]
 | Educational editions | University teaching/research configurations are offered; terms must be checked for the intended use | [W1] |
 | Viewer | Separate freeware for exchanging and displaying cases; its existence does not confer an editing or simulation licence | [W1] |
 
-The accessed pricing page lists the commercial base starting at US$11,000 and
-separate add-on prices. It describes single, site and corporate configurations and
-maintenance. These are a dated public-price observation, not a quotation for Peter.
+### 1.1 Commercial price snapshot
+
+USD, accessed 2026-10-15; grouped names have identical prices. Blank vendor cells
+are shown as `n/a`, not zero. Add-on prices exclude the base. [W4]
+
+| Product | First | Additional, each | Site | Corporate |
+| --- | ---: | ---: | ---: | ---: |
+| Base | 11,000 | 5,500 | 33,000 | 66,000 |
+| ATC, PVQV, Reserves, SimAuto, Scheduled Actions | 5,500 | 2,750 | 16,500 | 33,000 |
+| OPF | 8,800 | 4,400 | 26,400 | 52,800 |
+| SCOPF | 3,300 | 1,650 | 9,900 | 19,800 |
+| ITP, Transient Stability, GIC | 11,000 | 5,500 | 33,000 | 66,000 |
+| TransLineCalc | 2,200 | 1,100 | 6,600 | 13,200 |
+| Distributed Contingency | n/a | n/a | 0 | 0 |
+| Distributed ATC, Distributed QV | n/a | n/a | 16,500 | 33,000 |
+| Distributed Transient Stability | n/a | n/a | 33,000 | 66,000 |
+
+Maintenance: first year included; renewal 28% of then-current licence price.
+Site: unlimited installations/concurrent instances within 1,000 m; corporate:
+organization-wide. SCOPF/Reserves require OPF. Distributed studies require site
+SimAuto plus the corresponding site study licence; Distributed Contingency requires
+site Simulator/SimAuto. Demo: 13 buses with ATC, PVQV, OPF/SCOPF/Reserves, TS and
+GIC. These are dated public prices, not a project quote. [W4]
+
 No proprietary source-code licence was found. [W4]
 
 The documented automation platform is Windows COM. Current UDM instructions describe
@@ -159,6 +180,66 @@ and citations are committed; downloaded source files stay outside this repositor
 
 | W105 | [SVC steady-state/dynamic consistency](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Switched_Shunt_SVC_Control_Mode_Transient_Simulation.htm) | Help | 2026-10-15 |
 
+| W106 | Glover, Overbye and Sarma, Power System Analysis and Design, 6th ed., Cengage, 2017 | Owned book, page-tagged text; PDF images unavailable | 2026-10-15 |
+| W107 | [Stability data management, 2024, slides 14 and 31](https://www.powerworld.com/files/T02StabilityDataManagement.pdf) | Public PDF, page images inspected | 2026-10-15 |
+| W108 | [Large-scale simulation examples, 2025, slide 4](https://www.powerworld.com/files/T14LargeExamples.pdf) | Public PDF, page image inspected | 2026-10-15 |
+| W109 | [Web Help topic index](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Table_Of_Contents_For_Printed_Output.htm) | Vendor help index | 2026-10-15 |
+| W110 | [ESST1A_GE](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20ESST1A%20and%20ESST1A_GE.htm) | Vendor model help | 2026-10-15 |
+| W111 | [AC1C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20AC1C.htm) | Vendor model help | 2026-10-15 |
+| W112 | [ST1C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20ST1C.htm) | Vendor model help | 2026-10-15 |
+| W113 | [DEGOV](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Governor%20DEGOV.htm) | Vendor model help | 2026-10-15 |
+| W114 | [TGOV1D](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Governor%20TGOV1%20and%20TGOV1D.htm) | Vendor model help | 2026-10-15 |
+| W115 | [GGOV1D](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Governor%20GGOV1%20and%20GGOV1D.htm) | Vendor model help | 2026-10-15 |
+| W116 | [HYGOVD](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Governor%20HYGOV%20and%20HYGOVD.htm) | Vendor model help | 2026-10-15 |
+| W117 | [W2301](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Governor%20W2301.htm) | Vendor model help | 2026-10-15 |
+| W118 | [PSS2A](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Stabilizer%20PSS2A.htm) | Vendor model help | 2026-10-15 |
+| W119 | [PSS2C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Stabilizer%20PSS2C.htm) | Vendor model help | 2026-10-15 |
+| W120 | [PTIST3](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Stabilizer%20PTIST3.htm) | Vendor model help | 2026-10-15 |
+| W121 | [PAUXSS1A](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Paux%20Controller%20PAUXSS1A.htm) | Vendor model help | 2026-10-15 |
+| W122 | [CMPLDW](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Characteristic%20CMPLDW.htm) | Vendor model help | 2026-10-15 |
+| W123 | [CMPLDWNF](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Characteristic%20CMPLDWNF.htm) | Vendor model help | 2026-10-15 |
+| W124 | [MOTORW](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Characteristic%20MOTORW.htm) | Vendor model help | 2026-10-15 |
+| W125 | [IEEL](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Characteristic%20IEEL.htm) | Vendor model help | 2026-10-15 |
+| W126 | [CLOD](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Characteristic%20CLOD.htm) | Vendor model help | 2026-10-15 |
+| W127 | [REGC_A](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGC_A.htm) | Vendor model help | 2026-10-15 |
+| W128 | [REGC_B](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGC_B.htm) | Vendor model help | 2026-10-15 |
+| W129 | [REGC_C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGC_C.htm) | Vendor model help | 2026-10-15 |
+| W130 | [REGFM_A1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGFM_A1.htm) | Vendor model help | 2026-10-15 |
+| W131 | [REGFM_B1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGFM_B1.htm) | Vendor model help | 2026-10-15 |
+| W132 | [REGFM_C1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Machine%20Model%20REGFM_C1.htm) | Vendor model help | 2026-10-15 |
+| W133 | [REECA1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20REEC_A.htm) | Vendor model help | 2026-10-15 |
+| W134 | [REECB1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20REEC_B.htm) | Vendor model help | 2026-10-15 |
+| W135 | [REEC_C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20REEC_C.htm) | Vendor model help | 2026-10-15 |
+| W136 | [REEC_D](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20REEC_D.htm) | Vendor model help | 2026-10-15 |
+| W137 | [REEC_E](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Exciter%20REEC_E.htm) | Vendor model help | 2026-10-15 |
+| W138 | [REPCTA1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Plant%20Controller%20REPC_A.htm) | Vendor model help | 2026-10-15 |
+| W139 | [REPC_B100](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Plant%20Controller%20REPC_B.htm) | Vendor model help | 2026-10-15 |
+| W140 | [REPC_C](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Plant%20Controller%20REPC_C.htm) | Vendor model help | 2026-10-15 |
+| W141 | [DISTRELAY](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Line%20Relays%20DISTRELAY.htm) | Vendor model help | 2026-10-15 |
+| W142 | [TIOCR1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Line%20Relays%20TIOCR1.htm) | Vendor model help | 2026-10-15 |
+| W143 | [TLIN1O](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Line%20Relays%20TLIN1O.htm) | Vendor model help | 2026-10-15 |
+| W144 | [LDSH](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Relays%20LDSH.htm) | Vendor model help | 2026-10-15 |
+| W145 | [LVS3](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Load%20Relays%20LVS3.htm) | Vendor model help | 2026-10-15 |
+| W146 | [GP1](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Relay%20Model%20GP1.htm) | Vendor model help | 2026-10-15 |
+| W147 | [GP3](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Relay%20Model%20GP3.htm) | Vendor model help | 2026-10-15 |
+| W148 | [GENOF](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Relay%20Model%20GENOF.htm) | Vendor model help | 2026-10-15 |
+| W149 | [April 10, 2026 patch: REGFM and plant-controller connection](https://www.powerworld.com/patch/april-10-2026) | Vendor patch note | 2026-10-15 |
+| W150 | [ACTIVSg200](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg200/) | Texas A&M dataset publisher | 2026-10-15 |
+| W151 | [ACTIVSg500](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg500/) | Texas A&M dataset publisher | 2026-10-15 |
+| W152 | [ACTIVSg2000](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg2000/) | Texas A&M dataset publisher | 2026-10-15 |
+| W153 | [ACTIVSg10k](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg10k/) | Texas A&M dataset publisher | 2026-10-15 |
+| W154 | [ACTIVSg25k](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg25k/) | Texas A&M dataset publisher | 2026-10-15 |
+| W155 | [ACTIVSg70k](https://electricgrids.engr.tamu.edu/electric-grid-test-cases/activsg70k/) | Texas A&M dataset publisher | 2026-10-15 |
+| W156 | [Texas2k Series24](https://electricgrids.engr.tamu.edu/activsg2000-dynamics-cases-2024/) | Texas A&M dataset publisher | 2026-10-15 |
+| W157 | [Texas2k Series25](https://electricgrids.engr.tamu.edu/texas2k-series25/) | Texas A&M dataset publisher | 2026-10-15 |
+| W158 | [Case formats](https://electricgrids.engr.tamu.edu/file-formats/) | Texas A&M dataset publisher | 2026-10-15 |
+| W159 | [Annual time series](https://electricgrids.engr.tamu.edu/activsg-time-series-data/) | Texas A&M dataset publisher | 2026-10-15 |
+| W160 | [Eng-Tips practitioner comparison, November to December 2011](https://www.eng-tips.com/threads/power-system-simulation-software-recommendations.309917/) | Independent forum, individual observations | 2026-10-15 |
+| W161 | [Paras Mandal, UTEP syllabus, revised September 12, 2021](https://digitalmeasures.utep.edu/ai/pmandal/schteach/EE43955390_PowerSysAnalysis_Syllabus_Fall2021_v3-1.pdf) | University course document | 2026-10-15 |
+| W162 | [M. R. Jamieson and K. R. W. Bell, March 20, 2024, Choosing appropriate power system simulation models for different events](https://strathprints.strath.ac.uk/88584/1/Jamieson-Bell-2024-Choosing-Appropriate-Power-System-Simulation-Models.pdf) | University research report | 2026-10-15 |
+| W163 | [Reddit, Transfer into Power Industry, August 5 to 6, 2023](https://www.reddit.com/r/PowerSystemsEE/comments/15j8rjs/) | Search record only; comment author unavailable | 2026-10-15 |
+| W164 | [Reddit, Dynamics/Transient Studies, July 29, 2026](https://www.reddit.com/r/PowerSystemsEE/comments/1v9je2i/dynamicstransient_studies/) | Search record only; comment author unavailable | 2026-10-15 |
+
 ## 3. Architecture and data model
 
 ### 3.1 Case database versus diagram
@@ -267,6 +348,61 @@ sign conventions, regulation state and rating enablement are part of the model.
 | Machine/control model | Machine, exciter, governor, stabilizer and model-specific parameters/states | Dynamic records attach to network objects; a listed model may have import/export support before numerical support | [W58][W92] |
 | Dynamic load and renewable model | Composite loads, motors, renewable converter/plant controls, distributed generation | Separate dynamic model families; parameters and model-specific implementation require technical references | [W58][W92] |
 | GIC network additions | Grounding resistance ohms, winding/DC resistance, transformer core/connection, coordinates and electric field | Needed for induced DC current and associated AC impact; defaults must not masquerade as measured data | [W68][W69] |
+
+### 4.4 Named dynamic models and the strength of support evidence
+
+This is a selected, named inventory for parity planning, not a claim to enumerate
+every build's models. Names were cross-checked against the public topic index. [W109]
+The Model Explorer makes three separate distinctions:
+PowerWorld numerical support, foreign-format interchange, and whether an assigned
+model is active. Gray text means unused in this case. Red means interchange is
+available but numerical integration is not; green means numerical support. A format
+column such as GE or PTI does not answer the PowerWorld support question. [W92]
+
+The codes below describe evidence, not a certification:
+
+- **S:** a vendor training screenshot explicitly shows PowerWorld Support = YES.
+  The dated screenshots are historical support snapshots, not an execution of V24.
+- **N:** the model page or patch describes runtime numerical behavior.
+- **D:** a model page documents validation and/or a block diagram, but the exact
+  installed build's Fully Supported flag was not inspected.
+- **U:** only a parameter/catalogue entry was established here. Numerical status is
+  unresolved. U does not mean import-only or unsupported.
+
+| Family | Named models | Evidence and practical distinction |
+| --- | --- | --- |
+| Synchronous machines | GENCLS, GENROU, GENSAL, GENROE, GENSAE, GENTPF, GENTPJ, GENTRA, GENPWFluxDecay, GENPWTwoAxis | S, all show YES in slide 31. Classical, transient and subtransient alternatives must not be collapsed into one generic machine. Screenshot spelling is retained for GENPWFluxDecay; the help index calls its page GENFluxDecay. [W107] |
+| Induction and converter machines | CIMTR1, CIMTR2, CIMTR3, CIMTR4, MOTOR1, GENIND, WT1G, WT1G1, WT2G, WT2G1, WT3G, WT3G1, WT3G2, WT4G, WT4G1, PV1G, PVD1, DER_A, CBEST | S, YES in the same dated support table. An induction-machine model is not proof of a full industrial starting-study package. [W107] |
+| Exciters in a large-system example | ESAC1A, ESAC6A, ESDC1A, ESDC2A, ESST4B, EXAC1, EXAC2, EXPIC1, IEEET1, SCRX | S, YES in the ACTIVSg10K example. This is direct named numerical-support evidence. [W108, slide 4] |
+| Additional IEEE-style excitation | ESST1A, ESST1A_GE, AC1C, ST1C | D, model-specific validation and control diagrams; retain the GE suffix because variant behavior differs. This establishes named coverage relevant to IEEE 421.5, not conformance to every model/edition. [W110][W111][W112] |
+| Conventional governors | GGOV1, HYGOV, IEEEG1 | S, YES in the large-system example. [W108, slide 4] |
+| Steam, hydro and general governor variants | TGOV1, TGOV1D; HYGOV, HYGOVD; GGOV1, GGOV1D | N, pages describe valve/gate/control-limit treatment during simulation. D-suffixed variants carry additional deadband data. Keep the selected variant and turbine base in the case provenance. [W114][W116][W115] |
+| Genset and mechanical controls | DEGOV; W2301 | N, engine delay / governor controls and runtime limit handling are documented. A named diesel governor is stronger evidence for genset modelling than an unspecified generic governor claim. [W113][W117] |
+| Stabilizers | IEEEST; PSS2A, PSS2C; PTIST3 | IEEEST: S. PSS2A/PSS2C: D. PTIST3: N with an explicit limitation: its NCL limit function is ignored and produces a warning. This is partial model behavior, not merely import-only support. [W108][W118][W119][W120] |
+| Supplementary control | PAUXSS1A | D, named auxiliary stabilizing signal model; V24 release notes also name its addition. [W2][W121] |
+| Composite and motor loads | CMPLDW, CMPLDWNF, MOTORW | D. CMPLDWNF omits the distribution-equivalent portion of CMPLDW; MOTORW has motor/inertia/trip inputs. Composite-load parameter sets and aggregation levels are separate from ordinary ZIP power-flow loads. [W122][W123][W124] |
+| Algebraic/composite load entries | IEEL, CLOD | U in this review: named parameter pages, without an independently inspected Fully Supported row. [W125][W126] |
+| Renewable converter interface | REGC_A, REGC_B, REGC_C | S, YES in slide 31; individual pages document distinct converter parameter sets. REGCA1 is a PTI-format name for REGC_A, not a separate proof of a new model family. [W107][W127][W128][W129] |
+| Newer converter interface | REGC_D | V24 release notes name it. A direct model-help URL guessed from its name returned 404, so its exact current parameter schema/flag remains unverified; do not invent one. [W2] |
+| Renewable electrical control | REECA1, REECB1, REEC_C, REEC_D, REEC_E | D for the first four; REEC_E: N, including runtime current/control-limit logic. These are electrical-control records under the exciter family, not synchronous exciters. [W133][W134][W135][W136][W137] |
+| Renewable plant control | REPC_A, REPCA1, REPCTA1; REPC_B, REPC_B100; REPC_C | REPC_A/REPCA1/REPCTA1: N; B/B100/C: D. The A variants have explicit runtime treatment; the April 2026 patch explains that REPCA1 and REPCTA1 use the same internal controller, with signal routing dependent on the attached torque/electrical controls. [W138][W139][W140][W149] |
+| Grid-forming converters | REGFM_A1, REGFM_B1, REGFM_C1 | A1/B1: N, the April 2026 fix addresses their connection to plant controls. C1: D, page dates its addition to May 1, 2025. These establish RMS model families, not switching-level EMT equivalence. [W130][W131][W132][W149] |
+| Generator protection | GP1, GP3, GENOF | GP1: U; GP3: N, page explicitly describes implemented generator protection; GENOF: U, PowerWorld attribution alone does not establish the current numerical flag. [W146][W147][W148] |
+| Branch and load protection | DISTRELAY, TIOCR1; TLIN1O; LDSH, LVS3 | DISTRELAY: D, distance-zone shapes/timing; TIOCR1: N, documented contingency timing/tripping logic and reference to transient operation; this does not certify all transient integration details. TLIN1O/LDSH/LVS3: U from the pages inspected. Load shedding and transient relay entries do not establish an industrial TCC equipment library. [W141][W142][W143][W144][W145] |
+
+**Import-only boundary:** none of the inspected public sources supplies a complete,
+current, machine-readable list of red-icon models by name. Therefore this dossier
+names no particular current model as import-only without its support row. Export
+Model Support Status and Models in Use from the target build before using a case as
+an oracle. Include active flags, support flags, interchange translations, parameter
+normalizations and initialization diagnostics. A historical YES or a block diagram
+cannot replace that case/build check. [W92][W107][W108]
+
+**Quantic implication, inferred:** split machine, excitation, governor, stabilizer,
+electrical converter and plant-controller responsibilities. Verify state initialization,
+saturation/limits, parameter bases, measured-bus selection and signal wiring separately.
+The DEGOV and WECC families are concrete future parity targets, not permission to
+implement from a help page or to copy standard coefficients. [W106][W113][W137][W138]
 
 ## 5. Studies and modules
 
@@ -675,11 +811,31 @@ No numerical satisfaction rating or claim about typical users is made. [W85]
 
 ### 7.3 Findings that remain uncertain
 
-No robust current, independently sampled forum/article set was established from the
-public material reviewed. We therefore do not invent a consensus about ease of use,
-price, support quality or stability. The utility presentations establish particular
-needs; vendor interface claims remain vendor claims. This gap is retained in section 9.
-[W83][W84][W85]
+The deepening pass adds independent observations below. They are identifiable
+individuals or institutions, not a representative sample. Old comparisons do not
+establish today's relative features, regional acceptance or support quality.
+
+| Author and date | Observation or use | Evidence limit |
+| --- | --- | --- |
+| Eng-Tips `tlrols`, 2011-11-16 and 2011-12-01 | Favors PowerWorld's support and data browsing/editing alongside PSLF/PSS/E; distinguishes transmission interconnection work from plant studies | Self-described multi-tool practitioner who says they do not work for PowerWorld. Identity/employment unverified, strongly favorable anecdote. Broad capability/industry-acceptance assertions are not adopted as facts. [W160] |
+| Justin Chebahtah (`Chebahtah`), 2011-12-07 | Reports finding the trial intuitive after prior PSLF/PSS/E experience, and useful for personal planning/oversight | First-person experience after returning to the product, not a completed comparative solver test. [W160] |
+| Eng-Tips `dpc`, 2011-11-28 | Emphasizes utility-required dynamics data and distinctions between transmission and industrial tools | Useful counterweight: accepted formats/customer requirements can drive selection independently of ease of use. Historical, not a current procurement rule. [W160] |
+| Paras Mandal, UTEP, syllabus revised 2021-09-12 | Requires PowerWorld assignments/projects with Glover sixth edition, and provides a named software coordinator | Independent institutional adoption evidence. It measures neither satisfaction nor superiority over another package. [W161, pp. 1 to 2 and 6] |
+| M. R. Jamieson and K. R. W. Bell, University of Strathclyde, 2024-03-20 | Lists PowerWorld with PowerFactory, PSS/E and other load-flow tools, discussing model choice for different phenomena | Primary academic comparison of modelling scope, not a product ranking or speed/accuracy benchmark. Non-exhaustive lists cannot prove absence of unlisted features. [W162, pp. 3 and 14] |
+
+Reddit searches found two relevant **r/PowerSystemsEE** records, rather than an
+established source set in the requested r/PowerSystemsEngineering: *Transfer into
+Power Industry* (comments dated 2023-08-06) describes PowerWorld as a learning route;
+*Dynamics/Transient Studies* (2026-07-29) praises documentation/training. Direct
+threads/API retrieval failed and the retrieved records omit comment usernames.
+Author: unavailable. They remain search leads, excluded from the attributable
+sentiment conclusions. The first also overstates free access without distinguishing
+licence editions; section 1 supplies the verified entitlement instead. [W163][W164]
+
+No robust current sample of PowerWorld-specific complaints or independent current
+head-to-head testing against ETAP/PowerFactory was established. Do not manufacture
+negative reviews to balance the favorable anecdotes, or infer present market share,
+reliability, satisfaction scores or buyer consensus from these sources.
 
 **Our synthesis, inferred:** users need both fast exploration and maintainable,
 replayable studies. A pleasant animated oneline without dependable input mapping,
@@ -720,13 +876,119 @@ extension facts. They do not justify asserting that the entire application, Newt
 engine or optimizer was written in any one of those languages. Sparse factorization
 vendor, LP backend and internal parallelization remain unknown. [W64][W6]
 
+### 8.1 Glover17 chapter and Simulator-case map
+
+Source: Glover, Overbye and Sarma, *Power System Analysis and Design*, 6th edition,
+2017. Page numbers below are printed pages, with one-based PDF page numbers in
+parentheses. This is an index and verification assessment, not a reproduction of
+worked examples, inputs, output tables, screenshots or case files. [W106]
+
+**Verification boundary:** page-tagged text was read, including example headings and
+cross-references. The private PDF is stored through Git LFS and its page images could
+not be retrieved in this environment. Thus no numerical answer from the book is
+listed or asserted verified here. The table distinguishes text-indicated completeness
+from image legibility; every numerical benchmark remains a candidate until its PDF
+pages and case-file permissions are checked. A request for private page access is
+recorded in the agent channel. This limitation must travel into WP-2.12. [W106]
+
+Assessment codes: **A** = text identifies input data and numerical answer tables or
+an analytic calculation, promising for a small independently reconstructed check;
+**B** = relies materially on the supplied case/diagram or dynamic settings, so the
+printed passage alone is not established as a complete benchmark; **C** = primarily
+a qualitative interaction/plot, useful for behavior but insufficient for a precise
+numerical oracle. All have PDF-image legibility pending. [W106]
+
+| Chapter, location and case identifier | Simulator feature demonstrated | Printed-result assessment |
+| --- | --- | --- |
+| Ch. 1, pp. 22 to 28 (42 to 48), Examples 1.1 to 1.3 | Animated flow, changing load/generation, opening elements, saving case versus diagram | C. Introductory interaction; do not treat the historical textbook edition's bus limit as today's demo entitlement. |
+| Ch. 2, p. 51 (71), Example 2.3 | Active/reactive-power visualization | C. Supports the conceptual display workflow, not a large-system benchmark. |
+| Ch. 3, p. 135 (155), Example 3_12 | Load-tap-changing transformer control | C. Animated control behavior; check control settings in the supplied file. |
+| Ch. 3, pp. 138 to 139 (158 to 159), Example 3_13 | Off-nominal transformer ratio and Ybus | A candidate. Analytic admittance comparison; the tap-side convention must match before comparing entries. |
+| Ch. 5, p. 281 (301), Example 5_4 | Distributed/lossless line behavior and voltage profile with load | A for the analytic line model, C for the animated screen alone. |
+| Ch. 5, p. 288 (308), Example 5_8 | Parallel-line configuration and reactive charging | B. The text explicitly distinguishes the Simulator model's charging from the simplified preceding analysis. Do not demand identical numbers across those models. |
+| Ch. 5, p. 293 (313), Example 5_10 | Series compensation and transfer | B. Capacitor bypass status is essential to identifying the operating point. |
+| Ch. 6, pp. 347 to 349 (367 to 369), Example 6_9 | Five-bus model data, network admittance, case tables | A candidate. Printed input tables and network diagram form the small-case anchor for subsequent examples. |
+| Ch. 6, p. 353 (373), Example 6_10 | Single-stepping Gauss-Seidel and inspecting mismatches | A candidate for iterations; historical educational-edition support is explicit. This is not evidence of current commercial V24 Gauss-Seidel entitlement. |
+| Ch. 6, pp. 357 to 359 (377 to 379), Example 6_11 | Newton steps, Jacobian and final bus/branch output tables | A candidate. Simulator retains voltage-control rows that a reduced textbook Jacobian may eliminate, so compare equivalent systems rather than matrix dimensions alone. |
+| Ch. 6, p. 359 (379), Example 6.12 using Example 6_9 | Generation redispatch and transformer loading | A candidate based on the preceding small system; retain the monitored rating and dispatch rule. |
+| Ch. 6, pp. 361 to 362 (381 to 382), Example 6_13 | Larger network exploration, outage loading and low-voltage identification | B. The passage does not establish a complete printed branch/generator dataset; supplied case needed. |
+| Ch. 6, p. 365 (385), Example 6_14 | Shunt switching and voltage/loss changes | A candidate built from Example 6_9; check shunt status and voltage dependence. |
+| Ch. 6, pp. 366 to 367 (386 to 387), Example 6_15 | Transformer tap changes following outages | B. Inherits the larger case and its controls. |
+| Ch. 6, p. 371 (391), Example 6.16 using Example 6_13 | Ybus/Jacobian sparsity visualization | C. This example demonstrates sparse matrices, not a sensitivity-result benchmark. |
+| Ch. 6, p. 373 (393), Example 6_17 | DC power-flow approximation and angle solution | A candidate. Fix resistance, loss, tap and phase-shift conventions independently of the AC check. |
+| Ch. 6, pp. 382 to 384 (402 to 404), Example 6_20 | Lossless economic dispatch with generator bounds | A/B. Analytic preceding dispatch tables are useful; full transmission-case completeness still requires checking the case. |
+| Ch. 6, p. 386 (406), Example 6.22 | Dispatch including losses and penalty factors | A for the stated optimality calculation, B for recreating the exact pictured network. |
+| Ch. 6, pp. 390 to 392 (410 to 412), Example 6_23 | Sequential-LP OPF and binding network limits | B. Identify the active constraints and costs from the supplied case. It is not an interior-point example. |
+| Ch. 7, pp. 450 to 451 (470 to 471), Example 7_5 | Balanced faults and Zbus on the small network | A candidate. Machine, line and transformer input tables and fault results are identified. Prefault operating assumptions differ from ordinary loaded power flow. |
+| Ch. 7, pp. 452 to 453 (472 to 473), Example 7_6 | Adding a branch and recomputing fault impedances/voltages | A candidate, derived from Example 7_5 with a stated network alteration. |
+| Ch. 9, pp. 555 to 564 (575 to 584), Example 9_3 and Examples 9.4 to 9.6 | Sequence data, SLG/LL/DLG selection and transformer phase effects | A candidate for the small sequence-network calculations. Check phase/reference conventions; later examples reuse the same case rather than proving separately named case files. |
+| Ch. 9, pp. 573 to 575 (593 to 595), Example 9_8 | Five-bus SLG fault sweep, current contributions and bus voltages | A candidate. The passage identifies input Tables 9.1 to 9.3 and output Tables 9.4 to 9.5. It does not establish an all-fault-type sweep. |
+| Ch. 11, pp. 701 to 702 (721 to 722), Example 11_4 and 11_4b | Classical rotor-angle transient with and without damping | A for the analytic setup; C for precise values read from a plot. Damping distinguishes the two cases. |
+| Ch. 11, p. 704 (724), Example 11_5 | Fault/event simulation and angle trajectory | A/C. Compare analytical setup or stability outcome; plotted precision must first be established. |
+| Ch. 11, pp. 706 to 707 (726 to 727), Example 11_6 | Equal-area stability boundary and fault clearing | A candidate for analytic stability boundary; a clearing-time benchmark additionally needs the stated inertia/frequency and event interpretation. |
+| Ch. 11, p. 709 (729), Example 11_7 | Angle/speed traces and phase portrait | A for the stated Euler calculation, C for equality to Simulator. The text explicitly says Simulator's second-order integration gives slightly different results. |
+| Ch. 11, pp. 715 to 717 (735 to 737), Example 11_8 and 11_8A | Multimachine reduced network and relative rotor angles | A/B. The small-system reduction is promising; capture reference-frame choice, dynamic loads and damping. |
+| Ch. 11, p. 718 (738), Example 11_9 | Larger multimachine line fault and clearing search | B. Requires the supplied larger case's dynamic records; a plotted boundary is not a fully printed model. |
+| Ch. 11, pp. 721 to 722 (741 to 742), Example 11_10 | Two-axis synchronous-machine initialization and fault response | A candidate for initial-state calculation, B for exact transient reproduction until all case settings are checked. |
+| Ch. 11, pp. 724 to 726 (744 to 746), Example 11_11 | Induction-generator wind-machine initialization and response | A candidate for the stated machine initial conditions; not a switching-level converter benchmark. |
+| Ch. 11, pp. 729 to 730 (749 to 750), Example 11_12 | Type 3 doubly-fed generator initialization | A candidate for the stated algebraic initial conditions; transient control settings still matter. |
+| Ch. 12, pp. 758 to 759 (778 to 779), Example 12_1 | Exciter/AVR initialization and transient voltage response | A candidate for initial states, B/C for complete dynamics and plotted values. Inherits the two-axis machine example. |
+| Ch. 12, p. 760 (780), Example 12_2 | Type 3 reactive-power control and limits | A/C. Controller setup and qualitative recovery are established; inspect the plotted trajectory before choosing tolerances. |
+| Ch. 12, p. 766 (786), Example 12_4 | Governor droop, load step and frequency response | A/B. The text distinguishes finite-duration simulation from the eventual analytic equilibrium; do not equate them. Complete network/control files remain to check. |
+| Ch. 14, pp. 911 to 912 (931 to 932), Figure 14_22 | Primary-loop feeder switching/restoration | B/C. Requires the supplied feeder case. This does not demonstrate a native unbalanced three-phase load-flow engine. |
+
+All rows above are indexed to [W106]; none is a newly released public benchmark.
+The best first candidates are the small power-flow, sequence-fault, machine
+initialization and analytic dispatch cases. Supplied textbook PWB/PWD files remain
+subject to their own licence. Neither ownership of the book nor permission to read
+it authorizes copying those files or its worked data into Quantic. For public large
+systems, the separately published synthetic datasets below are the stronger route.
+
+### 8.2 Texas A&M synthetic-grid verification candidates
+
+The dataset publisher explicitly permits commercial and non-commercial use without
+charge and encourages registration and paper citation. The visible download form
+requires an email. We did not submit a form or invent contact details. No SPDX, CC or
+MIT label, express redistribution grant, warranty or liability clause was established
+from the pages read. Record these actual terms; do not relabel the datasets
+public-domain or transfer PowerWorld's software licence to them. Any archive's bundled
+terms still need inspection before redistribution. [W150][W152]
+
+| Dataset | Formats described on its own page | Dynamics availability established by that page | Suggested role, inferred |
+| --- | --- | --- | --- |
+| ACTIVSg200, Illinois footprint | PowerWorld, MATPOWER, PSS/E RAW, PSLF EPC, corresponding dynamic files | Explicitly included | First manageable dynamic/network interoperability candidate. [W150] |
+| ACTIVSg500, South Carolina footprint | PowerWorld, MATPOWER, RAW, EPC | Not stated in the page read; do not infer from family membership | Intermediate steady-state regression. [W151] |
+| ACTIVSg2000, Texas footprint | PWB/PWD, AUX, MATPOWER, RAW, EPC | Explicit transient-stability and GMD data | Power-flow/contingency/OPF plus a separate dynamic verification profile. [W152] |
+| ACTIVSg10k, western US footprint | PWB/PWD, AUX, MATPOWER, RAW, EPC | Explicit transient-stability and GMD data | Larger sparse-network and event workloads; vendor training also uses this family. [W153][W108] |
+| ACTIVSg25k, northeast/mid-Atlantic footprint | PWB/PWD, AUX, MATPOWER, RAW, EPC | Explicit transient-stability and GMD data | Scaling and multi-area checks after smaller cases pass. [W154] |
+| ACTIVSg70k, eastern US footprint | PWB/PWD, AUX, MATPOWER, RAW, EPC | Page cites dynamics-extension work but does not explicitly enumerate dynamic files in the current download | Large power-flow candidate; archive inspection required for dynamic claims. [W155] |
+| Texas2k Series24 | PWB, AUX, MATPOWER, RAW, EPC | Six dynamics cases: original summer peak, original low-load, updated summer peak, updated low-load, high renewables, and low-load with grid-forming inverters | Modern IBR and low-inertia stress cases, with distinct dataset/version hashes. [W156] |
+| Texas2k Series25 | PWB, AUX, MATPOWER, RAW, EPC | Updated summer-peak dynamics; page also describes expansion-planning variants/candidates | Current-generation mix and expansion scenarios, not interchangeable with the original Texas case. [W157] |
+| Annual ACTIVSg time series | CSV for the 2,000- and 10,000-bus cases | Load/renewable time series, not dynamic model definitions | Time-step/scenario inputs. [W159] |
+
+The publisher's format guide distinguishes `.m` (power flow and generator costs),
+`.raw` (power flow) and `.dyr` (dynamics), and similarly `.epc` versus `.dyd`.
+PWB/AUX can hold multiple study types; PWD is the diagram and TSB time series.
+Consequently a MATPOWER export alone cannot verify the transient solver. The guide
+identifies RAW v33, with possible conversion for v34. [W158]
+
+**Proposed verification process, not work performed:** retain download date, archive
+hash, dataset revision, exact file list and terms; inspect dynamic model names/support
+flags before converting; normalize units, sign conventions, controls and event timing;
+then compare residuals, flows and explicitly chosen event observables. Independent
+implementations must agree on the model and initial state before numeric differences
+are interpreted as solver defects. No archive was downloaded or simulator run in this
+pass, so the table records publisher availability rather than tested round trips.
+The cases are synthetic, not representations of the actual regional grids. [W150][W152][W158]
+
 ## 9. Gaps, qualification ledger and parity handoff
 
 ### 9.1 Coverage and stopping rule
 
 The review covers the public product/add-on descriptions, current major-version and
-patch documentation, the named help topics in section 2, vendor training figures and
-two utility-authored conference presentations. It does not claim to have read every
+patch documentation, the named help topics in section 2, vendor training figures,
+two utility-authored conference presentations, owned Glover17 text, individual
+practitioner observations, university documents and Texas A&M dataset pages. It does not claim to have read every
 page of the continually changing web-help tree or every historical release. Source
 counts are not a substitute for closed capability questions.
 
@@ -738,6 +1000,8 @@ source explicitly establishes a narrower limitation. It never silently means no.
 
 | Gap | Sources checked / observed boundary | Why unresolved; consequence |
 | --- | --- | --- |
+| Textbook numerical benchmarks | Glover17 map, section 8.1 | Page-tagged text was available, PDF page images were not. No numerical answer is released as verified, and supplied cases have not been cleared for redistribution. [W106] |
+| Public-case archive fidelity/terms | Texas A&M publisher pages, section 8.2 | Availability and use permission established, archive files, bundled terms and dynamic-model compatibility not inspected. MATPOWER does not carry dynamics. [W150][W152][W158] |
 | Exact contemporary OS/build support and machine sizing | Windows COM, 64-bit UDM guide, public overview | No current authoritative OS/RAM matrix found. Do not repurpose old Windows requirements or historical Avista hardware as current minimums. [W6][W7][W1][W83] |
 | Full proprietary solver internals | Solution theory, LP and integration help | These disclose methods, not source code, sparse factorization library or optimization backend. Leave implementation language/backend unknown. [W31][W54][W59] |
 | Full-system eigenvalue analysis | SMIB and transient modal-analysis topics | SMIB is per machine; signal fitting is measurement/trace analysis. Neither source establishes full-grid state-matrix eigenanalysis. [W63][W89] |
@@ -751,9 +1015,9 @@ source explicitly establishes a narrower limitation. It never silently means no.
 | State estimation versus consuming its results | ITP and real-time product descriptions | Reading EMS/state-estimator data does not establish a Simulator-native estimator. Retriever is a distinct product. [W104][W99] |
 | Unit commitment, probabilistic reliability, hosting capacity | OPF/reserves, weather and ATC help | Dispatch/reserves and transfer heatmaps do not establish integer commitment, adequacy Monte Carlo, reliability indices or distribution hosting-capacity standards. [W54][W57][W75][W45] |
 | End-to-end substituted equation reports | Matrix/intermediate displays and export help | Public evidence supports some internal quantities and exports, not full D11 working for every result. [W8][W96][W53] |
-| Current representative customer sentiment | Utility presentations and public conference index | Attributable but historical/curated evidence; no reliable population sample. No consensus rating. [W83][W84][W85] |
+| Current representative customer sentiment | Utility presentations, dated Eng-Tips practitioners, independent syllabus and academic comparison | Independent examples now supplement curated talks, but no representative current sample or current comparative product benchmark. Reddit authors unavailable. [W83][W84][W160][W161][W162][W163][W164] |
 | Runtime performance and format round-trip fidelity | Vendor capacity statements and conversion notes | No licensed product was executed. Vendor examples are not our measured benchmarks; exact build/format fixtures need a later authorized test. [W1][W11] |
-| Exhaustive dynamic-model/default inventory | Model support and patch documentation | Support changes with build, and importability differs from numerical support. Future work must name the exact model/version and inspect its model page; do not generalize a catalogue entry. [W92][W3] |
+| Exhaustive dynamic-model/default inventory | Named inventory in section 4.4, support-table screenshots and model pages | Selected named models are now mapped; exhaustive current flags, import-only names and REGC_D schema remain unverified. Export support/active flags from the actual build; PTIST3 demonstrates a documented partial feature. [W92][W107][W108][W120][W2] |
 
 ### 9.3 Capability IDs for WP-2.12
 
@@ -795,7 +1059,7 @@ PowerWorld capability. `unknown` never means proved absent.
 | G12 | partial, PV/QV and transient/modal plots | Do not imply TCC/R-X/spectrum/eigenvalue plot parity. [W50][W62][W89] |
 | G13 | unknown, universal substituted-equation reports | Matrices/intermediates alone insufficient. [W8][W96] |
 | S1 | yes, balanced AC Newton power flow | [W30] |
-| S2 | partial, fast decoupled documented | Gauss-Seidel not established. [W30] |
+| S2 | partial, fast decoupled documented; historical educational Gauss-Seidel | Glover17 Example 6_10 establishes that older educational workflow, not current V24 commercial availability. [W30][W106] |
 | S3 | yes, Q limits and capability behavior | [W20][W32] |
 | S4 | yes, tap/remote regulation | [W19] |
 | S5 | yes, phase shifters | [W19] |
