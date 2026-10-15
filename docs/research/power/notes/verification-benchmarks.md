@@ -16,7 +16,7 @@ like-for-like accuracy. We reproduce the original publications, not ETAP's docum
 | --- | --- | --- | --- |
 | Arc flash | IEEE 1584-2018 annex results | standard | paid (gap); `arcflash` reproduces Annex D1 and D2 |
 | Arc flash (HV ArcFault) | IEEE C2-2023 (NESC) | standard | paid |
-| Arc flash | DGUV-I 203-077, example 5.1 | German accident-insurance guide | **free**: English 2021 edition (E95) |
+| Arc flash | DGUV-I 203-077, example 5.1 | German accident-insurance guide | **owned** (QE-References); reproduced 2026-10-15 |
 | DC arc flash | DGUV-I 203-077, example 5.8 | same | same |
 | Harmonics | IEEE 519-1992, example 13.1 | standard | paid (old edition; may be obtainable) |
 | Load flow | Anderson and Fouad, *Power System Control and Stability* (WSCC 9-bus) | textbook | data public; pandapower ships `case9` |
@@ -68,6 +68,8 @@ like-for-like accuracy. We reproduce the original publications, not ETAP's docum
 | IEEE 13-node feeder | IEEE PES (free) | S10 |
 | Anders05 "model cable No. 1" | Anders05 | C2 |
 | Morley ground-bed example (10 kA into 5 Ω gives 50 kV GPR, a sanity check) | Morley | C6 |
+| DZS 691 Table 5 (Kinyon, five substations): eq. 41 reproduces all five Rg values | DZS 691 (QE-References) | C6 |
+| DGUV-I 203-077 Example 5.1 (630 kVA station, 694.9 kJ, APC 2 insufficient); recomputed exactly | DGUV guide (QE-References) | A2 (IEC method) |
 
 ## Recommendation
 

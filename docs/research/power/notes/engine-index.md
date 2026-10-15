@@ -20,7 +20,7 @@ effort.
 | Arc flash | engine-arc-flash | A1 to A4 | Das21 ch. 3, 5, 6 (tables unreliable); DGUV-I 203-077 | `arcflash-calc` (MIT, verified against Annex D.1; approved by Peter 2026-10-15); DGUV method own | none (decided); DGUV kP check against DGUV-I 203-077 text | very high (paid service) | 2 |
 | Cable sizing and ampacity | engine-cables | C1, C2, C8, S8 | Anders05 ch. 1, Morley ch. 8 | own (IEC 60287); linerate (licence to check) for overhead | IEC 60287 tables; K constants; local mine rules | high | 2 |
 | ANSI C37 duty | engine-ansi-short-circuit | F3, F7 | Das02 ch. 5, 7; Das21 ch. 5, 7 | own | C37.010 local curves; X/R 15 or 17 | medium (US-style plants) | 3 |
-| Grounding and ground grid | engine-grounding | C6 | Morley ch. 7 | own (analytic now, MoM later) | IEEE 80; local mine rules | high | 3 |
+| Grounding and ground grid | engine-grounding | C6 | Morley ch. 7 | own (analytic now, MoM later) | IEEE 80 (still needed: DZS 691 defers Em, Es, Df and sizing to it); local mine rules | high | 3 |
 | Harmonics and filters | engine-harmonics | H1, H2 | Das02 ch. 19 to 20 | DSS | IEEE 519 tables (user data) | high (VFDs, mills) | 3 |
 | DC short circuit | engine-dc-short-circuit | F5, S12 | Das02 ch. 9 | own (time-domain RLC) | IEC 61660 curves (optional) | medium (traction, batteries) | 4 |
 | Unbalanced and distribution load flow | engine-load-flow-extensions | S10, F8 | Das02 ch. 14 | DSS | Kersting | medium | 4 |
@@ -47,6 +47,10 @@ effort.
    - Das10 eq. 6-1 source inductance (5.08 × 10⁻⁴ H printed, 0.533 mH from the stated
      impedance) and Example 6-5 inrush (1633 A printed, 1565 A from eq. 6-7);
    - Gonen88 Example 10.1 catenary length (502.032 ft printed, 502.037 ft; rounding).
+   - DZS 691 A.17 Schwarz mutual resistance Rm printed identical to R1, which makes rods
+     ineffective (proved from its own combining formula);
+   - DGUV-I 203-077 Example 5.1 text 690.3 kJ against 690.5 kJ (rounding; its Annex 8
+     worksheet value 694.9 kJ reproduces exactly).
    - **Das21 Table 3.1 (IEEE 1584 arcing-current coefficients) has errors that put MV
      arcing current off by 30 to 60%.** Proven against IEEE Annex D.1 values
      (`engine-arc-flash.md` sec. 6b). Never key coefficients from Das21.
@@ -57,7 +61,7 @@ effort.
    and verification cases. Suggested purchase order:
    1. IEEE 1584-2018 (now optional: Peter approved `arcflash-calc` on 2026-10-15);
    2. IEC 60909-0:2016;
-   3. IEEE 80;
+   3. IEEE 80-2013 (DZS 691 does not replace it; `engine-grounding.md` sec. 1b);
    4. IEEE C37.010;
    5. IEC 60287-1-1.
 

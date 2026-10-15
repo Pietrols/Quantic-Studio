@@ -128,10 +128,86 @@ to plan alongside the software.
    - PF ≥ 0.92 lagging;
    - earth resistance < 10 Ω;
    - the 5 kV GPR notification threshold;
-   - ZS 387 voltage and harmonic limits (to read);
+   - DZS 387-1 voltage, harmonic, flicker, unbalance and frequency limits (read, see the section on standards read in full);
    - DZS 691 touch and step limits.
 4. **Synergy with the PV suite (WP-2.5):** embedded generation connection studies need
    PV and inverter models, plus the anti-islanding and ride-through settings above.
+
+## Standards read in full (QE-References, 2026-10-15)
+
+Peter added nine PDFs to QE-References (commit 0784309): DZS 387 parts 1 to 4,
+DZS 418 parts 1 and 2, DZS 691, DZS 1191-2 and DGUV-I 203-077. All have good text
+layers. Findings by document:
+
+**DZS 387-1:2022, *Power Quality and Reliability, Part 1: minimum standards*.**
+
+- **Status:** the pages carry a "Draft standard for public comment" watermark.
+- **Edition:** the cover says second edition. The foreword says "this third edition
+  cancels and replaces the second edition (ZS 387-1:2011)". Cite it as "DZS 387-1:2022
+  (draft)" until ZABS publishes the final.
+- **Lineage:** it lists NRS 048-2:2015 (South Africa) as a reference, and the dip
+  windows (S, T, X, Y, Z) follow the NRS 048 scheme.
+
+Limits apply at the **point of supply to consumers** and are assessed over at least
+7 days at the 95% level (cl. 4.2, 5). Read on the page images:
+
+| Parameter | Limit | Clause, printed page |
+| --- | --- | --- |
+| Voltage THD, LV and MV (to h = 40) | 8%, with individual harmonic levels in Table 1 (for example h5 6%, h7 5%, h11 3.5%, h13 3%) | 5.1.1.1, p. 14 |
+| Voltage THD, HV and EHV | 4%, with individual levels in Table 2 (from CIGRE TB 261) | 5.1.1.2, p. 15 |
+| Flicker, LV | Pst 1.0, Plt 0.8 (IEC 61000-4-15 meter). No MV or HV levels | 5.2.1, p. 16 |
+| Voltage unbalance | 2% (up to 3% where single- and two-phase consumers dominate) | 5.3.1, p. 17 |
+| Voltage dips | Maximum dips per year by window category and network (Table 4) | 5.4, pp. 18 to 21 |
+| Interruptions | Forced interruptions per year by network category (Table 5) | 5.7, p. 22 |
+| Voltage regulation | ±10% below 11 kV, ±5% at 11 kV and above, for no longer than 10 consecutive minutes | 5.8, Table 6, p. 24 |
+| Frequency | 49 to 51 Hz on the grid; 47.5 to 52.5 Hz on islanded networks | 5.9.1, p. 24 |
+
+**Text-layer warning:** the QE-References text of DZS 387-1 drops "<", "≥" and "±".
+Table 6 reads "11000 / 11000" in the text. Always confirm limits on the page image.
+
+**DZS 387-3 (application guide):**
+
+- The utility enforces emission limits on its consumers.
+- New plant should be immune to the Table 1 compatibility levels.
+- Capacitor installations must avoid resonance at dominant harmonics.
+- Planning levels are in cl. 4.5.
+- It names **crushers** and motor starting as flicker sources.
+- Rapid voltage changes have no limits in the standard, only contract guidance
+  (Annex F).
+
+For Quantic, a mine's harmonic and flicker study is judged at the PCC against
+utility-allocated emission limits, with Table 1 as the ceiling. Both go into
+`engine-harmonics.md` as limit data.
+
+**DZS 418-1:2024, *Electrical Safety Code Part 1*.**
+
+- The committee includes the Mines Safety Department and Mopani Copper Mines Plc, and
+  the code may be adopted with mine rules (cl. 1, note 1).
+- Table 5-5 (cl. 5.5.4, printed p. 20) sets minimum heights to the lowest conductor:
+  - 5.1 m for bare LV and 5.0 m for insulated LV (open country);
+  - 5.3 m at 33 kV in open country and 5.5 m in other areas;
+  - rising to 7.8 m at 400 kV.
+- **The table has no 11 kV row.** Whether 11 kV takes the 33 kV value is not stated;
+  ask a Zambian practitioner before encoding it.
+- The note says the height "shall be maintained under any conditions of loading and
+  temperature": exactly the sag engine's worst case (`engine-calculators.md` sec. 2).
+
+**DZS 691:2023 (earthing):** read in full; see `engine-grounding.md` sec. 1b. In
+short, it gives the acceptance limits but defers mesh and step voltage factors, Df
+and conductor sizing to IEEE 80 and ZS IEEE 837, and its Schwarz Rm is misprinted.
+
+**DZS 1191-2:2026, *Inverter systems for embedded generation*:**
+
+- draft for public comment;
+- its foreword says it "draws from" IEC and IEEE standards rather than adopting one;
+- it covers anti-islanding (Annex A set-point form, IEC 62116), voltage and
+  frequency ride-through by inverter category, reactive capability (0.85 lagging to
+  0.95 leading), a 49.5 to 50.5 Hz continuous band, and a requirement for
+  connection studies.
+
+Read it in detail with the PV suite (WP-2.5), not now.
+
+**DGUV-I 203-077 (2021 English):** read; see `engine-arc-flash.md` sec. 6a.
 
 ## Gaps and next steps
 
@@ -143,7 +219,8 @@ to plan alongside the software.
    - the embedded-generation inverter standard;
    - the mining regulations' electrical part.
 2. Confirm which drafts have become final ZS standards (ZABS catalogue).
-3. Read ZS 387 for the numeric voltage, harmonic and flicker limits.
+3. ~~Read ZS 387 for the numeric limits~~: done (draft DZS 387-1:2022). Still open:
+   whether a final ZS 387 has been published, and the DZS 387-3 planning levels in cl. 4.5.
 4. EIZ: confirm the organisation registration route for Quantic, Peter's own category
    and route to R.Eng, the CPD rules, and whether software counts as an "engineering
    product" under s.18.

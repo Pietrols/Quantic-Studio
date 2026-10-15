@@ -139,6 +139,14 @@ kvar and peak): **gap, needs the standard or Das02 ch. 18 values; read next.**
 - **Limit tables (IEEE 519, IEC 61000) are copyrighted.** The engine loads them as user
   or library data with citation; it does not ship them.
 
+**Zambian limits (DZS 387-1:2022 draft, read 2026-10-15):** voltage THD 8% at LV and
+MV and 4% at HV and EHV, with individual harmonic compatibility levels (Tables 1 and 2),
+flicker Pst 1.0 and Plt 0.8 at LV, and the assessment by 10-minute values at the 95%
+level over 7 days. Details and page references are in
+`zambia-regulatory-context.md`. These are utility-side compatibility levels. A
+customer's study uses the emission limits the utility allocates at the PCC (DZS 387-3),
+so the engine needs both a "compatibility" and an "allocated emission" limit set.
+
 ## 6. Open-source foundation
 
 **OpenDSS harmonic mode:**
