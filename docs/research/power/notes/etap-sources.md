@@ -64,3 +64,7 @@
 | E60 | https://etap.com/packages/distribution-network-optimization | Distribution optimisation package | vendor page |
 | E61 | https://etap.com/packages/etap-base-package | ETAP base package | vendor page |
 | E62 | https://etap.com/product/photovoltaic-array-solar-panel | PV array | vendor page |
+| E63 | https://etap.com/docs/default-source/faqs-tutorials/motor-acceleration-analysis.pdf | Motor acceleration tutorial | vendor tutorial PDF |
+| E64 | https://etap.com/docs/default-source/faqs-tutorials/short-circuit-analysis.pdf | Short circuit tutorial | vendor tutorial PDF |
+| E65 | https://etap.com/docs/default-source/brochures/fact-sheets/motor-acceleration.pdf | Motor acceleration fact sheet | vendor brochure |
+| E66 | https://etap.com/docs/default-source/faqs-tutorials/arc-flash-analysis.pdf | Arc flash tutorial | vendor tutorial PDF |

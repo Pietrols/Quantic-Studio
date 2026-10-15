@@ -54,3 +54,5 @@
 | P50 | https://www.digsilent.de/en/artificial-intelligence.html | Artificial intelligence | vendor page |
 | P51 | https://www.g2.com/sellers/digsilent | G2 DIgSILENT seller page (no reviews) | user reviews |
 | P52 | https://zipdo.co/best/load-flow-analysis-software/ | ZipDo load flow software list (generic; low weight) | listicle |
+| P53 | https://digsilent.de/en/faq-reader-powerfactory/where-can-i-get-an-overview-list-showing-all-powerfactory-functions.html | FAQ: overview list of all functions (points to brochure) | vendor FAQ |
+| P54 | https://www.digsilent.de/en/newsreader/digsilent-releases-powerfactory-2025.html | PowerFactory 2025 release | vendor news |

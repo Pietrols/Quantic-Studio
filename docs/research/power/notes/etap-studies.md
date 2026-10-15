@@ -460,3 +460,46 @@ Core analysis groups and modules, as ETAP structures them:
   or two-diode models; sun-position irradiance from date, time and location; time-series
   output; temperature coefficients; built-in inverter with MPPT and user dynamic
   logic; solar farm design incl. collectors, combiners and grounding; hosting capacity.
+
+## Tutorials: motor starting and short circuit [E63 to E65]
+- Motor starting study case, Event page: total simulation time (example 10 s); any number
+  of events, each with actions of three kinds: action by load (start or stop one load),
+  action by starting category (start or stop a group of motors), load transitioning
+  (move loads from one loading category to another, also used for fast bus transfer).
+  Unlimited actions per event and events per run; start, stop and restart in one run.
+- Static start needs per motor only the no-load and full-load acceleration times (Load
+  Model page) [E63]; dynamic start needs a dynamic model category (with Typical Data
+  from nameplate), a load model from the library, and inertia H (WR2 updates
+  automatically). Separate run buttons for static and dynamic starting; a plot
+  selection window afterwards.
+- Plot types [E65]: slip and speed, terminal and bus voltage, torque, electrical and
+  mechanical power, terminal and line current, generator or grid current, power and PF,
+  frequency, V/Hz; for motors, MOVs, static loads, capacitors, generators, buses; time
+  slider.
+- Pre-start conditions from different loading categories; group starts globally or bus
+  by bus; soft starters and VFDs for starting and running; MOV five stages; Study Wizard
+  runs presets in one click.
+- Short-circuit study case [E64]: Info page puts buses in "Fault" or "Don't Fault" groups
+  (also by right-click on the one-line; faulted bus drawn dark red); Standard page sets
+  ANSI (default) or IEC; Alert page with a marginal checkbox and limit (example 70 %) and
+  auto display of the alert view. Five ANSI studies and three IEC studies available as
+  separate run buttons (for example "3-phase device duty"). Overstressed breakers drawn
+  in magenta. Alerts: critical at 100 % of rating or more (always), marginal above the
+  user limit and below 100 %.
+
+## Tutorial: arc flash [E66]
+- Quick calculator per bus: bus Rating page sets equipment type (enclosed such as MCC or
+  switchgear, or open air); Typical Data loads typical gap, X factor and NFPA 70E
+  approach boundaries; Arc Flash page holds working distance (filled from voltage and
+  equipment type; the tutorial cites about 18 inches for LV), grounding (default
+  ungrounded as conservative, or automatic), bolted fault current and a user fault
+  clearing time; results: incident energy, flash boundary, hazard category; label
+  templates printed through Crystal Reports.
+- Global calculation: study case AF Data page defines gaps, working distance and other
+  parameters globally (project settings hold the global table) so each bus needs only an
+  equipment type; fault buses chosen as in short circuit; method NFPA 70E or IEEE 1584
+  (default); clearing time found automatically from the TCCs of protective devices
+  (typically only the main feeder device is given a TCC, as the slowest and most
+  conservative), else the bus user FCT; option to write results back to each bus;
+  reports, labels per device location and bus; AF Result Analyzer with worst case,
+  labels, permits and data sheets.

@@ -405,3 +405,13 @@ references need a registered account (not used).
 - Academic tutorials [P42] build the Anderson and Fouad 9-bus system step by step,
   study cases for transients, modal analysis, versions and derived projects, wind
   turbine DSL models, file-driven inputs (ElmFile), MATLAB coupling.
+
+## 2025 release [P54]
+- Flexible window layout with panels in any arrangement; collapsible panels (output
+  window, drawing toolbox, project overview); dark mode; per-project directory and pfdx
+  archives bundling external files; filter layers in diagrams; short circuit inside
+  contingency analysis; contingency restoration analysis; reliability for partially
+  meshed networks; reactive power in unit commitment; Modelica hybrid models; new R-X
+  plots with tolerances.
+- The full function list with base versus licensed split is in the public brochure
+  [P53]; our fetch tool could not download it (see gaps).
