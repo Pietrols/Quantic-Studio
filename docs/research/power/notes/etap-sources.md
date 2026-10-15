@@ -79,3 +79,7 @@
 | E75 | https://platform.softwareone.com/product/quasi-dynamic-analysis/PCP-7927-1144 | ETAP quasi-dynamic analysis (reseller listing) | reseller page |
 | E76 | https://etap.com/packages/monitoring-simulation | Power management system | vendor page |
 | E77 | https://etap.com/product/generator-start-up-software | Generator start-up | vendor page |
+| E78 | https://etap.com/docs/default-source/Brochures/fact-sheets/optimal-capacitor-placement.pdf | Optimal capacitor placement fact sheet | vendor brochure |
+| E79 | https://platform.softwareone.com/product/switching-optimization/PCP-5964-5872 | ETAP switching optimisation (reseller listing) | reseller page |
+| E80 | https://etap.com/docs/default-source/Brochures/dynamics-transients.pdf | Dynamics and transients brochure | vendor brochure |
+| E81 | https://platform.softwareone.com/product/motor-parameter-estimation/PCP-0237-0394 | ETAP motor parameter estimation (reseller listing) | reseller page |

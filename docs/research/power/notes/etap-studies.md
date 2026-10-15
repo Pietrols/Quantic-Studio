@@ -547,3 +547,35 @@ Core analysis groups and modules, as ETAP structures them:
   network models, special turbine behaviour, saturation correction, field flashing,
   governor detail, relays (V, f, V/Hz, df/dt), motor acceleration under low V and f,
   load pick-up sequencing for black start.
+
+## Fifth pass [E78 to E81]
+- Optimal capacitor placement: objectives voltage support, PF correction, minimum
+  installation and operating cost, maximum loss savings over a planning period; genetic
+  algorithm with heuristic initialisation and integrated load flow; capacitor control
+  analysed with load duration; speed versus precision setting; energy cost global or per
+  source; candidate locations, types and bank sizes chosen by the user; maximum size from
+  peak load, switched size from minimum load; min, max and average loading categories;
+  planning period and interest rate; radial or meshed balanced networks; outputs:
+  locations, bank sizes, branch capacity release, savings, operation cost.
+- Switching optimisation: objectives losses, voltage violations, overloads, feeder load
+  balancing through tie points, phase balancing, reliability risk on critical feeders;
+  output a recommended switching list, before and after summaries, saved optimal
+  configuration; switched capacitor modelling.
+- Dynamics brochure model list: synchronous machines (IEEE equivalent, transient,
+  subtransient; round and salient rotor); induction single and double cage;
+  frequency-dependent machines and network; torsion; mechanical loads; UPS parallel
+  operation; PV panels; VFD dynamics. Controls: IEEE exciters and AVRs, manufacturer
+  exciters and governors, IEEE turbine-governors, PSS, user-defined. Events: 3-phase and
+  L-G faults applied, cleared or on line segments, breakers, generator and load
+  rejection, impact and ramp loading, grid voltage changes, governor mode switching,
+  reference machine switching, motor acceleration and reacceleration; initial load flow
+  NR or accelerated GS. Outputs: rotor angle, speed, V, I, Pm, Pe, exciter V and I,
+  slip, torque, V/Hz, terminal impedance (for relays), branch flows, bus frequency, V/Hz
+  vector difference, superimposed plots, one-line playback with event list.
+- Wind turbine generators: types 1 to 4; individual or grouped; aerodynamics with power
+  coefficients; DFIG with pitch and converter controls; ramp, gust and noise wind.
+- UDM: library, block builder, Simulink import (brochure), compile and link, self tests.
+- Parameter estimation: motor equivalent circuit at starting from locked-rotor current,
+  PF and torque, full-load PF, efficiency and slip, and maximum torque, by curve fitting;
+  single cage with deep bar result; torque-, current- and PF-slip curves; editor updated
+  automatically.
