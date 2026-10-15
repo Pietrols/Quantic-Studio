@@ -59,3 +59,7 @@
 | P55 | https://webshop.digsilent.de/wp-content/uploads/2025/07/Basic.EN_.pdf | Training syllabus: load flow and short circuit (PF2025) | vendor training PDF |
 | P56 | https://digsilent.de/en/base-package.html | Base package | vendor page |
 | P57 | https://webshop.digsilent.de/wp-content/uploads/2026/01/2025_Training_OV.pdf | Training overview, all courses | vendor training PDF |
+| P58 | https://www.digsilent.de/en/paper-reader-pf-en/customising-the-powerfactory-user-interface.html | White paper: customising the user interface | vendor white paper |
+| P59 | https://www.digsilent.de/en/paper-reader-pf-en/analysis-of-low-voltage-networks.html | White paper: analysis of LV networks | vendor white paper |
+| P60 | https://www.digsilent.de/en/paper-reader-pf-en/network-planning-it-s-about-more-than-just-analysis.html | White paper: network planning | vendor white paper |
+| P61 | https://www.digsilent.de/en/paper-reader-pf-en/cim-and-cgmes-capabilities-of-powerfactory-to-support-the-cim-standard.html | White paper: CIM and CGMES | vendor white paper |

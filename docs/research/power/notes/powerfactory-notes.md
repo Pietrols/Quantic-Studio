@@ -451,3 +451,37 @@ references need a registered account (not used).
   locus); probabilistic analysis; quasi-dynamic and QDSL (P(U), custom taps, EV
   charging states); reliability (failure models, indices, vulnerability, costs);
   techno-economics (NPV, IRR, payback); transmission tools; unit commitment.
+
+## Customisation, LV methods, planning, CIM [P58 to P61]
+- User settings: light or dark mode; hide unused dialog pages and parameters; background
+  colours; split the main window vertically or horizontally into tab groups holding
+  diagrams, data managers and reports, across several screens; pin or collapse panels
+  (output window collapsed by default); built-in and user hot keys; a personal Quick
+  Access menu.
+- Administrator: user groups (default "Everybody") control project sharing, licence
+  modules and visible profiles; profiles configure toolbars, menus, dialog pages and
+  parameters (built-in "Standard" and "Base Package"); a User-defined Tools toolbox
+  exposes scripts with custom icons; new toolboxes; editable context menus; trimmed
+  dialogs. Project level: WMS/WMTS maps, symbol editor, user colouring filters.
+- LV analysis methods compared: worst case (all loads at maximum; very conservative;
+  base package); time series (most accurate; needs profiles, long runs; quasi-dynamic);
+  coincidence curves (count consumers of each type downstream of each branch, apply the
+  coincidence factor for that count to their maximum power; uses sensitivities so it
+  works meshed; close to time-series peaks with little data; distribution tools);
+  probabilistic (distributions, histograms, overload probability); load scaling
+  (distribute the measured feeder maximum by annual energy or connection capacity;
+  underestimates drops at feeder ends; ignores generation).
+- Planning: variations hold timed stages adding, changing or removing elements, several
+  alternatives can coexist; the study case date shows the network at that moment; a
+  Gantt-style variation manager; one project spans many years; operation scenarios hold
+  forecasts, generation and switching; compare alternatives as separate variations with
+  graphical difference of results; techno-economic comparison; planned outages per
+  year checked for security.
+- CIM/CGMES: IEC 61970 CIM, ENTSO-E CGMES 2.4.15 and 3.0.0; profiles EQ (equipment and
+  connectivity), TP (topology), SSH (operating hypothesis: taps, injections, controls),
+  SV (load flow results), SC (short circuit), DY (dynamics), DL (diagram layout), GL
+  (geography); import as validate then convert, keeping original data for fixes;
+  node-breaker internally, bus-branch export by automatic reduction; individual grid
+  models per authority with boundaries; full and difference models; network reduction
+  to anonymise; scripted engine use for day-ahead and intraday processes; extension data
+  kept and processable by scripts.
