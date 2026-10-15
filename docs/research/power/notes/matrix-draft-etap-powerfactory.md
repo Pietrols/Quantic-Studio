@@ -32,7 +32,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | D13 | Undo, recovery bin | yes (dumpster) | yes (database rollback) | none | - |
 | D14 | Scripting API (Python) | yes (etapPy) | yes (Python, DPL, C++) | partial (CLI and REST API) | - |
 | D15 | Batch study automation (scenario and study wizards; task automation) | yes | yes | none | - |
-| D16 | Import PSS/E RAW, CIM/CGMES, other tools | partial (CIM via ArcFM, SKM) | yes (PSS/E, CGMES, UCTE, NEPLAN and more) | none | - |
+| D16 | Import PSS/E RAW, CIM/CGMES, other tools | partial (CIM via ArcFM, SKM) | yes (PSS/E, CGMES, UCTE, NEPLAN and more) | none | data-import-interoperability.md (VeraGrid and pandapower readers) |
 | D17 | GIS views and import | yes | yes | none | - |
 | D18 | Interface profiles and customisable toolbars | yes (themes) | yes (profiles) | none | - |
 
