@@ -115,7 +115,7 @@ This is a draft. WP-2.12 merges it with ChatGPT's PowerWorld dossier into
 | ID | Capability | ETAP | PowerFactory | Quantic | Verifying book |
 |---|---|---|---|---|---|
 | M1 | Static motor start (voltage dip) | yes | yes | partial | Das 2002 |
-| M2 | Dynamic motor acceleration with torque-speed models | yes | yes | none | Das 2002, Krause 2023 |
+| M2 | Dynamic motor acceleration with torque-speed models | yes | yes | none | Das 2002, Fitzgerald 2003, Krause 2023; spec in engine-motors.md |
 | M3 | Starters: autotransformer, star-delta, reactor, resistor, capacitor, soft starter, VFD | yes | yes (most) | none | Bose 2002, Krause 2023 |
 | M4 | Motor parameter estimation from datasheet | yes | yes | none | Krause 2023, Fitzgerald 2003 |
 | T1 | RMS transient stability with machines, exciters, governors, PSS | module | module | none | Kundur 1994, Sauer 2006 |
