@@ -1,0 +1,160 @@
+# Engine spec note: RMS transient stability (WP-2.10)
+
+This note covers matrix rows:
+
+- T1: RMS transient stability with machines, exciters, governors and PSS;
+- T2: user-defined models;
+- T3: small-signal analysis;
+- T5: load shedding, fast bus transfer and generator start.
+
+ETAP and PowerFactory both sell this as a module (dossiers).
+
+Mining relevance:
+
+- islanded mine power stations and diesel or gas gensets;
+- large motor restarts after voltage dips;
+- load shedding schemes on loss of a utility tie;
+- fast bus transfer for critical drives.
+
+Paraphrased from owned references.
+
+## 1. Sources
+
+| Key | Source | Where |
+| --- | --- | --- |
+| Kundur94 | P. Kundur, *Power System Stability and Control*, McGraw-Hill/EPRI, 1994 | ch. 13 (printed pp. 827 onward): sec. 13.2 integration methods (pp. 836 to 845), sec. 13.3 simulation structure (pp. 848 to 868), sec. 13.4 unbalanced faults in stability, sec. 13.5 relays during swings; ch. 3 to 5 machines, ch. 8 excitation, ch. 9 prime movers, ch. 12 small-signal |
+| Sauer06 | P. W. Sauer, M. A. Pai, *Power System Dynamics and Stability*, 2006 | ch. 5 to 7: model hierarchy (two-axis, flux-decay, classical; pp. 99 to 104), multimachine models (ch. 6), DAE simulation, power-balance and current-balance forms, SI and PE solution methods, initial conditions (ch. 7, pp. 155 to 210) |
+| foundations | `notes/open-source-foundations.md` | ANDES, Dynawo, OpenIPSL, PowerSimulationsDynamics.jl |
+
+The standards are IEEE 1110 (generator model structures), IEEE 421.5 (excitation system
+models) and the WECC generic renewable models (REGC, REEC, REPC). We do not own them.
+ANDES and Dynawo implement many of these models, which is our practical reference.
+
+## 2. Problem structure (Kundur94 sec. 13.3; Sauer06 sec. 7.1)
+
+The system is a differential-algebraic initial value problem:
+
+- **Differential:** generator rotor and flux states, exciters, governors and turbines,
+  PSS, motor slips, dynamic loads, controllers (HVDC, SVC, inverter-based resources).
+- **Algebraic:** the network current balance I = Y·V (sparse), plus the stator algebraic
+  equations.
+- **Reference frames:** each machine in its own d-q frame; the network in a common
+  synchronously rotating R-I frame. The transformation uses the rotor angle δ (Kundur94
+  eqs 13.31 to 13.34, pp. 852 to 853).
+- **Network interface:** each generator appears as a Norton current source behind its
+  subtransient admittance. With subtransient saliency, the interface impedance depends
+  on δ; Kundur94 handles this with eq. 13.33 or iteration.
+- **Discontinuities:** faults, switching and limiter hits. The network variables jump;
+  the states do not.
+
+## 3. Generator model hierarchy (Sauer06 ch. 5 to 6; Kundur94 ch. 3 to 5)
+
+From most to least detailed:
+
+1. **Full model with stator transients:** for EMT only (T4).
+2. **Subtransient models** (Kundur94 Fig. 13.9: one d-axis and two q-axis amortisseurs).
+   Stator transients and speed effects in the stator are neglected (Kundur94 eq. 13.28).
+3. **Two-axis model:** E'd and E'q dynamics (Sauer06 sec. 5.4, p. 99).
+4. **One-axis (flux-decay) model:** E'q only (sec. 5.5, p. 101).
+5. **Classical model:** a constant voltage behind X'd (sec. 5.6, p. 103).
+
+Saturation can be added to any of them (Sauer06 sec. 5.8 and 6.8; Kundur94 sec. 3.8).
+
+The engine should support at least the classical, two-axis and one subtransient model
+(GENROU/GENSAL-equivalent behaviour). It should also **read PSS/E .dyr parameter
+files**, so customers' existing model data can be reused. ANDES and Dynawo both parse
+.dyr; PowerFactory imports it (dossier).
+
+**Swing equation** (Kundur94 eq. 13.22):
+
+    p Δω = (Tm − Te − KD Δω) / 2H
+    p δ = ω0 Δω
+
+## 4. Controls
+
+- **Excitation:** IEEE 421.5 types (DC, AC, ST families; for example SEXS, IEEEX1,
+  ESST1A, AC8B). Kundur94 ch. 8 covers the theory. Parameter sets come from customer
+  data.
+- **Governors and turbines:** steam, hydro and gas (Kundur94 ch. 9); GAST and diesel
+  (for mine gensets: DEGOV-type models). **Gap:** diesel genset governor models are not
+  in our books. ANDES and Dynawo libraries are the reference.
+- **PSS:** PSS1A and PSS2B types (Kundur94 ch. 12).
+- **Inverter-based resources:** WECC generic models (REGC_A/B, REEC_A, REPC_A). Needed
+  for PV and BESS on mine sites, which links to Quantic's PV suite. **Gap:** not in our
+  books. The model specification is public in WECC documents. To fetch.
+
+## 5. Numerical solution (Kundur94 sec. 13.2 and 13.3.6; Sauer06 sec. 7.7 and 7.8)
+
+**(a) Partitioned, explicit** (RK4 or modified Euler):
+
+- Alternate the network solve and the state update at each stage.
+- Simple and flexible per device. This is the classic production approach.
+- **Weakness:** numerical stability on stiff systems. The time step is set by the
+  smallest time constant (pp. 861 to 862).
+
+**(b) Simultaneous, implicit trapezoidal** (pp. 862 to 864):
+
+- Newton on [states; network voltages] each step.
+- Jacobian blocks Ad, Bd, Cd, Yd per device, with the reduction
+  (YN + Yd − Cd·Ad⁻¹·Bd)·ΔV = −G + Cd·Ad⁻¹·F (eq. 13.67).
+- Stable for stiff systems.
+- Discontinuities need special handling.
+
+**Initialisation** from a converged load flow (Sauer06 sec. 7.6 and 7.10). This is the
+step most commercial users fight with. The engine must report every device whose
+initial state violates a limit, naming the element and field (AGENTS.md conduct rule).
+
+**Quantic recommendation:** implicit trapezoidal with a sparse Newton solve, a
+variable step after events, and event location for switching and limits. That is the
+same family as Dynawo (variable-step implicit) and PowerFactory RMS (dossier).
+
+## 6. Events and studies (T5)
+
+- **Events:** three-phase and unbalanced faults (Kundur94 sec. 13.4 shows how to insert
+  an unbalanced fault into a positive-sequence simulation as a fault shunt, from
+  negative- and zero-sequence Thevenin impedances), breaker opening, load steps, motor
+  starts, generator trips, tap changes.
+- **Protection during swings:** distance relay apparent impedance, out-of-step and
+  loss-of-excitation logic (Kundur94 sec. 13.5).
+- **Mining studies:**
+  - load shedding on islanding (underfrequency relay models);
+  - motor restart and re-acceleration after a dip (links to M2);
+  - fast bus transfer (residual voltage and phase angle at transfer);
+  - genset start and block loading;
+  - critical clearing time search by bisection on fault duration.
+
+## 7. Small-signal (T3), outline
+
+Linearise the same DAE at the operating point, then compute eigenvalues,
+participation factors and mode shapes (Kundur94 ch. 12). Reusing the transient model
+Jacobian (sec. 5b) gives T3 almost free once T1 exists.
+
+## 8. Open-source route
+
+See `open-source-foundations.md`:
+
+- **ANDES:** GPL-3, so separate process only, never imported (AGENTS.md rule 7). It has
+  a broad model library and PSS/E .dyr support. Use it as a **reference to verify**
+  against, run as an external process.
+- **Dynawo:** MPL-2.0, C++ and Modelica, variable-step implicit. A candidate engine.
+  MPL is file-level copyleft, compatible with linking.
+- **OpenIPSL:** BSD-3, a Modelica library of PSS/E-equivalent models. Needs a Modelica
+  compiler (OpenModelica, OSMC-PL/GPL; run as a separate process).
+- **PowerSimulationsDynamics.jl:** Julia. Licence to confirm.
+
+**Likely route:**
+
+1. Build a small Python implicit-trapezoidal core for the classical, two-axis and
+   GENROU-equivalent models, SEXS and IEEEX1, and a simple governor, for mine-scale
+   systems.
+2. Verify against ANDES (external) and Kundur94 or Sauer06 examples.
+3. Evaluate Dynawo for large systems later.
+
+## 9. Gaps
+
+1. IEEE 421.5 block diagrams and parameters: we need the standard or the ANDES and
+   Dynawo documentation (public).
+2. WECC renewable model specifications (public, to fetch).
+3. Diesel genset governor and AVR models for mine gensets.
+4. Kundur94 example systems for verification: identify which examples give complete
+   data (for example the two-area system in ch. 12).
