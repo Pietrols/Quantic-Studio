@@ -181,6 +181,68 @@ reproduce IEEE 1584-2018). Options:
 My recommendation is option 1 for the engine, with option 2 as the long-term clean path.
 This is Peter's call (licence and source question, README rule 7).
 
+## 6a. Second method for IEC markets: DGUV-I 203-077 (box-test method)
+
+**Source (read 2026-10-15):** DGUV Information 203-077, *Thermal hazards due to electric
+fault arcing: Guide for selecting personal protective equipment*. It is the English
+edition (July 2021) of the German 2nd edition (September 2020), published by the German
+Social Accident Insurance (DGUV).
+
+- Download: https://publikationen.dguv.de/widgets/pdf/download/article/4026
+- Overview and free Excel aids (AC, MV, DC, arc calculation):
+  https://dguv.de/fb-etem/sachgebiete/elektro_feinmechanik/themenfeld-el-anlagen/stoerlichtbogenschutz/index.jsp
+
+ETAP validates its "arc energy" calculation against this guide's examples 5.1 (AC) and
+5.8 (DC) (`verification-benchmarks.md`). **Why it matters for Quantic:** Zambia and much
+of Africa follow IEC practice and IEC 61482-1-2 clothing classes, not NFPA 70E
+calorie-based PPE categories. A Quantic arc flash module that offers both IEEE 1584 and
+DGUV fits the home market better than an IEEE-only tool.
+
+**Scope:**
+
+- AC below 110 kV;
+- DC up to 1500 V (UPS batteries, inverter DC links, **DC traction networks**: example
+  5.9, relevant to mine trolley systems);
+- excluded: 110 kV and above, HVDC, longitudinal arcs (for example in PV strings), and
+  pressure and blast effects.
+
+**Method (AC), paraphrased:**
+
+1. Risk assessment first (technical, organisational, then personal protection). There
+   are exemption rules (for example, small protective device ratings and fault currents
+   below 1 kA).
+2. Arc energy: Warc ≈ kP · S''k · tk, where:
+   - S''k is the three-phase short-circuit power at the workplace;
+   - kP is the normalised arc power factor, depending on R/X and electrode gap, from a
+     table in the guide's Annex 3 (**not yet read**);
+   - tk is the trip time.
+3. Arc current is reduced from the bolted current by a factor kB, with worst cases 0.5
+   for LV and 1.0 for MV/HV, or calculated more precisely. tk is read from the device TCC
+   at the reduced current. This links to `engine-protection-tcc.md`.
+4. Compare with the protection level of IEC 61482-1-2 box-test classes APC 1 (168 kJ
+   test level) and APC 2 (320 kJ):
+   - adjust for geometry with a transmission factor kT (about 1 for a closed box, about
+     1.5 to 1.9 for partial enclosure, about 2.4 for open arcs);
+   - adjust for working distance by (300 mm / d)² for d ≥ 300 mm.
+5. Below about 50 kJ, arc PPE is generally not required.
+
+**Method (DC):**
+
+- Uses Pk = U·IkDC.
+- The arc current and power come from an iterative solve with an arc-voltage model that
+  depends on the gap.
+- Quick worst case: kP,max = 0.25.
+
+**Engine implications:**
+
+- Much simpler than IEEE 1584: few coefficients, public free source.
+- It can be built **now**, without the IEEE 1584 coefficient decision.
+- **Licence:** the guide is free to download but copyrighted. Implement the method with
+  citations and keep the PDF in QE-References. Peter should add it there (the
+  workspace's network cannot fetch arbitrary PDFs).
+- **Before coding:** read Annex 3 (kP values) and the worked examples in full from the
+  PDF.
+
 ## 7. Above 15 kV and DC (A3, A4)
 
 - **Above 15 kV:** IEEE 1584 does not apply. `arcflash` lists the Lee method as planned,

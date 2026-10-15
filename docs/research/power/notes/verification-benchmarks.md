@@ -16,7 +16,7 @@ like-for-like accuracy. We reproduce the original publications, not ETAP's docum
 | --- | --- | --- | --- |
 | Arc flash | IEEE 1584-2018 annex results | standard | paid (gap); `arcflash` reproduces Annex D1 and D2 |
 | Arc flash (HV ArcFault) | IEEE C2-2023 (NESC) | standard | paid |
-| Arc flash | DGUV-I 203-077, example 5.1 | German accident-insurance guide | likely free from DGUV (to check) |
+| Arc flash | DGUV-I 203-077, example 5.1 | German accident-insurance guide | **free**: English 2021 edition (E95) |
 | DC arc flash | DGUV-I 203-077, example 5.8 | same | same |
 | Harmonics | IEEE 519-1992, example 13.1 | standard | paid (old edition; may be obtainable) |
 | Load flow | Anderson and Fouad, *Power System Control and Stability* (WSCC 9-bus) | textbook | data public; pandapower ships `case9` |

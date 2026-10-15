@@ -96,3 +96,4 @@
 | E92 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults_sciec1.pdf?sfvrsn=e84aba7f_40 | V&V case TCS-SCIEC-082: IEC short circuit against IEC TR 60909-4 example 4 | vendor V&V document |
 | E93 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults_scansi2.pdf?sfvrsn=7149ba7f_46 | V&V case: unbalanced short circuit against Anderson 1973 pp. 38 to 40 | vendor V&V document |
 | E94 | https://etap.com/docs/default-source/validation-case-documents/etap_comparisonresults.pdf | Combined V&V cases document (listed, not read in full) | vendor V&V document |
+| E95 | https://publikationen.dguv.de/widgets/pdf/download/article/4026 | DGUV-I 203-077 English edition (2021): arc flash PPE selection by box-test method (benchmark used by ETAP) | public guide (free download, copyrighted) |
