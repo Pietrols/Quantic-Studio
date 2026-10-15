@@ -1419,7 +1419,7 @@ Change record: none
 
 ### WP-2.11 Power reference-product research: PowerWorld Simulator
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 7c0b9e0 | 2026-10-15
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/power/powerworld.md`
