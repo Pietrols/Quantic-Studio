@@ -73,3 +73,8 @@
 | P69 | https://www.digsilent.de/en/faq-powerfactory/tags/protection.html | FAQ tag index: protection (27 entries) | vendor FAQ |
 | P70 | https://www.digsilent.de/en/newsreader/digsilent-releases-new-service-packs-for-powerfactory-2026-2025-and-2024.html | Service packs 2026 SP1, 2025 SP5, 2024 SP8 (2026-03-11) | vendor news |
 | P71 | https://www.digsilent.de/en/products.html | DIgSILENT product overview (StationWare, PFM monitoring, PFM300-GCC) | vendor page |
+| P72 | https://www.digsilent.de/en/faq-reader-powerfactory/how-can-a-fuse-be-modelled-in-powerfactory.html | FAQ: fuse from manufacturer melting curve (digitise image into the fuse type) | vendor FAQ |
+| P73 | https://www.digsilent.de/en/faq-reader-powerfactory/how-do-i-model-a-low-voltage-lv-circuit-breaker-acb-mccb-or-mcb-relay-release.html | FAQ: LV breaker release modelled as relay with 1:1 CT | vendor FAQ |
+| P74 | https://www.digsilent.de/en/faq-reader-powerfactory/how-can-i-setup-an-under-frequency-load-shedding-ufls-scheme.html | FAQ: UFLS example on 39-bus New England system | vendor FAQ |
+| P75 | https://www.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-for-a-co-generation-of-a-pv-system-and-a-diesel-engine.html | FAQ: PV and diesel co-generation, quasi-dynamic example | vendor FAQ |
+| P76 | https://www.digsilent.de/en/faq-powerfactory/tags/controller.html | FAQ full tag cloud (about 70 tags) and categories (re-read for tag list) | vendor FAQ |

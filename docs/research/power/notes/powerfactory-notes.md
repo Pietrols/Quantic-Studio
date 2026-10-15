@@ -544,3 +544,36 @@ references need a registered account (not used).
   separate product line that utilities and mines pay for. It ties naturally to our
   device library and TCC engine (`engine-protection-tcc.md`). Record it as a later
   product idea, not a WP.
+
+## More FAQ findings (P72 to P76; read 2026-10-15)
+
+- **Fuse curves [P72]:**
+  - Users digitise the manufacturer's melting-curve image, either inside PowerFactory
+    (a virtual instrument with the image as background) or with a third-party tool, and
+    paste the points into the fuse type.
+  - The FAQ says nothing about interpolation, tolerance bands or I²t.
+  - Quantic implication: a built-in **curve digitiser** (load an image, set the log
+    axes, click points, store with a source citation) is a small, valued feature. It
+    also solves our manufacturer-data gap in `engine-protection-tcc.md`.
+- **LV breaker releases [P73]:**
+  - Modelled as a relay with a 1:1 CT and the breaker rating as the nominal current; one
+    relay type is reused for many breakers.
+  - Long-time, short-time and instantaneous details are only in a paid tutorial.
+  - Quantic: a native LV trip-unit element (LTPU, LTD, STPU, STD, I²t, INST, GF) is
+    simpler for users.
+- **UFLS [P74]:** an example on the IEEE 39-bus (New England) system, with stages in an
+  attached project. It confirms UFLS as a standard RMS use case (T5).
+- **PV and diesel co-generation, quasi-dynamic [P75]:**
+  - The diesel as slack motors at high PV, which is undesired.
+  - The fix is secondary (frequency) control sharing between both units, with the diesel
+    held at a 10% minimum and the PV maximum following the PV profile. This curtails PV
+    automatically.
+  - Run over one day and one week.
+  - **This is exactly a mine-site hybrid microgrid.** Quantic's PV suite (WP-2.5) plus a
+    time-series load flow with a minimum-loading constraint on gensets reproduces it.
+    A strong candidate demo case for mining clients.
+- **Tag cloud [P76]:** about 70 tags, including Modelica and FMI (model exchange),
+  Grid-forming, Microgrid, NEC/NER (neutral earthing resistors), Cable Sizing and Cable
+  Ampacity, State Estimation, Flicker, Frequency Sweep, Phase Technology and Tower. This
+  confirms PowerFactory's breadth matches the matrix rows already drafted. **FMI and
+  Modelica are matrix row T2 evidence.**
