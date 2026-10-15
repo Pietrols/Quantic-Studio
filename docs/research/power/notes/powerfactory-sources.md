@@ -66,3 +66,8 @@
 | P62 | https://www.digsilent.de/en/paper-reader-pf-en/gis-integration.html | White paper: GIS integration | vendor white paper |
 | P63 | https://www.digsilent.de/en/paper-reader-pf-en/indicative-capacity-analysis-automated-calculation-of-hosting-capacity-of-distribution-networks-for-distributed-energy-resources-and-additional-loads.html | White paper: indicative hosting capacity | vendor white paper |
 | P64 | https://www.digsilent.de/en/paper-reader-pf-en/smart-meter-data-in-powerfactory.html | White paper: smart meter data | vendor white paper |
+| P65 | https://www.digsilent.de/en/faq-reader-powerfactory/how-are-transformer-and-line-loading-calculated.html | FAQ: transformer and line loading | vendor FAQ |
+| P66 | https://www.digsilent.de/en/faq-reader-powerfactory/possible-implementations-of-automatic-voltage-regulators-for-load-flow-analysis.html | FAQ: voltage regulators in load flow | vendor FAQ |
+| P67 | https://www.digsilent.de/en/faq-reader-powerfactory/what-is-the-effect-of-a-tap-changer-on-the-hv-or-lv-transformer-voltage.html | FAQ: tap changer effect | vendor FAQ |
+| P68 | https://www.digsilent.de/en/faq-reader-powerfactory/how-do-you-model-the-transformer-grounding-in-powerfactory.html | FAQ: transformer grounding | vendor FAQ |
+| P69 | https://www.digsilent.de/en/faq-powerfactory/tags/protection.html | FAQ tag index: protection (27 entries) | vendor FAQ |

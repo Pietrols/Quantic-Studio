@@ -505,3 +505,25 @@ references need a registered account (not used).
   files, CSV or text files, or databases (Oracle, PostgreSQL, SQL Server, ODBC); P and Q
   series assigned to loads; quasi-dynamic runs give time curves and min and max
   statistics; future cases by growth factors or added elements with profiles.
+
+## Calculation conventions from the FAQ [P65 to P69]
+- Loading is always current based. Transformer: per winding |I| / I_rated with
+  I_rated = S_rated / (sqrt(3) Un); Un is the connected busbar nominal voltage if a
+  thermal rating object is assigned, else the transformer rated voltage; overall
+  loading is the maximum over windings. Line: I_rat = I_nom times a derating factor,
+  I_nom from the line type (air or earth value for cables), tower conductor type or
+  cable system; with a thermal rating object the MVA rating is converted per end with
+  the busbar Un; reported loading is the larger of the two ends.
+- Voltage regulators in load flow can be modelled as an autotransformer with discrete
+  taps (integer positions, lossy), a simplified lossless autotransformer with continuous
+  ratio, a two-terminal AC voltage source with voltage control, or a common impedance
+  with fixed ratio (no control).
+- Tap side: adding turns on the HV side lowers secondary voltage; on the LV side raises
+  it (Vs = Vp Ns / Np).
+- Transformer star-point grounding on the element's basic data page: internal earth
+  impedance (R, X), connection to the substation neutral grounded through an
+  impedance, or an external single-phase neutral terminal grounded by another element.
+- The protection FAQ (27 entries) covers power swing blocking, CTs in transformer
+  neutrals, interlocking schemes, fuses from manufacturer curves, UFLS schemes, LV
+  breaker releases (ACB, MCCB, MCB), transfer tripping for distance protection,
+  anti-islanding for converters, adding all relays to a graphic, relay result boxes.
