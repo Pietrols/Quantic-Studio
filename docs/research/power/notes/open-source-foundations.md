@@ -16,13 +16,24 @@ processes).
 | ANDES (CURENT) | GPL-3.0-or-later | NR power flow, implicit trapezoidal transient stability, eigenvalues, continuation power flow, estimation; 100+ dynamic models (GENROU, TGOV1, IEEEG1, HYGOV, REGCA1, REECA1, REPCA1, PVD1, ZIP loads) | Only as a separate process for cross-checking stability; never imported | https://pypi.org/project/andes |
 | Dynawo (RTE) | MPL-2.0 | Hybrid C++ and Modelica dynamics for large grids with power electronics; models separate from solvers | Candidate RMS dynamics engine; Modelica models | https://opensource.rte-france.com/projects/dynawo |
 | OpenIPSL | BSD-3 | Modelica library of phasor-domain power system models built to reproduce PSAT and PSS/E results; no solver | Model library for a Modelica-based dynamics engine | https://github.com/openipsl/openipsl |
-| PyPSA | not yet confirmed (fetch blocked) | Energy system and network optimisation | Planning and unit commitment | to fetch |
+| PyPSA | MIT (PyPI metadata, v1.4.0, checked 2026-10-15) | Energy system and network optimisation, linear power flow, unit commitment | Planning, unit commitment, microgrid sizing | https://pypi.org/project/pypsa |
 | arcflash-calc (L. Yip) | MIT (LICENSE.txt, checked by cloning, 2026-10-15) | IEEE 1584-2018 Iarc, E, AFB, enclosure correction, VarCf, multi-step | Arc flash IEEE 1584 engine. Verified against Annex D.1 and 105,120 spreadsheet cases (`engine-arc-flash.md` sec. 6b). **PyPI name is `arcflash-calc`; `arcflash` on PyPI is unrelated** | https://github.com/LiaungYip/arcflash |
 | linerate (Statnett) | MIT (LICENSE in the v5.0.0 sdist, checked 2026-10-15) | CIGRE TB 601 and TB 207 and IEEE 738 overhead line ampacity, steady state and transient | Overhead line ampacity (C8) | https://pypi.org/project/linerate |
 | pypacity (U. Cantabria) | GPL-3.0-only | IEEE 738 and CIGRE TB 601 (alpha) | Not to be imported; prefer linerate | https://pypi.org/project/pypacity/ |
 | PowerSimulationsDynamics.jl (NREL) | BSD-3-Clause (repository) | Julia dynamics with inverter-based resources | Reference for IBR dynamics; Julia, so a separate process | https://github.com/NREL-SIIP/PowerSimulationsDynamics.jl |
 | pandapower protection | BSD-3 (part of pandapower) | OC relays (DTOC, IDMT, IDTOC), fuses with library and PCHIP curves | Base for P1 and P4 (`engine-protection-tcc.md`) | https://pandapower.readthedocs.io/en/latest/protection/oc_relay.html |
 | powfacpy (Fraunhofer IEE) | MIT | Wrapper for the PowerFactory Python API | Evidence of PowerFactory API pain; not a dependency | https://pypi.org/project/powfacpy/0.3.3 |
+
+**OpenDSS packaging (checked 2026-10-15 by inspecting the wheels):**
+
+- `dss-python` 0.15.7 and `dss_python_backend` 0.14.5 are BSD-3 (Paulo Meira and
+  contributors). The backend wheel bundles the DSS C-API engine (`libdss_capi`) and
+  **`libklusolvex` as a separate shared library**. KLU comes from SuiteSparse (LGPL-2.1).
+- Dynamic linking to an LGPL shared library is not a GPL import, so it is compatible with
+  AGENTS.md rule 7 as long as the library stays a separate, replaceable file. Record
+  this in the adapter's source entry when OpenDSS is adopted.
+- `OpenDSSDirect.py` is tagged "Other/Proprietary" on PyPI (an Alliance for Sustainable
+  Energy / NREL notice). Use DSS-Python, or read that notice before using it.
 
 Gaps without an obvious open engine (we will write our own, verified against the owned
 books):
