@@ -1250,7 +1250,7 @@ Change record: none
 
 ### WP-2.4 Service routing, report registry and workspace scaffolding
 
-Status: [!] Changed design | due to PR #51 being merged before the required import guard and dependency metadata were completed, while original was one fully completed PR per WP, as it was better for completing approved routing infrastructure in a follow-up on the existing branch before either engine lane starts | ChatGPT | 2026-10-15
+Status: [x] Done | implemented by ChatGPT | commit e3a56b6 | 2026-10-15
 Lane: B, serial shared infrastructure; runs beside WP-2.9
 Depends on: WP-2.2, WP-2.3
 Owned paths: `packages/py/qe_api/**`, `packages/py/qe_cli/**`, `packages/py/qe_report/src/qe_report/__init__.py`, `packages/py/qe_report/src/qe_report/registry.py`, `packages/py/qe_report/src/qe_report/pv/**`, `packages/py/qe_report/src/qe_report/plc/**`, `packages/py/qe_report/tests/test_report_registry.py`, `packages/ts/contracts/**`, `apps/web/**`, `pnpm-lock.yaml`, `.github/workflows/web.yml`, `tests/integration/test_phase2_routing.py`, `tools/ci/check_repository.py`, `tools/ci/tests/test_guards.py`, `tools/ci/README.md`, `uv.lock`
