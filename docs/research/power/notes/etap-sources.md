@@ -68,3 +68,6 @@
 | E64 | https://etap.com/docs/default-source/faqs-tutorials/short-circuit-analysis.pdf | Short circuit tutorial | vendor tutorial PDF |
 | E65 | https://etap.com/docs/default-source/brochures/fact-sheets/motor-acceleration.pdf | Motor acceleration fact sheet | vendor brochure |
 | E66 | https://etap.com/docs/default-source/faqs-tutorials/arc-flash-analysis.pdf | Arc flash tutorial | vendor tutorial PDF |
+| E67 | https://etap.com/singleevent/2025/06/02/workshop-by-etap/etap-114-us-irvine-060225 | ETAP 114 Power Systems Analysis workshop agenda | vendor training page |
+| E68 | https://etap.com/singleevent/2026/06/01/workshop-by-partner/etap-155-ph-pasay-060126 | ETAP 155 Arc Flash workshop agenda | vendor training page |
+| E69 | https://etap.com/singleevent/2025/05/07/workshop-by-partner/etap-113-es-madrid-050725 | ETAP 113 workshop agenda | vendor training page |

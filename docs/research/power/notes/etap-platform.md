@@ -142,3 +142,23 @@ sources, not ETAP's documents):
   buses without progress indication; report presentation, diagram printing and
   difference reports; missing devices and languages in some versions. G2 rates cost in
   its most expensive band. (ZipDo list is generic and weighted low.)
+
+## Training scope (what ETAP teaches first) [E67 to E69]
+- Order of the standard 4-day course: modelling (menus and toolbars, components,
+  manual or automatic one-line building, display options and colour themes, revisions,
+  the 3-D database, libraries, import and export, project management, scenario wizards);
+  load flow (data needs, methods, load and generation models, diversity and demand
+  factors, settings, reports, result analysis); cable sizing (libraries, loading,
+  installation types, ampacity, standards, constraints); ANSI short circuit (1/2, 4 and
+  30 cycle, device duty, 3-phase and unbalanced faults); static and dynamic motor
+  starting (models, starting devices, parameter estimation, plots); coordination and
+  selectivity (library, arrangements, TCCs); automated evaluation and sequence of
+  operation (rules, zones, error handling); AC arc flash (NFPA 70E and IEEE 1584, PPE,
+  labels); harmonics and filter sizing; underground cable thermal (conduit and duct bank,
+  heat sources, steady and transient temperature); ground grid (regular and irregular,
+  IEEE 80 and FEM, 3D plots).
+- The arc flash course adds IEC short circuit (IEC 60909 in meshed and non-meshed
+  networks, IEC 61363 transient currents).
+- Reading: the core workflow every ETAP user learns is model, load flow, cable sizing,
+  short circuit and duty, motor starting, coordination, arc flash. This is the industrial
+  study chain a recreation must cover first, in this order.
