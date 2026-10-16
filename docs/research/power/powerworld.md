@@ -281,6 +281,18 @@ and citations are committed; downloaded source files stay outside this repositor
 | W203 | [FMI specification 3.0.2, November 27, 2024](https://fmi-standard.org/docs/3.0.2/) | Primary interface specification, selected clauses | 2026-10-16 |
 | W204 | [ETAP Feeder Hosting Capacity](https://etap.com/product/feeder-hosting-capacity) | Vendor product page | 2026-10-16 |
 | W205 | [ETAP hosting-capacity patent announcement, March 25, 2025](https://etap.com/company/news/corporate-news/2025/03/25/etap-granted-us-patent-for-advanced-hosting-capacity-analysis) | Vendor announcement; not a patent-scope or legal assessment | 2026-10-16 |
+| W206 | [GIC modelling data requirements](https://www.powerworld.com/knowledge-base/gic-modeling-data-requirements) | Vendor input/assumption guidance, 2014 with 2017 template update | 2026-10-16 |
+| W207 | [GIC and substation coordinates for line taps](https://www.powerworld.com/knowledge-base/gic-line-taps) | Vendor modelling note, 2015 | 2026-10-16 |
+| W208 | [GIC sensitivity analysis](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/GIC_Analysis_Sensitivity_Analysis.htm) | Vendor help | 2026-10-16 |
+| W209 | [TransLineCalc version 2 manual, April 22, 2013](https://www.powerworld.com/files/TransLineCalcHelp2.pdf) | Historical vendor mathematical documentation; printed p. 15 visually checked | 2026-10-16 |
+| W210 | [OpenDSS LineGeometry](https://opendss.epri.com/LineGeometry.html) | Independent engine's primary geometry documentation | 2026-10-16 |
+| W211 | [OpenDSS LineCode](https://opendss.epri.com/LineCode1.html) | Independent engine's primary matrix/reduction documentation | 2026-10-16 |
+| W212 | [OpenDSS line model revision, 2006 with 2010 update](https://opendss.epri.com/LineModelRevision.html) | Historical engine note, not a current binary-version guarantee | 2026-10-16 |
+| W213 | [PowerFactory four-wire cable modelling](https://www.digsilent.de/en/faq-reader-powerfactory/How_to_model_a_4_wire_cable_in_PowerFactory.html) | Vendor FAQ; linked model/calculation attachments not adopted | 2026-10-16 |
+| W214 | [ETAP line constants](https://etap.com/product/line-constants) | Vendor product capability page | 2026-10-16 |
+| W215 | [NERC, Application Guide: Computing GIC in the Bulk-Power System, December 2013](https://www.nerc.com/globalassets/standards/projects/2013-03/gic-application-guide-2013_approved.pdf) | Public technical guide, chapter 2 selected sections; printed pp. 16 and 18 visually checked | 2026-10-16 |
+| W216 | [PowerWorld GIC calculation example and earth-model discrepancy](https://www.powerworld.com/knowledge-base/example-of-geomagnetic-induced-current-gic-calculations) | Vendor qualification of a historical benchmark | 2026-10-16 |
+| W217 | [GIC time-varying electric-field inputs](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/GIC_Analysis_TimeVaryingElectricField.htm) | Vendor help; coarse-grid format wording is incomplete | 2026-10-16 |
 
 ## 3. Architecture and data model
 
@@ -1456,6 +1468,168 @@ Public PDF retrieval notes and limits are recorded in
 The ETAP guide and SMA report were read only; no screenshots, vendor models,
 parameter tables or worked cases were copied into this repository.
 
+### 8.8 Lines, neutrals and grounding need study-specific reductions
+
+This pass examines a failure mode in independent implementations: using one stored
+impedance or one ground flag across studies whose electrical boundary conditions
+differ. The proposed architecture and checks here are our inferences, not an added
+implementation, equipment default or permission to copy a vendor model.
+
+#### A. Preserve the input representation before calculating a line
+
+TransLineCalc v2 separates conductor/tower records, geometry, bundle count,
+temperature, frequency, distributed parameters, long-line equivalent parameters and
+per-unit results. Its published historical equations use different effective radii
+for inductance and capacitance, and assume distributed shunt conductance zero.
+The manual exposes reverse lookup as a ranking of candidate conductors against
+parameters. That does not establish unique identification of a physical conductor.
+The 2013 database/editor details are historical, not a current backend claim.
+[W209]
+
+ETAP publicly advertises phase/sequence matrices, mutual coupling, transposition,
+short/long-line models and multilayer soil within its line-constants module. This
+is broader advertised input/model scope than a balanced scalar parameter
+calculator; its detailed earth-return algorithm and solver accuracy are not
+established by that page. [W214]
+
+OpenDSS LineGeometry makes conductor positions, heights, units, phase count and
+neutral treatment explicit. It references separate conductor/cable types and
+allows neutrals to remain explicit or be reduced. [W210] Its historical revision
+note says geometry supersedes earlier impedance definitions and parameters can be
+recomputed when frequency changes. This motivates an import diagnostic for
+representation precedence, rather than retaining inconsistent definitions silently.
+[W212]
+
+**Proposed record:** keep source data, matrix conductor order, temperature, frequency,
+length units, soil/return assumptions and reduction history separate from the
+derived network stamp. Diagram coordinates alone do not supply conductor geometry.
+Derived caches should be keyed by these inputs, not just equipment name.
+
+#### B. A long-line equivalent is not simple length multiplication
+
+For uniform scalar distributed series impedance `z` and shunt admittance `y` per
+unit length, the manual gives `gamma=sqrt(z*y)`, `Zc=sqrt(z/y)`,
+`Zpi=Zc*sinh(gamma*l)`, and `Ypi=2*tanh(gamma*l/2)/Zc`.
+`Ypi` is the total shunt admittance, split equally between ends of the equivalent
+pi; the manual's repeated label "series admittance" is not adopted as circuit
+semantics. The branch must not apply the total shunt at each end. [W209]
+
+Our algebraic verification uses a two-port with a consistently directed through
+current: `A=D=cosh(gamma*l)`, `B=Zpi`, `C=sinh(gamma*l)/Zc`. The reconstructed pi
+must satisfy `A=1+Zpi*Ypi/2`, `C=Ypi*(1+Zpi*Ypi/4)` and `A*D-B*C=1`.
+Two half-length two-ports must cascade to the full line. These identities test
+signs, factors and units without copying a reference network.
+
+**Implementation inference:** select consistent complex square-root branches;
+handle small arguments using stable `sinh(q)/q` and `tanh(q/2)/(q/2)` limits.
+Check both series and shunt short-line limits. A lossy distributed model with
+zero distributed `G` need not yield zero real part of its exact equivalent shunt.
+Balanced scalar formulas are not a substitute for a coupled multiphase model.
+
+#### C. Eliminating a neutral has a boundary condition
+
+OpenDSS LineCode describes neutral Kron elimination with zero neutral voltage at
+both ends. It warns about reducing a base-frequency matrix before later
+earth-return frequency adjustments; those adjustments also do not supply conductor
+skin effect. A stored reduction therefore needs the boundary/frequency assumptions
+that produced it. [W211]
+
+For our block relation `dV=Z*I`, partition phase and neutral coordinates:
+`dVp=Zpp*Ip+Zpn*In`, `dVn=Znp*Ip+Znn*In`. Under `dVn=0`, elimination gives
+`Zred=Zpp-Zpn*solve(Znn,Znp)`. Merely deleting the neutral row and column instead
+sets `In=0`, a different condition. Finite grounding impedances or a floating neutral
+generally require the neutral/earth network to remain in the assembled problem.
+Our matrix example checks this algebra, not a physical cable.
+
+PowerFactory's four-wire FAQ distinguishes an explicit neutral from a three-wire
+model whose zero-sequence impedance already includes a chosen return path. In the
+explicit representation it says to remove the neutral's contribution from that
+zero-sequence definition. Adding an explicit neutral to an already reduced return
+model risks double counting. The FAQ attachment fetch failed, so no cable-specific
+calculation or parameter values were adopted. [W213]
+
+#### D. GIC is a resistive physical network, not DC power flow
+
+PowerWorld's input guide requires shared substation grounds, winding connections,
+DC coil resistances and autotransformer identity. It distinguishes measured data
+from estimates; a zero shunt-resistance input is documented as an open GIC path,
+not a physical zero-ohm earth bond. It also cautions that ground resistance cannot
+be reliably estimated. An independent data model should distinguish missing,
+estimated, blocked and explicit physical values instead of inheriting ambiguous
+sentinels. [W206]
+
+The NERC guide describes a resistive nodal network with induced sources and
+ground connections. In its aggregate representation, three phase paths are
+parallel: winding/line resistances become one third of per-phase values, while
+the shared earth resistance does not. Aggregate branch currents and physical
+neutral-to-earth current are distinct from per-phase winding current. This guide
+is a historical method reference, not a current compliance determination. [W215]
+
+Our independent incidence formulation fixes the sign convention first. Let each
+row of `A` be `+1` at the branch's from node and `-1` at its to node; positive
+source `e` drives current from-to. With `D=diag(1/r)` and earth conductance matrix
+`Gg`, use `i=D*(A*u+e)` and KCL `A.T*i+Gg*u=0`. Therefore solve
+`(A.T*D*A+Gg)*u=-A.T*D*e`, then recover signed branch and ground currents.
+No explicit dense inverse is needed. This is our notation and derivation from
+Kirchhoff's laws, not vendor source code.
+
+For positive resistances, a conductive reference in every connected component
+removes the constant-voltage nullspace. An ungrounded component needs explicit
+reference/compatibility handling; do not hide singularity with an arbitrary tiny
+ground. Circulating currents may still exist in source-driven floating loops,
+so "no earth reference" does not universally mean "zero branch current".
+This resistive model is not the susceptance/angle approximation called DC power
+flow and is not an industrial battery DC fault solver. [W34]
+
+#### E. Geography, field sampling and coupled effects have separate limits
+
+PowerWorld's line-tap note explains why a tap with no ground path should preserve
+series induced voltage and current when segments are combined consistently.
+It also reports geographical/numerical effects in actual coordinate calculations.
+[W207] Its benchmark note attributes a discrepancy with the historical NERC
+example to spherical versus WGS84 earth modelling. Choose and record the same
+geodesy before treating a result difference as solver error. [W216]
+
+Our Cartesian uniform-field identity is `e=E.dot(displacement)`, additive across
+segments. For a spatially varying field, use the path integral with specified
+interpolation and quadrature; the value at one endpoint is insufficient. This is
+a mathematical design inference, not a recovered Simulator interpolation rule.
+The vendor's field-input help lists coarse/fine grids and north/east files but
+contains uncertain wording for coarse-grid coordinates. That page is insufficient
+to implement an exact compatible file reader without a verified schema/sample.
+[W217]
+
+PowerWorld documents GIC sensitivities to field and line inputs. For our fixed
+linear resistive matrix, multiple source vectors can share a factorization; after
+topology, resistance or grounding changes the matrix must be updated. This is an
+optimization inference, not a claim about the vendor's sparse backend. [W208]
+The AC coupling help separately models transformer reactive demand using
+effective GIC and a stated model coefficient. A correct resistive solution alone
+does not validate core saturation, harmonic spectra, temperature rise or device
+tripping. Those need independent sourced models and coupled-study checks. [W68]
+
+#### F. Original arithmetic evidence and follow-up tests
+
+Authored normalized scratch checks, with no vendor/book parameter data, passed:
+
+| Check | Result | What it establishes |
+| --- | --- | --- |
+| Aggregate network versus three equal phase paths | KCL PASS; source/dissipation residual `3.553e-15` | Correct shared-earth and factor-of-three algebra for this circuit |
+| Add an ungrounded series tap | Current difference `8.882e-16` | This normalized topology reduction preserves the solution |
+| Source-current sensitivity | Central-difference error `4.742e-12` against analytic derivative | Fixed-topology linear response, not transformer magnetic sensitivity |
+| Floating two-node matrix | Rank one | Absolute voltage reference is missing |
+| Neutral Schur elimination versus full matrix | Phase-drop residual `4.578e-16`; naive deletion differs by `6.758e-03` | The chosen algebraic boundary condition matters |
+| Exact pi versus distributed two-port | Residual `1.682e-16` | Scalar two-port conversion consistency |
+| Two half-lines versus full line | Residual `3.469e-18`; reciprocity PASS | Cascade identity in the authored normalized case |
+| Uniform field segment sum and nonuniform counterexample | PASS | Endpoint-only spatial sampling is not generally sufficient |
+
+These are algebra checks, not a validated physical engine or measured vendor
+benchmark. Later implementation should commit original fixtures with provenance,
+exercise explicit/floating/finite grounds, blockers and connection changes, compare
+phase and sequence representations under matching assumptions, and test frequency,
+temperature, unit and base conversions. The source/inspection record is
+`docs/sources/entries/power-line-grounding-2026-10-16.yaml`.
+
 ## 9. Gaps, qualification ledger and parity handoff
 
 ### 9.1 Coverage and stopping rule
@@ -1469,7 +1643,8 @@ counts are not a substitute for closed capability questions. The 2026-10-16 pass
 adds 31 primary sources on detailed controls/topology, independent mathematical
 engines and licence boundaries, plus original verification requirements in
 sections 8.3 to 8.6. A further ten sources support the cross-product comparison in
-section 8.7, bringing this dossier's source ledger to 205 entries. This does not
+section 8.7. Twelve further sources deepen line/neutral/grounding mechanisms and
+original arithmetic checks in section 8.8, bringing the ledger to 217 entries. This does not
 claim that an unbounded web corpus is exhausted.
 
 The following gaps name why this research cannot turn them into supported product
