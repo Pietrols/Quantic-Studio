@@ -271,6 +271,16 @@ and citations are committed; downloaded source files stay outside this repositor
 | W193 | [SUNDIALS IDA introduction and licence](https://sundials.readthedocs.io/en/latest/ida/Introduction_link.html) | Upstream implementation/licence documentation | 2026-10-16 |
 | W194 | [DSS-Python project and licensing notes](https://github.com/dss-extensions/DSS-Python) | Binding author's primary repository | 2026-10-16 |
 | W195 | [OpenDSS circuit reduction, version 8.5](https://opendss.epri.com/CircuitReductionforVersion85.html) | Historical EPRI method/limitations | 2026-10-16 |
+| W196 | [ETAP combined Getting Started demo guide](https://etap.com/docs/default-source/whats-new/etap_gettingstarted_demo.pdf?sfvrsn=60ea6a7c_39) | Public vendor tutorial; printed pp. 71, 75 and 76 visually inspected | 2026-10-16 |
+| W197 | [PowerFactory dynamic numerical integration method](https://www.digsilent.de/index.php/en/faq-reader-powerfactory/what-is-the-numerical-integration-method-applied-in-dynamic-simulation-i-e-rms-stability-emt-electro-magnetic-transients.html) | Vendor FAQ | 2026-10-16 |
+| W198 | [PowerFactory unexpected high damping](https://www.digsilent.de/en/faq-reader-powerfactory/what-can-be-the-reason-of-unexpected-high-damping-during-a-simulation.html) | Vendor FAQ; printed oscillation formula not adopted | 2026-10-16 |
+| W199 | [PowerFactory DSL initialization hints](https://www.digsilent.de/index.php/en/faq-reader-powerfactory/do-you-have-some-hints-to-correctly-initialise-a-dsl-dynamic-model.html) | Vendor FAQ | 2026-10-16 |
+| W200 | [PowerFactory internal solver co-simulation example](https://www.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-for-the-internal-solver-co-simulation-emt-emt-or-rms-emt.html) | Public FAQ HTML recovered with curl; model attachment not executed | 2026-10-16 |
+| W201 | [PowerFactory EMT-derived measurement quantities](https://www.digsilent.de/en/faq-reader-powerfactory/How-can-I-calculate-transformed-phasor-quantities-from-an-EMT-simulation-using-a-DSL-model.html) | Vendor FAQ | 2026-10-16 |
+| W202 | [PowerFactory SMA EMT comparison against PSCAD, v3.0, December 11, 2025](https://www.digsilent.de/files/content/interne_downloads/PowerFactory_SMA_EMT_Model_Comparison_and_Benchmarking_against_PSCAD.pdf) | Public vendor benchmark; sections 3.1 and 3.2 inspected, printed p. 10 visually checked | 2026-10-16 |
+| W203 | [FMI specification 3.0.2, November 27, 2024](https://fmi-standard.org/docs/3.0.2/) | Primary interface specification, selected clauses | 2026-10-16 |
+| W204 | [ETAP Feeder Hosting Capacity](https://etap.com/product/feeder-hosting-capacity) | Vendor product page | 2026-10-16 |
+| W205 | [ETAP hosting-capacity patent announcement, March 25, 2025](https://etap.com/company/news/corporate-news/2025/03/25/etap-granted-us-patent-for-advanced-hosting-capacity-analysis) | Vendor announcement; not a patent-scope or legal assessment | 2026-10-16 |
 
 ## 3. Architecture and data model
 
@@ -1414,6 +1424,38 @@ do not validate a commercial solver, a production Quantic implementation, a powe
 equipment model or standards compliance. Future WPs still need committed original
 fixtures, independent engineering references and justified engineering tolerances.
 
+### 8.7 Cross-product checks that affect a faithful comparison
+
+These checks support comparison of Simulator with ETAP and PowerFactory, not
+replacement of Claude's owned dossiers or proof that one vendor uses another's
+implementation. Each proposed test below is our inference from the cited evidence.
+
+| Question | Public evidence and boundary | Proposed independent check |
+| --- | --- | --- |
+| What does a transient step mean? | Simulator documents explicit RK2 and selectable Euler; PowerFactory documents damping-factor endpoints of trapezoidal and backward Euler, with intermediate generalized-theta settings. Its FAQ does not establish a formula mapping the UI factor to a mathematical theta. ETAP's recovered tutorial exposes simulation and plot steps, but does not identify an integrator. [W60][W196][W197] | Compare fixed mathematical problems with declared method, internal step, output cadence and event alignment. Do not apply a universal step-size tolerance across these methods. |
+| Why did oscillations decay? | PowerFactory distinguishes physical damping from numerical damping and discusses factor/step effects. Its example's printed oscillation-frequency expression is dimensionally suspect, so it is not an adopted reference equation. [W198] | Use authored lossless and damped systems, vary step and method independently, measure amplitude and phase error, and reject a match obtained only through extra numerical dissipation. |
+| How are dynamics initialized? | PowerFactory initializes DSL signals from load-flow results, orders models by known/unknown signals and reports dependency deadlocks. Its FAQ describes Verify Initial Conditions as RMS-only. These statements are documented workflow, not a universal guarantee for every model or release. [W199] | Test missing setpoints, cycles, saturation and static/dynamic double counting. Record residuals and no-event drift, not simply a successful dialog dismissal. |
+| Are events and samples the same object? | ETAP tutorial sections 7.7 and 7.8 distinguish frequency-scan/harmonic solves, selected plot elements, transient events with actions, machine-model selection and time-indexed result display. The printed screenshots are historical workflow evidence, not 2026 defaults. [W196] | Keep event time/action payload, numerical step, stored sample and display selection separate. Changing plot selection must not silently change the network being solved. |
+| What does co-simulation demonstrate? | PowerFactory's public example separates sequential EMT, EMT-EMT and RMS-EMT cases, using ComInc for sequential initialization and ComCosim for co-simulation. We inspected the instructions, not an executed attachment or a documented coupling-error bound. [W200] | Compare monolithic versus partitioned authored networks, exchange cadence, event localization and energy/interface residuals before claiming equivalence. |
+| Can identical physics produce different plotted traces? | The SMA/DIgSILENT report uses PowerFactory 2023 SP5 and PSCAD 5.0.2 with named model revisions. Sections 3.1.2 and 3.2.3 distinguish derived-meter dynamics from internal inverter signals; fault-ride-through retrigger timing can also magnify discrepancies. This is a specific model benchmark, not universal engine equivalence. [W202] | Compare raw electrical/internal signals before derived meters; align filtering, reference frame, window, frequency estimator and event state. A matching steady state does not validate a transient meter. |
+| Which EMT quantity is being compared? | PowerFactory's current FAQ describes built-in current/voltage/power measurement devices providing instantaneous, true-RMS and sequence-phasor outputs with frequency tracking from 2022; the benchmark footnote mentions 2023. Preserve this source/version discrepancy rather than silently harmonizing it. [W201][W202] | Require quantity kind, phase/sequence, RMS/peak convention, frequency/reference angle, window and latency in the comparison record. |
+| Does a common interface make engines interchangeable? | FMI 3.0.2 sections 1.2.1-1.2.3 distinguish external integration, co-simulation and scheduled partitions. Section 4.2.1 says Co-Simulation Step-Mode algebraic-loop iterations require restored state and repeated stepping; get/set alone is insufficient. Early return is capability-negotiated, section 4.1.3. [W203] | Declare supported interface/version/capabilities, rollback and event semantics. Our existing FMI-shaped lifecycle is not an FMI-conformance claim. |
+| Is hosting capacity one universal number? | ETAP's dedicated page identifies nodal, stochastic and impact options, voltage/thermal constraints and smart-inverter functions. No public optimizer equations or universal constraint defaults were established here. A separate vendor announcement identifies patent 12244141; this dossier makes no patent-scope, permission or adoption decision. [W204][W205] | Define network state, DER location/type, uncertainty, operating policy and active constraints. Research of general power-flow-constrained methods is distinct from approval to implement a particular advertised method. |
+
+An original scalar check explains why the integration distinction matters. For
+`x' = lambda*x`, the independently defined theta rule
+`x[n+1] = x[n] + h*((1-theta)*lambda*x[n] + theta*lambda*x[n+1])`
+has amplification `R(z) = (1 + (1-theta)*z)/(1-theta*z)`, `z=h*lambda`.
+For a purely imaginary `z`, theta `0.5` preserves amplitude in exact arithmetic,
+whereas theta `1` damps it. This is our algebraic derivation, **not** a recovered
+PowerFactory damping-factor mapping. It supports step/phase/amplitude tests, not
+an engineering stability or proprietary-algorithm claim. [W197][W198]
+
+Public PDF retrieval notes and limits are recorded in
+`docs/sources/entries/power-cross-product-mechanisms-2026-10-16.yaml`.
+The ETAP guide and SMA report were read only; no screenshots, vendor models,
+parameter tables or worked cases were copied into this repository.
+
 ## 9. Gaps, qualification ledger and parity handoff
 
 ### 9.1 Coverage and stopping rule
@@ -1426,7 +1468,9 @@ page of the continually changing web-help tree or every historical release. Sour
 counts are not a substitute for closed capability questions. The 2026-10-16 pass
 adds 31 primary sources on detailed controls/topology, independent mathematical
 engines and licence boundaries, plus original verification requirements in
-sections 8.3 to 8.6. This does not claim that an unbounded web corpus is exhausted.
+sections 8.3 to 8.6. A further ten sources support the cross-product comparison in
+section 8.7, bringing this dossier's source ledger to 205 entries. This does not
+claim that an unbounded web corpus is exhausted.
 
 The following gaps name why this research cannot turn them into supported product
 claims. An absent capability in this dossier means **unknown/no evidence**, unless a

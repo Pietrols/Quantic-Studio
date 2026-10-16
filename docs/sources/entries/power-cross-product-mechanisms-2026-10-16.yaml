@@ -1,0 +1,59 @@
+id: power-cross-product-mechanisms-2026-10-16
+accessed: 2026-10-16
+wp: WP-2.11
+purpose: Public evidence for cross-product mechanism comparisons and Lane A handoff
+sources:
+  - id: W196
+    url: https://etap.com/docs/default-source/whats-new/etap_gettingstarted_demo.pdf?sfvrsn=60ea6a7c_39
+    location: Sections 7.7 and 7.8, printed pp. 71 to 78, PDF pages 75 to 82
+    verification: curl retrieval succeeded; printed pp. 71, 75 and 76 rendered with Poppler and visually inspected
+    limitation: Historical screenshots; PDF metadata modification date 2023-10-11 is not a software-version declaration
+  - id: W197
+    url: https://www.digsilent.de/index.php/en/faq-reader-powerfactory/what-is-the-numerical-integration-method-applied-in-dynamic-simulation-i-e-rms-stability-emt-electro-magnetic-transients.html
+    location: Answer
+  - id: W198
+    url: https://www.digsilent.de/en/faq-reader-powerfactory/what-can-be-the-reason-of-unexpected-high-damping-during-a-simulation.html
+    location: Answer
+    limitation: Printed oscillation-frequency formula not adopted; dimensional concern remains
+  - id: W199
+    url: https://www.digsilent.de/index.php/en/faq-reader-powerfactory/do-you-have-some-hints-to-correctly-initialise-a-dsl-dynamic-model.html
+    location: Answer and initialization guidelines
+  - id: W200
+    url: https://www.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-for-the-internal-solver-co-simulation-emt-emt-or-rms-emt.html
+    location: Public answer HTML recovered using curl after search fetch timed out
+    limitation: Attachment not run or redistributed
+  - id: W201
+    url: https://www.digsilent.de/en/faq-reader-powerfactory/How-can-I-calculate-transformed-phasor-quantities-from-an-EMT-simulation-using-a-DSL-model.html
+    location: Summary and Answer
+  - id: W202
+    url: https://www.digsilent.de/files/content/interne_downloads/PowerFactory_SMA_EMT_Model_Comparison_and_Benchmarking_against_PSCAD.pdf
+    title: PowerFactory SMA EMT Model, Comparison and Benchmarking against PSCAD
+    version: 3.0, December 11 2025, document 3696.00-ETR-01
+    location: Executive summary; sections 3.1 and 3.2, especially 3.1.2 and 3.2.3
+    verification: Public PDF read selectively; printed p. 10, PDF page 16, rendered and visually inspected
+    limitation: Not a full 67-page audit or independent execution; vendor model parameters and traces not adopted
+  - id: W203
+    url: https://fmi-standard.org/docs/3.0.2/
+    location: Sections 1.2.1 to 1.2.3, 2.2.11, 4.1.3 and 4.2.1
+    limitation: Interface concepts only; no FMI conformance added or asserted
+  - id: W204
+    url: https://etap.com/product/feeder-hosting-capacity
+    location: Overview, key features and webinar description
+    limitation: Vendor capabilities, not disclosed optimizer equations or verified performance
+  - id: W205
+    url: https://etap.com/company/news/corporate-news/2025/03/25/etap-granted-us-patent-for-advanced-hosting-capacity-analysis
+    location: March 25 2025 announcement
+    limitation: Awareness record only; no legal assessment, patent scope conclusion or implementation permission
+retrieval_gaps:
+  - PowerFactory public 2026 Product Specification and Brochure listed in downloads; generated links failed with duplicate-language 404 or subsequent 400. No registered-user access attempted.
+  - ETAP tutorial does not establish a numerical integration algorithm or current defaults.
+  - PowerFactory UI damping-factor-to-theta interpolation equation not established by the FAQ.
+verification_design: >-
+  Comparisons must distinguish operating-point initialization, internal integration,
+  event execution, communication, recorded samples and derived measurements.
+  Original scalar theta-rule algebra is not a vendor implementation.
+license_note: >-
+  Citation, selective reading and original paraphrase only. Public availability is
+  not a redistribution licence. No PDF, screenshot, model binary, parameter table,
+  vendor example network or source implementation is included. Research does not
+  decide legal permission to implement an advertised patented method.
