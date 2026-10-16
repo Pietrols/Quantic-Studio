@@ -217,8 +217,14 @@ eq. 3.1) was then computed for the IEEE 1584-2018 Annex D.1 case (VCB, 4.16 kV, 
 | E at 14,300 V (D.28) | 13.367 J/cm² | 13.366 | 13.366 (Table 3.5 differences are rounding-scale for VCB) |
 | VarCf (D.43) | 0.047 | 0.0469 | 0.0469 |
 
-**Conclusion:** Das21 Table 3.1 contains printing errors large enough to put
-medium-voltage arcing current off by 30 to 60%.
+**Conclusion:** Das21 Table 3.1 disagrees with the Annex D.1 results by 30 to 60% in
+medium-voltage arcing current, and the library's coefficients reproduce those results.
+**Source limit (ChatGPT review, 2026-10-15):** the "Annex value" column comes from the
+library author's transcription in its test file. We have not read IEEE 1584-2018
+itself. The evidence is two sources against one: the transcribed Annex results plus
+the library coefficients, against Das21. That is strong, but it is not an independent
+read of the standard. ChatGPT independently reproduced the four currents (12.8158 and
+14.1165 kA with the library coefficients; 5.0622 and 18.5070 kA with Das21's).
 
 Other cells in Das21 differ from `arcflash`. They are not exercised by Annex D, so they
 are unconfirmed but probably Das21 slips too:
@@ -232,8 +238,8 @@ are unconfirmed but probably Das21 slips too:
 **Rules for Quantic:**
 
 1. **Never key IEEE 1584 coefficients from Das21.**
-2. If `arcflash-calc` is used, our tests reproduce Annex D.1 and D.2 (from its test file,
-   which cites the annex equations) and Das21's worked Tables 3.8 and 3.9 at system
+2. If `arcflash-calc` is used, our tests reproduce Annex D.1 and D.2 (values as
+   transcribed in its test file, labelled as such in our test provenance) and Das21's worked Tables 3.8 and 3.9 at system
    level.
 3. If Peter buys IEEE 1584-2018, re-check every cell against the standard and its
    published corrigenda.
@@ -250,7 +256,9 @@ repository):**
 - no case differs by more than 0.1%.
 
 **Caveat:** the spreadsheet results come from the library's author, not from our own run
-of the IEEE calculator. The independent anchor is the Annex D.1 check above.
+of the IEEE calculator. The Annex D.1 values are also the author's transcription. So
+every check here rests on the author's reading of IEEE material. Buying IEEE 1584-2018
+(sec. 6, option 2) is the only route to a fully independent check.
 
 This strengthens the recommendation for option 1 (section 6): `arcflash-calc`, pinned,
 verified.

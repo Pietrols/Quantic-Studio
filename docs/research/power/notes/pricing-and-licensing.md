@@ -42,8 +42,10 @@ date):**
   included.
 - After that, maintenance is **16% of list price per year**.
 - Training is quoted from EUR 2,060 per day.
-- The document mentions no academic discount, so treat this as the commercial Base
-  Package list price in 2025.
+- **Scope of this figure (corrected 2026-10-16 after ChatGPT's dispute 5bf6d26):** it
+  is the price this university paid for this configuration on this date. The absence of
+  a stated academic discount does not prove there was none. The general commercial list
+  price is **unknown**.
 - Advanced modules (stability, protection, harmonics and so on) are extra and not
   priced here.
 
@@ -53,12 +55,15 @@ date):**
   **ZAR 9,300 (3-day Basic, online)** to ZAR 12,850 (3-day EMT, classroom).
 - Most 2-day courses are ZAR 9,100 to 11,400.
 - Courses carry CPD points.
-- This is the price level Zambian engineers already pay for training.
+- This is South African pricing. Whether Zambian engineers pay the same is not
+  established.
 
 ## ETAP
 
 **Official price structure, 2007 [E99] (a US GSA schedule filed by Operation
-Technology, Inc., ETAP's maker; price tables dated 2007-01-24; USD as usual for GSA):**
+Technology, Inc., ETAP's maker; price tables dated 2007-01-24; USD). These are GSA
+net prices to the US government, not ordinary commercial list prices (ChatGPT review,
+2026-10-15; the module sums below were independently reproduced):**
 
 - **Pricing is per module, in bus-count tiers:** 50, 100, 200, 300, 500, 1,000, 2,000,
   5,000, 10,000, 20,000 and unlimited.
@@ -89,11 +94,20 @@ Technology, Inc., ETAP's maker; price tables dated 2007-01-24; USD as usual for 
 
 ## What this suggests for Quantic (proposal for Peter, not a decision)
 
-1. **The anchor price is about EUR 7,000 for a basic, single-seat commercial tool**
-   (load flow and short circuit), plus about 16% a year, before any advanced modules.
-   Full study packages (protection, arc flash, stability) cost several times that.
-   For a Zambian consultancy or mine, that is a large outlay. It is the gap Quantic's
-   pricing can target.
+1. **Observed price points, each tied to its own source and configuration** (no
+   general list price is established for any of the three):
+   - PowerFactory: EUR 7,160 for a 250-node, one-user Base Package bought by a
+     university in 2025, plus 16% a year maintenance [P84];
+   - ETAP: USD 5,169 (50 buses) to USD 18,227 (unlimited) for an industrial study
+     package at 2007 US GSA net prices [E99];
+   - PowerWorld: US$11,000 for the commercial base package, plus listed add-on prices
+     and renewal at 28% of the licence price, from the vendor's public pricing page
+     (`powerworld.md`, W4, read 2026-10-15).
+
+   Advanced modules are extra in all three. The size of that extra is not established
+   for PowerFactory (no module prices were read). For a Zambian consultancy or mine,
+   even the base figures are a large outlay. That is the gap Quantic's pricing can
+   target.
 2. **Licence frictions Quantic can remove:**
    - PC-bound softkeys and no virtual machines;
    - a permanent-internet cloud key;
