@@ -56,6 +56,10 @@ substituted for a current offer. [EP1][EP2]
 | EP17 | [2026 help: User Clearing Times](https://help.easypower.com/ezp/26.0/Content/16_Arc_Flash_Hazard_Analysis/User_Clearing_Times.htm) | Vendor public page/help | 2026-10-16 |
 | EP18 | [2026 help: Store Arc Flash Results](https://help.easypower.com/ezp/26.0/Content/05_ANSI_Short_Circuit/ANSI_Store_Arc_Flash_Results.htm) | Vendor public page/help | 2026-10-16 |
 | EP19 | [2026 help: Busway specifications](https://help.easypower.com/ezp/26.0/Content/13_Database_Technical_Ref/Busway/Specifications_tab.htm) | Vendor public page/help | 2026-10-16 |
+| EP20 | [2026 help: Arc Flash Hazard Options](https://help.easypower.com/ezp/26.0/Content/16_Arc_Flash_Hazard_Analysis/Arc_Flash_Hazard_Options.htm) | Vendor public help | 2026-10-16 |
+| EP21 | [2026 help: The Integrated Method](https://help.easypower.com/ezp/26.0/Content/16_Arc_Flash_Hazard_Analysis/Integrated_Method.htm) | Vendor public help | 2026-10-16 |
+| EP22 | [2026 help: Advanced Arc Flash Options](https://help.easypower.com/ezp/26.0/Content/05_ANSI_Short_Circuit/ANSI_Adv_Arc_Flash_Hazard_Options.htm) | Vendor public help | 2026-10-16 |
+| EP23 | [XGSLab grounding solution and modules](https://www.easypower.com/products/xgslab-grounding) | Vendor partner-product page | 2026-10-16 |
 | U1 | [Eng-Tips: DC VFD and DC motor modelling, June to July 2026](https://www.eng-tips.com/threads/easypower-modeling-of-a-dc-vfd-and-dc-motor-or-skm-or-etap-as-a-sidebar.587365/) | Independent author/developer | 2026-10-16 |
 | U2 | [Eng-Tips: SKM and EasyPower arc-flash results, December 2013](https://www.eng-tips.com/threads/skm-and-easypower-results-for-arc-flash.356401/) | Independent author/developer | 2026-10-16 |
 | U3 | [Eng-Tips: Electrical Analysis/Design Software, December 2007](https://www.eng-tips.com/threads/electrical-analysis-design-software.204703/) | Independent author/developer | 2026-10-16 |
@@ -129,6 +133,50 @@ maps families/instances and supports review of model differences before exchange
 Its separate product page describes an additional purchase, while the tier chart
 includes its name; entitlement needs clarification in the actual quote. [EP4][EP15][EP1]
 
+### 6.1 Arc-flash calculation state, not just a label
+
+**A1/A2, P4.** The 2026 help distinguishes bus/load-side exposure from the
+incoming side of a main device. Including the main permits its clearing action;
+excluding it uses upstream protection. Detailed output additionally covers
+downstream device terminals. Worst-case selection compares estimated and reduced
+arc current: the 2018 method derives reduction from system inputs, whereas the
+older method exposes user ratios. Maximum duration can truncate a calculated TCC
+time. A cap is a study assumption, not evidence that a breaker opens then.
+Opening older files also replaces the obsolete enhanced methods with the latest
+IEEE selection, so unchanged equipment does not guarantee unchanged calculations.
+[EP20]
+
+The Integrated method advances fault and device states together, accumulating
+energy over successive intervals. It recalculates bus/device currents, integrates
+device memory from the TCC and opens qualifying devices at step boundaries;
+relay-operated breakers add opening delay. Its documented ANSI approximation uses
+momentary current through cycle one, interrupting current for cycles two through
+eight, then 30-cycle current. This establishes a discrete sequence, not a published
+step size, error bound or continuous flux-solver equivalence. [EP21]
+
+Advanced options expose bounded upstream search, minimum relay time, enclosure
+correction, current-limiting fuse treatment and out-of-range method selection.
+With 2018 selected, remote device current uses its bolted-current share of bus
+arcing current. The HV open-air choice uses a separate NFPA 70E 2009 Annex D.8
+route and overrides other methods; it does not extend IEEE 1584's validated range.
+A switch extending a low-voltage DC equation above 1 kV is documented, but its
+physical validity is not established by this dossier. [EP22]
+
+**Inference for Quantic:** persist method/version, fault location relative to the
+device, normal/reduced-current branch, search limits, cap and fallback. Integrated
+studies need a time-ordered trip/current/energy ledger. These are proposed research
+requirements, not approval to build the engine. [EP20][EP21][EP22]
+
+### 6.2 Grounding is a partner-product boundary
+
+**C6.** EasyPower offers SINT's XGSLab separately and describes its representation
+arrangement for the USA and Canada. This does not establish included entitlement
+or sales coverage for Zambia. The page distinguishes static equipotential GSA from
+frequency-dependent GSA_FD, above/below-ground XGSA_FD, FFT/PEEC/IFFT transient
+XGSA_TD, a conductor/earth-path NETS solver and lightning shielding. PEEC methods
+are advertised; none were independently run. Record a partner route, with native
+EasyPower ground-grid scope still unknown. [EP23]
+
 ## 7. Dated user evidence
 
 `wbd`, Eng-Tips, 8-9 December 2013, compared an older SKM report with EasyPower 9.5:
@@ -151,8 +199,8 @@ TCC/device-time, arc-energy accumulation, load-flow, harmonic and dynamic
 machine/control responsibilities. SmartPDC adds a constrained rule/setting layer;
 SmartDesign adds design rules and library selection. Those are architectural
 inferences from the advertised workflows, not claims about Bentley's code layout.
-Sparse solver, integration scheme, implementation language and numerical tolerances
-remain unknown. [EP6][EP7][EP8][EP9][EP10][EP11][EP12][EP13][EP14]
+Sparse solver, exact integration scheme, implementation language and numerical tolerances
+remain unknown; section 6.1 documents a discrete sequence without those numerical details. [EP6][EP7][EP8][EP9][EP10][EP11][EP12][EP13][EP14]
 
 ## 9. Explicit gaps
 
@@ -160,9 +208,9 @@ remain unknown. [EP6][EP7][EP8][EP9][EP10][EP11][EP12][EP13][EP14]
 |---|---|
 | Current numeric price and exact entitlement | Sales page directs to a quote; Revit purchase wording conflicts with tier presentation. Obtain a scoped offer. [EP1][EP15] |
 | Versioned protection/dynamic library completeness | Feature pages give categories rather than a release-specific inventory, defaults and model equations. [EP7][EP13] |
-| Detailed arc-method applicability and standards editions | Marketing spans methods and voltage ranges; the range of the overall product cannot be assigned to one standard. [EP8] |
+| Arc-method validity and numerical precision | Section 6.1 closes selection/clearing workflow gaps. Solver step size/error control and independent validity of fallbacks remain unverified. [EP20][EP21][EP22] |
 | Solver tolerances, iteration/integration details and independent current benchmarks | Public pages read do not expose these. No licensed evaluation was run. [EP6][EP10][EP13] |
-| D9, D13, D14 breadth; P6; T3/T4; C2/C3/C5/C6/C8 | No sufficient public evidence was found in the sources read. This is not evidence of absence. |
+| D9, D13, D14 breadth; P6; T3/T4; C2/C3/C5/C8 | No sufficient public evidence was found in the sources read. Native C6 remains unknown; XGSLab is a documented partner route. [EP23] |
 
 # SKM PowerTools for Windows
 
@@ -209,6 +257,12 @@ MySKM cloud service is separately listed at USD 1,500/year on page 6. [SK2]
 | SK18 | [PTW Tutorial, historical interface and workflow](https://www.skm.com/PTW%20Tutorial.pdf) | Vendor public PDF | 2026-10-16 |
 | SK19 | [FAQ: breaker opening time in arc-flash evaluation](https://www.skm.com/faq_breakerOpeningTime.html) | Vendor public page/help | 2026-10-16 |
 | SK20 | [PTW downloads](https://www.skm.com/downloads.html) | Vendor public page/help | 2026-10-16 |
+| SK21 | [V7.0 arc-flash main-failure and maintenance-mode options](https://www.skm.com/Arc_Flash_Two_Powerful_Options.html) | Vendor historical article | 2026-10-16 |
+| SK22 | [Additional utility data in arc-flash analysis](https://www.skm.com/Using_Additional_Utility_Data_Arc_Flash.html) | Vendor undated article | 2026-10-16 |
+| SK23 | [Generator decrement and protective-device pickup](https://support.skm.com/KB/View/3939-why-does-my-protective-device-not-pick-up-the-fault-after-checking-both-apply-to-generators-and-recalculate-trip-time-using-reduced-current-in-the-arc-flash-options-menu-) | Vendor undated knowledge base | 2026-10-16 |
+| SK24 | [Cable Ampacity](https://www.skm.com/cable-ampacity.html) | Vendor module page, introduced for V8 | 2026-10-16 |
+| SK25 | [Cable-3D pulling analysis](https://www.skm.com/cable3D.html) | Vendor module page | 2026-10-16 |
+| SK26 | [Johnny Ma: SKM IEEE Certification 2026, 20 January 2026](https://support.skm.com/KB/View/4939-ieee-certification-) | Vendor statement, not independent certification | 2026-10-16 |
 
 ## 3. Architecture and data model
 
@@ -243,7 +297,7 @@ image of a TCC, but does not establish field-setting verification. [SK5]
 | F1, F2: IEC 60909 | Equivalent-source and sequence networks for three-phase, SLG, LL and LLG faults; voltage factors, taps and earthing | Initial, peak, breaking, steady and DC-component results; public page does not settle the implemented standard edition. [SK10] |
 | P1, P2: CAPTOR | Manufacturer TCCs, fault-current termination, equipment damage/inrush and backup interval review | Coordinated diagrams, settings and DXF/PDF outputs. [SK5] |
 | P3, P5: Auto Coordination and Evaluation | Rule-driven setting/frame adjustments, minimum-change attempts and review/revert; requires DAPPER and CAPTOR | Pass/fail/warning reports. Automatic proposals require engineering review; no mathematical global optimum is established. [SK7] |
-| A1-A3: Arc Flash | Device clearing and contribution-dependent energy accumulation; parallel sources, current limitation, differential/ZSI representation and selectable induction contribution | Energy, boundary, labels/permits and AC/DC studies; DC requires its module. The generic page's standard names alone do not establish the current edition and every range. [SK6] |
+| A1-A3: Arc Flash | Device clearing and contribution-dependent energy accumulation; parallel sources, current limitation, differential/ZSI representation and selectable induction contribution | Energy, boundary, labels/permits and AC/DC studies; DC requires its module. SK26 names IEEE 1584-2018 and NFPA 70E-2024; method/range and option validation remain separate. [SK6][SK26] |
 | M2, M3: TMS | Repeated network solution coupled to motor acceleration, inertia/load torque and multiple start sequences | Voltage, speed, torque, current and P/Q traces, stalled/reaccelerating motors and start times. [SK11] |
 | H1, H2: HI_WAVE | Frequency-dependent current-injection network solution, source phases, sequence transformation and filter data | Impedance scans, distortion and frequency/time displays. Sparse-matrix current injection is stated; exact numerical library is not. [SK12] |
 | T1, T2, T5: I*SIM | Flux-based machine/control models, excitation/governor/PSS library, graphical custom controls and switching/fault events | Time traces and interaction with islands/load transfer. This does not establish instantaneous EMT switching support. [SK13] |
@@ -264,6 +318,57 @@ larger bolted current need not produce the largest incident energy: device timin
 and the current seen by the device matter. **Inference:** our review display should
 show total arcing current, device contribution, curve segment, opening-time treatment
 and the scenario that set the reported worst case. [SK17][SK19]
+
+### 6.1 Main failure, maintenance settings and changing contributions
+
+**A1/A2, P4.** The explicitly V7.0 article separates normal load-side exposure,
+upstream clearing when a main fails, and the maintenance-function selection. Its
+algorithmic main designation follows the greatest share of fault contribution;
+a tie or feeder can qualify. This is not necessarily the device an engineer
+calls the incomer. Maintenance settings are a distinct operating state and can
+sacrifice selectivity. These are historical documented semantics, not proof of
+every V11 dialog/default. [SK21]
+
+The utility-data article shows why source impedance and available current are
+insufficient: service-transformer primary protection and upstream conductors also
+matter. Depending on its characteristic and the chosen duration cap, including
+primary protection can either alter energy or leave the result unchanged. Its old
+hazard-category language is not adopted as present-day safety guidance. [SK22]
+
+The generator-decrement knowledge-base example compares the duration of an initial
+current level with relay operation plus breaker opening. If current falls before
+that interval completes, pickup/clearing can differ; subsequent operation is
+re-evaluated at the reduced contribution. It demonstrates an option interaction,
+not a universal generator decrement law or independently tested relay-memory model.
+**Inference:** trace the contribution timeline, protective state, opening delay and
+any time cap separately; a final trip-time scalar loses the reason for the result.
+[SK23]
+
+### 6.2 Thermal cable analysis and mechanical installation are separate
+
+**C2.** Cable Ampacity advertises steady-state temperature from current or ampacity
+from a conductor-temperature limit, including neighbouring cables and external
+heat. It names IEC 60287 and Neher-McGrath where the former does not apply, including
+non-unity load factor. Air, duct-bank and buried installations are listed. These
+are vendor method/compliance claims, not independent certification or evidence of
+transient thermal ageing. Exact standard edition, constants and detailed soil/
+boundary inputs remain unverified. [SK24]
+
+**C3.** Cable-3D calculates cumulative tension, per-segment sidewall pressure,
+clearance/fill and jam ratios, for forward/reverse pulls and several cable
+arrangements. It has cable/raceway/lubricant libraries and a 3D profile view.
+This closes the advertised pulling-capability gap; the source does not provide
+friction equations, every unit/default, or a complete reproducible benchmark.
+A pulling profile is not an overhead sag study. [SK25]
+
+### 6.3 A dated vendor standards statement
+
+The page titled SKM IEEE Certification 2026 is signed by Johnny Ma of SKM and
+dated 20 January 2026. It states in-house validation and lists IEEE 1584-2018,
+NFPA 70E-2024, IEEE 519-2014 and IEEE 80-2000 among its references. IEC 60909 is
+listed without an edition. Treat this as a vendor declaration with named editions,
+not an independent IEEE-issued certificate, public test report or proof that all
+modules implement the latest revision. [SK26]
 
 ## 7. Dated user evidence
 
@@ -291,7 +396,7 @@ are inferred responsibilities, not reverse-engineered SKM architecture. [SK8][SK
 | Site-specific total price | Bus count, package, network/concurrency, maintenance and separate services affect the public list. Obtain a scoped offer. [SK2] |
 | Version 11 standard editions and complete model inventory | Several module pages are undated; the older tutorial cannot close edition/model-default questions. [SK4][SK18] |
 | Solver integration, tolerances and current reproducible validation cases | Not exposed in the public module pages read; no licence test was run. [SK11][SK13] |
-| D9/D14/D16 breadth, P6/P8, T3/T4, H3, C2/C3/C8 | No sufficient public source was read. Unknown, including whether other SKM offerings cover these rows. |
+| D9/D14/D16 breadth, P6/P8, T3/T4, H3, C8 | No sufficient public source was read. C2 thermal and C3 pulling now have advertised module evidence, with numerical/schema gaps retained in section 6.2. [SK24][SK25] |
 
 # NEPLAN
 
@@ -544,6 +649,20 @@ IDs and unsupported names; inspect machine/control initialization and limits;
 apply a defined event; compare like-for-like quantities on the same bases. A RAW
 load-flow match alone cannot validate a dynamic model. [PS8][PS9]
 
+### 6.1 Dynamic user-model compatibility has a version boundary
+
+Siemens' version 36 page describes VINDP user-model DLLs and a converter that
+upgrades existing dynamic-model source to the new format. Its forward-compatibility
+claim applies to DLLs created with the version 36 architecture; it is not a promise
+that every earlier binary loads unchanged or that source is always available.
+The API/format promise also does not establish equivalent initialization, limiter
+behaviour or trajectories in another solver. [PS1]
+
+**Inference:** distinguish source conversion, binary loading and numerical model
+validation in the import ledger. Record the model format/version and unavailable
+custom dependencies before claiming dynamic interoperability. Keep RAW/DYR parsing
+separate from executing a vendor DLL. [PS1][PS8][PS9]
+
 ## 7. Dated independent evidence
 
 Hantao Cui's CURENT WECC comparison, last revised 23 May 2020, reports matching
@@ -621,8 +740,10 @@ PLAN decision D11 or matrix D11 manufacturer libraries.
 | H3 flicker | Unknown | Unknown | Unknown | Unknown |
 | C1/C4/C7 cable/transformer/schedule design | SmartDesign, scope qualified [EP14] | DAPPER, scope qualified [SK8] | Cable sizing; other rows unknown [NP18] | Unknown |
 | C5 battery sizing | Unknown | DC Systems [SK15] | Unknown | Unknown |
-| C6 ground grid | Unknown | GroundMat [SK16] | Unknown | Unknown |
-| C2/C3/C8 thermal/pulling/sag | Unknown | Unknown | Unknown | Unknown |
+| C6 ground grid | Partner XGSLab; native unknown [EP23] | GroundMat [SK16] | Unknown | Unknown |
+| C2 thermal ampacity | Unknown | Cable Ampacity, vendor method claim [SK24] | Unknown | Unknown |
+| C3 cable pulling | Unknown | Cable-3D; numerical details unverified [SK25] | Unknown | Unknown |
+| C8 overhead sag | Unknown | Unknown | Unknown | Unknown |
 
 **Implications for Quantic, inferred from these workflows:** industrial parity needs
 an auditable chain from source contribution through device timing to energy/labels,
