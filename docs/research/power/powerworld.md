@@ -180,7 +180,7 @@ and citations are committed; downloaded source files stay outside this repositor
 
 | W105 | [SVC steady-state/dynamic consistency](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Switched_Shunt_SVC_Control_Mode_Transient_Simulation.htm) | Help | 2026-10-15 |
 
-| W106 | Glover, Overbye and Sarma, Power System Analysis and Design, 6th ed., Cengage, 2017 | Owned book, page-tagged text; PDF images unavailable | 2026-10-15 |
+| W106 | Glover, Overbye and Sarma, Power System Analysis and Design, 6th ed., Cengage, 2017 | Owned book, page-tagged text plus 30 private page renders inspected | 2026-10-15 |
 | W107 | [Stability data management, 2024, slides 14 and 31](https://www.powerworld.com/files/T02StabilityDataManagement.pdf) | Public PDF, page images inspected | 2026-10-15 |
 | W108 | [Large-scale simulation examples, 2025, slide 4](https://www.powerworld.com/files/T14LargeExamples.pdf) | Public PDF, page image inspected | 2026-10-15 |
 | W109 | [Web Help topic index](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Table_Of_Contents_For_Printed_Output.htm) | Vendor help index | 2026-10-15 |
@@ -883,33 +883,26 @@ Source: Glover, Overbye and Sarma, *Power System Analysis and Design*, 6th editi
 parentheses. This is an index and verification assessment, not a reproduction of
 worked examples, inputs, output tables, screenshots or case files. [W106]
 
-**Verification boundary:** page-tagged text was read, including example headings and
-cross-references. The private PDF is stored through Git LFS and its page images could
-not be retrieved in this environment. Thus no numerical answer from the book is
-listed or asserted verified here. The table distinguishes text-indicated completeness
-from image legibility; every numerical benchmark remains a candidate until its PDF
-pages and case-file permissions are checked. A request for private page access is
-recorded in the agent channel. This limitation must travel into WP-2.12. [W106]
-
-Assessment codes: **A** = text identifies input data and numerical answer tables or
-an analytic calculation, promising for a small independently reconstructed check;
-**B** = relies materially on the supplied case/diagram or dynamic settings, so the
-printed passage alone is not established as a complete benchmark; **C** = primarily
-a qualitative interaction/plot, useful for behavior but insufficient for a precise
-numerical oracle. All have PDF-image legibility pending. [W106]
+**Visual follow-up, 2026-10-16:** inspected 30 privately supplied page renders.
+This closes the blanket image-access gap recorded in the first pass. **V** below
+means the stated result/derivation is legible on the inspected page, not that a
+Simulator run reproduced it or that all inherited network data are verified.
+**A** remains an analytical benchmark candidate; **B** requires supplied case data;
+**C** is primarily qualitative/graphical. All numerical case inputs and answers stay
+private. Uninspected prerequisite/output pages are named below. [W106]
 
 | Chapter, location and case identifier | Simulator feature demonstrated | Printed-result assessment |
 | --- | --- | --- |
 | Ch. 1, pp. 22 to 28 (42 to 48), Examples 1.1 to 1.3 | Animated flow, changing load/generation, opening elements, saving case versus diagram | C. Introductory interaction; do not treat the historical textbook edition's bus limit as today's demo entitlement. |
 | Ch. 2, p. 51 (71), Example 2.3 | Active/reactive-power visualization | C. Supports the conceptual display workflow, not a large-system benchmark. |
-| Ch. 3, p. 135 (155), Example 3_12 | Load-tap-changing transformer control | C. Animated control behavior; check control settings in the supplied file. |
-| Ch. 3, pp. 138 to 139 (158 to 159), Example 3_13 | Off-nominal transformer ratio and Ybus | A candidate. Analytic admittance comparison; the tap-side convention must match before comparing entries. |
+| Ch. 3, pp. 133 to 135 (153 to 155), Example 3_12 | Load-tap-changing transformer control | C. Animated control behavior; check control settings in the supplied file. |
+| Ch. 3, pp. 137 to 139 (157 to 159), Example 3_13 | Off-nominal transformer ratio and Ybus | A candidate. Analytic admittance comparison; the tap-side convention must match before comparing entries. |
 | Ch. 5, p. 281 (301), Example 5_4 | Distributed/lossless line behavior and voltage profile with load | A for the analytic line model, C for the animated screen alone. |
-| Ch. 5, p. 288 (308), Example 5_8 | Parallel-line configuration and reactive charging | B. The text explicitly distinguishes the Simulator model's charging from the simplified preceding analysis. Do not demand identical numbers across those models. |
-| Ch. 5, p. 293 (313), Example 5_10 | Series compensation and transfer | B. Capacitor bypass status is essential to identifying the operating point. |
-| Ch. 6, pp. 347 to 349 (367 to 369), Example 6_9 | Five-bus model data, network admittance, case tables | A candidate. Printed input tables and network diagram form the small-case anchor for subsequent examples. |
-| Ch. 6, p. 353 (373), Example 6_10 | Single-stepping Gauss-Seidel and inspecting mismatches | A candidate for iterations; historical educational-edition support is explicit. This is not evidence of current commercial V24 Gauss-Seidel entitlement. |
-| Ch. 6, pp. 357 to 359 (377 to 379), Example 6_11 | Newton steps, Jacobian and final bus/branch output tables | A candidate. Simulator retains voltage-control rows that a reduced textbook Jacobian may eliminate, so compare equivalent systems rather than matrix dimensions alone. |
+| Ch. 5, pp. 287 to 288 (307 to 308), Example 5_8 | Parallel-line configuration and reactive charging | B. The text explicitly distinguishes the Simulator model's charging from the simplified preceding analysis. Do not demand identical numbers across those models. |
+| Ch. 5, pp. 292 to 293 (312 to 313), Example 5_10 | Series compensation and transfer | B. Capacitor bypass status is essential to identifying the operating point. |
+| Ch. 6, pp. 346 to 349 (366 to 369), Example 6_9 | Five-bus model data, network admittance, case tables | A candidate. Printed input tables and network diagram form the small-case anchor for subsequent examples. |
+| Ch. 6, pp. 352 to 353 (372 to 373), Example 6_10 | Single-stepping Gauss-Seidel and inspecting mismatches | A candidate for iterations; historical educational-edition support is explicit. This is not evidence of current commercial V24 Gauss-Seidel entitlement. |
+| Ch. 6, pp. 356 to 359 (376 to 379), Example 6_11 | Newton steps, Jacobian and final bus/branch output tables | A candidate. Simulator retains voltage-control rows that a reduced textbook Jacobian may eliminate, so compare equivalent systems rather than matrix dimensions alone. |
 | Ch. 6, p. 359 (379), Example 6.12 using Example 6_9 | Generation redispatch and transformer loading | A candidate based on the preceding small system; retain the monitored rating and dispatch rule. |
 | Ch. 6, pp. 361 to 362 (381 to 382), Example 6_13 | Larger network exploration, outage loading and low-voltage identification | B. The passage does not establish a complete printed branch/generator dataset; supplied case needed. |
 | Ch. 6, p. 365 (385), Example 6_14 | Shunt switching and voltage/loss changes | A candidate built from Example 6_9; check shunt status and voltage dependence. |
@@ -920,22 +913,55 @@ numerical oracle. All have PDF-image legibility pending. [W106]
 | Ch. 6, p. 386 (406), Example 6.22 | Dispatch including losses and penalty factors | A for the stated optimality calculation, B for recreating the exact pictured network. |
 | Ch. 6, pp. 390 to 392 (410 to 412), Example 6_23 | Sequential-LP OPF and binding network limits | B. Identify the active constraints and costs from the supplied case. It is not an interior-point example. |
 | Ch. 7, pp. 450 to 451 (470 to 471), Example 7_5 | Balanced faults and Zbus on the small network | A candidate. Machine, line and transformer input tables and fault results are identified. Prefault operating assumptions differ from ordinary loaded power flow. |
-| Ch. 7, pp. 452 to 453 (472 to 473), Example 7_6 | Adding a branch and recomputing fault impedances/voltages | A candidate, derived from Example 7_5 with a stated network alteration. |
-| Ch. 9, pp. 555 to 564 (575 to 584), Example 9_3 and Examples 9.4 to 9.6 | Sequence data, SLG/LL/DLG selection and transformer phase effects | A candidate for the small sequence-network calculations. Check phase/reference conventions; later examples reuse the same case rather than proving separately named case files. |
-| Ch. 9, pp. 573 to 575 (593 to 595), Example 9_8 | Five-bus SLG fault sweep, current contributions and bus voltages | A candidate. The passage identifies input Tables 9.1 to 9.3 and output Tables 9.4 to 9.5. It does not establish an all-fault-type sweep. |
-| Ch. 11, pp. 701 to 702 (721 to 722), Example 11_4 and 11_4b | Classical rotor-angle transient with and without damping | A for the analytic setup; C for precise values read from a plot. Damping distinguishes the two cases. |
-| Ch. 11, p. 704 (724), Example 11_5 | Fault/event simulation and angle trajectory | A/C. Compare analytical setup or stability outcome; plotted precision must first be established. |
-| Ch. 11, pp. 706 to 707 (726 to 727), Example 11_6 | Equal-area stability boundary and fault clearing | A candidate for analytic stability boundary; a clearing-time benchmark additionally needs the stated inertia/frequency and event interpretation. |
+| Ch. 7, pp. 453 to 454 (473 to 474), Example 7_6 | Adding a branch and recomputing fault impedances/voltages | A candidate, derived from Example 7_5 with a stated network alteration. |
+| Ch. 9, pp. 554 to 564 (574 to 584), Example 9_3 and Examples 9.4 to 9.6 | Sequence data, SLG/LL/DLG selection and transformer phase effects | A candidate for the small sequence-network calculations. Check phase/reference conventions; later examples reuse the same case rather than proving separately named case files. |
+| Ch. 9, pp. 574 to 575 (594 to 595), Example 9_8 | Five-bus SLG fault sweep, current contributions and bus voltages | A candidate. The passage identifies input Tables 9.1 to 9.3 and output Tables 9.4 to 9.5. It does not establish an all-fault-type sweep. |
+| Ch. 11, pp. 699 to 702 (719 to 722), Example 11_4 and 11_4b | Classical rotor-angle transient with and without damping | A for the analytic setup; C for precise values read from a plot. Damping distinguishes the two cases. |
+| Ch. 11, pp. 703 to 704 (723 to 724), Example 11_5 | Fault/event simulation and angle trajectory | A/C. Compare analytical setup or stability outcome; plotted precision must first be established. |
+| Ch. 11, pp. 705 to 707 (725 to 727), Example 11_6 | Equal-area stability boundary and fault clearing | A candidate for analytic stability boundary; a clearing-time benchmark additionally needs the stated inertia/frequency and event interpretation. |
 | Ch. 11, p. 709 (729), Example 11_7 | Angle/speed traces and phase portrait | A for the stated Euler calculation, C for equality to Simulator. The text explicitly says Simulator's second-order integration gives slightly different results. |
 | Ch. 11, pp. 715 to 717 (735 to 737), Example 11_8 and 11_8A | Multimachine reduced network and relative rotor angles | A/B. The small-system reduction is promising; capture reference-frame choice, dynamic loads and damping. |
 | Ch. 11, p. 718 (738), Example 11_9 | Larger multimachine line fault and clearing search | B. Requires the supplied larger case's dynamic records; a plotted boundary is not a fully printed model. |
 | Ch. 11, pp. 721 to 722 (741 to 742), Example 11_10 | Two-axis synchronous-machine initialization and fault response | A candidate for initial-state calculation, B for exact transient reproduction until all case settings are checked. |
-| Ch. 11, pp. 724 to 726 (744 to 746), Example 11_11 | Induction-generator wind-machine initialization and response | A candidate for the stated machine initial conditions; not a switching-level converter benchmark. |
+| Ch. 11, pp. 725 to 726 (745 to 746), Example 11_11 | Induction-generator wind-machine initialization and response | A candidate for the stated machine initial conditions; not a switching-level converter benchmark. |
 | Ch. 11, pp. 729 to 730 (749 to 750), Example 11_12 | Type 3 doubly-fed generator initialization | A candidate for the stated algebraic initial conditions; transient control settings still matter. |
 | Ch. 12, pp. 758 to 759 (778 to 779), Example 12_1 | Exciter/AVR initialization and transient voltage response | A candidate for initial states, B/C for complete dynamics and plotted values. Inherits the two-axis machine example. |
 | Ch. 12, p. 760 (780), Example 12_2 | Type 3 reactive-power control and limits | A/C. Controller setup and qualitative recovery are established; inspect the plotted trajectory before choosing tolerances. |
-| Ch. 12, p. 766 (786), Example 12_4 | Governor droop, load step and frequency response | A/B. The text distinguishes finite-duration simulation from the eventual analytic equilibrium; do not equate them. Complete network/control files remain to check. |
+| Ch. 12, pp. 764 to 766 (784 to 786), Example 12_4 | Governor droop, load step and frequency response | A/B. The text distinguishes finite-duration simulation from the eventual analytic equilibrium; do not equate them. Complete network/control files remain to check. |
 | Ch. 14, pp. 911 to 912 (931 to 932), Figure 14_22 | Primary-loop feeder switching/restoration | B/C. Requires the supplied feeder case. This does not demonstrate a native unbalanced three-phase load-flow engine. |
+
+**Page verification ledger for every A/A-B/A-C candidate:**
+
+| Candidate | Image evidence and promotion decision |
+| --- | --- |
+| 3_13, 5_4 | Remain A: PDF 157 to 159 and 301 were not among the supplied renders; earlier text-only completeness assessment is unchanged. |
+| 6_9 | PDF 369 verifies the Ybus/display and analytic continuation, but input Tables 6.1 to 6.4 on earlier pages were not visually checked. Remains A for complete-case reconstruction. |
+| 6_10 | PDF 373 verifies the displayed iteration result and historical Gauss-Seidel workflow. V for that continuation only; preceding calculation on PDF 372 uninspected, so remains A as a full iteration benchmark. |
+| 6_11 | PDF 377 verifies final bus-output Table 6.6; PDF 379 verifies transformer Table 6.8. V for these outputs. Line-output Table 6.7 on PDF 378 and original inputs remain uninspected. |
+| 6.12, 6_14 | PDF 379 and 385 respectively verify the stated redispatch/loading and shunt-effect results. V for printed outcomes; inherited complete input verification remains A. |
+| 6_17 | PDF 393 contains a legible reduced DC matrix, injection vector and solved angle vector on one page. Promoted V for a self-contained reduced linear-system check; does not certify the preceding AC-to-DC model derivation or a Simulator run. |
+| 6_20 | PDF 402 verifies the heading and preceding Example 6.19 dispatch table, not complete three-generator case inputs or later output. Remains A/B; do not misattribute Table 6.10 to Example 6.20. |
+| 6.22 | PDF 406 verifies the first penalty-factor/optimality calculation; its continuation and pictured network on PDF 407 are uninspected. V for that calculation only, A/B for the complete case. |
+| 7_5 | PDF 470 verifies the three input tables and assumptions. Fault-output Table 7.7 and other continuation pages were not supplied; remains A for a full input/output benchmark. |
+| 7_6 | Heading is PDF 473, not 472. The alteration and reference to output Tables 7.8/7.9 are legible, but those tables on PDF 474 were not inspected. Remains A. |
+| 9_3 and 9.4 to 9.6 | PDF 576, 579 and 584 verify selected phase-domain results, the LL sequence calculation and transformer-phase explanation. V for those selected passages; complete inherited sequence data and the intervening DLG derivation remain uninspected. |
+| 9_8 | PDF 594 verifies fault-current Table 9.4. Voltage Table 9.5 on PDF 595 and complete inputs on preceding pages remain uninspected. V for the current outputs, A for complete case reconstruction. |
+| 11_4/11_4b | PDF 721 verifies the undamped analytic continuation and plotted behavior. PDF 719 to 720 and damping page 722 were not supplied. V for undamped continuation only; damping/full-case assessment remains A/C. |
+| 11_5 | PDF 724 verifies the explicit clearing-time calculation and plot. V for the analytic continuation; preceding setup on PDF 723 remains uninspected. |
+| 11_6 | PDF 727 verifies the critical-angle calculation. V for that continuation; heading/setup start on PDF 725 and remaining derivation on 726 need visual checking before full reconstruction. |
+| 11_7 | PDF 729 verifies the integration-method distinction and case conditions, but the numerical answer table on later pages was not supplied. Remains A/C for a numerical trajectory benchmark. |
+| 11_8/11_8A | PDF 736 verifies partitioned admittance matrices and event/reference-frame description. V for those matrices, A/B for a complete reduced-network/dynamic check; PDF 735 and 737 uninspected. |
+| 11_10 | PDF 741 verifies machine inputs and initial-state calculations. V for the displayed initialization calculation, A/B for inherited network and transient response; continuation PDF 742 uninspected. |
+| 11_11 | PDF 745 verifies the induction-machine parameters and stated initial conditions. V for their legibility; the antecedent operating point and continuation PDF 746 were not inspected, so remains A for an independently reconstructed initialization check. |
+| 11_12 | PDF 750 verifies the final initial-state calculation. V for that continuation; heading and preceding calculation on PDF 749 were not rendered. |
+| 12_1 | PDF 779 verifies AVR initial-state calculation; PDF 780 verifies explicitly stated timed voltage results. V for those passages. Full controller definition on PDF 778 and preceding control diagram remain uninspected. |
+| 12_2 | PDF 780 verifies the listed controller settings, initial-state and fault reactive-output calculation. V for that local algebraic check; inherited machine model and trajectory still require prior pages/case data. |
+| 12_4 | PDF 786 verifies model names, disturbance description and the distinction between finite-duration and equilibrium results. V for those statements; full setup/defaults beginning PDF 784 remain uninspected, so A/B for complete numerical reproduction. |
+
+Also inspected PDF 381, 391, 410, 738 and 931: the larger-case, sparsity, OPF,
+multimachine and restoration descriptions retain B/C status. Their pictured outputs
+do not make complete machine-readable input cases. No source artwork or worked
+case data is distributed with this ledger. [W106]
 
 All rows above are indexed to [W106]; none is a newly released public benchmark.
 The best first candidates are the small power-flow, sequence-fault, machine
@@ -1000,7 +1026,7 @@ source explicitly establishes a narrower limitation. It never silently means no.
 
 | Gap | Sources checked / observed boundary | Why unresolved; consequence |
 | --- | --- | --- |
-| Textbook numerical benchmarks | Glover17 map, section 8.1 | Page-tagged text was available, PDF page images were not. No numerical answer is released as verified, and supplied cases have not been cleared for redistribution. [W106] |
+| Textbook numerical benchmarks | Glover17 map, section 8.1 | Thirty page images are now inspected; section 8.1 distinguishes verified legibility/local calculations from remaining prerequisite pages and full simulation reproduction. Supplied cases have not been cleared for redistribution. [W106] |
 | Public-case archive fidelity/terms | Texas A&M publisher pages, section 8.2 | Availability and use permission established, archive files, bundled terms and dynamic-model compatibility not inspected. MATPOWER does not carry dynamics. [W150][W152][W158] |
 | Exact contemporary OS/build support and machine sizing | Windows COM, 64-bit UDM guide, public overview | No current authoritative OS/RAM matrix found. Do not repurpose old Windows requirements or historical Avista hardware as current minimums. [W6][W7][W1][W83] |
 | Full proprietary solver internals | Solution theory, LP and integration help | These disclose methods, not source code, sparse factorization library or optimization backend. Leave implementation language/backend unknown. [W31][W54][W59] |
