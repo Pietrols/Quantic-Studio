@@ -149,16 +149,51 @@ what users have.
 
 - Fit single- or double-cage parameters by non-linear least squares so that the circuit
   reproduces those points. ETAP and PowerFactory both offer this (dossier rows M4).
-- **Gap: no owned source gives a fitting procedure.** Candidates: IEEE papers on
-  induction-motor parameter estimation from manufacturer data. To search (public
-  abstracts).
+- **No owned source gives a fitting procedure.** Literature found (2026-10-16):
+  - **J. Pedra and F. Córcoles, "Estimation of induction motor double-cage model
+    parameters from manufacturer data", *IEEE Trans. Energy Conversion*, 19(2),
+    pp. 310 to 317, 2004.** The standard deterministic method. Its citation was found
+    through a secondary paper (below), not read; the paper is paid. It is the first
+    paper to buy or borrow for M4.
+  - M. Jamadi and F. Merrikh-Bayat, *New method for accurate parameter estimation of
+    induction motors based on artificial bee colony algorithm*, arXiv:1402.4423.
+    It fits a double-cage model (R1, Xsd, Xm and two rotor branches) by minimising
+    squared errors against these datasheet values:
+    - full-load, starting and maximum torque;
+    - starting and full-load current;
+    - full-load power factor and slip.
+
+    It publishes a complete test motor (2.2 kW, 208 V, 60 Hz; its Table I) and
+    compares GA, PSO and pattern search. **A usable public verification case**: our
+    fit must reproduce its seven datasheet points, and our residuals can be compared
+    with its reported ones. Read the full PDF before using any number from it.
+  - V. Kumari, *Parameter estimation of induction motors from manufacturer data for
+    simulation purposes*, University of Manitoba thesis, 2025. It fits single- and
+    double-cage models from nameplate or catalogue data using Nelder-Mead and a genetic
+    algorithm, and is built into RSCAD as a tool. A PDF is listed on the repository
+    page, and no rights statement was seen.
+- **Model structure for starting (Das10 sec. 11-1-2 and 11-2, pdf p. 284 onward):**
+  - double-cage equivalent circuit (Fig. 11-2c);
+  - deep-bar skin-effect factor (eq. 11-48);
+  - analytic rotor impedance against slip using sinh and sin of θ (eq. 11-49).
+
+  This gives a physically based alternative to a fitted double cage when bar depth is
+  known. Read on the page image before coding.
 - The Quantic approach is ordinary constrained least squares with SciPy, reporting fit
   residuals per datasheet point in the worked trace.
 
 ## 7. Open-source foundations
 
-- **pandapower:** has motor elements for load flow and short circuit (static), but no
-  acceleration study as far as its docs show. **To verify.**
+- **pandapower 3.5.6 (source read 2026-10-16):** `net.motor` is static only.
+  - **Load flow** (`build_bus._get_motor_pq`): a constant PQ load with
+    P = Pmech/η × loading × scaling and Q from the rated cos φ. It ignores slip,
+    voltage dependence and the part-load change in efficiency and power factor.
+  - **Short circuit** (`build_bus._add_motor_impedances_ppc`): a shunt impedance
+    Z = (1/I_LR)·U²/S with S = Pmech/(η·cos φ) and a user R/X. That is the IEC 60909
+    motor impedance form. It is skipped for minimum cases.
+  - **No acceleration, dynamics or starting-method model exists.** This confirms the
+    plan: Quantic's own ODE integrator, with pandapower solving the network at each
+    step.
 - **OpenDSS:** has an induction machine model for dynamics mode. **To verify.**
 - **ANDES** (GPL-3, separate process only) and **Dynawo** (MPL-2.0): motor dynamic
   models for stability. See the T1 note when written.
@@ -168,7 +203,8 @@ flow per step. This is a small, well-defined engine and a good first dynamic stu
 
 ## 8. Gaps
 
-1. A datasheet-to-circuit fitting method from a published source.
+1. A datasheet-to-circuit fitting method from a published source: Pedra and Córcoles
+   2004 identified (paid). The arXiv 1402.4423 test motor is a free benchmark candidate.
 2. NEMA MG-1 data (design letters, code letters): paid.
 3. Soft starter and VFD models (Bose02).
 4. Check the EPRI load polynomial coefficients quoted in Das02.
