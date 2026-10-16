@@ -1,6 +1,6 @@
 # PowerWorld Simulator research dossier
 
-Research date: 2026-10-15. Owner: Lane B, ChatGPT. WP-2.11, including authorized deepening pass.
+Research dates: 2026-10-15 to 2026-10-16. Owner: Lane B, ChatGPT. WP-2.11, including authorized deepening passes.
 
 This is a public-documentation study, not an executable-product benchmark. Statements
 about availability describe the cited documentation; no licensed Simulator instance
@@ -65,7 +65,7 @@ unverified in section 9. [W6][W7]
 
 ## 2. Sources: numbered table
 
-Every entry was accessed on 2026-10-15. `Help` means a vendor-published online help
+Access dates are recorded per entry. `Help` means a vendor-published online help
 topic. Product pages are capability/licensing evidence, not independent performance
 validation. Historical utility presentations are dated observations. Only paraphrases
 and citations are committed; downloaded source files stay outside this repository.
@@ -240,6 +240,38 @@ and citations are committed; downloaded source files stay outside this repositor
 | W163 | [Reddit, Transfer into Power Industry, August 5 to 6, 2023](https://www.reddit.com/r/PowerSystemsEE/comments/15j8rjs/) | Search record only; comment author unavailable | 2026-10-15 |
 | W164 | [Reddit, Dynamics/Transient Studies, July 29, 2026](https://www.reddit.com/r/PowerSystemsEE/comments/1v9je2i/dynamicstransient_studies/) | Search record only; comment author unavailable | 2026-10-15 |
 
+| W165 | [Power-flow bus equations](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/PowerFlow%20Equation%20Basics.htm) | Vendor help | 2026-10-16 |
+| W166 | [Remote voltage regulation](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/PowerFlow%20Remote%20Regulation.htm) | Vendor help | 2026-10-16 |
+| W167 | [Mvar sharing](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/PowerFlow%20Mvar%20Sharing%20between%20Generators.htm) | Vendor help | 2026-10-16 |
+| W168 | [Voltage setpoint tolerance](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/PowerFlow%20Voltage%20Setpoint%20Tolerance.htm) | Vendor help | 2026-10-16 |
+| W169 | [Voltage droop with deadband](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/PowerFlow%20Voltage%20Droop%20Control%20with%20Deadband.htm) | Vendor help | 2026-10-16 |
+| W170 | [James Weber, Detailed Documentation of Software Implementation of Voltage Droop With Deadband in Power Flow Calculation, November 2018](https://www.powerworld.com/WebHelp/Content/Other_Documents/VoltageDroopControl_Software_Implementation.pdf) | Vendor technical paper; pp. 2, 4 and 19 visually inspected | 2026-10-16 |
+| W171 | [Full-topology model](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/TP_Full_Topology_Model.htm) | Vendor help | 2026-10-16 |
+| W172 | [FixedNumBus features](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/FixedNumBus_Features.htm) | Vendor help | 2026-10-16 |
+| W173 | [Sub-interval integration models](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Integration_Subinterval_Models.htm) | Vendor help | 2026-10-16 |
+| W174 | [Bus plant controller REPC_D](https://www.powerworld.com/WebHelp/Content/TransientModels_HTML/Bus%20REPC_D.htm) | Vendor model help | 2026-10-16 |
+| W175 | [July 7, 2023 patch](https://www.powerworld.com/patch/july-7-2023) | Historical vendor patch | 2026-10-16 |
+| W176 | [October 25, 2023 patch](https://www.powerworld.com/patch/october-25-2023) | Historical vendor patch | 2026-10-16 |
+| W177 | [MATPOWER manual: branch model, section 3.2](https://matpower.app/manual/matpower/Branches.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W178 | [MATPOWER manual: AC power flow, section 4.1](https://matpower.app/manual/matpower/ACPowerFlow.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W179 | [MATPOWER manual: continuation power flow, chapter 5](https://matpower.app/manual/matpower/ContinuationPowerFlow.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W180 | [MATPOWER manual: event detection, section 5.5](https://matpower.app/manual/matpower/EventDetectionandLocation.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W181 | [MATPOWER manual: standard AC OPF, section 6.1](https://matpower.app/manual/matpower/StandardACOPF.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W182 | [MATPOWER manual: standard DC OPF, section 6.2](https://matpower.app/manual/matpower/StandardDCOPF.html) | Independent engine's mathematical documentation | 2026-10-16 |
+| W183 | [SUNDIALS IDA mathematical considerations](https://sundials.readthedocs.io/en/latest/ida/Mathematics_link.html) | Solver author's DAE documentation | 2026-10-16 |
+| W184 | [ANDES 2.0.0 time-domain tutorial](https://docs.andes.app/en/v2.0.0/tutorials/04-time-domain.html) | Independent engine's workflow documentation | 2026-10-16 |
+| W185 | [ANDES DAE formulation](https://docs.andes.app/en/latest/modeling/concepts/dae-formulation.html) | Independent engine's mathematical documentation; latest label is mutable | 2026-10-16 |
+| W186 | [pandapower three-phase power flow](https://pandapower.readthedocs.io/en/stable/powerflow/ac_3ph.html) | Adapter candidate's public method/limitations | 2026-10-16 |
+| W187 | [pandapower short-circuit currents](https://pandapower.readthedocs.io/en/stable/shortcircuit/currents.html) | Adapter candidate's public method/limitations | 2026-10-16 |
+| W188 | [pandapower state estimation](https://pandapower.readthedocs.io/en/stable/estimation.html) | Adapter candidate's public method/limitations | 2026-10-16 |
+| W189 | [OpenDSS harmonic flow](https://opendss.epri.com/HarmonicFlowAnalysis.html) | EPRI method/workflow documentation | 2026-10-16 |
+| W190 | [PyPSA 1.1.1 unit commitment](https://docs.pypsa.org/v1.1.1/user-guide/optimization/unit-commitment/) | Independent optimization framework documentation | 2026-10-16 |
+| W191 | [ANDES licence](https://github.com/CURENT/andes/blob/master/LICENSE) | Upstream licence, mutable branch | 2026-10-16 |
+| W192 | [MATPOWER licence and case-file exclusion](https://github.com/MATPOWER/matpower/blob/master/LICENSE) | Upstream licence, mutable branch | 2026-10-16 |
+| W193 | [SUNDIALS IDA introduction and licence](https://sundials.readthedocs.io/en/latest/ida/Introduction_link.html) | Upstream implementation/licence documentation | 2026-10-16 |
+| W194 | [DSS-Python project and licensing notes](https://github.com/dss-extensions/DSS-Python) | Binding author's primary repository | 2026-10-16 |
+| W195 | [OpenDSS circuit reduction, version 8.5](https://opendss.epri.com/CircuitReductionforVersion85.html) | Historical EPRI method/limitations | 2026-10-16 |
+
 ## 3. Architecture and data model
 
 ### 3.1 Case database versus diagram
@@ -383,7 +415,7 @@ The codes below describe evidence, not a certification:
 | Composite and motor loads | CMPLDW, CMPLDWNF, MOTORW | D. CMPLDWNF omits the distribution-equivalent portion of CMPLDW; MOTORW has motor/inertia/trip inputs. Composite-load parameter sets and aggregation levels are separate from ordinary ZIP power-flow loads. [W122][W123][W124] |
 | Algebraic/composite load entries | IEEL, CLOD | U in this review: named parameter pages, without an independently inspected Fully Supported row. [W125][W126] |
 | Renewable converter interface | REGC_A, REGC_B, REGC_C | S, YES in slide 31; individual pages document distinct converter parameter sets. REGCA1 is a PTI-format name for REGC_A, not a separate proof of a new model family. [W107][W127][W128][W129] |
-| Newer converter interface | REGC_D | V24 release notes name it. A direct model-help URL guessed from its name returned 404, so its exact current parameter schema/flag remains unverified; do not invent one. [W2] |
+| Release-name ambiguity | REGC_D versus bus-attached REPC_D | Release material names REGC_D, but detailed bus-model help and another patch name REPC_D. The latter has a readable schema; an alias between the tokens is not established. See section 8.3E. [W2][W174][W175][W176] |
 | Renewable electrical control | REECA1, REECB1, REEC_C, REEC_D, REEC_E | D for the first four; REEC_E: N, including runtime current/control-limit logic. These are electrical-control records under the exciter family, not synchronous exciters. [W133][W134][W135][W136][W137] |
 | Renewable plant control | REPC_A, REPCA1, REPCTA1; REPC_B, REPC_B100; REPC_C | REPC_A/REPCA1/REPCTA1: N; B/B100/C: D. The A variants have explicit runtime treatment; the April 2026 patch explains that REPCA1 and REPCTA1 use the same internal controller, with signal routing dependent on the attached torque/electrical controls. [W138][W139][W140][W149] |
 | Grid-forming converters | REGFM_A1, REGFM_B1, REGFM_C1 | A1/B1: N, the April 2026 fix addresses their connection to plant controls. C1: D, page dates its addition to May 1, 2025. These establish RMS model families, not switching-level EMT equivalence. [W130][W131][W132][W149] |
@@ -588,7 +620,7 @@ events and performance criteria. Machines, excitation, governors, stabilizers, l
 renewables, relays, shunts and DC links have separate model families. [W58][W62]
 
 The documented numerical scheme alternates explicit differential integration with
-algebraic network solutions, using second-order Runge-Kutta and special handling for
+algebraic network solutions, with second-order Runge-Kutta or selectable Euler and special handling for
 ignored states and fast sub-interval models. The options expose network convergence
 and failure handling. These facts do not reveal the proprietary sparse matrix
 backend or establish an EMT switching solver. [W59][W60]
@@ -1007,6 +1039,381 @@ are interpreted as solver defects. No archive was downloaded or simulator run in
 pass, so the table records publisher availability rather than tested round trips.
 The cases are synthetic, not representations of the actual regional grids. [W150][W152][W158]
 
+### 8.3 Mechanism-level reconstruction notes
+
+Peter's 2026-10-16 instruction extends the research from capability names to how
+the products work. The following separates documented Simulator behaviour from
+our proposed engineering architecture. It does not establish ETAP or PowerFactory
+internals, and does not copy vendor pseudocode, diagrams or source implementations.
+
+#### A. Topology is a numerical preprocessing problem and an identity problem
+
+Simulator's detailed model distinguishes lines, transformers, series compensation
+and several switching-device types. Only eligible closed switching/very-low-
+impedance branches can be consolidated. Even an eligible branch can be retained
+because it participates in monitoring, an action, a condition or another special
+relationship. Consequently a generic rule that merges every short branch is not
+equivalent to the documented topology processor. Modelling an ideal switch as a
+tiny arbitrary reactance instead also introduces ill-conditioning. [W171]
+
+A SuperBus is a connectivity-derived voltage group. FixedNumBus is a user/file
+identity grouping and can contain connection points with different voltage
+phasors. Assignment can harmonize metadata or change conflicting IDs; RAW subnode
+mapping is another distinct concern. **Inference:** Quantic should keep immutable
+asset identity, physical terminals, numerical-node membership and foreign-file
+identifiers separate. Switching should invalidate connectivity-dependent results
+without renaming the installed equipment. Never use a diagram's bus number as the
+only persistent asset identity. [W172]
+
+**Proposed acceptance:** split and rejoin a fictional double-bus substation, test
+normally open ties and retained event targets, and check that every result maps
+back to the original terminals. Test identity collisions as explicit import
+diagnostics, not silent overwrites. This is our test design, not an observed vendor
+test suite. [W171][W172]
+
+#### B. Equation choice belongs to the controller configuration
+
+PowerWorld's bus category describes which equations are active, not just an
+immutable equipment class. Ordinary PQ, PV and slack cases select power balances,
+voltage or angle constraints; limits and special controllers alter that selection.
+For standard polar power-balance equations, the Newton correction solves
+`J(x) delta_x = -g(x)`. PowerWorld documents equation/control selection; MATPOWER's
+independent manual documents the basic Newton formulation and alternative
+coordinate/balance choices. These sources do not establish identical internal
+state layouts. [W165][W178]
+
+Remote regulation replaces local-only logic with a group relationship: one
+participant supplies the remote voltage constraint, other participants satisfy
+sharing equations, and the regulated load bus still satisfies its own power
+balance. The regulated bus can therefore display PQ while its voltage is
+controlled elsewhere in the equation system. **Inference:** the UI needs both an
+equipment type and an active-equation/limit explanation; colouring every generator
+bus as permanently PV hides essential behaviour. [W166]
+
+Mvar allocation has three documented policies: normalized bus-average factors,
+equal relative position in each generator's reactive range, or normalized sums of
+factors. These need not produce the same individual outputs. Range-based sharing
+can give both positive and negative generator Mvar even when the total is zero.
+Limit saturation then redistributes responsibility within and between buses.
+Matching total reactive injection is not sufficient to verify generator-level
+parity. The chosen policy must be an explicit study input. [W167]
+
+Nonzero voltage-setpoint tolerance replaces a hard voltage target with a sloping
+relation between reactive limits. An original expression of the documented line,
+for positive tolerance `dV` and before saturation, is
+`Q(V) = Qmin + (Qmax-Qmin)*(Vset+dV-V)/(2*dV)`.
+Its endpoints are maximum Q at the low-voltage edge and minimum Q at the
+high-voltage edge. Zero tolerance requires a different PV formulation, not division
+by zero. **Proposed tests:** endpoint substitution, negative slope, limit activation
+and return from a limit. Values must be scenario inputs, not assumed grid-code
+requirements. [W168]
+
+#### C. Plant droop is measured at an interface, not necessarily at a machine
+
+The deadband controller can regulate reactive flow arriving at the point of
+interconnection, including intervening feeder/transformer effects, rather than
+generator terminal Mvar. It supports multiple groups, individual machine limits
+and topology checks. Overlapping control networks, an unreachable regulated bus
+or conflicting voltage controls can be invalid configurations. The advertised
+piecewise QV curve is not always the precise numerical curve: the help acknowledges
+corner smoothing and restrictions on transitions and slopes. [W169]
+
+Weber's public November 2018 paper explains the resulting residual in a simple
+plant as `Q_arriving(V,theta) - Q_characteristic(Vreg) = 0`, with derivative
+contributions from both the branch and the characteristic. It further treats
+distributed groups, limits and low-impedance connections. Printed pp. 2, 4 and 19
+were visually checked against extraction; only this mathematical description is
+recorded, not its implementation pseudocode. **Inference:** compare values and
+derivatives near corners, preserve requested versus effective curves, and report
+any regularization. Reproducing an undocumented offset by loosening tolerances is
+not a valid verification strategy. [W170]
+
+#### D. Dynamic initialization, stepping and state changes are distinct stages
+
+The current options page allows RK2 or Euler, so the general RK2 description is
+not a guarantee of the method selected in every case. Initial limit violations
+can abort, temporarily modify limits, or leave limits active and cause immediate
+state movement. Network mismatch settings are separate from ordinary power-flow
+settings. The page also documents frequency-measurement filtering, imported-format
+saturation conventions, omission of small new islands and numerical island
+resynchronization that can instantaneously change machine speed. These are
+modelling choices, not physical evidence that an island synchronized. An
+equivalence record must include them. [W60]
+
+Zero-time-constant blocks can cease to be differential states and propagate inputs
+algebraically. Fast selected models can use sub-interval integration with network
+variables held fixed between full network solutions. Smaller internal state steps
+do not imply equally frequent algebraic network updates or preserved fast
+waveforms. This is a partitioned approximation whose adequacy needs a timestep
+study for the quantities of interest. [W59]
+
+Per-model sub-interval counts may be automatic or explicitly selected from the
+documented discrete set. **Inference:** record requested and effective counts,
+network step and output-sample interval separately. An export with fewer samples
+cannot establish integration error, and a numerically stable trace alone cannot
+establish waveform accuracy. [W173]
+
+#### E. A controller's attachment and measurement direction are part of its model
+
+The REPC_D detailed help attaches the plant controller to a bus, with separate
+voltage/frequency buses, branch measurement terminals and incoming/outgoing-flow
+flags. It distributes real/reactive commands to downstream generators and can
+control switched shunts. Parameters include PI gains, measurement/filter times,
+deadbands, output/rate limits, low/high-voltage freezing and MVA base. Auto-correction
+can alter signs, swap limits or change small time constants. Merely importing its
+parameter names does not prove the intended signals or limits were simulated.
+No parameter table or block image is reproduced here. [W174]
+
+**Naming conflict, not an alias assertion:** the July 7, 2023 patch calls the bus
+controller REGC_D; the October 25, 2023 patch and detailed help call a bus controller
+REPC_D. The latter explicitly documents attachment and fields. This closes the
+bus-controller discovery gap but does not prove REGC_D and REPC_D are interchangeable
+in all builds/files. Preserve the original token and require the exact build's
+import/export evidence before making a translation rule. [W175][W176][W174]
+
+#### F. Import/export is semantic translation, not just text parsing
+
+Simulator documents differences in generator AVR treatment, reactive capability
+files, shunt representation, transformer/star-bus representation, IDs, interchange
+and DC groupings. An export can transform the model structure rather than preserve
+every native record one-for-one. The vendor's comparison is scope/version evidence,
+not a universal specification for all later RAW/EPC revisions. **Proposed import
+ledger:** input format/build, original identifiers, created objects, transformed
+fields, defaults, unsupported records and unresolved references. A round-trip test
+must check physical behaviour and intentional losses, not byte equality alone.
+[W11]
+
+### 8.4 Independent mathematical references and complementary engines
+
+These sources explain reproducible mathematics missing from feature lists. They
+are not evidence that PowerWorld, ETAP or PowerFactory uses the named open engine.
+They do not authorize dependency adoption. Versioned documentation should be pinned
+again in a future implementation WP; mutable stable/latest pages are observations
+of the accessed content.
+
+#### A. Common AC branch stamp and its invariants
+
+For series admittance `y`, total charging susceptance `b`, and a complex from-side
+tap `t`, the independent MATPOWER branch formulation gives
+`Yff=(y+j*b/2)/|t|^2`, `Yft=-y/conj(t)`,
+`Ytf=-y/t`, `Ytt=y+j*b/2`.
+Terminal currents are the two-port matrix times terminal voltages. This makes the
+tap side, phase-shift sign, shunt splitting and pu base choices testable. With a
+phase-shifting tap the matrix is not generally symmetric. In our proposed tests,
+real terminal power loss must equal the resistive loss for a passive branch;
+charging affects reactive power and should not create real loss. These are
+mathematical invariants, not equipment acceptance limits. [W177]
+
+The standard AC formulation solves active mismatch at non-reference buses and
+reactive mismatch at PQ buses. MATPOWER also describes full Newton,
+fast-decoupled and alternative coordinate/current-balance formulations. Its
+reactive-limit outer loop uses fixed Q bounds and does not automatically enforce
+the full trapezoidal capability curve. **Inference:** independently compare
+Jacobian derivatives, power balance and controller transitions, not just rounded
+voltage tables. Solver names alone do not establish limit-policy equivalence.
+[W178]
+
+#### B. Static loadability and event location
+
+MATPOWER's continuation formulation augments network residuals with a transfer
+parameter and a parameterization equation. Prediction and correction trace the
+solution family rather than repeatedly relying on an ordinary solve with a
+larger load. It is an independently documented candidate method; PowerWorld's
+PV help did not establish this exact algorithm. [W179]
+
+The continuation event mechanism locates zero crossings for a target transfer,
+nose, generator limits, bus voltage or branch loading, using controlled step
+refinement. A reactive-limit event can switch PV to PQ and change the continuation
+problem. **Proposed result taxonomy:** physical limit reached, model/control event,
+search bound, numerical nonconvergence and unresolved event bracket. The last
+converged point is not automatically the collapse point. [W180]
+
+#### C. Optimization problems must be stated before choosing a solver
+
+The independent AC OPF formulation optimizes generation cost subject to nonlinear
+real/reactive balances, limits at both branch ends and bounds on voltages,
+generation and reference angles. It distinguishes apparent-power, real-power and
+current flow constraints. These are different feasible sets; an MVA thermal
+constraint cannot silently become MW. This formulation is not a guarantee of a
+unique global optimum in a nonconvex AC network. [W181]
+
+With DC network assumptions and suitable quadratic costs, voltage magnitudes and
+reactive powers disappear and the problem becomes a quadratic program with linear
+constraints. That is a different model, not merely a faster linear-algebra backend
+for the same AC problem. [W182]
+
+PowerWorld's documented primal-LP loop repeatedly linearizes around solved
+operating points, introduces penalized feasibility variables, changes controls and
+resolves the nonlinear flow. **Inference:** report both final nonlinear residuals
+and remaining penalty/slack use. A successful LP subproblem is not sufficient
+evidence of an acceptable final network point. [W54]
+
+#### D. DAE initialization and integration alternatives
+
+SUNDIALS IDA documents residual-form DAEs `F(t,y,ydot)=0`, consistent initial
+conditions, variable-order BDF integration and Newton/Krylov or direct linear
+solution. Its step Jacobian includes derivatives with respect to state and state
+derivative. Absolute/relative error weights differ from a network MVA mismatch.
+It is a candidate general numerical foundation, not an electrical machine library
+or a chosen Quantic dependency. **Inference:** define differential/algebraic
+variables and initialization residuals before picking an integrator. After a
+discrete topology change, restoring algebraic consistency is separate from
+integrating continuous states. [W183]
+
+ANDES' versioned tutorial documents implicit trapezoidal TDS starting from a
+converged flow and an initialized dynamic system. It also explains that dynamic
+models take over linked static injections, so changing the disabled static
+generator during TDS is not equivalent to changing a governor reference. This is
+a useful independent workflow comparison, not proof of identical models or a
+reason to import ANDES code. A later benchmark should inspect equilibrium drift,
+event timing, state continuity and algebraic residuals separately. [W184]
+
+#### E. Full-system modes are not the same as fitted signal modes
+
+For a regular semi-explicit DAE, linearization gives
+`M dx/dt = fx*x + fy*y`, `0 = gx*x + gy*y`.
+If the algebraic block is invertible after reference/constraint handling, eliminate
+`y` by solving with `gy` and obtain
+`A = M^-1*(fx - fy*gy^-1*gx)`.
+This is a Schur-complement identity, not a direction to form dense inverses.
+Zero-mass states need algebraic treatment; a singular algebraic block cannot be
+silently inverted. ANDES documents this class of formulation. [W185]
+
+**Proposed interpretation:** eigenvalues describe the selected equilibrium and
+model Jacobian. Fitted oscillations from recorded signals additionally depend on
+observation channels, event/window choice and fitting. A SMIB result removes
+inter-machine network interactions. Keep these as three different study types,
+with distinct acceptance cases. PowerWorld's available evidence remains SMIB plus
+signal fitting, not demonstrated full-grid eigenanalysis. [W63][W89][W185]
+
+#### F. Phase-domain distribution and standardized faults
+
+pandapower's public three-phase method uses Newton for positive sequence and
+current injection for zero/negative sequences. The documentation marks several
+options, including reactive-limit enforcement, as not tested with three-phase
+flow. A balanced convergence test cannot establish their coverage. **Proposed
+tests:** independent single-phase loading, transformer neutral/vector behaviour,
+phase permutation and phase/sequence reconstruction. Preserve the method's
+documented option limits in any adapter rather than copying its API as a promise.
+[W186]
+
+Its short-circuit documentation separates equivalent-source and prefault-
+superposition methods, notes LU-based alternatives to full admittance inversion,
+and lists three-phase, two-phase and single-line-to-ground support while excluding
+the earthed two-phase fault on the accessed page. This is different from
+PowerWorld's four named fault types. Source corrections and edition-specific
+constants still need their owned standard/reference. Neither library's successful
+execution is blanket standards certification. [W187]
+
+#### G. State estimation is a measurement problem
+
+pandapower documents WLS estimation using measured quantities, their standard
+deviations, branch side and network connectivity. It distinguishes zero-injection
+constraints, bus-switch fusion and bad-data tests, and warns that its bad-data
+removal is not robust. A sufficient count of measurements does not itself prove
+observability; the relevant measurement Jacobian must have suitable rank.
+**Proposed tests:** deliberately unobservable placements, unit/sign/terminal
+errors, redundant noisy measurements and interacting bad data. This is not a
+PowerWorld-native estimator claim and not a certified SCADA pipeline. [W188]
+
+#### H. Harmonics require frequency-specific network and source models
+
+OpenDSS initializes harmonic sources from a solved operating point, solves selected
+source frequencies and records monitors. Source phase/sequence behaviour and the
+load's series/parallel shunt equivalent affect resonance damping. A frequency scan
+and a harmonic injection study answer different questions. **Proposed tests:**
+known linear RLC response, phase/sequence cases, source-angle changes, damping and
+resonance-grid refinement. THD alone cannot explain whether a resonance peak was
+missed. This independent frequency-domain engine is not proof of native general
+harmonic/filter parity in PowerWorld. [W189]
+
+#### I. Commitment and reliability need information absent from snapshot dispatch
+
+PyPSA's versioned unit-commitment documentation uses binary operating status,
+start/stop decisions, ramp constraints, minimum up/down times and pre-horizon
+history. Those intertemporal constraints are not supplied by a set of independent
+OPF snapshots or a reserve allocation. **Proposed tests:** horizon boundaries,
+initial status, startup/shutdown ramps and deliberately infeasible schedules.
+This is a reference for a separate future study, not evidence of PowerWorld unit
+commitment. [W190]
+
+EPRI's version 8.5 reduction note ties predictive reliability to radial EnergyMeter
+zones and identifies reduction cases that discard losses or leave other objects
+without references. **Inference:** reliability and reduction require explicit
+assumptions and preservation checks. Neither a contingency count nor a collapsed
+network is a reliability index without failure/repair/customer and restoration
+modelling. This source does not establish a full meshed adequacy Monte Carlo
+engine. [W195]
+
+#### J. Code, bindings, cases and documentation have separate permissions
+
+The current MATPOWER licence covers code under BSD-3 but explicitly excludes
+bundled case files. Therefore a statement that a case is BSD merely because it
+ships with MATPOWER is insufficient. Existing and future case provenance must
+identify its own permission/terms; this observation does not decide the status of
+any particular fixture. No data were downloaded or redistributed for this pass.
+[W192]
+
+ANDES' current licence is GPL-3.0-or-later. Under AGENTS.md it must not be imported
+into Quantic packages. Its documented equations/methods were studied, not its
+implementation copied. A separately executed comparison is a different integration
+decision and still needs a scoped WP and distribution review. [W191]
+
+SUNDIALS documents BSD-3 licensing for its packages. External sparse solvers,
+bindings and optional integrations still need their own notices checked. Its
+documented C implementation is independent evidence about SUNDIALS, not evidence
+about any proprietary power-program language. [W193]
+
+DSS-Python describes a custom OpenDSS-derived engine/API route on Windows, Linux
+and macOS, while explicitly directing readers to the underlying DSS C-API licence
+as well as its own BSD terms. API compatibility is not proof of bit-for-bit
+numerical equivalence to EPRI COM. Pin engine, binding and build independently if
+this route is later adopted. [W194]
+
+### 8.5 Proposed verification ledger for our own implementation
+
+This is an original research-derived test specification, not completed product
+functionality. It intentionally tests invariants and transitions before large
+commercial-style network examples. Engineering references, constants, tolerances,
+input rights and the responsible WP must be approved before implementation.
+
+| Test family | What must be controlled | Evidence required beyond a plausible picture |
+| --- | --- | --- |
+| Branch stamp | Tap side/phase, bases, shunts and status | Terminal-current identities and passive real-loss balance. [W177] |
+| Newton Jacobian | Coordinates, injection signs and active equations | Analytical/independent derivative comparison; residual history. [W165][W178] |
+| Reactive limits | AVR, capability, allocation policy and release logic | Per-generator bounds and controller transitions, not only total Q. [W167] |
+| Remote control | Regulated terminal and participating devices | Equation/measurement mapping and correct response to a participant outage. [W166] |
+| Plant droop | POI branch direction, deadband, smoothing and limits | Requested/effective curve and boundary/derivative checks. [W169][W170] |
+| Topology | Ideal switches, retained devices and identity groups | Split/rejoin mapping and stale-result invalidation. [W171][W172] |
+| DC sensitivities | Loss approximation, phase-shifter policy, source/sink | Perturbation check under the same assumptions; explicit islanding failure. [W34][W42][W43] |
+| Contingency runs | Base state, make-up policy, RAS and controller options | Restore invariance, event/action ledger and terminal-specific violations. [W37][W40] |
+| Continuation | Transfer direction, limits and parameterization | Event brackets, refinement history and distinct failure reasons. [W179][W180] |
+| OPF/SCOPF | Objective, constraint units, penalty slack and contingency set | Final nonlinear feasibility and remaining violations, not LP status alone. [W54][W181] |
+| Dynamic equilibrium | Static/dynamic ownership, initial limits and saturation | Initialization residuals and no-event drift before disturbances. [W60][W184] |
+| Dynamic event | Timing, network/state steps and model substitutions | Before/after states, algebraic consistency and step-refinement error. [W59][W173][W183] |
+| Small-signal modes | Reference, algebraic regularity and limit state | Reduced-model validity and independent perturbation/decay checks. [W185] |
+| Unbalanced/fault study | Phases, neutral, sequence and fault definition | Independent phase/sequence results and unsupported-case diagnostics. [W186][W187] |
+| Meter estimation | Measurement sides, units, covariance and observability | Residual/rank/bad-data assessment, not measurement count alone. [W188] |
+| Harmonics | Frequency dependence, source phases and damping | Frequency refinement and primitive-network reference. [W189] |
+| Interchange | Exact revision, object identity and translation policy | Loss/default ledger plus physical round-trip comparisons. [W11][W172] |
+| Public benchmark use | Code licence versus case/archive terms | Per-dataset permission/provenance before redistribution. [W192] |
+
+### 8.6 Arithmetic checks performed during this research pass
+
+Five original dimensionless checks were run in scratch, outside the product code:
+branch real-loss identity, complex-injection angle derivative, voltage-tolerance
+endpoints/slope, scalar DAE elimination and second-order midpoint refinement.
+Inputs were authored mathematical scenarios, not equipment defaults or vendor/book
+case data. Results: branch identity error `3.730e-17`, central-difference derivative
+error `1.760e-10`, endpoint/slope PASS, eliminated eigenvalue `-0.5`, and successive
+midpoint error ratios `4.158771` and `4.077143` under step halving. The latter is
+consistent with second-order convergence for that scalar equation only.
+
+These checks support our algebraic transcription and proposed test families. They
+do not validate a commercial solver, a production Quantic implementation, a power
+equipment model or standards compliance. Future WPs still need committed original
+fixtures, independent engineering references and justified engineering tolerances.
+
 ## 9. Gaps, qualification ledger and parity handoff
 
 ### 9.1 Coverage and stopping rule
@@ -1016,7 +1423,10 @@ patch documentation, the named help topics in section 2, vendor training figures
 two utility-authored conference presentations, owned Glover17 text, individual
 practitioner observations, university documents and Texas A&M dataset pages. It does not claim to have read every
 page of the continually changing web-help tree or every historical release. Source
-counts are not a substitute for closed capability questions.
+counts are not a substitute for closed capability questions. The 2026-10-16 pass
+adds 31 primary sources on detailed controls/topology, independent mathematical
+engines and licence boundaries, plus original verification requirements in
+sections 8.3 to 8.6. This does not claim that an unbounded web corpus is exhausted.
 
 The following gaps name why this research cannot turn them into supported product
 claims. An absent capability in this dossier means **unknown/no evidence**, unless a
@@ -1028,6 +1438,7 @@ source explicitly establishes a narrower limitation. It never silently means no.
 | --- | --- | --- |
 | Textbook numerical benchmarks | Glover17 map, section 8.1 | Thirty page images are now inspected; section 8.1 distinguishes verified legibility/local calculations from remaining prerequisite pages and full simulation reproduction. Supplied cases have not been cleared for redistribution. [W106] |
 | Public-case archive fidelity/terms | Texas A&M publisher pages, section 8.2 | Availability and use permission established, archive files, bundled terms and dynamic-model compatibility not inspected. MATPOWER does not carry dynamics. [W150][W152][W158] |
+| Generic benchmark-code licence versus data permission | MATPOWER upstream licence | Bundled case files are explicitly outside the code's BSD grant. Per-case terms remain necessary; do not infer clearance from the engine licence. [W192] |
 | Exact contemporary OS/build support and machine sizing | Windows COM, 64-bit UDM guide, public overview | No current authoritative OS/RAM matrix found. Do not repurpose old Windows requirements or historical Avista hardware as current minimums. [W6][W7][W1][W83] |
 | Full proprietary solver internals | Solution theory, LP and integration help | These disclose methods, not source code, sparse factorization library or optimization backend. Leave implementation language/backend unknown. [W31][W54][W59] |
 | Full-system eigenvalue analysis | SMIB and transient modal-analysis topics | SMIB is per machine; signal fitting is measurement/trace analysis. Neither source establishes full-grid state-matrix eigenanalysis. [W63][W89] |
@@ -1043,7 +1454,7 @@ source explicitly establishes a narrower limitation. It never silently means no.
 | End-to-end substituted equation reports | Matrix/intermediate displays and export help | Public evidence supports some internal quantities and exports, not full D11 working for every result. [W8][W96][W53] |
 | Current representative customer sentiment | Utility presentations, dated Eng-Tips practitioners, independent syllabus and academic comparison | Independent examples now supplement curated talks, but no representative current sample or current comparative product benchmark. Reddit authors unavailable. [W83][W84][W160][W161][W162][W163][W164] |
 | Runtime performance and format round-trip fidelity | Vendor capacity statements and conversion notes | No licensed product was executed. Vendor examples are not our measured benchmarks; exact build/format fixtures need a later authorized test. [W1][W11] |
-| Exhaustive dynamic-model/default inventory | Named inventory in section 4.4, support-table screenshots and model pages | Selected named models are now mapped; exhaustive current flags, import-only names and REGC_D schema remain unverified. Export support/active flags from the actual build; PTIST3 demonstrates a documented partial feature. [W92][W107][W108][W120][W2] |
+| Exhaustive dynamic-model/default inventory | Named inventory, support screenshots and detailed model help | Bus-attached REPC_D now has primary schema evidence, but its relationship to release token REGC_D is unresolved. Exhaustive current/import-only flags still need actual-build export; PTIST3 remains a partial-feature example. [W92][W107][W108][W120][W174][W175][W176] |
 
 ### 9.3 Capability IDs for WP-2.12
 
