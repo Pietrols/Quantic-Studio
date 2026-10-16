@@ -109,3 +109,5 @@
 | E105 | https://etap.com/docs/default-source/etap-system-requirements/etap_2026-1_software_requirements.pdf?sfvrsn=73bc37c_19 | ETAP 26.0.1 software requirements | vendor requirements sheet |
 | E106 | https://etap.com/docs/default-source/brochures/fact-sheets/arcsafety-star-fact-sheet-3-web.pdf?sfvrsn=d1e53e7c_29 | ArcSafety and Star fact sheet | vendor fact sheet |
 | E107 | https://etap.com/product/ground-grid-systems | Ground grid systems product page (IEEE 80 and FEM) | vendor page |
+| E108 | https://etap.com/software-maintenance-agreement | ETAP Software Maintenance Agreement page: free upgrades, unlimited support; files forward compatible, not backward; supported-version table effective 2025-09-01 (read 2026-10-16) | vendor page |
+| E109 | https://www.aveva.com/content/dam/aveva/documents/legal/policies/AVEVA-Software-Schedule-ETAP-Products-v1-1-June-2026.pdf | AVEVA Software Schedule, ETAP Products, v1.1, June 2026: framework terms; licences "for a set Term", metrics per contract year from the Order Form; Exhibit 1a (ETAP Software License Agreement) text not visible in the retrieved copy (read 2026-10-16) | vendor legal schedule |

@@ -48,7 +48,8 @@ effort.
      impedance) and Example 6-5 inrush (1633 A printed, 1565 A from eq. 6-7);
    - Gonen88 Example 10.1 catenary length (502.032 ft printed, 502.037 ft; rounding).
    - DZS 691 A.17 Schwarz mutual resistance Rm printed identical to R1, which makes rods
-     ineffective (proved from its own combining formula);
+     ineffective (proved from its own combining formula); the correct form is Morley
+     eq. 7.12;
    - DGUV-I 203-077 Example 5.1 text 690.3 kJ against 690.5 kJ (rounding; its Annex 8
      worksheet value 694.9 kJ reproduces exactly).
    - **Das21 Table 3.1 (IEEE 1584 arcing-current coefficients) has errors that put MV

@@ -83,6 +83,28 @@ net prices to the US government, not ordinary commercial list prices (ChatGPT re
 - The *structure* (modules times bus tiers, plus a maintenance percentage) matches what
   buyers still describe today.
 
+**Current licence form (read 2026-10-16):**
+
+- **Under AVEVA, ETAP licences are term licences.** The AVEVA Software Schedule for
+  ETAP Products, v1.1 of June 2026 [E109], says licences "are for a set Term". The
+  commercial metrics and amounts are fixed per contract year in the Order Form.
+  The retrieved copy shows the ETAP Software License Agreement (Exhibit 1a) only as a
+  heading, so seat, bus-tier, virtualisation and audit terms remain unread. The
+  2024 version (v01) could not be fetched.
+
+  This is a change of model from the 2007 perpetual-plus-maintenance structure [E99].
+  It is a framework document, not proof that perpetual licences are no longer sold
+  anywhere.
+- **Maintenance (SMA) [E108]:** upgrades and unlimited support. No price or
+  percentage is published. ETAP files are forward compatible only ("backwards
+  compatibility is not supported"). A customer who lets the SMA lapse while colleagues
+  upgrade cannot open their newer files. Commercial versions 22.5.0C to 26.0.0C are
+  fully supported; 21.0.2C to 22.0.2C retire on 2026-09-01.
+
+  For Quantic: an open, versioned JSON format that newer and older releases can both
+  read (with diagnostics for unknown fields) removes a lock-in that ETAP users live
+  with.
+
 **Recent figures:** no vendor price list. The only figures found are a third-party estimate [E98]
   ("starts at about USD 5,000 per user per year"; maintenance 15 to 20%). It gives no
   source and is internally inconsistent. **Indicative only; do not quote it to clients.**

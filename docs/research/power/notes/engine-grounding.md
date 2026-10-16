@@ -93,9 +93,16 @@ resistance Rm is printed identical to the grid resistance R1, ρ/(πLc)·[ln(2Lc
 k1·Lc/√A − k2]. With Rm = R1, the combining formula
 Rg = (R1·R2 − Rm²)/(R1 + R2 − 2Rm) reduces to Rg = R1 for any rod bed. So rods would
 have no effect, which contradicts the standard's own next sentence ("lower than the
-earth resistance of either component alone"). The printed Rm is therefore wrong. We do
-not own a second source with the correct expression (Schwarz 1954 or IEEE 80).
-**Do not code Rm from DZS 691.** Get it from IEEE 80 or the Schwarz paper first.
+earth resistance of either component alone"). The printed Rm is therefore wrong.
+
+**Correct form from an owned source:** Morley eq. 7.12 (sec. 4 below, checked on the
+rendered page on 2026-10-15) gives Rm = ρ/(πL)·[ln(2L/ℓ) + k1·L/√B − k2 + 1], with ℓ the
+length of one rod. It differs from R1 in the log argument (2L/ℓ instead of 2L/a') and
+in the added +1, so Rm ≠ R1 and the rods take effect. (Correction, 2026-10-16: an
+earlier line here said we owned no second source. Morley is one, and it was already in
+this note.) **Code Rm from Morley eq. 7.12, never from DZS 691 A.17.** Cite both the
+erratum and the source in the code comment, and cross-check against IEEE 80 if it is
+bought.
 
 Minor: eq. 42 is introduced as "an expansion of Equation (56)", a leftover number from
 IEEE 80; it expands eq. 41.
@@ -234,7 +241,7 @@ formulas and Table 7.3 shapes were not checked yet.
 1. **IEEE 80 is still needed** (corrected 2026-10-15 after reading DZS 691 in full,
    sec. 1b). DZS 691 supplies the limits, Cs and the resistance estimates, but defers
    Em, Es, Df and conductor sizing to IEEE 80 and ZS IEEE 837, and its Schwarz Rm is
-   misprinted. IEEE 80-2013 moves up the purchase list (engine-index).
+   misprinted (use Morley eq. 7.12 instead). IEEE 80-2013 moves up the purchase list (engine-index).
 2. Mine-specific grounding rules. DZS 418 (Electrical Safety Code) applies generally,
    with mine rules on top. Find the Zambian mining regulations' electrical part and
    South African rules (SANS 10108 and others).
