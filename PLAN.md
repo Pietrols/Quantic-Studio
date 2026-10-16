@@ -1461,7 +1461,7 @@ Change record: none
 
 ### WP-2.13 Power reference-product research: industrial and transmission competitors
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit a8c3efee75b303ba7bb2c41d569a826585a0c79a | 2026-10-16
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/power/other-products.md`
