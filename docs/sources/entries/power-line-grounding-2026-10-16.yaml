@@ -1,0 +1,52 @@
+id: power-line-grounding-2026-10-16
+accessed: 2026-10-16
+wp: WP-2.11
+purpose: Study-specific line and neutral reductions, GIC inputs and independent arithmetic checks
+source_ids: W206 through W217 in docs/research/power/powerworld.md
+primary_sources:
+  - https://www.powerworld.com/knowledge-base/gic-modeling-data-requirements
+  - https://www.powerworld.com/knowledge-base/gic-line-taps
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/GIC_Analysis_Sensitivity_Analysis.htm
+  - https://www.powerworld.com/files/TransLineCalcHelp2.pdf
+  - https://opendss.epri.com/LineGeometry.html
+  - https://opendss.epri.com/LineCode1.html
+  - https://opendss.epri.com/LineModelRevision.html
+  - https://www.digsilent.de/en/faq-reader-powerfactory/How_to_model_a_4_wire_cable_in_PowerFactory.html
+  - https://etap.com/product/line-constants
+  - https://www.nerc.com/globalassets/standards/projects/2013-03/gic-application-guide-2013_approved.pdf
+  - https://www.powerworld.com/knowledge-base/example-of-geomagnetic-induced-current-gic-calculations
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/GIC_Analysis_TimeVaryingElectricField.htm
+inspection:
+  - TransLineCalc v2, dated 2013-04-22, input descriptions and sections 3.1 to 3.4 read; printed p.15, PDF p.17, rendered with Poppler and visually checked.
+  - NERC public December 2013 Application Guide, chapter 2 nodal method and practical details read selectively; printed pp.16 and 18, PDF pp.19 and 21, rendered and visually checked.
+  - Public HTML sources read. PowerFactory FAQ public answer establishes representation boundaries; the calculation attachment link generated a duplicate-path 404 and direct public-path retrieval also failed.
+authored_verification:
+  data_origin: Original normalized resistances, sources and complex matrices; no equipment ratings or vendor/book networks.
+  reproducibility_inputs:
+    aggregate_case: Per-phase line resistance 6, each winding resistance 3, shared earth resistances 1 and 2, induced source 14. Aggregate branch resistance 2, series winding plus earth resistances 2 and 3. Nodal voltages [-4, 6], aggregate current 2, per-phase current 2/3.
+    tap_case: Split aggregate branch into two resistance-1 segments with sources 5 and 9; no earth path at the tap.
+    sensitivity_case: Central source perturbation 1e-4; analytic current derivative 1/7.
+    floating_case: Two-node matrix [[0.5, -0.5], [-0.5, 0.5]].
+    neutral_case: R=diag(2,3,4,5)+0.1*ones(4,4); X=diag(0.4,0.5,0.6,0.7)+0.2*ones(4,4); Z=R+jX. Phase currents [1+0.2j,-0.4+0.3j,0.1-0.5j]. Eliminate fourth conductor under zero neutral voltage drop.
+    two_port_case: Distributed z=0.04+0.3j, y=0.002+0.1j, length=0.7; compare exact pi, full two-port and cascade of two length-0.35 two-ports.
+    field_case: Uniform Cartesian field [0.7,-0.2], endpoints [0,0] and [2,-0.4], tap [0.3,1.1]. Nonuniform counterexample E_x=x on [0,2], exact integral 2.
+    numerical_thresholds: Normalized identity residuals below 1e-12, sensitivity error below 1e-10, naive-neutral-deletion difference above 1e-3; not physical engineering acceptance tolerances. Last-digit outputs may depend on numerical runtime.
+  aggregate_energy_residual: 3.553e-15
+  split_tap_current_difference: 8.882e-16
+  source_sensitivity_error: 4.742e-12
+  neutral_schur_residual: 4.578e-16
+  naive_neutral_deletion_difference: 6.758e-03
+  exact_pi_two_port_residual: 1.682e-16
+  half_line_cascade_residual: 3.469e-18
+  other_checks: KCL, phase/aggregate scaling, floating rank, reciprocity, Cartesian field additivity and nonuniform-field counterexample PASS.
+limits:
+  - Arithmetic checks ran in scratch only; no production solver, API, dependency, contract or implementation permission added.
+  - Historical guidance is not evidence of current software defaults or compliance with a current standard.
+  - Vendor conductor identification ranking is not a unique physical inverse solution.
+  - No exact spatial interpolation/file schema inferred from uncertain coarse-grid help wording.
+  - Matrix reductions require stated neutral voltage, frequency and earth-return conditions.
+  - Physical magnetic, harmonic, thermal and protection models need separate references and validation.
+terms: >-
+  Original paraphrase and mathematical reasoning only. Public access is not a
+  redistribution grant. No source PDF, image, vendor model, conductor database,
+  worked example, parameter table or benchmark case is included.
