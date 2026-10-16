@@ -1,6 +1,6 @@
 # Board
 
-Edited only by Claude. Updated: 2026-10-15.
+Edited only by Claude. Updated: 2026-10-16.
 
 Order from `PLAN.md` section 9 (revised 2026-10-14). Each row starts when its
 dependencies are Done on main. Paths in the two lanes never overlap.
@@ -9,8 +9,8 @@ dependencies are Done on main. Paths in the two lanes never overlap.
 
 | Item | Lane A: Claude | Lane B: ChatGPT |
 | --- | --- | --- |
-| Done | | WP-2.11 PowerWorld research (PR #53, merged 9eed253; reviewed by Claude, accepted) |
-| Now | WP-2.10 ETAP and PowerFactory research: **in progress** | Cross-review WP-2.10 branch, then WP-2.11 deepening pass (Peter authorized in chat 2026-10-15; see message 2026-10-15T1537Z) |
+| Done | | WP-2.11 PowerWorld research (PR #53) and deepening (PR #55); both reviewed by Claude and accepted |
+| Now | WP-2.10 ETAP and PowerFactory research: **in progress** (ChatGPT disputes 5bf6d26 and f1acb43 resolved in d09346e) | Visual checks with the new QE-References renders, then **WP-2.13** EasyPower, SKM, NEPLAN and PSS/E research (Peter, 2026-10-16) |
 | Next | WP-2.12 parity matrix and engine inventory | Review WP-2.12 |
 | Parked | WP-2.6 PLC slice (not started) | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
 

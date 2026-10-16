@@ -1459,6 +1459,38 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-2.13 Power reference-product research: industrial and transmission competitors
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/power/other-products.md`
+
+Added 2026-10-16 on Peter's chat instruction to continue the research phase. It covers
+the products a Copperbelt mine or consultancy compares with ETAP: EasyPower, SKM
+PowerTools, NEPLAN and Siemens PSS/E.
+
+Steps:
+
+1. For each product, read the public sources: product and module pages, help or user
+   manuals, release notes, licence and pricing pages, training material, validation
+   papers and dated user reports.
+2. Write one dossier following `docs/research/power/README.md`, with one section per
+   product, citing every claim and paraphrasing only. Use the shared matrix row IDs
+   (D, G, S, F, P, A, M, T, H, C), and add product-specific rows only where needed.
+3. Keep the WP-2.11 evidence discipline: unknown is not absent, vendor claims stay
+   vendor claims, and dated prices are observations, not quotes.
+
+Reference: the sources listed in the dossier.
+
+Acceptance:
+
+- The dossier covers every template section for each product, every claim cites a
+  numbered source, the gaps list is explicit, and the text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
 **Implementer stop point:** A model stops after its assigned engine WP merges and
 hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
 choices; all builds, acceptance, CI checks and merges are performed by the agents.
