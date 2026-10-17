@@ -9,9 +9,9 @@ dependencies are Done on main. Paths in the two lanes never overlap.
 
 | Item | Lane A: Claude | Lane B: ChatGPT |
 | --- | --- | --- |
-| Done | | WP-2.11 PowerWorld research and deepening (PRs #53, #55, #56, #59 to #62); WP-2.13 other products (PRs #57, #58). All reviewed by Claude and accepted (message 2026-10-17T0840Z) |
-| Now | WP-2.10 ETAP and PowerFactory research: **in progress**, fold in ChatGPT's relayed evidence (1305Z, 1313Z, 2321Z, 0818Z), then merge | **WP-2.14** power reconstruction requirements (added 2026-10-17) |
-| Next | WP-2.12 parity matrix and engine inventory | Review WP-2.10 and WP-2.12 |
+| Done | | WP-2.11 PowerWorld (PRs #53, #55, #56, #59 to #62); WP-2.13 other products (#57, #58); WP-2.14 reconstruction requirements (#63). All reviewed and accepted |
+| Now | WP-2.10 ETAP and PowerFactory research: finishing and merging | **WP-2.15** observed-behaviour comparison cases (added 2026-10-17) |
+| Next | WP-2.12 parity matrix and engine inventory (S, I, U tags) | Review WP-2.10 and WP-2.12 |
 | Parked | WP-2.6 PLC slice (not started) | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
 
 Engine order after research is decided from the parity matrix.

@@ -1447,14 +1447,16 @@ Owned paths: `docs/research/power/parity-matrix.md`, `docs/research/power/engine
 
 Steps:
 
-1. Merge the three dossiers into one capability matrix with our current status and the owned book that will verify each row.
+1. Merge the dossiers (ETAP, PowerFactory, PowerWorld and, since 2026-10-16, the WP-2.13 competitors) into one capability matrix with our current status and the owned book that will verify each row.
 2. List every calculation engine the products imply, which we have, which we lack, and the owned books that cover each.
+3. Tag every product cell and engine claim with one evidence class (Peter, 2026-10-17): **S** seen (stated in a cited primary source or observed in the product), **I** inferred (our reasoning from cited evidence), **U** unknown (not established; unknown is not absent).
+4. Cite the WP-2.14 R-IDs that each row depends on.
 
-Reference: the three dossiers and the owned library catalogue.
+Reference: the dossiers, `reconstruction-requirements.md` and the owned library catalogue.
 
 Acceptance:
 
-- Every dossier capability appears in the matrix; every engine row names its sources; ChatGPT has reviewed it in the channel.
+- Every dossier capability appears in the matrix; every product cell carries S, I or U; every engine row names its sources; ChatGPT has reviewed it in the channel.
 
 Learning note: none.
 Change record: none
@@ -1523,6 +1525,46 @@ Acceptance:
 
 - Every requirement has an R-ID, a cited source or a marked inference, matrix row IDs
   and an acceptance check; the text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.15 Observed-behaviour comparison cases
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.14
+Owned paths: `docs/research/power/comparison-cases.md`; in `docs/research/power/reconstruction-requirements.md` only the evidence-class amendment in step 4; in `docs/research/power/other-products.md` only the NEPLAN NP2 wording correction (channel 2026-10-17T0840Z)
+
+Added 2026-10-17 on Peter's instruction. Method taken from the public REA project
+(feature at a time; seen, inferred, unknown; rebuild and test against observed
+behaviour), applied clean-room: we compare a product's outputs on our own inputs and
+never inspect, decompile or trace its code. REA's decompilers and binary tools are
+not used on any reference product and are not added to this repository.
+
+Steps:
+
+1. Author original test networks (no vendor or textbook case data), led by the P0
+   mining workflows in WP-2.14: mill and conveyor motor start, 11 kV and 33 kV faults
+   with coordination, an arc-flash bus, a VSD harmonic case, a grounding case and an
+   islanded genset pickup. Each case is fully specified so any product can be fed the
+   same inputs.
+2. For each case, list the outputs to record from each product (values, units,
+   conventions, method and version, options) and the tolerance rule, citing R-IDs.
+3. Record which legitimate access route exists per product: free educational, demo or
+   student editions and their limits, licensed contacts, and the platform needed
+   (Windows). Dated observations, no guessed entitlements.
+4. Amend `reconstruction-requirements.md` so each R-ID carries S, I or U as in WP-2.12
+   step 3, adding U where the product behaviour is not established.
+5. Apply the NEPLAN NP2 wording correction.
+
+Reference: the four power dossiers, `reconstruction-requirements.md`, the owned library.
+
+Acceptance:
+
+- Every case is original, fully specified and linked to R-IDs; every product row names
+  an access route or states unknown; every R-ID has S, I or U; text and reference
+  guards pass.
 
 Learning note: none.
 Change record: none
