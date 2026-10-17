@@ -578,6 +578,164 @@ distinguish proposed, implemented and independently verified states. Update the
 mapping when the final parity matrix arrives. Research coverage is not a claim to
 have exhausted every source or reverse-engineered a proprietary implementation.
 
+## 9. Remaining parity rows, WP-2.16
+
+R-053 to R-063 append the uncovered rows from the
+[final parity matrix](parity-matrix.md). Earlier R-IDs remain unchanged. The order
+puts distance and differential protection first, as assigned. S below means the
+named documentary capability is supported; the proposed implementation details and
+acceptance checks remain I and all product execution remains U. The final matrix's
+older ETAP/PowerFactory cells still await their separate cell-citation audit.
+
+### R-053: Distance protection measures loops before testing zones
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: ET-S E30; PF-S P11. Matrix: P6.
+Represent CT/VT locations, ratios, polarity, phase order, primary/secondary bases,
+fault-loop selection, residual compensation convention and direction/polarisation
+before applying each sourced mho or polygonal zone characteristic. Record reach,
+timer, blocking, communication and breaker logic separately. A fault-location
+impedance or line percentage alone is insufficient to assert a relay operation.
+Acceptance: on an original feeder with declared synthetic settings, compare
+phase-loop measured impedance with an independent phasor calculation. Test an
+inside point, an outside point and the declared boundary policy for each zone;
+repeat with changed CT/VT ratios and reverse direction. Include an earth loop
+with explicit residual convention and a remote-infeed case. Trace pickup, timer,
+trip and breaker opening separately, and diagnose missing polarising or compensation
+inputs. These checks establish model behavior, not safe field settings.
+
+### R-054: Differential protection defines a physical zone and current mapping
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PF-S P11; ET-S E30; [PowerFactory busbar differential FAQ](https://faq.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-on-busbar-differential-protection.html). Matrix: P7.
+Identify every zone boundary and CT, map its current to one reference direction and
+base, and state the operating and restraint equations of the selected relay model.
+Transformer ratio/vector compensation, zero-sequence treatment, CT error/saturation,
+harmonic blocking, pickup slopes and delays require explicit model-specific inputs.
+Keep ideal phasor checks distinct from waveform and saturation studies. The cited
+FAQ describes customising a generic relay for many CT inputs; generic differential
+support does not prove an unlimited ready-made busbar model.
+Acceptance: an original ideal through-current fixture gives zero vector residual
+after ratio and direction conversion, while an internal injected imbalance gives
+the declared residual. Reverse one CT and diagnose the changed operating quantity;
+check unequal CT ratios, transformer compensation and every sourced restraint
+boundary. Exercise blocking and release only with a defined measurement model;
+trace relay trip and individual breaker openings, including one failed breaker.
+
+### R-055: Interface profiles preserve engineering meaning
+
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: PF-D P58; PW-D W8/W86. Matrix: D18.
+Allow task-oriented interface profiles, visible tools and presentation preferences
+while keeping the effective model, study options and result provenance explicit.
+Profile visibility must be distinct from calculation capability and access control.
+Acceptance: switch profiles during inspection of one study; its effective input
+hash, units and results remain identical. A hidden command remains discoverable
+through an authorised route, and unavailable capabilities give a named diagnostic.
+Profile export/import declares its schema version and handles unknown preferences.
+
+### R-056: Automatic layout preserves electrical connectivity
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PW-D W81/W93; PF-D P8/P35. Matrix: G3.
+Generate a readable network presentation from equipment and terminal data using
+explicit layout scope, anchors and grouping rules. Layout is a presentation
+operation with a reversible mapping to physical IDs, including parallel circuits,
+open devices and islands; it must not invent connections to improve appearance.
+Acceptance: auto-layout an original branched network with a ring, parallel feeder,
+open switch and isolated component. Compare terminal incidence and effective study
+input hashes before and after layout, resolve every symbol to its element, retain
+user-locked anchors and undo the layout without changing engineering data.
+
+### R-057: Composite networks retain terminal and instance identity
+
+Priority: P1. Product evidence: I. Quantic proposal: I. Evidence: ET-D; PF-D; [final matrix G4](parity-matrix.md). Matrix: G4.
+Specify hierarchical network groups with explicit external ports, internal
+connections, reusable definitions and instance overrides. Public dossier-level
+support for composite networks does not establish exact expansion or inheritance
+semantics, which remain a proposed design pending deeper primary documentation.
+Acceptance: instantiate a nested original feeder twice; expand and collapse both
+views without changing the flattened electrical graph. A single-instance override
+must not change its sibling. Detect recursive definitions and ambiguous ports,
+and trace every flattened solver terminal back to its instance path.
+
+### R-058: Spreadsheet editing is a validated model transaction
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PF-D P6/P9; PW-D W8. Matrix: G8.
+Provide filterable tables of equipment inputs and study results with stable IDs,
+units, provenance and revision labels. Clearly distinguish editable model fields
+from derived quantities; table sorting and filtering must not rebind row identity.
+Acceptance: edit two original elements after sorting their rows, verify the
+intended IDs changed, and undo the batch. Reject an invalid unit or reference with
+an element/field diagnostic and declared transaction policy. A result column must
+be read-only and visibly invalidated after a relevant input edit; exports preserve
+IDs, units, effective scenario and run revision.
+
+### R-059: Capacitor placement is a constrained discrete decision
+
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: ET-S E86/E88; PF-S P22. Matrix: S20.
+Declare candidate buses, available bank sizes and switching steps, eligible
+operating states, objective/cost basis and voltage, loading and power-factor
+constraints. Distinguish fixed placement from operating control. Screening for
+harmonic resonance and switching effects needs its own study and cannot follow
+from a fundamental-frequency optimum alone.
+Acceptance: exhaustively enumerate an original small candidate set and compare
+the proposed optimiser's objective and feasibility with that independent oracle.
+Include the zero-bank alternative, an infeasible case and multiple loading states;
+report chosen steps, binding constraints and unsatisfied conditions. Record any
+search gap or heuristic termination without claiming a proven global optimum.
+
+### R-060: Switching and phase balancing constrain feasible topology
+
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: ET-S E88; PF-S P22. Matrix: S21.
+Define allowed switching actions, normally open ties, supplied-load priorities,
+radial/meshed policy, phase reassignment eligibility and limits on operations.
+Evaluate phase balancing on the declared unbalanced network and retain neutral
+behavior where relevant. A final feasible topology does not prove the intervening
+switching sequence is safe; sequence validation is a separately reported check.
+Acceptance: enumerate a small original switch/phase candidate set with an
+independent feasibility check. Reject a prohibited loop or unsupplied required
+load, verify voltage/current constraints by phase, and distinguish a balanced
+aggregate from overloaded individual phases. Report final topology, action order,
+operation count, unmet load and any unvalidated intermediate state.
+
+### R-061: Meter allocation reconciles observability and losses
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PF-D P64; ET-D. Matrix: S25.
+Allocate demand using explicit feeder/meter boundaries, timestamps, energy versus
+power units, phase information, eligible loads and scaling constraints. Distinguish
+simple feeder scaling from an estimator with covariance and bad-data processing.
+Meter totals do not uniquely identify all downstream loads without added assumptions.
+Acceptance: on an original feeder with prescribed allocation weights, recover a
+consistent meter total while accounting for calculated losses and unmetered demand.
+Reject contradictory or stale measurements under the declared policy; record
+residuals and assumptions for an underdetermined allocation. Verify that changing
+one feeder's meter does not rescale loads outside its boundary.
+
+### R-062: DC control diagrams couple electrical duty and logic state
+
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: ET-S E85. Matrix: X-8.
+Model the battery/charger, wiring and return path, contacts, coil burden and their
+state-dependent voltage drops separately from the drawn control logic. Pickup,
+dropout, temperature and duty inputs require readable manufacturer sources; a
+conducting path alone does not prove sufficient terminal voltage to operate a coil.
+Acceptance: solve an original resistive DC loop against a hand-computed voltage
+divider, then operate a contact and verify the changed current and coil voltage.
+Include battery impedance, simultaneous duty and a broken return; distinguish an
+open circuit from zero resistance. With synthetic declared pickup/dropout values,
+check state transitions and provenance without assigning field equipment ratings.
+
+### R-063: Traction studies couple moving demand to supply topology
+
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: ET-S E90. Matrix: X-9.
+Represent the selected AC or DC traction system, substations, feeders and return
+paths, train position/time profiles and electrical boundary conditions. Document
+the vehicle demand model, regenerative limits and receptive loads before coupling
+motion and network solutions. Detailed eTraX solver equations and native parameter
+mapping remain U; package availability does not establish an equivalent implementation.
+Acceptance: use original prescribed train positions and power profiles on a small
+declared traction feeder; independently check electrical power balance and position-
+dependent path impedance. Test coincident trains, a substation outage and a
+regenerative interval with and without a receptive sink. Report curtailed energy,
+unsupplied demand and timestep sensitivity; separately validate any proposed motion
+model before treating prescribed trajectories as a coupled vehicle simulation.
+
 ## Verification order and open gates
 
 Start future numerical work with R-001 to R-008 and R-037/R-038/R-042/R-043,
