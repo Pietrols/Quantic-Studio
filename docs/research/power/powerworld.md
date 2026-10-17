@@ -1,6 +1,6 @@
 # PowerWorld Simulator research dossier
 
-Research dates: 2026-10-15 to 2026-10-16. Owner: Lane B, ChatGPT. WP-2.11, including authorized deepening passes.
+Research dates: 2026-10-15 to 2026-10-17. Owner: Lane B, ChatGPT. WP-2.11, including authorized deepening passes.
 
 This is a public-documentation study, not an executable-product benchmark. Statements
 about availability describe the cited documentation; no licensed Simulator instance
@@ -293,6 +293,16 @@ and citations are committed; downloaded source files stay outside this repositor
 | W215 | [NERC, Application Guide: Computing GIC in the Bulk-Power System, December 2013](https://www.nerc.com/globalassets/standards/projects/2013-03/gic-application-guide-2013_approved.pdf) | Public technical guide, chapter 2 selected sections; printed pp. 16 and 18 visually checked | 2026-10-16 |
 | W216 | [PowerWorld GIC calculation example and earth-model discrepancy](https://www.powerworld.com/knowledge-base/example-of-geomagnetic-induced-current-gic-calculations) | Vendor qualification of a historical benchmark | 2026-10-16 |
 | W217 | [GIC time-varying electric-field inputs](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/GIC_Analysis_TimeVaryingElectricField.htm) | Vendor help; coarse-grid format wording is incomplete | 2026-10-16 |
+| W218 | [Transient models and relationships, 2024 training](https://www.powerworld.com/files/T01ModelRelationships.pdf) | Vendor training; slides 16 and 17 visually inspected | 2026-10-17 |
+| W219 | [Transient states and manual control](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Dialog_States_Manual_Control.htm) | Vendor help | 2026-10-17 |
+| W220 | [Load Component and CompLoad](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_LoadComponent.htm) | Vendor help; fraction example contains a label inconsistency | 2026-10-17 |
+| W221 | [Transient load-model overview](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Overview_Loads.htm) | Vendor help | 2026-10-17 |
+| W222 | [Excitation limiters](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/transient_stability_overview_Excitation_Limiters.htm) | Vendor help | 2026-10-17 |
+| W223 | [Machine model validation parameter checks](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Dialog_Validation_Parameter_Check_Generator_Machine_Models.htm) | Vendor help; contradictory reactance ordering not adopted | 2026-10-17 |
+| W224 | [Distribution equivalent and MVA base](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Load_Model_Group_Distribution_Feeder_Equivalent.htm) | Vendor help | 2026-10-17 |
+| W225 | [Load characteristic selection and fractions](https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_LoadCharacteristic.htm) | Vendor help | 2026-10-17 |
+| W226 | [MathWorks anti-windup control documentation](https://www.mathworks.com/help/simulink/slref/anti-windup-control-using-a-pid-controller.html) | Independent control-tool documentation, R2026b as displayed | 2026-10-17 |
+| W227 | [SciPy solve_ivp](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html) | Solver API documentation, 1.18.0 as displayed; scratch runtime separately recorded | 2026-10-17 |
 
 ## 3. Architecture and data model
 
@@ -1630,6 +1640,166 @@ phase and sequence representations under matching assumptions, and test frequenc
 temperature, unit and base conversions. The source/inspection record is
 `docs/sources/entries/power-line-grounding-2026-10-16.yaml`.
 
+### 8.9 Dynamic-model semantics beyond the model name
+
+This pass connects the numerical-method research to model assembly and limiting.
+The equations and normalized examples identified as ours below are independent
+reasoning, not copied vendor code or a commercial-engine benchmark.
+
+#### A. Validation, substitution and initialization are separate operations
+
+Simulator's validation help says auto-correction permanently changes input data.
+It also permits unsupported models to be rejected or deactivated under different
+message policies. Thus reading a model name and completing a run do not prove that
+the original model was actually simulated. The page's zero-filter discussion says
+"time step" where the surrounding discussion concerns a time constant; no zero
+integration step is inferred from this wording. [W61]
+
+The machine-validation page explicitly cautions that corrections can make a run
+possible without making the result correct. Its bracketed reactance ordering and
+listed correction tests conflict: the prose requires an ordering which its
+correction would reverse. This is a source ambiguity, not a constraint we adopt
+or a reason to guess new reactances. A later implementation needs independently
+verified model equations and version-specific parameter rules. [W223]
+
+The States/Manual Control help exposes state derivatives and initial-limit
+violations. It says motor initialization is iterative, so a derivative need not
+be exactly zero. Transferring the current dynamic state into the power-flow case
+is an explicit action, with restore/snapshot behaviour documented separately.
+An exported power-flow snapshot is not thereby a complete dynamic restart.
+[W219]
+
+**Proposed requirement:** a result should preserve original inputs, actual model
+selection, parameter edits, run-only limit changes, initialization residuals and
+diagnostics. Permanent auto-correction differs from the temporary initial-limit
+policy already described in section 8.3. A no-event run should test drift before
+any fault or switching event is applied. [W60]
+
+#### B. Output clipping and state limiting give different trajectories
+
+The 2024 training distinguishes a windup output limiter from a non-windup state
+limit and places state enforcement before the network re-solve in its illustrative
+integration sequence. That slide is useful semantic evidence, not a complete
+algorithm for every bounded lead-lag realization. [W218]
+
+MathWorks documents clamping, back-calculation and external tracking as different
+anti-windup configurations. Cascaded actuators or feedforward can require a tracking
+signal that reflects the controller's actual actuator contribution. This independent
+reference does not establish that Simulator uses Simulink or the same numerical
+implementation. [W226]
+
+Our counterexample uses an integrator with initial state zero, input `+2` until
+`t=2` then `-2`, and limits `[-1,1]`. With an unconstrained internal state and
+clipped output, the state at `t=2.25` is `3.5` and output remains `1`. With the
+state held at its upper limit while the input pushes outward, the state/output
+at that time is `0.5`. These authored normalized values demonstrate release delay;
+they are not machine or governor settings. Record which state/output is limited,
+limit activation/release logic, rate limits and event timing separately.
+
+For the proper transfer function `(1+s*T1)/(1+s*T2)`, our elementary realization
+for positive `T2` is `zdot=(u-z)/T2`,
+`y=(T1/T2)*u+(1-T1/T2)*z`. A steady input initializes `z=u`; the feedthrough term
+matters during a step. If both time constants are zero, a declared bypass can
+replace the block. Setting only `T2=0` while `T1` remains nonzero does not give
+that bypass; it introduces an ideal derivative and needs different interface and
+input-regularity assumptions. A tiny positive constant is not automatically the
+same numerical problem as an algebraic block. [W61]
+
+Excitation limiter help distinguishes UEL, OEL and stator-current limiting, with
+activation states and dynamics beyond static reactive capability bounds. A static
+Mvar clamp is therefore insufficient to establish dynamic limiter parity.
+[W222]
+
+#### C. Resolve load composition before assembling equations
+
+Simulator permits a fractional motor/dynamic characteristic together with a static
+remainder, in addition to composite models. Thus two active characteristic records
+do not by themselves establish double counting. Load distributed generation,
+distribution equivalent and independent relay assignments are additional concepts.
+Each needs a resolved role in the assembled equations. [W221]
+
+The characteristic-selection help documents inherited assignment and separate
+selection for static and motor behaviour. Some dynamic models consume the whole
+load; others carry a fraction, leaving a static remainder. Small-load and model
+filters can substitute algebraic behaviour. Proposed provenance should therefore
+show the effective selection and its origin, including skipped models, rather than
+reporting only the load's directly attached record. [W225]
+
+CompLoad fractions allocate MW; components determine initial Mvar using their own
+characteristics, with a reactive mismatch reconciled through an internal shunt.
+The help documents remainder/normalization/error cases, whose effective fractions
+can differ from stored user inputs. Its illustrative remainder text uses an
+inconsistent fraction label; no exact parser behaviour is inferred from that
+example alone. A resolved-fraction ledger should preserve raw and used values,
+missing component status and normalization diagnostics. [W220]
+
+Our normalized compensation example holds component reactive demands at
+`[0.18,0.12,0.25]` solely to isolate the shunt contribution. At initial voltage `1`
+and target load `Q=0.4`, capacitive susceptance `B=0.15` reconciles the total:
+`Qnet=sum(Qcomponents)-B*V^2`. At voltage `0.8` the toy net is `0.454`, not `0.4`.
+Replacing the shunt with a constant reactive correction changes this response.
+Real component demands also respond to voltage, frequency and states; this toy
+does not validate those responses or identify a physical installed capacitor.
+
+#### D. Distribution equivalents create another initialization problem
+
+The distribution-equivalent help describes moving loads and distributed generation
+behind an internal transformer/feeder representation during dynamics. Assignment
+and parameter base can resolve from different levels; some composite models already
+contain their own equivalent and supersede a separate assignment. The documented
+initialization can adjust taps, reconcile reactive shunts and iterate with load
+initialization. Special base/voltage rules and effective parameter changes must be
+recorded; we do not adopt their numerical defaults or ambiguous edge cases.
+This internal equivalent is not evidence of a general distribution-EMT solver.
+[W224]
+
+The older motor-start note distinguishes a motor initially running from one started
+during the simulation. The latter needs startup-consistent states and mechanical
+load treatment, rather than a pre-fault running slip. Its June 2013 restriction on
+synchronous-machine closing is explicitly historical and does not establish a
+2026 product limitation. [W97]
+
+Our independent mechanical identity uses `J*domega/dt=Te-Tload`,
+`Pnet=(Te-Tload)*omega`, and `Ekin=J*omega^2/2` in normalized consistent units.
+Mechanical torque and electrical MW are not interchangeable input names; their
+bases and speed factor matter. At zero speed, a finite torque can coexist with
+zero mechanical power, so reconstructing torque as `P/omega` is not a general
+startup model. Equivalent-circuit, electromagnetic and loss models still require
+separate verified references.
+
+#### E. Dense output sampling does not guarantee event detection
+
+SciPy documents that `t_eval` specifies stored output times, while event detection
+looks for sign changes over internal steps and can miss multiple crossings in one
+step. It also exposes event direction and terminal behaviour. These are independent
+solver semantics, not evidence of Simulator's root finder or of native DAE support
+in `solve_ivp`. [W227]
+
+Our counterexample uses `x'=0` and event function
+`g(t)=(t-0.25)*(t-0.75)` on `[0,1]`. A single internal step misses both roots even
+with 101 requested output samples. Restricting the step to `0.1` finds both roots.
+These authored normalized times are not protection delays. A future hybrid engine
+needs separate treatment of scheduled events, continuous guards, limit switches,
+simultaneous-event ordering and reinitialization, not just a dense result grid.
+
+#### F. Reproducible normalized checks
+
+Scratch checks used SciPy `1.18.1`; the public reference page displayed `1.18.0`.
+No vendor executable, example dataset or production code was used.
+
+| Check | Result | Boundary |
+| --- | --- | --- |
+| Saturation release | At `t=2.25`, clipped-output case `1`, bounded-state case `0.5` | Authored piecewise integrator, not a vendor governor |
+| Lead-lag realization against analytic step | Maximum error `8.889e-12` | Positive time constants; independent scalar integration |
+| Fraction/reconciliation algebra | Fractions sum to one; `B=0.15`, toy `Qnet(0.8)=0.454` | Component reactive demands deliberately fixed for this check |
+| Event detection versus output sampling | 101 stored points miss both roots with one internal step; bounded steps recover `0.25,0.75` | Continuous polynomial guard, not physical relay validation |
+| Torque/work/kinetic-energy consistency | Residual `2.776e-17` | Authored normalized constant-torque system |
+
+Inputs and numerical identity thresholds are recorded in
+`docs/sources/entries/power-dynamic-semantics-2026-10-17.yaml`. Later engineering
+tests must add independently sourced machine/load parameters, meaningful tolerances,
+event sequences and actual build/version provenance.
+
 ## 9. Gaps, qualification ledger and parity handoff
 
 ### 9.1 Coverage and stopping rule
@@ -1644,7 +1814,8 @@ adds 31 primary sources on detailed controls/topology, independent mathematical
 engines and licence boundaries, plus original verification requirements in
 sections 8.3 to 8.6. A further ten sources support the cross-product comparison in
 section 8.7. Twelve further sources deepen line/neutral/grounding mechanisms and
-original arithmetic checks in section 8.8, bringing the ledger to 217 entries. This does not
+original arithmetic checks in section 8.8. Ten additional primary sources support
+dynamic semantics and original checks in section 8.9, bringing the ledger to 227 entries. This does not
 claim that an unbounded web corpus is exhausted.
 
 The following gaps name why this research cannot turn them into supported product
