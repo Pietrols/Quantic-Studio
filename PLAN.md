@@ -1626,7 +1626,7 @@ Change record: none
 
 ### WP-2.18 Cell-level citations for older ETAP and PowerFactory matrix cells
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 0a1e023 | 2026-10-17
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.12
 Owned paths: `docs/research/power/parity-matrix.md`
