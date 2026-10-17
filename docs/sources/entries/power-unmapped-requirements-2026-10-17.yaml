@@ -1,0 +1,34 @@
+id: power-unmapped-requirements-2026-10-17
+accessed: 2026-10-17
+wp: WP-2.16
+purpose: Documentary support and boundaries for appended requirements R-053 to R-063
+method: Public primary web text and existing dossier source indices; no product execution or example-project import.
+sources:
+  - id: E30-recheck
+    url: https://etap.com/en/product/starz-distance-relay-coordination
+    observed: Distance and differential functions advertised; relay-setting workflow is documentary evidence, not a validated numerical model mapping.
+  - id: P11-recheck
+    url: https://www.digsilent.de/en/protection-functions.html
+    observed: Distance and differential models, R-X diagrams, zone reaches, harmonic blocking and CT/VT models; RMS/EMT require separate licences.
+  - id: differential-boundary
+    url: https://faq.digsilent.de/en/faq-reader-powerfactory/do-you-have-an-example-on-busbar-differential-protection.html
+    observed: FAQ describes adapting Generic 87L for additional CT inputs, direction and ratio conversion, and logic-block limits. Attachment not downloaded or executed; no vendor example values reused.
+  - id: P22-recheck
+    url: https://www.digsilent.de/en/distribution-network-tools.html
+    observed: Capacitor placement, tie open point optimisation and phase balancing documented; heuristics and scenario constraints do not prove global optimality.
+  - id: E86-recheck
+    url: https://etap.com/en/product/optimal-capacitor-placement
+    observed: Capacitor placement product page retrieved; requirements retain declared objectives and constraints as authored proposals.
+  - id: E88-recheck
+    url: https://etap.com/packages/distribution-network-optimization
+    observed: Distribution optimisation package page retrieved; no native solver equation or parameter mapping established.
+  - id: E90-recheck
+    url: https://etap.com/packages/traction-power-analysis-simulation
+    observed: Traction power package page retrieved; exact eTraX solver and native input equivalence remain unknown.
+existing_evidence:
+  indices: docs/research/power/notes/etap-sources.md and docs/research/power/notes/powerfactory-sources.md
+  other: PowerWorld dossier W8/W81/W86/W93; existing P6/P8/P9/P35/P58/P64 and E85 entries, without reclassifying dossier gaps.
+boundaries:
+  - All acceptance checks are future independent Quantic obligations, not performed vendor checks.
+  - R-057 composite semantics are I because dossier and matrix capability labels do not establish expansion or inheritance behavior.
+  - No standard setting, empirical coefficient, manufacturer threshold, textbook worked example or proprietary implementation is supplied.
