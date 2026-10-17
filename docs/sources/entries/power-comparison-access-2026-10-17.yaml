@@ -1,0 +1,66 @@
+id: power-comparison-access-2026-10-17
+accessed: 2026-10-17
+wp: WP-2.15
+purpose: Dated legitimate access routes and restrictions for original comparison cases
+method: Public primary pages and selected PDF text read; no registration, account use, activation, installer download or product execution.
+sources:
+  - id: CA1
+    url: https://www.powerworld.com/download-purchase/demo-software
+    observed: V24 evaluation/education demo with 13 buses and listed advanced add-ons; Windows 64-bit desktop requirement. Exact installed capabilities and project-use rights not tested.
+  - id: CA2
+    url: https://etap.com/demo-request
+    observed: Thirty-day evaluation routes, corporate-account requirement, browser and local demo options; limited editing and output routes. Accepted license and output retention rights not inspected in an activated session.
+  - id: CA3
+    url: https://etap.com/docs/default-source/whats-new/etapdemo_live_features_and_restrictions.pdf?sfvrsn=d880267c_19
+    citation: Two-page document marked AUG2023, currently linked by CA2; both pages' text inspected.
+    observed: Online demo limits, available study list and excluded ground-grid, motor-estimation and UDM modules. Date/version drift must be checked at enrollment.
+  - id: CA4
+    url: https://www.digsilent.de/en/software-editions-licensing.html
+    observed: Twenty-eight-day evaluation, browser streaming, demo exclusions of DGS/exports/API; student and academic eligibility and restrictions. No demo node count established in inspected text.
+  - id: CA5
+    url: https://neplan.ch/informationbox/licensing-2/
+    observed: Fifteen-node NEPLAN 360 Free Student Version; noncommercial eligibility, distinct from CA6.
+  - id: CA6
+    url: https://neplan.ch/en-demo-request/
+    observed: Fifty-node six-month demo/student route, selected core studies, noncommercial cloud use through installed App; exact offered route and client OS untested.
+  - id: CA7
+    url: https://www.easypower.com/pricing-and-demo
+    observed: Free demonstration/trial request and personal demonstration route; purchase refund period is not a free-trial duration.
+  - id: CA8
+    url: https://www.easypower.com/pricing-and-demo/livedemo
+    observed: Page reports all online demo slots occupied at access; availability may change.
+  - id: CA9
+    url: https://www.skm.com/contact.html
+    observed: Vendor contact route exists; no contact was sent and no current demo entitlement established.
+  - id: CA10
+    url: https://www.skm.com/downloads.html
+    observed: Licensed software downloads through My SKM; public support files do not establish a free solver entitlement. Old generic OS requirements are not treated as current V11 certification.
+  - id: CA11
+    url: https://assets.ctfassets.net/17si5cpawjzf/2bmyCWcftF05pQ5w9nQjca/26f7b562e1201962c0c08ead2bfa9666/PSS-E-Product-Sheet.pdf
+    citation: Effective June 25, 2025; delivery, modules, license types and monthly restrictions, PDF pages 1-4.
+    observed: Order-defined module/subscription and download route; monthly fixed physical-PC restrictions do not apply to every deployment. Free/demo/student entitlement for our cases remains unknown.
+boundaries:
+  - Public availability of an evaluation offer does not prove eligibility, permission to publish comparative results or commercial project use.
+  - Source-defined module availability is distinct from exact mathematical model entry, automatic export and adequate result precision.
+  - No account, licensed collaborator or Windows installation is confirmed for these cases.
+  - Search noise and failed page retrievals were discarded; only primary pages listed here support access statements.
+authored_inputs:
+  origin: Entirely new synthetic circuit, mechanical, relay, enclosure, harmonic and soil values in comparison-cases.md; no vendor or textbook case data.
+  methods: Glover/Kundur/Das reference methods cited through power-reconstruction-book-methods-2026-10-17; no new book content redistributed.
+  tolerance_policy: Authored numerical research gates, not standard or site acceptance limits; exact-model mapping required before a numerical verdict.
+authored_checks:
+  execution: Independent scratch Python arithmetic only; no reference product or production adapter invoked.
+  runtime: SciPy 1.18.1, NumPy 2.4.6.
+  input_reference: comparison-cases.md, C-01 to C-07, exact equations and synthetic inputs.
+  motor_options: SciPy solve_ivp, rtol 1e-10, atol 1e-12, maximum step 0.001 s; intervals split at switching events. Independent speed quadrature epsabs 1e-10; crossing-speed agreement below 1e-8 pu.
+  motor_results: C-01A reaches speed 0.8 at 3.9285907030071447 s and ends at 0.9794802674006711 pu; C-02A ends at 0.9829906027650187 pu. High-load C-01B initial acceleration is -0.24782778973703234 pu/s.
+  design_iteration: Initial scratch supply impedance did not permit the intended successful baseline start; before publication it was replaced by the now-specified authored Zs/Zf. No acceptance tolerance was changed and no vendor evidence was altered.
+  fault_results: F11 three-phase bolted current 1917.490900510099 A; L opening 0.08729776557790497 s after fault, before H trip 0.15505271230989942 s if energized.
+  fault_sweep: Sixteen direct phase-circuit solves for the two locations, four fault types and two fault impedances; maximum specified fault-boundary residual 3.885780586188048e-16 pu. SLG phase result independently agrees with the sequence expression below 1e-12 pu. No commercial standardized-fault algorithm or full transformer-side reconstruction checked.
+  arc_results: Only the linear bolted-current circuit checked; total phasor magnitude 92460.90853892328 A. No normative arc calculation or energy verdict.
+  harmonic_results: Scalar admittance peak search gives 795.4138974008438 Hz and 57.82965138559498 ohm; scan-grid refinement and vendor comparisons not performed.
+  genset_options: Two-state affine matrix exponential versus solve_ivp, rtol 1e-11, atol 1e-13, maximum step 0.001 s, two seconds after pickup from the pre-event state.
+  genset_result: Maximum sampled state difference 1.1102230246251565e-16 pu; pickup equilibrium 49.57782685431614 Hz; constrained trajectory not independently checked.
+  ground_grid: No field solution executed; current/potential scaling is specified as a future check, not recorded as a passed test.
+  limits: These checks establish internal fixture arithmetic, not physical equipment validity, source-standard conformity or commercial-product equivalence. Full relay timeline integration, field solution and all normative arc coefficients remain future independent verification work.
+terms: Metadata and paraphrased observations only; no installers, source PDFs, vendor models or proprietary output redistributed.
