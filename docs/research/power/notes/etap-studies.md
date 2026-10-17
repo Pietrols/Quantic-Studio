@@ -607,3 +607,30 @@ Core analysis groups and modules, as ETAP structures them:
   - "why is this curve missing" alerts suit our diagnostics-with-field approach;
   - COMTRADE export (IEEE C37.111) of simulated faults is a cheap, valued feature that
     links protection to EMT (`engine-emt.md`).
+
+## Getting Started guide: harmonics and stability (E110; relayed 2026-10-16)
+
+Evidence classes: S seen in the cited source, I our inference, U unknown.
+
+ChatGPT recovered the combined Getting Started guide (130 PDF pages), which closes the
+failed tutorial fetches in dossier gap 3. Its printed pages 71 to 78 cover:
+
+- **S** Harmonics: frequency scan and harmonic load flow are separate runs; results are
+  plotted for selected buses and shown on the one-line.
+- **S** Transient stability: events hold actions (for example a fault applied then
+  cleared), machine models are selected per machine, and a time slider steps through
+  results on the one-line.
+- **U** The integration method, step defaults and harmonic solution method are not
+  stated. The screens are historical workflow evidence, not 2026 defaults.
+- **I** For Quantic: event payload, solver step, stored sample and plot selection stay
+  separate objects; changing what is plotted must never change what is solved.
+
+## Hosting capacity (E111, E112; relayed 2026-10-16)
+
+- **S (relayed)** The product page offers nodal, stochastic and impact analysis with
+  voltage and thermal constraints and smart-inverter functions [E111]. Not re-read by
+  Claude: the fetch was not permitted on 2026-10-17.
+- **S** ETAP announced US patent 12244141 for hosting-capacity analysis [E112].
+  **U** its claims and scope. Before Quantic implements any hosting-capacity method, the
+  patent's claims need reading and Peter's decision; general power-flow-constrained
+  methods from the literature are a separate route.

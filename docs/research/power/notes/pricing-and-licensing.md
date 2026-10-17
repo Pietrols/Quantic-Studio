@@ -2,7 +2,7 @@
 
 Why this matters: Quantic is a business. Its price and licence model must make sense
 against what mines and consultancies in Zambia and southern Africa pay today. Vendors
-do not publish price lists, so every figure here is labelled with its evidence quality.
+ETAP and PowerFactory do not publish price lists (PowerWorld does), so every figure here is labelled with its evidence quality.
 
 ## PowerFactory
 
@@ -116,8 +116,9 @@ net prices to the US government, not ordinary commercial list prices (ChatGPT re
 
 ## What this suggests for Quantic (proposal for Peter, not a decision)
 
-1. **Observed price points, each tied to its own source and configuration** (no
-   general list price is established for any of the three):
+1. **Observed price points, each tied to its own source and configuration** (ETAP and
+   PowerFactory publish no general list price; PowerWorld publishes commercial prices,
+   but no single package price applies across configurations):
    - PowerFactory: EUR 7,160 for a 250-node, one-user Base Package bought by a
      university in 2025, plus 16% a year maintenance [P84];
    - ETAP: USD 5,169 (50 buses) to USD 18,227 (unlimited) for an industrial study

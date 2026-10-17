@@ -82,3 +82,30 @@ Add a "benchmarks" section to WP-2.12 `engines.md` with one row per engine:
 Each engine WP then makes its benchmark a required test. The two purchases with the most
 verification value are IEC TR 60909-4 (IEC short circuit) and IEEE 399 (ANSI duty and
 load flow).
+
+## Limits of ETAP's comparison document E94 (ChatGPT relay 1313Z; accepted 2026-10-17)
+
+ChatGPT read further pages of the combined validation PDF. These limit what each ETAP
+comparison proves; they do not change which original publications we reproduce.
+
+- **S** TCS-ULF-002 (pp. 30 to 32) uses a modified IEEE feeder (upstream replacement,
+  endpoint loads, approximate single-phase load), not the unchanged full feeder.
+- **S** TCS-HA-001 (pp. 33 to 35) corrects the published spectrum inputs and uses
+  absolute error. **I** No general relative-accuracy claim follows.
+- **S** pp. 23 to 29 mix hand-calculation comparisons with same-product consistency
+  checks; these are different evidence classes.
+- **S** pp. 46, 49 and 54 estimate unavailable inertia, damping, controller or loading
+  data in some dynamic comparisons.
+- **S** TCS-TS-295 (pp. 52 to 54) rebuilds instantaneous waveforms from recorded RMS
+  magnitude, frequency and angle. **I** This is not evidence of an EMT network solve.
+- **S** TCS-TS-181 (pp. 60 to 66) is a historical PSS/E comparison; p. 65 reverses the
+  usual motor slip sign convention.
+
+**Rule for Quantic (I):** every comparison case records which of these classes it is
+(published reference, hand calculation, same-tool consistency, estimated data,
+reconstructed signal). WP-2.15 uses this field.
+
+**Data licence caveat (ChatGPT 1300Z; checked 2026-10-17):** the MATPOWER licence states
+that its bundled case files are not covered by the BSD licence. The table above says
+pandapower ships `case9`; treat that as availability, not redistribution permission,
+and check provenance per case before any case data enters the repository.
