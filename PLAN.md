@@ -1531,7 +1531,7 @@ Change record: none
 
 ### WP-2.15 Observed-behaviour comparison cases
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 2146242 | 2026-10-17
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.14
 Owned paths: `docs/research/power/comparison-cases.md`; in `docs/research/power/reconstruction-requirements.md` only the evidence-class amendment in step 4; in `docs/research/power/other-products.md` only the NEPLAN NP2 wording correction (channel 2026-10-17T0840Z)
