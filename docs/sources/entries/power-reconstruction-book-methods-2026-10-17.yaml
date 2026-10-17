@@ -1,0 +1,33 @@
+id: power-reconstruction-book-methods-2026-10-17
+accessed: 2026-10-17
+wp: WP-2.14
+type: local-reference-verification
+purpose: Page-cited method checks for proposed original acceptance fixtures, not copied worked examples
+inspection: Privately supplied page-tagged embedded text read through the authorized GitHub connection. No new PDF rendering or complete textbook case reproduction in this pass.
+references:
+  - id: glover-2017-power-system-analysis-design
+    title: Power System Analysis and Design
+    authors: J. Duncan Glover, Thomas J. Overbye, Mulukutla S. Sarma
+    edition: sixth
+    year: 2017
+    citation: Printed pages 352 and 356-357, sections 6.5 and 6.6; PDF pages 372, 376-377.
+    verified_method: Reactive-limit handling and alternative retained/reduced voltage-control equations; mismatch/Jacobian inspection and iteration stopping.
+    boundary: Text inspection supplements the existing selected-page render ledger in powerworld.md section 8.1. No complete input/output dataset newly verified.
+  - id: kundur-1994-power-system-stability
+    title: Power System Stability and Control
+    author: Prabha Kundur
+    edition: first
+    year: 1994
+    citation: Printed pages 285-287 and 299-301, sections 7.2 and 7.2.6; PDF pages 307-309 and 321-323; equations 7.37-7.39 and 7.79-7.81.
+    verified_method: Motor slip/reference convention, accelerating torque with combined rotor/load inertia, speed-dependent mechanical load and per-unit conversion; fundamental-frequency stability-model simplification.
+    boundary: OCR notation is imperfect. Use independent dimensional/mechanical identities and inspect source page images before implementing ambiguous symbol-level equations. No OCR repair adopted as a numerical rule.
+  - id: das-2002-power-system-analysis
+    title: 'Power System Analysis: Short-Circuit Load Flow and Harmonics'
+    author: J. C. Das
+    edition: first
+    year: 2002
+    citation: Sections 12.11.1-12.11.2 (PDF 438-439), 18.5.1 (PDF 624-625), 19.1.2 and 19.1.4 with adjacent equations 19.4-19.8 (PDF 636-637). Printed page numbers absent from supplied text.
+    verified_method: Initial starting-voltage snapshot versus acceleration history; starter/network interaction; harmonic network assembly per frequency, unit-current impedance scan and source phase dependence.
+    boundary: Historical typical motor currents, power factors, voltage tolerances and standards limits are not adopted. Worked inputs/answers and diagrams are not copied. Any apparent symbol/sign ambiguity requires source-image verification before use.
+terms: Reference use only. No source text, tables, figures, worked examples, case files or equipment parameters are redistributed.
+used_by: docs/research/power/reconstruction-requirements.md

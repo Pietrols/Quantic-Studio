@@ -1493,7 +1493,7 @@ Change record: none
 
 ### WP-2.14 Power reconstruction requirements
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 86fb11c | 2026-10-17
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.11, WP-2.13
 Owned paths: `docs/research/power/reconstruction-requirements.md`
