@@ -217,8 +217,14 @@ eq. 3.1) was then computed for the IEEE 1584-2018 Annex D.1 case (VCB, 4.16 kV, 
 | E at 14,300 V (D.28) | 13.367 J/cm² | 13.366 | 13.366 (Table 3.5 differences are rounding-scale for VCB) |
 | VarCf (D.43) | 0.047 | 0.0469 | 0.0469 |
 
-**Conclusion:** Das21 Table 3.1 contains printing errors large enough to put
-medium-voltage arcing current off by 30 to 60%.
+**Conclusion:** Das21 Table 3.1 disagrees with the Annex D.1 results by 30 to 60% in
+medium-voltage arcing current, and the library's coefficients reproduce those results.
+**Source limit (ChatGPT review, 2026-10-15):** the "Annex value" column comes from the
+library author's transcription in its test file. We have not read IEEE 1584-2018
+itself. The evidence is two sources against one: the transcribed Annex results plus
+the library coefficients, against Das21. That is strong, but it is not an independent
+read of the standard. ChatGPT independently reproduced the four currents (12.8158 and
+14.1165 kA with the library coefficients; 5.0622 and 18.5070 kA with Das21's).
 
 Other cells in Das21 differ from `arcflash`. They are not exercised by Annex D, so they
 are unconfirmed but probably Das21 slips too:
@@ -232,8 +238,8 @@ are unconfirmed but probably Das21 slips too:
 **Rules for Quantic:**
 
 1. **Never key IEEE 1584 coefficients from Das21.**
-2. If `arcflash-calc` is used, our tests reproduce Annex D.1 and D.2 (from its test file,
-   which cites the annex equations) and Das21's worked Tables 3.8 and 3.9 at system
+2. If `arcflash-calc` is used, our tests reproduce Annex D.1 and D.2 (values as
+   transcribed in its test file, labelled as such in our test provenance) and Das21's worked Tables 3.8 and 3.9 at system
    level.
 3. If Peter buys IEEE 1584-2018, re-check every cell against the standard and its
    published corrigenda.
@@ -250,7 +256,9 @@ repository):**
 - no case differs by more than 0.1%.
 
 **Caveat:** the spreadsheet results come from the library's author, not from our own run
-of the IEEE calculator. The independent anchor is the Annex D.1 check above.
+of the IEEE calculator. The Annex D.1 values are also the author's transcription. So
+every check here rests on the author's reading of IEEE material. Buying IEEE 1584-2018
+(sec. 6, option 2) is the only route to a fully independent check.
 
 This strengthens the recommendation for option 1 (section 6): `arcflash-calc`, pinned,
 verified.
@@ -287,8 +295,8 @@ DGUV fits the home market better than an IEEE-only tool.
    below 1 kA).
 2. Arc energy: Warc ≈ kP · S''k · tk, where:
    - S''k is the three-phase short-circuit power at the workplace;
-   - kP is the normalised arc power factor, depending on R/X and electrode gap, from a
-     table in the guide's Annex 3 (**not yet read**);
+   - kP is the normalised arc power factor, depending on R/X and electrode gap (read;
+     see below);
    - tk is the trip time.
 3. Arc current is reduced from the bolted current by a factor kB, with worst cases 0.5
    for LV and 1.0 for MV/HV, or calculated more precisely. tk is read from the device TCC
@@ -314,11 +322,43 @@ DGUV fits the home market better than an IEEE-only tool.
 - **Licence:** the guide is free to download but copyrighted. Implement the method with
   citations and keep the PDF in QE-References. Peter should add it there (the
   workspace's network cannot fetch arbitrary PDFs).
-- **Before coding:** read Annex 3 (kP values) and the worked examples in full from the
-  PDF. A second fetch (2026-10-15) found that the guide gives kP as a reference table
-  (A 3-2) and an exact method from Schau, Halinka and Winkler. A garbled fragment
-  suggests a power law of the form kP ≈ 0.29/(R/X)^0.17, with dependence on the
-  electrode gap d. **Unverified; do not use until read on the page.**
+- **kP read on the source (2026-10-15, QE-References text of the July 2021 English
+  edition):**
+  - Worst case: **kP,max = 0.29/(R/X)^0.17** (sec. 4.2.2 and Annex A 3.4.4, printed
+    pp. 19 and 41). R/X is that of the short-circuit loop. The guide says this worst
+    case should always be used when the electrode array faces the worker (Fig. A 3-1).
+  - Reference values (Table A 3-2, printed p. 42): at 400 V, kP for gaps of 30, 45 and
+    60 mm and R/X of 0.2, 0.5, 1.0 and ≥ 2.0. Values run from 0.181 to 0.338. At
+    10 to 20 kV with gaps of 120 to 240 mm and R/X 0.1, kP is 0.04 to 0.08. These are
+    data to load from a cited table file, not to retype into code comments.
+  - The exact method (gap-dependent arc voltage) is in Schau, Halinka and Winkler,
+    ref. [21], in German. We do not own it. Table A 5-1 shows that the precise method
+    changes kB from 0.5 to 0.633 in Example 5.1.
+  - DC: kP,max = 0.25 (maximum power transfer into a linear arc resistance). The
+    iterative arc model is U_arc = (34 + 0.532·d)·I_arc^0.12 (V, mm, A), starting from
+    I_arc = 0.5·I_kDC and stopping at under 0.5% change (A 3.4.4.1, printed pp. 42 to
+    43).
+  - Typical working distances (Table A 3-3): LV distribution 300 to 450 mm, LV
+    switchgear 300 to 600 mm, MV switchgear ≥ 825 mm; 300 mm minimum.
+- **Example 5.1 recomputed** (printed pp. 54 to 58): a 630 kVA, 20/0.4 kV, uk = 4%
+  station with gTr fuse protection.
+
+  | Quantity | Printed | Ours |
+  | --- | --- | --- |
+  | S_k = √3 · 400 V · 24.5 kA | 16.97 MVA | 16.974 MVA |
+  | kP,max at R/X = 0.27 | 0.36 | 0.3623 |
+  | I_arc = 0.5 × 21.6 kA | 10.8 kA | 10.8 kA |
+  | tk, read off the fuse curve | 0.113 s | (curve read) |
+  | W_arc in the text, with kP rounded to 0.36 | 690.3 kJ | 690.5 kJ |
+  | W_arc in the Annex 8 worksheet, kP unrounded | 694.9 kJ | 694.9 kJ |
+  | APC 1 and APC 2 protection at kT = 1.5, a = 300 mm | 252 and 480 kJ | 252 and 480 kJ |
+
+  The formula reproduces the worksheet exactly. The 0.2 kJ in the text is rounding.
+  Result: 690 kJ > 480 kJ, so APC 2 is insufficient and the guide moves to phase 4
+  (reduce the energy).
+- **Status:** the DGUV method is fully specified from the owned guide, except the
+  precise kB and kP of ref. [21], which are optional refinements. Example 5.1 is the
+  first acceptance test; example 5.8 (DC) is the second.
 
 ## 7. Above 15 kV and DC (A3, A4)
 

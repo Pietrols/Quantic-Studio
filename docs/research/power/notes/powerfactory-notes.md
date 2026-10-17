@@ -627,3 +627,64 @@ PowerFactory is "fully compatible with MS Windows 64-bit". No Linux or macOS sup
 stated. Detailed requirements are in the Product Specification Document, which still
 would not open (dossier gap 1). Like ETAP, it is Windows-bound, so a browser-based
 Quantic workbench differs from both on platform reach.
+
+## Dynamic numerics, initialisation and co-simulation (P89 to P94; 2026-10-17)
+
+Evidence classes: **S** seen in the cited source, **I** our inference, **U** unknown.
+
+- **S [P89]** The integration method follows one setting, the damping factor in the
+  initial-conditions command: 1 gives trapezoidal, 0 gives backward Euler, values in
+  between give a generalised theta method. The FAQ names no separate RMS and EMT methods.
+- **U [P89]** The formula mapping the damping factor to a mathematical theta is not
+  published. The endpoints run opposite to the textbook theta (theta 0.5 is
+  trapezoidal, theta 1 is backward Euler), so a linear map cannot be assumed.
+- **I** Consequence for Quantic: our solver must report method, internal step, output
+  cadence and event alignment with each result, so a comparison with PowerFactory can
+  state which method was matched. The amplification check in PowerWorld dossier 8.7
+  is the test.
+- **S [P90]** Physical damping is separated from numerical damping. The FAQ's printed
+  oscillation-frequency expression is dimensionally suspect (ChatGPT, 1305Z); not
+  adopted.
+- **S [P91]** DSL initialisation presets internal signals from the initial load flow.
+  Outputs are normally known and inputs or setpoints are solved backwards; PowerFactory
+  orders models automatically and reports a deadlock when no order exists. Verify
+  Initial Conditions is available for RMS only, and the FAQ advises an RMS run first
+  to catch initialisation faults before EMT.
+- **I** Quantic requirement (WP-2.14 R-IDs in group 3): a no-event flat run must show
+  derivative residuals near zero and report drift, and an ordering failure must name
+  the models in the cycle.
+- **S [P92]** Co-simulation is offered inside one program: sequential EMT, EMT-EMT and
+  RMS-EMT, with separate initialisation and co-simulation commands. **U** the coupling
+  error bound and exchange interval defaults.
+- **S [P93]** EMT measurement devices give instantaneous, true RMS and sequence-phasor
+  outputs with frequency tracking. A version discrepancy (2022 in the FAQ, 2023 in P94's
+  footnote) is preserved, not harmonised.
+- **S [P94]** The SMA inverter benchmark against PSCAD names exact versions and shows
+  that derived meters and fault-ride-through retrigger timing can magnify differences
+  between two EMT tools with the same physics. **I** Comparisons must start from raw
+  signals before derived meters.
+
+## Qualifications on the white papers (ChatGPT review 2321Z and 0818Z; accepted)
+
+These refine the P58 to P64 summaries above.
+
+- **S [P62]** The GIS converter flow is one way, GIS to PowerFactory. Map geometry alone
+  does not make a solvable model; impedances and loads come from equipment data.
+- **S [P61]** Extra CIM information can be imported without automatic conversion.
+  **I** Quantic must not claim "lossless CIM import"; it needs a report of what was
+  kept, converted and dropped.
+- **S [P64]** The ANN approximation for smart-meter studies is described separately and
+  is not an exact power-flow solver.
+- **S [P59]** Coincidence processing depends on consumer type and count per branch; it
+  is not one universal diversity factor.
+- **S [P58]** Visible controls depend on profile and user group. **I** A hidden control
+  in a screenshot does not prove the capability is absent.
+- **S [P60]** Study case (dated state, settings, results), Network Variations (timed
+  asset changes) and Operation Scenarios (operating data) are three separate objects;
+  the parity matrix keeps them as separate rows.
+- **S [P63]** Hosting capacity reports the limiting element and constraint per node.
+  **I** Per-node capacities are not jointly feasible for all nodes at once (ChatGPT's
+  inference, which we share).
+- **S** PowerFactory 2025 extends coincidence definitions to PV generation (ChatGPT,
+  0818Z, from the PV coincidence paper). **U** its formulas, since the HTML equations
+  did not render.

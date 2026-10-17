@@ -264,6 +264,7 @@ That listicle is weighted low, and the gap is recorded below.
    maintains `powfacpy` to work around the native Python API (P81; see
    `notes/powerfactory-notes.md`).
 5. **Remaining reading:** the FAQ tags for protection, controller, motor starting and
-   cable sizing were read (P69 to P80). Other tags and the white papers (CIM, LV
-   analysis, GIS, network planning, smart meter data, UI customisation) are still
-   unread.
+   cable sizing were read (P69 to P80); the white papers P58 to P64 are summarised in
+   `notes/powerfactory-notes.md` with ChatGPT's qualifications; dynamic numerics and
+   initialisation FAQs were added 2026-10-17 (P89 to P94). Still unread: the remaining
+   FAQ tags, and the damping-factor-to-theta mapping, which is not published.

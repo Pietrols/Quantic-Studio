@@ -51,13 +51,68 @@ and step voltage factors) were not in the fetched text. Read the full PDF.
 
 **Implications:**
 
-- For Zambian clients, Quantic's grounding module should cite **DZS 691**, which is a
-  Zambian national standard. That is better than citing IEEE 80 and avoids buying
-  IEEE 80 for the home market.
+- For Zambian clients, Quantic's grounding module should cite **DZS 691** for the
+  acceptance criteria. (The first reading said this avoids buying IEEE 80; sec. 1b
+  corrects that.)
 - Status: the document is a **draft** for public comment. Check whether the final
   ZS 691 is published (ZABS catalogue), and cite the edition used.
 - Peter should add both PDFs to QE-References (free downloads, but ZABS copyright
   applies; verify only, do not copy).
+
+## 1b. DZS 691 read in full (QE-References, 2026-10-15)
+
+The full PDF (108 pages, printed pp. 1 to 103) is now in QE-References. What it
+**contains** and what it **defers to IEEE 80** decides whether we still need IEEE 80.
+
+**Contains, with our checks:**
+
+| Item | Where | Check |
+| --- | --- | --- |
+| Tolerable body current IB = k/√ts, k = 0.116 (50 kg) or 0.157 (70 kg) | cl. 6, eqs 8 and 9, printed pp. 13 to 14 | 0.116/√0.1 = 0.367 A, as printed (367 mA) |
+| Weight choice | cl. 6.2.2 and footnote 6 | 70 kg "provided that the average population weight can be expected to be at least 70 kg", typically fenced switchyards; assess 50 kg for areas outside the fence. The engine must make the user choose, with 50 kg as the default |
+| Step and touch limits, metal-to-metal limits | cl. 8.3, eqs 29 to 35, printed pp. 24 to 26 | Same forms as sec. 1a |
+| Surface layer factor Cs = 1 − 0.09(1 − ρ/ρs)/(2hs + 0.09) | cl. 7.4.4, eq. 27, printed p. 23 | Stated to be within 5% of the analytic method; not valid when the top layer is less resistive than the soil (A.8) |
+| Grid resistance: plate estimate, Laurent-Niemann upper bound, depth-corrected form | cl. 14.2, eqs 40 to 42, printed pp. 42 to 43 | We recomputed the five rows of Table 5 (Kinyon substations, A.16) with eq. 41, using exact foot conversion: 25.72, 4.99, 2.49, 16.17 and 0.19 Ω against printed 25.7, 4.97, 2.55, 16.15 and 0.19 Ω. Rows 1 and 5 agree. Rows 2 and 4 differ in the last printed digit, and **row 3 differs by about 2.5%** (corrected 2026-10-16 after ChatGPT's dispute f1acb43; my first entry wrongly said all five agree to rounding). The cause (rounded inputs, or something else) is not established. **Not an exact acceptance reference**; use it only as a plausibility check |
+| Schwarz grid-plus-rods resistance | cl. 14.3 and A.17, printed pp. 69 to 71 | **Erratum, see below** |
+| Design procedure (12 steps, Figure 19) and remedies | cl. 16.4 to 16.5, printed pp. 48 to 50 | Becomes the engine's workflow and report order |
+| Fence, transferred potential, rails, pipes, GIS | cl. 10, 17, A.37 to A.44 | Special-case checklist for the report |
+| Measurements (fall of potential, integrity tests) | cl. 19, A.45 | Commissioning section |
+
+**Defers to IEEE 80 (not in DZS 691):**
+
+- Mesh and step voltage equations Em and Es with Km, Ks, Ki, Kii, Kh and n: A.34
+  says only "Refer to IEEE Std 80" (printed p. 83). DZS 691 lists the symbols in
+  Table 3 but gives no formulas.
+- Decrement factor Df: A.27 says "Refer to IEEE Std 80" (printed p. 82).
+- Conductor sizing: cl. 11.3.1 points to **ZS IEEE Std 837** (an adopted standard),
+  not to an equation in DZS 691.
+- k1 and k2 for Schwarz are only in Figure 24 (curves), not as equations.
+
+**Erratum in DZS 691 A.17 (printed p. 70, checked on the page image):** the mutual
+resistance Rm is printed identical to the grid resistance R1, ρ/(πLc)·[ln(2Lc/a') +
+k1·Lc/√A − k2]. With Rm = R1, the combining formula
+Rg = (R1·R2 − Rm²)/(R1 + R2 − 2Rm) reduces to Rg = R1 for any rod bed. So rods would
+have no effect, which contradicts the standard's own next sentence ("lower than the
+earth resistance of either component alone"). The printed Rm is therefore wrong.
+
+**Correct form from an owned source:** Morley eq. 7.12 (sec. 4 below, checked on the
+rendered page on 2026-10-15) gives Rm = ρ/(πL)·[ln(2L/ℓ) + k1·L/√B − k2 + 1], with ℓ the
+length of one rod. It differs from R1 in the log argument (2L/ℓ instead of 2L/a') and
+in the added +1, so Rm ≠ R1 and the rods take effect. (Correction, 2026-10-16: an
+earlier line here said we owned no second source. Morley is one, and it was already in
+this note.) **Code Rm from Morley eq. 7.12, never from DZS 691 A.17.** Cite both the
+erratum and the source in the code comment, and cross-check against IEEE 80 if it is
+bought.
+
+Minor: eq. 42 is introduced as "an expansion of Equation (56)", a leftover number from
+IEEE 80; it expands eq. 41.
+
+**Conclusion, correcting sec. 7 gap 1:** DZS 691 gives us the Zambian **acceptance
+criteria** (tolerable touch and step) and the resistance estimates. It does **not**
+let us compute mesh and step voltages, Df or conductor size. Method A of sec. 6
+still needs **IEEE 80** (or ZS IEEE 837 plus IEEE 80). Method B (numerical) does not
+need the empirical factors at all. It only needs DZS 691's limits, which makes the
+numerical solver more valuable for Zambian work.
 
 ## 2. System grounding methods (Morley pdf pp. 185 to 186; Das21 ch. 4)
 
@@ -183,9 +238,10 @@ formulas and Table 7.3 shapes were not checked yet.
 
 ## 7. Gaps
 
-1. IEEE 80 is largely covered for Zambia by **DZS 691** (sec. 1a): tolerable limits and
-   Cs are confirmed; Em/Es factors and grid resistance are still to read in the full
-   PDF. IEEE 80 itself is only needed for non-Zambian clients.
+1. **IEEE 80 is still needed** (corrected 2026-10-15 after reading DZS 691 in full,
+   sec. 1b). DZS 691 supplies the limits, Cs and the resistance estimates, but defers
+   Em, Es, Df and conductor sizing to IEEE 80 and ZS IEEE 837, and its Schwarz Rm is
+   misprinted (use Morley eq. 7.12 instead). IEEE 80-2013 moves up the purchase list (engine-index).
 2. Mine-specific grounding rules. DZS 418 (Electrical Safety Code) applies generally,
    with mine rules on top. Find the Zambian mining regulations' electrical part and
    South African rules (SANS 10108 and others).

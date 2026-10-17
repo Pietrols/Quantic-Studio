@@ -287,11 +287,14 @@ These are the calculation engines ETAP's modules imply. Status against our code 
    capacitor placement, distribution optimisation package, wind turbine generators,
    eTraX, transformer inrush, motor parameter estimation, control system diagram, and
    the 2026 release notes (hosting capacity and microgrid controller items).
-   **Still unread:** a dedicated hosting capacity product page (only release notes and
-   webinars found), and the transient stability and harmonics tutorials (fetch failed).
+   **Closed 2026-10-17** through ChatGPT's relays: the hosting capacity page [E111, E112]
+   and the harmonics and transient stability tutorials in the Getting Started guide
+   [E110]; see `notes/etap-studies.md`. Integration method and step defaults remain
+   unknown.
 4. **Forum feedback:** two older threads were read (E96 from 2019, E97 from 2009;
    summary in `notes/etap-platform.md`). Recent (2023 to 2026) threads are still
    missing: search results surface mostly Capterra and old forum posts.
 5. **ETAP's V&V cases** were catalogued 2026-10-15 (23 cases, E36, E92 to E94) and
    mapped to what Quantic can reproduce in `notes/verification-benchmarks.md`. Two
-   documents were read in detail. The rest of the combined PDF (E94) is still unread.
+   documents were read in detail; ChatGPT read further E94 pages and its limits are
+   recorded there. Pages not named in either pass remain unread.

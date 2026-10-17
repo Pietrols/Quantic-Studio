@@ -63,7 +63,9 @@ machine equations above. The motor decrement follows Das02 sec. 6.10 and Das21 c
 - a change-of-state equation between loading and temperature cases (to read in sec. 10.2
   and 10.5);
 - the ruling span;
-- clearance checks against DZS 418 minimum heights (`zambia-regulatory-context.md`).
+- clearance checks against DZS 418-1 Table 5-5 minimum heights, at the worst loading
+  and temperature case as the code requires (no 11 kV row: see
+  `zambia-regulatory-context.md`).
 
 Pair it with `linerate` (MIT) for the ampacity side.
 
