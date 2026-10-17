@@ -7,8 +7,8 @@ at the end is a proposal for Peter, not an approved plan.
 
 ## How to read it
 
-- **Evidence.** Engines are never published by the vendors. Each row is an **I**
-  (inferred) responsibility, derived from **S** (seen) evidence that a product offers
+- **Evidence.** This decomposition is inferred, not a recovered vendor implementation.
+  Each row is an **I** (inferred) responsibility, derived from **S** (seen) evidence that a product offers
   the study the engine serves. The matrix rows carry that S evidence and its citations;
   this table cites them by row ID. "Engines implied" in each dossier (ETAP and
   PowerFactory section 8, PowerWorld section 8, other products section 8 per product)
@@ -37,7 +37,7 @@ at the end is a proposal for Peter, not an approved plan.
 | E9 | Optimisation: OPF, dispatch, unit commitment, reserves | S14, S26, PW-S4 | all except EasyPower and SKM (U) | none | pp OPF | Glover17, Grainger94 ch. 13, Das02 ch. 15 to 16 | none | R-012 |
 | E10 | Probabilistic, hosting capacity, reliability | S19, S22, S23 | ETAP, PF | none | own | Glover17 (thin) | Billinton and Allan (not owned); ETAP patent E112 needs reading before any hosting-capacity method | R-050 |
 | E11 | State estimation and load allocation | S18, S25 | ETAP, PF | none | pp estimation | Grainger94 ch. 15 | Abur and Exposito (not owned) | R-050 |
-| E12 | Network reduction (Ward, REI) | S24 | ETAP, PF, PW | none | own | Grainger94 sec. 14.6 | none | R-004 |
+| E12 | Network reduction (Ward, REI) | S24 | ETAP, PF, PW | none | own | Grainger94 sec. 14.6 | none | R-004, R-032 to R-034 |
 
 ## 2. Faults, protection and arc flash
 
@@ -64,7 +64,7 @@ at the end is a proposal for Peter, not an approved plan.
 | E26 | Small-signal and impedance-based stability, signal mode fitting | T3, X-3, PW-T1 | PF, NEPLAN; PW (SMIB) | none | own | Kundur94 ch. 12 | none | R-022 |
 | E27 | EMT solver with measurement quantities and co-simulation | T4, X-1, X-2, X-7 | ETAP (mod), PF, NEPLAN (mod) | none | own MNA and trapezoidal core | Das10, Najm10 | frequency-dependent line models | R-020, R-044 |
 | E28 | Harmonic load flow, frequency scan and filter design | H1, H2 | ETAP, PF, EasyPower, SKM, NEPLAN, PSS/E | none | DSS harmonic mode | Das02 ch. 19 to 20, Arrillaga03 | IEEE 519 limits as user data | R-014, R-034 |
-| E29 | Flicker | H3 | ETAP, PF | none | own | none | IEC 61000-4-15 | none |
+| E29 | Flicker | H3 | ETAP, PF | none | own | none | IEC 61000-4-15 | R-051 |
 | E30 | Geomagnetically induced currents | PW-S5 | PW, PSS/E | none | own | none | low priority for Zambia | R-036 |
 
 ## 4. Design calculators

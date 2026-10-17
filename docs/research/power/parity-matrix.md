@@ -81,7 +81,7 @@ competitors, not PowerWorld, are the bar for these rows.
 
 **New distinctions this synthesis adds.** P9 (design versus as-found and maintenance
 settings, from SKM and EasyPower), A5 (arc energy integrated over a changing current,
-seen in ETAP and EasyPower), T6 (dynamic initialisation diagnostics) and the X rows for
+seen in EasyPower, partly in ETAP and SKM), T6 (dynamic initialisation diagnostics) and the X rows for
 product-specific capabilities that had no shared ID.
 
 ## Platform and data
@@ -89,7 +89,7 @@ product-specific capabilities that had no shared ID.
 | ID | Capability | ETAP | PowerFactory | PowerWorld | EasyPower | SKM | NEPLAN | PSS/E | Quantic now | Owned book to verify | WP-2.14 R-IDs |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | D1 | One project database shared by all studies | S yes | S yes | S yes [W8][W10] | S yes [EP4] | S yes [SK18] | S yes [NP5] | S part, linked network and module data [PS3][PS8] | partial (manifest and model files; CC-3 asset identity) | - | R-001 |
-| D2 | Element and type split (shared type data, library types) | S yes (library Quick Pick) | S yes (element and type objects) | S part, conductor, tower and model types [W96][W92] | S part, libraries; type split U [EP1] | S yes, device libraries [SK5] | S yes [NP6] | S part, dynamic categories [PS4] | none | - | R-002 |
+| D2 | Element and type split (shared type data, library types) | S yes (library Quick Pick) | S yes (element and type objects) | S part, conductor, tower and model types [W96][W92] | S part, libraries; type split U [EP1] | S part, device libraries; type split U [SK5] | S yes [NP6] | S part, dynamic categories [PS4] | none | - | R-002 |
 | D3 | Several diagrams of the same network | S yes (presentations) | S yes | S yes [W9] | U | U | U | U | none | - | R-001 |
 | D4 | Operating states separate from the network (switching, dispatch, loading) | S yes (configurations) | S yes (operation scenarios) | S part, case and reference states [W12][W77] | S yes, ScenarioManager [EP5] | S part, study setups [SK18] | S yes, operating states [NP5] | S part, study automation [PS3] | none | - | R-003, R-030, R-046 |
 | D5 | Engineering alternatives and timeline (revisions, expansion stages) | S yes (revision data) | S yes (variations, stages) | S part, scheduled actions only [W77] | S part, revision breadth qualified [EP5] | U | S yes, variant tree [NP5] | U | none | - | R-003 |
@@ -186,7 +186,7 @@ product-specific capabilities that had no shared ID.
 | A2 | Arc flash labels and work permits | S yes | S yes (labels) | U | S yes [EP16] | S mod [SK6] | S mod [NP9] | U | none | Das21 | R-028, R-030, R-046 |
 | A3 | DC arc flash | S yes (E106) | S yes (NFPA 70E, DGUV; P87) | U | S part [EP8] | S part [SK6] | S part [NP9] | U | none | Das21 ch. 15; DGUV-I 203-077 | R-028 |
 | A4 | HV arc flash (above 15 kV) | S yes (1 to 800 kV, E106) | S part (EPRI listed; range U; P87) | U | S part [EP8] | U | S part [NP9] | U | none | Das21 | R-028 |
-| A5 | Arc energy integrated over changing source current and device sequence | S yes (decay, E13 and E14) | U | U | S yes, Integrated method [EP20][EP22] | S part, changing contributions [SK21] | U | U | none | Das21 sec. 6.9 | R-027, R-029 |
+| A5 | Arc energy integrated over changing source current and device sequence | S part (decay and time-varying clearing, E13 and E14; integration method U) | U | U | S yes, Integrated method [EP20][EP22] | S part, changing contributions [SK23] | U | U | none | Das21 sec. 6.9 | R-027, R-029 |
 
 ## Dynamics and power quality
 
@@ -202,7 +202,7 @@ product-specific capabilities that had no shared ID.
 | T4 | EMT simulation | S mod (PSCAD engine) | S mod | U [W59] | U | U | S mod [NP14] | S part, external companion [PS2] | none | Das10, Najm10 | R-022, R-040, R-044, R-049 |
 | T5 | Load shedding, fast bus transfer, generator start | S yes | S yes (P74) | S part [W58][W62] | S yes [EP13] | S yes [SK13] | S yes [NP13] | S yes [PS4] | none | Kundur94 | R-010, R-020, R-021, R-027 |
 | T6 | Dynamic initialisation checks and diagnostics | U | S yes (RMS only; P91) | S yes [W61] | U | U | U | S yes, dynamic data checking [PS4] | none | Kundur94 | R-017, R-018 |
-| H1 | Harmonic load flow and frequency scan | S mod (E110) | S mod | S mod, GIC with external GICHarm [W70][W102] | S mod [EP11] | S yes, HI_WAVE [SK12] | S mod [NP16] | S mod [PS3] | none | Das02 ch. 19 to 20, Arrillaga03 | R-014, R-034, R-044, R-048 |
+| H1 | Harmonic load flow and frequency scan | S mod (E110) | S mod | S part, GIC with external GICHarm; general harmonics U [W70][W102] | S mod [EP11] | S yes, HI_WAVE [SK12] | S mod [NP16] | S mod [PS3] | none | Das02 ch. 19 to 20, Arrillaga03 | R-014, R-034, R-044, R-048 |
 | H2 | Filter design and IEEE 519 or IEC 61000 limits | S yes | S yes | U [W102] | S mod [EP11] | S yes [SK12] | S mod [NP16] | U | none | Arrillaga03, Das10 | R-014 |
 | H3 | Flicker | S yes (2026) | S yes | U | U | U | U | U | none | - | R-051 |
 
