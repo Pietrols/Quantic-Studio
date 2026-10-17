@@ -99,7 +99,7 @@ What _can_ be committed:
 - Openly licensed material, under its license terms, such as OpenStax (CC BY 4.0) and _Lessons in Electric Circuits_ (Design Science License). MIT OpenCourseWare is CC BY-NC-SA, so its non-commercial condition needs care for a company project.
 - Public-domain material.
 - Our own derivations and test cases, including cases built from textbook problems where we write our own numbers and wording.
-- Test data with permissive licenses, such as MATPOWER cases (BSD-3), which include published textbook networks, and the University of Washington Power Systems Test Case Archive.
+- Test data whose terms allow our use, checked case by case. MATPOWER's code is BSD-3, but its licence states that the bundled case files are not covered by that grant (corrected 2026-10-17, Peter's approval), so each case needs its own provenance record. The University of Washington Power Systems Test Case Archive likewise needs its terms recorded per case.
 
 Paid standards (IEC, IEEE) and client data never go in the public repo. They stay in the local reference library. The repo also git-ignores a `private/` folder for scratch work.
 
@@ -559,7 +559,7 @@ Steps:
 2. Convert it to the contract network format with a small, committed script, so the conversion is reproducible.
 3. Store the published solved voltages and angles as the reference solution, noting their rounding.
 4. Package it as a runnable example project in `examples/ieee14/`.
-5. Add MATPOWER's `case4gs` (the 4-bus example from Grainger and Stevenson, _Power System Analysis_) as a second, small fixture, with its published solution. Confirm the MATPOWER data license and record it in a source entry.
+5. Add MATPOWER's `case4gs` (the 4-bus example from Grainger and Stevenson, _Power System Analysis_) as a second, small fixture, with its published solution. Confirm the MATPOWER data license and record it in a source entry. Note added 2026-10-17: the MATPOWER licence excludes its case files from the BSD grant, so this needs the case's own terms.
 
 Acceptance:
 
@@ -1569,6 +1569,86 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-2.16 Requirements for unmapped parity rows
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12, WP-2.15
+Owned paths: `docs/research/power/reconstruction-requirements.md`
+
+Added 2026-10-17 on Peter's instruction (ChatGPT writes, Claude reviews). WP-2.12
+lists matrix rows with no requirement (parity-matrix.md, known gap 2).
+
+Steps:
+
+1. Add numbered requirements for those rows, distance and differential protection
+   (P6, P7) first, then D18, G3, G4, G8, S20, S21, S25, X-8 and X-9.
+2. Same format as R-001 to R-052: priority, S, I or U evidence, matrix IDs and an
+   acceptance check. Do not renumber existing R-IDs.
+
+Reference: the power dossiers, the parity matrix and the owned library.
+
+Acceptance:
+
+- Every listed row is cited by at least one R-ID; text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.17 Product model mapping for the comparison cases
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.15
+Owned paths: `docs/research/power/comparison-mapping.md`
+
+Added 2026-10-17. Turns ChatGPT's channel findings of 2026-10-17T1833Z into a
+reviewed record.
+
+Steps:
+
+1. For each case C-01 to C-07 and each product, record the documented model that
+   would carry our equations (for example CIM5 or CIM6 load torque, TGOV1, ElmIac,
+   TIOCR1), the parameter conversion, and every place where the product's equations
+   differ from ours, each tagged S, I or U with sources.
+2. Keep the original checks (inputs, tool version, result) as authored observations,
+   separate from any product execution, which stays U.
+
+Reference: comparison-cases.md, the dossiers and the cited vendor help.
+
+Acceptance:
+
+- Every case and product pair has a mapping row or a stated U; text and reference
+  guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.18 Cell-level citations for older ETAP and PowerFactory matrix cells
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12
+Owned paths: `docs/research/power/parity-matrix.md`
+
+Added 2026-10-17 (parity-matrix.md, known gap 1).
+
+Steps:
+
+1. For each ETAP and PowerFactory cell cited only at dossier-section level, add the
+   E or P source ID that supports it.
+2. Where no source supports an S cell, change it to U and say why in the WP log.
+
+Reference: etap.md, powerfactory.md and their source indices.
+
+Acceptance:
+
+- Every S cell in the ETAP and PowerFactory columns names a source ID; text and
+  reference guards pass.
+
+Learning note: none.
+Change record: none
+
 **Implementer stop point:** A model stops after its assigned engine WP merges and
 hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
 choices; all builds, acceptance, CI checks and merges are performed by the agents.
@@ -1580,7 +1660,7 @@ WP-0.8 and later WPs create one YAML entry per source in `docs/sources/entries/`
 | Source                                                                               | Type                  | Use                                                           | Can it be in the repo?                                        |
 | ------------------------------------------------------------------------------------ | --------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
 | UW Power Systems Test Case Archive (IEEE 14, 30, 57, 118 bus)                        | Test data             | Load-flow reference solutions                                 | Data and citation, per archive terms                          |
-| MATPOWER test cases, including `case4gs` (Grainger and Stevenson 4-bus) and `case9`  | Test data (BSD-3)     | Additional networks with published solutions                  | Yes, with license                                             |
+| MATPOWER test cases, including `case4gs` (Grainger and Stevenson 4-bus) and `case9`  | Test data (code BSD-3; case files excluded from that grant, terms per case) | Additional networks with published solutions                  | Yes, with license                                             |
 | pandapower documentation and example networks                                        | Docs and data (BSD-3) | Adapter behaviour                                             | Yes, with license                                             |
 | Grainger and Stevenson, _Power System Analysis_                                      | Textbook              | Load flow, faults, symmetrical components                     | Citation only                                                 |
 | Glover, Overbye and Sarma, _Power System Analysis and Design_                        | Textbook              | Same, with worked examples                                    | Citation only                                                 |
