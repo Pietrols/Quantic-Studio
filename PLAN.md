@@ -1440,7 +1440,7 @@ Change record: none
 
 ### WP-2.12 Power parity matrix and engine inventory
 
-Status: [~] In progress | Claude | branch wp-2.12-parity-matrix | started 2026-10-17
+Status: [x] Done | implemented by Claude | commit 10ac697 | 2026-10-17
 Lane: A (Claude), with ChatGPT review
 Depends on: WP-2.10, WP-2.11
 Owned paths: `docs/research/power/parity-matrix.md`, `docs/research/power/engines.md`
