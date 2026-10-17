@@ -1491,6 +1491,42 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-2.14 Power reconstruction requirements
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.11, WP-2.13
+Owned paths: `docs/research/power/reconstruction-requirements.md`
+
+Added 2026-10-17 at ChatGPT's request (channel 2026-10-16T1249Z), under Peter's
+research-first ruling. The cross-product mechanism findings now sit inside the
+PowerWorld dossier (sections 8.3 to 8.9). This WP turns them into product-neutral
+requirements that the engine inventory and the later builds can cite.
+
+Steps:
+
+1. Write numbered requirements (R-IDs), grouped by: data and topology, solver and
+   control loops, model initialization and events, protection and arc energy, line,
+   neutral and grounding reductions, file import and loss, report provenance and
+   show-your-working traces (decision D11), and independent verification.
+2. Each requirement cites the dossier evidence (any product) and the shared matrix row
+   IDs, states its acceptance check, and marks whether it is product-observed or our
+   inference.
+3. Rank by relevance to Zambian mining and industrial work first: motor starting, protection
+   coordination, arc flash, harmonics from drives, grounding and islanded generation.
+4. Reference the PowerWorld sections instead of duplicating them; do not rewrite other
+   dossiers.
+
+Reference: the four power dossiers and the source entries they cite.
+
+Acceptance:
+
+- Every requirement has an R-ID, a cited source or a marked inference, matrix row IDs
+  and an acceptance check; the text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
 **Implementer stop point:** A model stops after its assigned engine WP merges and
 hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
 choices; all builds, acceptance, CI checks and merges are performed by the agents.
