@@ -419,9 +419,10 @@ period, tax treatment or issue date. Its `/2023/07/` URL path is not proof of a 
 2026 quote. The general annual cloud description does not settle that form's exact
 commercial term. [NP23][NP2]
 
-**Conflicting demo limits:** the licensing page says 15 nodes; the dedicated
-free-demo/student page says 50 nodes for six months, noncommercial cloud use.
-Do not silently choose one as universally current; confirm the offered entitlement.
+**Distinct public offers:** the licensing page labels its 15-node offer
+"NEPLAN 360 Free Student Version"; the dedicated demo/student page advertises
+50 nodes for six months, noncommercial cloud use. Confirm the offered route and
+eligibility rather than treating the 15-node student offer as a universal demo limit.
 [NP2][NP22]
 
 ## 2. Sources
@@ -545,7 +546,7 @@ NEPLAN's internal source modules. [NP7][NP8][NP10][NP11][NP9][NP12][NP13][NP14][
 | Gap | Why it remains open / action |
 |---|---|
 | Current complete commercial quote | Engineering form is undated and omits term/tax; full-module prices are not established. [NP23] |
-| Demo limit | Public pages conflict, 15 versus 50 nodes; confirm at enrolment rather than choosing silently. [NP2][NP22] |
+| Demo/student limit | NP2 labels a 15-node NEPLAN 360 Free Student Version; NP22 advertises a 50-node six-month demo/student route. Confirm offered entitlement at enrolment. [NP2][NP22] |
 | Exact executable build, OS/compiler requirements and library defaults | Family/module descriptions are not a versioned installation or model reference. [NP3][NP6] |
 | Arc-method edition and applicability | Vendor's 2013 label is unresolved; generic fallback wording does not close voltage/range limits. [NP9] |
 | Integrator/backend identity and current independently reproducible accuracy | Algorithms are described selectively; OPF wording is qualified, RMS/EMT pages do not expose all details. [NP13][NP14][NP17] |

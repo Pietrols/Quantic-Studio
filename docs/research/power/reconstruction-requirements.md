@@ -7,10 +7,16 @@ describes externally visible behavior; it does not reveal proprietary source cod
 
 ## Reading and priority
 
-Each R-ID has a priority, evidence class, dossier reference, shared matrix IDs and
-an acceptance check. **O** means the behavior is product-observed in the cited
-documentation, not independently executed. **I** means our proposed inference or
-design rule. Even O requirements are proposals for Quantic, not proof of parity.
+Each R-ID has a priority, product-evidence class, dossier reference, shared matrix
+IDs and an acceptance check. **S** means the cited primary documentation states a
+relevant product behavior or method, not that we executed it. **I** means the
+cross-product behavior is inferred from cited evidence. **U** means it is not
+established, including the G13 competitor report behavior in R-043. S is not a claim
+that every clause, product or release is observed. The acceptance test and stronger
+Quantic behavior are always labelled **Quantic proposal: I**, separately from the
+product evidence. Product execution remains U for all R-IDs until dated runs exist.
+The S/I/U amendment is WP-2.15, following Peter's 2026-10-17 ruling; it replaces the
+older O/I shorthand without changing the requirement's scope or acceptance check.
 An acceptance check below is a future obligation, not a test reported as passing.
 Book references support methods, not today's standards limits or equipment defaults.
 
@@ -61,7 +67,7 @@ section 10; it is not evidence of independently verified modern fitting behavior
 
 ### R-001: One physical model, multiple presentations
 
-Priority: P0. Class: O. Evidence: PW-D; ET-D; PF-D. Matrix: D1, D3, G1, G2.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-D; ET-D; PF-D. Matrix: D1, D3, G1, G2.
 Keep persistent equipment and terminal identities independent of diagram objects.
 Acceptance: show one feeder in two views; edit its impedance in one view and obtain
 one shared model revision. Moving or deleting its symbol must leave connectivity
@@ -70,7 +76,7 @@ result to the same physical element ID.
 
 ### R-002: Types, instances and sourced parameters
 
-Priority: P0. Class: O. Evidence: ET-D; PF-D; OTHER sections 3/4. Matrix: D2, D10, D11, D12.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-D; PF-D; OTHER sections 3/4. Matrix: D2, D10, D11, D12.
 Separate shared equipment types from installed instances, with explicit overrides
 and provenance for manufacturer curves and ratings.
 Acceptance: update a type used by two motors, retain one documented instance
@@ -79,7 +85,7 @@ Missing required curve data must identify the element and field, with no invente
 
 ### R-003: Reproducible operating state and study options
 
-Priority: P0. Class: O. Evidence: ET-D; PF-D; PW-D. Matrix: D4, D5, D6, D7, D8, G10.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-D; PF-D; PW-D. Matrix: D4, D5, D6, D7, D8, G10.
 Resolve base network, engineering variation, switching/dispatch/loading state,
 time profile and calculation options into a reproducible run input.
 Acceptance: run two loading states and a maintenance state without changing the
@@ -88,7 +94,7 @@ result after another scenario has run. Record profile interpolation and time bas
 
 ### R-004: Topology reduction with island and identity maps
 
-Priority: P0. Class: I. Evidence: PW-S subsection A, W171/W172; PF-S P15. Matrix: G2, G7, S9.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsection A, W171/W172; PF-S P15. Matrix: G2, G7, S9.
 Separate physical node/breaker topology from each study's reduced electrical graph.
 Acceptance: close, split and rejoin an ideal-switch group; retain a reversible
 physical-to-solver map, detect islands and references, invalidate stale solutions,
@@ -96,7 +102,7 @@ and diagnose an unsupplied island explicitly. Preserve breaker identity for prot
 
 ### R-005: Transactional studies and batch isolation
 
-Priority: P0. Class: I. Evidence: PW-S subsection A; PW-V contingency checks; ET-D; PF-D.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-S subsection A; PW-V contingency checks; ET-D; PF-D.
 Matrix: D9, D13, D14, D15, S15.
 Study actions must produce traceable derived states and support restoration.
 Acceptance: run an outage study that fails midway, then rerun the base case; its
@@ -105,7 +111,7 @@ and parallel execution must not leak switch, setting or controller state between
 
 ### R-006: Quantities and validation before solving
 
-Priority: P0. Class: I. Evidence: PW-D section 3.3; PW-M subsection A; BOOK Glover section 6.6.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-D section 3.3; PW-M subsection A; BOOK Glover section 6.6.
 Matrix: D12, S1, F1, M1.
 Declare bases, units, sign/direction, phase/sequence and RMS/peak conventions.
 Acceptance: equivalent unit/base representations give equivalent physical results;
@@ -116,7 +122,7 @@ element/field diagnostics before numerical assembly. Do not silently reinterpret
 
 ### R-007: AC network equations and convergence evidence
 
-Priority: P0. Class: I. Evidence: PW-M subsection A, W177/W178; PW-V; BOOK Glover pp. 356-357.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-M subsection A, W177/W178; PW-V; BOOK Glover pp. 356-357.
 Matrix: S1, S2, S7, S8, G13.
 Specify branch stamps, transformer tap side and phase, shunts, load dependence,
 temperature assumptions, mismatch scaling and stopping criteria.
@@ -126,7 +132,7 @@ network. Iteration exhaustion, singularity and convergence have distinct diagnos
 
 ### R-008: Voltage controls and reactive limits
 
-Priority: P0. Class: O. Evidence: PW-S subsections B/C, W166-W170; PF-S P3; BOOK Glover pp. 352, 356-357.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsections B/C, W166-W170; PF-S P3; BOOK Glover pp. 352, 356-357.
 Matrix: S3, S4, S5, S6.
 Represent regulated measurements, participating devices, capability limits and
 control priority, including local/remote voltage, tap and shunt control.
@@ -136,7 +142,7 @@ trace. A feasible aggregate Q must not conceal an individual violation or contro
 
 ### R-009: Static starting dip is a separate calculation
 
-Priority: P0. Class: O. Evidence: ET-S E4/E23/E24; PF-S P19; BOOK Das section 12.11, PDF 438-439.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E4/E23/E24; PF-S P19; BOOK Das section 12.11, PDF 438-439.
 Matrix: M1, M3, S7.
 Specify standstill motor representation, starting method and network/source model
 for initial voltage dip; report the approximation separately from acceleration.
@@ -146,7 +152,7 @@ and current consistently. A snapshot result must not claim starting time or succ
 
 ### R-010: Island slack and generation sharing
 
-Priority: P0. Class: I. Evidence: PW-S subsections B/C; PF-S P3; ET-S E16. Matrix: S6, S9, T5.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsections B/C; PF-S P3; ET-S E16. Matrix: S6, S9, T5.
 Distinguish a steady-state reference/slack policy from physical governor/exciter
 and droop dynamics. Declare generation bounds and load-shedding policy.
 Acceptance: separate two islands, trip a participating genset and apply a load step;
@@ -155,7 +161,7 @@ slack solution alone cannot validate frequency recovery or black start.
 
 ### R-011: Contingencies and sensitivities with declared assumptions
 
-Priority: P1. Class: I. Evidence: PW-V; PW-M; PF-S P10/P15. Matrix: S15, S16.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PW-V; PW-M; PF-S P10/P15. Matrix: S15, S16.
 Record outage sets, balancing policy, controls, ratings and AC/DC approximation.
 Acceptance: compare sensitivity predictions to independent small perturbations
 under matching assumptions and verify full AC post-contingency feasibility. Detect
@@ -163,7 +169,7 @@ islanding and invalid linearization rather than returning a plausible sensitivit
 
 ### R-012: Separate loadability, optimization and chronology
 
-Priority: P2. Class: I. Evidence: PW-M subsections B/C/I, W179-W182/W190/W191; PF-S P20/P45.
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: PW-M subsections B/C/I, W179-W182/W190/W191; PF-S P20/P45.
 Matrix: S13, S14, S17, S26.
 Define continuation direction/limits, OPF objective/constraints and chronological
 dispatch or commitment states as distinct problems.
@@ -173,7 +179,7 @@ constraint across periods. Snapshot dispatch must not stand in for unit commitme
 
 ### R-013: Phase-domain and physical DC studies
 
-Priority: P1. Class: I. Evidence: PW-M subsection F; PW-L subsection D; ET-S E9/E21; PF-S P3/P4.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PW-M subsection F; PW-L subsection D; ET-S E9/E21; PF-S P3/P4.
 Matrix: S10, S12, F2, F5.
 Select balanced, explicit-phase/neutral or physical DC network equations by study.
 Acceptance: solve an asymmetric original feeder against a primitive phase circuit;
@@ -183,7 +189,7 @@ of the transmission DC-angle approximation.
 
 ### R-014: Drive harmonics and frequency scans
 
-Priority: P0. Class: O. Evidence: ET-S E5; PF-S P14; PW-M subsection H, W189; BOOK Das sections 18.5.1, 19.1.2/19.1.4, PDF 624-625, 636-637.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E5; PF-S P14; PW-M subsection H, W189; BOOK Das sections 18.5.1, 19.1.2/19.1.4, PDF 624-625, 636-637.
 Matrix: H1, H2.
 Specify source spectrum, phase reference, operating point, frequency-dependent
 equipment and damping; separate harmonic flow from unit-injection impedance scans.
@@ -195,7 +201,7 @@ cancellation. Report THD/TDD denominators and assess limits only against a sourc
 
 ### R-015: Motor acceleration with mechanical load
 
-Priority: P0. Class: O. Evidence: ET-S E4/E23/E24; PF-S P19; BOOK Kundur pp. 285-287, 299-301; Das section 12.11.2, PDF 439.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E4/E23/E24; PF-S P19; BOOK Kundur pp. 285-287, 299-301; Das section 12.11.2, PDF 439.
 Matrix: M2, M3, T1.
 Model motor electrical behavior, shaft/load inertia, torque-speed curve, starter
 transitions and coupled bus voltage. Mill and conveyor load curves require actual
@@ -206,7 +212,7 @@ failure to accelerate or protective trip distinctly from successful run-up.
 
 ### R-016: Parameter fitting exposes uncertainty
 
-Priority: P1. Class: I. Evidence: ETAP section 10 and source index E87; PF-S P49; PW-I subsection D. Matrix: M4, D11, D12.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: ETAP section 10 and source index E87; PF-S P49; PW-I subsection D. Matrix: M4, D11, D12.
 Keep supplied nameplate/test curves, fitted circuit parameters and model assumptions
 separate; report fit range, residuals and non-identifiability.
 Acceptance: fit an original synthetic curve from known parameters, then remove data
@@ -215,7 +221,7 @@ Hold out operating points and compare predicted current and torque there.
 
 ### R-017: Consistent static-to-dynamic initialization
 
-Priority: P0. Class: I. Evidence: PW-S subsection D; PW-X W199; PW-I subsections A/C/D.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsection D; PW-X W199; PW-I subsections A/C/D.
 Matrix: T1, T2, M2, D12.
 Declare model roles, terminal attachments, known/unknown signals and dependencies;
 initialize differential/algebraic states from the effective operating point.
@@ -225,7 +231,7 @@ model must not disappear without a diagnostic or silently become a validated rep
 
 ### R-018: Validation changes and effective model ledger
 
-Priority: P0. Class: I. Evidence: PW-I subsection A, W218/W219/W223/W224; PW-X. Matrix: D12, T1, T2.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-I subsection A, W218/W219/W223/W224; PW-X. Matrix: D12, T1, T2.
 Distinguish invalid input, persisted parameter repair, run-only limit adjustment
 and model substitution. Retain requested and effective values and the reason.
 Acceptance: initialize deliberately incompatible limits and an unsupported model;
@@ -234,7 +240,7 @@ the effective run. Conflicting vendor prose must remain an unresolved source gap
 
 ### R-019: Dynamic limits and load composition
 
-Priority: P0. Class: I. Evidence: PW-I subsections B/C, W220-W222/W225/W226. Matrix: S7, T1, T2, M2.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-I subsections B/C, W220-W222/W225/W226. Matrix: S7, T1, T2, M2.
 Specify limiter state behavior, anti-windup/release, load fraction bases and internal
 shunt reconciliation, rather than inferring equations from model names.
 Acceptance: an original limit/reversal case distinguishes clipped output from
@@ -243,7 +249,7 @@ double counting or shunt treatment. Diagnose degenerate fraction/base cases expl
 
 ### R-020: Events, integration steps and output samples
 
-Priority: P0. Class: I. Evidence: PW-X W196-W198; PW-I subsection E, W227. Matrix: T1, T2, T5, G12.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-X W196-W198; PW-I subsection E, W227. Matrix: T1, T2, T5, G12.
 Separate scheduled actions, state-triggered events, internal solver steps, stored
 samples and display cadence. Specify simultaneous-event ordering and algebraic reinitialization.
 Acceptance: change output cadence without changing the solved trajectory; locate
@@ -252,7 +258,7 @@ explicit detection limitation. Refine steps independently and trace pre/post-eve
 
 ### R-021: Protection, starters and transfer are coupled events
 
-Priority: P0. Class: I. Evidence: ET-S E15/E16/E23; PF-S P11/P19; OTHER SKM section 6.1.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: ET-S E15/E16/E23; PF-S P11/P19; OTHER SKM section 6.1.
 Matrix: M2, M3, P4, T5.
 Sequence starter transitions, contactor logic, relay operation and breaker/transfer
 actions using sourced settings and a shared event timeline.
@@ -262,7 +268,7 @@ opening; report the initiating condition, operating delay and resulting energize
 
 ### R-022: Numerical method and coupling capabilities
 
-Priority: P1. Class: I. Evidence: PW-X W197-W203; PW-M subsections D/E. Matrix: T1, T2, T3, T4.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PW-X W197-W203; PW-M subsections D/E. Matrix: T1, T2, T3, T4.
 Declare RMS versus EMT equations, integrator, tolerances, numerical damping,
 reference frame, external-model interface and rollback/event capabilities.
 Acceptance: lossless/damped original systems separate physical decay from numerical
@@ -274,7 +280,7 @@ ETAP's integrator from plot steps, or full-system modes from fitted signal modes
 
 ### R-023: Fault methods retain their assumptions
 
-Priority: P0. Class: O. Evidence: ET-S E10-E12; PF-S P4; PW-M subsection F. Matrix: F1, F2, F3, F4, F6.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E10-E12; PF-S P4; PW-M subsection F. Matrix: F1, F2, F3, F4, F6.
 Separate standardized equivalent-source methods, loaded-prefault superposition and
 time-domain decay. Record method edition, voltage/correction factors, machine/converter
 contributions and maximum/minimum case assumptions.
@@ -284,7 +290,7 @@ one method must not be relabeled as another standard or edition.
 
 ### R-024: Fault locations, contribution paths and duty
 
-Priority: P0. Class: I. Evidence: PF-S P4; ET-S E10/E11; OTHER EasyPower section 6.1, EP20-EP22.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PF-S P4; ET-S E10/E11; OTHER EasyPower section 6.1, EP20-EP22.
 Matrix: F7, F8, P4, A1.
 Resolve fault location to terminal/compartment side, calculate source-path and
 device currents, and distinguish current quantities used for equipment duty.
@@ -294,7 +300,7 @@ Verify contribution sums and match each duty comparison to its rated quantity an
 
 ### R-025: Ground fault and instrument connections
 
-Priority: P0. Class: I. Evidence: PW-M subsection F; PW-L subsection C; PF-S P11; ET-S E9/E15.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-M subsection F; PW-L subsection C; PF-S P11; ET-S E9/E15.
 Matrix: F2, P1, P8, S10, S11.
 Preserve winding/vector group, neutral grounding, CT/VT ratio, polarity, location
 and residual/sequence measurement definitions.
@@ -304,7 +310,7 @@ Unsupported saturation/transient instrument models must be marked outside scope.
 
 ### R-026: TCCs, motor envelopes and coordination checks
 
-Priority: P0. Class: O. Evidence: ET-S E15/E28/E29; PF-S P11; OTHER sections 5. Matrix: P1, P2, P3, P5, D11.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E15/E28/E29; PF-S P11; OTHER sections 5. Matrix: P1, P2, P3, P5, D11.
 Store curve family/edition, device revision, units, settings, tolerances and
 applicable current/time range; compare start and damage envelopes explicitly.
 Acceptance: independent evaluations agree at sourced curve points, boundaries and
@@ -313,7 +319,7 @@ A diagram of curves alone is not a validated selectivity or motor thermal conclu
 
 ### R-027: Relay memory, decrement and breaker opening
 
-Priority: P0. Class: I. Evidence: OTHER SKM section 6.1, SK21-SK23; EasyPower section 6.1, EP20-EP22.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: OTHER SKM section 6.1, SK21-SK23; EasyPower section 6.1, EP20-EP22.
 Matrix: P4, A1, T5.
 Specify relay accumulation/reset, pickup/dropout, contribution changes, failed trips
 and breaker opening delay separately from an instantaneous curve lookup.
@@ -323,7 +329,7 @@ Do not adopt the SKM decrement example as a universal relay-memory law.
 
 ### R-028: Arc method domain and scenario inputs
 
-Priority: P0. Class: I. Evidence: ET-S E13/E14; PF-S P12; OTHER EasyPower section 6.1, EP22.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E13/E14; PF-S P12; OTHER EasyPower section 6.1, EP22.
 Matrix: A1, A2, A3, A4.
 Retain method/edition, electrode/enclosure configuration, gap, working distance,
 equipment class and applicable domain, with separate AC/DC/HV routes.
@@ -333,7 +339,7 @@ boundaries and labels require the readable governing source before implementatio
 
 ### R-029: Arc energy follows protection and changing current
 
-Priority: P0. Class: I. Evidence: OTHER EasyPower section 6.1, EP20-EP22; SKM section 6.1, SK23; ET-S E13/E14.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: OTHER EasyPower section 6.1, EP20-EP22; SKM section 6.1, SK23; ET-S E13/E14.
 Matrix: A1, P4, F7.
 Evaluate required normal/reduced arcing-current cases and retain time-ordered source,
 device, trip, current and energy intervals. Recalculate after each clearing action.
@@ -343,7 +349,7 @@ method-prescribed applicability. Never obtain clearing time from total bus curre
 
 ### R-030: Maintenance, backup and unresolved duration
 
-Priority: P0. Class: I. Evidence: OTHER SKM section 6.1, SK21/SK22; EasyPower section 6.1, EP20-EP22.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: OTHER SKM section 6.1, SK21/SK22; EasyPower section 6.1, EP20-EP22.
 Matrix: D4, P4, A1, A2.
 Treat maintenance settings, main failure, upstream search, manual duration and time
 caps as distinct scenarios or policies, exposing their effect on clearing and energy.
@@ -355,7 +361,7 @@ uncleared source; a label must retain scenario and assumptions rather than imply
 
 ### R-031: Physical line and cable representation
 
-Priority: P0. Class: I. Evidence: PW-L subsection A, W206-W211; ET-S E9/E18/E19; PF-S P13.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-L subsection A, W206-W211; ET-S E9/E18/E19; PF-S P13.
 Matrix: S11, C1, C2, C8.
 Preserve conductor/bundle geometry, units, sequence/phase representation, frequency,
 temperature, earth-return assumptions and requested/effective model choices.
@@ -365,7 +371,7 @@ material or installation data cannot be replaced by unsourced engineering number
 
 ### R-032: Long-line equivalents and terminal invariants
 
-Priority: P1. Class: I. Evidence: PW-L subsection B; PW-V; BOOK Glover chapter 5 index in PW section 8.1.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: PW-L subsection B; PW-V; BOOK Glover chapter 5 index in PW section 8.1.
 Matrix: S11, S24.
 Distinguish distributed-line equivalents from multiplying per-length lumped values.
 Acceptance: compare an original distributed line and its equivalent at both terminals;
@@ -374,7 +380,7 @@ Record the study/frequency range over which the reduction is claimed valid.
 
 ### R-033: Neutral elimination declares boundary conditions
 
-Priority: P0. Class: I. Evidence: PW-L subsection C, W212/W213. Matrix: S10, S11, S24.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-L subsection C, W212/W213. Matrix: S10, S11, S24.
 Record retained/eliminated conductors, grounding boundary conditions and the
 reconstruction map for neutral voltages/currents.
 Acceptance: compare a compatible reduced network to the full primitive network;
@@ -383,7 +389,7 @@ reduction recomputation or an explicit diagnostic. Deleting a neutral is not a g
 
 ### R-034: Frequency-specific return paths and reductions
 
-Priority: P0. Class: I. Evidence: PW-L subsections C/E; PW-M subsection H; BOOK Das section 19.1, PDF 636-637.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-L subsections C/E; PW-M subsection H; BOOK Das section 19.1, PDF 636-637.
 Matrix: S11, S24, H1.
 Qualify reduction validity by study and frequency, including zero-sequence and
 harmonic return paths. Do not reuse a balanced power-flow equivalent without qualification.
@@ -393,7 +399,7 @@ A failure at a new frequency invalidates the claim there rather than changing th
 
 ### R-035: Ground-grid model and fault-current split
 
-Priority: P0. Class: I. Evidence: ET-S E32; OTHER EasyPower section 6.2, EP23; PW-L. Matrix: C6, F2, S11.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-S E32; OTHER EasyPower section 6.2, EP23; PW-L. Matrix: C6, F2, S11.
 Separate grid/soil potential analysis from network grounding impedances and GIC.
 Track soil measurements/model fit, conductor/grid geometry, fault-current split,
 duration and sourced step/touch method inputs.
@@ -403,7 +409,7 @@ paths. Product availability or a partner integration is not evidence of a valida
 
 ### R-036: Geomagnetic and geographic calculations are separate studies
 
-Priority: P2. Class: I. Evidence: PW-L subsections D/E, W214-W217. Matrix: S11, S12, D17.
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: PW-L subsections D/E, W214-W217. Matrix: S11, S12, D17.
 Treat GIC as a physical resistive earth-return network with geographic field inputs,
 not DC-angle power flow. Declare field sampling and transformer winding/earth models.
 Acceptance: an original uniform-field route matches an independent line integral;
@@ -414,7 +420,7 @@ divide a common earth resistance by three or claim saturation/harmonics from a D
 
 ### R-037: Revision-specific import contract
 
-Priority: P0. Class: I. Evidence: PW-S subsection F, W11/W172; PF-D; OTHER PSS/E section 6.1.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsection F, W11/W172; PF-D; OTHER PSS/E section 6.1.
 Matrix: D16, D12.
 Declare supported format/revision, units, object/terminal identity mapping and study
 coverage before translating data.
@@ -424,7 +430,7 @@ must be diagnosed rather than interpreted as the nearest known format silently.
 
 ### R-038: Loss, default and unsupported-model ledger
 
-Priority: P0. Class: I. Evidence: PW-S subsection F; PW-I subsection A; OTHER PSS/E section 6.1.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-S subsection F; PW-I subsection A; OTHER PSS/E section 6.1.
 Matrix: D16, D12, T2.
 Report omitted, approximated, defaulted and inactive objects/fields, with original
 values, target values, reason and affected studies.
@@ -434,7 +440,7 @@ exactly which static studies remain meaningful. A successful parse is not a loss
 
 ### R-039: Physical round-trip verification
 
-Priority: P1. Class: I. Evidence: PW-V interchange checks; PW-S subsection F. Matrix: D16, G10.
+Priority: P1. Product evidence: I. Quantic proposal: I. Evidence: PW-V interchange checks; PW-S subsection F. Matrix: D16, G10.
 Define which semantics survive each import/export route, independently of text order.
 Acceptance: round-trip an original transformer/phase/neutral/control network;
 compare effective connectivity, bases, parameters and solved quantities under a
@@ -443,7 +449,7 @@ even when bus/branch counts and file syntax still match.
 
 ### R-040: Dynamic model and ABI version boundaries
 
-Priority: P1. Class: O. Evidence: OTHER PSS/E section 6.1; PW-X W203; PW-I. Matrix: D16, T2, T4.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: OTHER PSS/E section 6.1; PW-X W203; PW-I. Matrix: D16, T2, T4.
 Record external-model format, interface version, compiler/runtime requirements and
 supported state/rollback capabilities separately from model names.
 Acceptance: incompatible model binaries/interfaces fail with actionable diagnostics;
@@ -452,7 +458,7 @@ must not claim execution of its proprietary binary or conformance to the full FM
 
 ### R-041: Source and dataset rights remain separate
 
-Priority: P0. Class: I. Evidence: PW-M subsection J, W192-W195; PW section 8.1 W106; BOOK.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-M subsection J, W192-W195; PW section 8.1 W106; BOOK.
 Matrix: D11, D16, D15.
 Record permissions for engine code, bindings, models, curves, benchmarks and files
 individually. Reference-only book methods may guide original checks without copying cases.
@@ -464,7 +470,7 @@ programs in a separately invoked process under repository policy, with no packag
 
 ### R-042: Reconstructible run provenance
 
-Priority: P0. Class: I. Evidence: PW-V; PW-X W202; ET-D; PF-D; AGENTS engineering conduct.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-V; PW-X W202; ET-D; PF-D; AGENTS engineering conduct.
 Matrix: G11, G13, D6.
 Retain input/effective-state hashes, solver/model/version, method edition, options,
 source provenance, time basis and diagnostic summary for every result.
@@ -474,7 +480,7 @@ record. Cached results with incompatible hashes must be invalidated.
 
 ### R-043: Trace equations, substitutions and control decisions
 
-Priority: P0. Class: I. Evidence: PW-V; PW-I; BOOK Glover pp. 356-357; PLAN decision D11.
+Priority: P0. Product evidence: U. Quantic proposal: I. Evidence: PW-V; PW-I; BOOK Glover pp. 356-357; PLAN decision D11.
 Matrix: G13, D12, S1, F1, M1, A1.
 Expose governing method, parameter sources, conversions, effective values and
 intermediate decisions at the level needed to audit the answer.
@@ -484,7 +490,7 @@ intervals. Each reported intermediate maps to the numerical run, not decorative 
 
 ### R-044: Measurement and plotting semantics
 
-Priority: P0. Class: I. Evidence: PW-X W196/W201/W202; PW-I W227. Matrix: G5, G12, T1, T4, H1.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: PW-X W196/W201/W202; PW-I W227. Matrix: G5, G12, T1, T4, H1.
 Label instantaneous, phasor, RMS, sequence and derived-meter quantities with
 reference, window, filtering, latency and sampling/resampling policy.
 Acceptance: retain raw and processed original signals; demonstrate the known
@@ -493,7 +499,7 @@ matching quantity and meter definition, with plots identifying event and sample 
 
 ### R-045: Violations, unsupported scope and engineering limits
 
-Priority: P0. Class: I. Evidence: ET-D; PF-D; PW-D section 3.3; OTHER arc qualifications.
+Priority: P0. Product evidence: S. Quantic proposal: I. Evidence: ET-D; PF-D; PW-D section 3.3; OTHER arc qualifications.
 Matrix: G6, G9, G11, D12.
 Distinguish converged, partially evaluated, nonconverged, out-of-domain and
 unsupported results; attach each violation to its sourced limit and element.
@@ -503,7 +509,7 @@ historical textbook value must not become a present-day site compliance limit.
 
 ### R-046: Comparative reports preserve state and scope
 
-Priority: P1. Class: I. Evidence: PW-X; ET-D; PF-D; OTHER arc scenarios. Matrix: G10, G11, A2, D4.
+Priority: P1. Product evidence: I. Quantic proposal: I. Evidence: PW-X; ET-D; PF-D; OTHER arc scenarios. Matrix: G10, G11, A2, D4.
 Compare scenarios using explicit common quantities and show changed inputs,
 assumptions, unresolved losses and applicable study scope.
 Acceptance: compare normal/maintenance states and two motor-start alternatives;
@@ -514,7 +520,7 @@ location and assumptions and must not mix results from incompatible effective ne
 
 ### R-047: Original fixtures and independent oracles
 
-Priority: P0. Class: I. Evidence: PW-V; PW section 8.1 W106; BOOK. Matrix: S1, F1, F2, M1, M2, G13.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-V; PW section 8.1 W106; BOOK. Matrix: S1, F1, F2, M1, M2, G13.
 Use original small networks and independently evaluated equations before commercial
 cross-checks; record source method, input origin and what has actually been verified.
 Acceptance: a reviewer can reproduce an oracle without calling the solver under
@@ -523,7 +529,7 @@ text or selected rendered pages are not promoted into complete verified case dat
 
 ### R-048: Acceptance is layered and discriminating
 
-Priority: P0. Class: I. Evidence: PW-V; PW-L subsection F; PW-I subsection F; BOOK.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-V; PW-L subsection F; PW-I subsection F; BOOK.
 Matrix: S1, S11, M2, P4, A1, H1, C6.
 Separate exact algebraic identities, numerical error, model adequacy and engineering
 acceptability. Choose tolerances from method conditioning/refinement and source precision.
@@ -533,7 +539,7 @@ equipment settings, safety limits, an empirical arc model or a soil model.
 
 ### R-049: Vendor comparison is model- and version-specific
 
-Priority: P0. Class: I. Evidence: PW-X W196-W202; PW section 9.2; OTHER version qualifications.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: PW-X W196-W202; PW section 9.2; OTHER version qualifications.
 Matrix: G10, T1, T4, M2, A1.
 Match equations, settings, initial states, events, numerical controls and meter
 definitions before judging parity. Preserve source ambiguities and missing inputs.
@@ -543,7 +549,7 @@ it. Agreement between two executions of one engine is not an independent oracle.
 
 ### R-050: Observability, uncertainty and stochastic studies
 
-Priority: P2. Class: I. Evidence: PW-M subsections G/I; PW-X W204; PF-S P26/P44. Matrix: S18, S19, S22, S23.
+Priority: P2. Product evidence: S. Quantic proposal: I. Evidence: PW-M subsections G/I; PW-X W204; PF-S P26/P44. Matrix: S18, S19, S22, S23.
 Specify measurement covariance/rank and bad data, uncertainty distributions and
 correlations, hosting constraints/policy, failure rates and restoration chronology.
 Acceptance: an unobservable original estimator fails despite ample measurement
@@ -552,7 +558,7 @@ checks. Hosting and reliability outputs name their assumptions rather than imply
 
 ### R-051: Adjacent industrial engines keep distinct physics
 
-Priority: P1. Class: I. Evidence: ET-S E18-E21/E31/E32/E70; PF-S P13/P21; OTHER SKM section 6.2.
+Priority: P1. Product evidence: S. Quantic proposal: I. Evidence: ET-S E18-E21/E31/E32/E70; PF-S P13/P21; OTHER SKM section 6.2.
 Matrix: C1, C2, C3, C4, C5, C6, C7, C8, H3.
 Keep cable ampacity/sizing, pulling, transformer sizing, battery duty, panels,
 line mechanics, grounding and flicker as separately sourced calculations with
@@ -563,7 +569,7 @@ electrical pass cannot imply acceptable pulling tension or a battery-duty pass.
 
 ### R-052: Coverage and unresolved work remain auditable
 
-Priority: P0. Class: I. Evidence: all four dossiers' gaps; PW-V; shared draft matrix.
+Priority: P0. Product evidence: I. Quantic proposal: I. Evidence: all four dossiers' gaps; PW-V; shared draft matrix.
 Matrix: D12, G11, G13.
 Maintain R-ID to source/matrix/test/implementation mappings, recording uninspected
 clauses, conflicting documentation and unsupported capabilities explicitly.
