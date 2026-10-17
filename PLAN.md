@@ -1597,7 +1597,7 @@ Change record: none
 
 ### WP-2.17 Product model mapping for the comparison cases
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 91a6dda | 2026-10-17
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.15
 Owned paths: `docs/research/power/comparison-mapping.md`
