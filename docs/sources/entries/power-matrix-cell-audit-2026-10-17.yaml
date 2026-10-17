@@ -1,0 +1,45 @@
+id: power-matrix-cell-audit-2026-10-17
+accessed: 2026-10-17
+wp: WP-2.18
+purpose: Cell-level primary citations and scope audit for ETAP and PowerFactory
+method: Trace older cells through dossier notes and existing E/P source indices; re-read selected current primary pages where wording or scope was ambiguous. No product execution.
+sources:
+  - id: E113
+    url: https://etap.com/product/current-transformer-sizing-and-saturation
+    observed: CT sizing/saturation, remanence and secondary-current plots. Does not establish VT saturation or universal coupling of this calculator to every relay simulation.
+  - id: E114
+    url: https://etap.com/en/product/grid-code-load-flow
+    observed: Reactive capability limits and plant-specific operating constraints. Does not specify a PV/PQ transition algorithm.
+rechecks:
+  - id: P49
+    url: https://www.digsilent.de/en/system-parameter-identification.html
+    observed: Generic identification from measured input/output signals for load flow, quasi-dynamic, RMS and EMT. Motor parameter fitting directly from datasheet not established; matrix M4 downgraded to U.
+  - id: P3
+    url: https://www.digsilent.de/en/load-flow-analysis.html
+    observed: Reactive limits/capability curves, distributed slack, AC/DC, feeder scaling and temperature dependency. Exact PV/PQ transition rule not specified.
+  - id: E43
+    url: https://etap.com/product/dc-short-circuit-software
+    observed: IEEE 946 stated; battery/charger modelling refers broadly to IEEE/IEC. Exact IEC 61660 coverage not established by this page.
+  - id: E59
+    url: https://etap.com/packages/distribution-simulation-analysis
+    observed: Meter allocation, simultaneous faults and quasi-dynamic option within time-domain unified load flow. Primary source replaces reliance on reseller-only evidence for quasi-dynamic availability.
+  - id: E88
+    url: https://etap.com/packages/distribution-network-optimization
+    observed: Switching/tie-point optimisation; phase-balancing breadth not established here, unlike the earlier reseller description.
+  - id: E61
+    url: https://etap.com/packages/etap-base-package
+    observed: Library count includes equipment/device models and sizes; themes/managers do not establish group-based interface profiles.
+  - id: E30
+    url: https://etap.com/product/starz-distance-relay-coordination
+    observed: CT/VT placement, differential and distance functions, sliding faults and protection sequence. VT saturation not established.
+  - id: P11
+    url: https://www.digsilent.de/en/protection-functions.html
+    observed: Detailed relay families, CT/VT saturation and licensing qualifications. Documentation is distinct from observed runtime behavior.
+  - id: P41
+    url: https://www.digsilent.de/en/faq-reader-powerfactory/what-do-unsupplied-areas-and-isolated-areas-mean.html
+    observed: Unsupplied and isolated topology definitions; general display support is cross-referenced to P8.
+boundaries:
+  - Existing source IDs retain their dossier dates and historical qualifications; not every cited PDF was re-rendered during this audit.
+  - All 199 previously S cells were reviewed; 198 remain S with explicit E/P citations, one becomes U. No newly claimed product execution.
+  - S part explicitly withholds unsupported breadth of a row and does not imply full parity.
+  - New requirements R-053 to R-063 are cross-linked without renumbering prior requirements or changing other product evidence cells.
