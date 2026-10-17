@@ -1571,7 +1571,7 @@ Change record: none
 
 ### WP-2.16 Requirements for unmapped parity rows
 
-Status: [ ] Not started
+Status: [x] Done | ChatGPT | 2026-10-17 | e9758d9
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.12, WP-2.15
 Owned paths: `docs/research/power/reconstruction-requirements.md`
