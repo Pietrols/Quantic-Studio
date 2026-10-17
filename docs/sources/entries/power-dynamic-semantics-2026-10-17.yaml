@@ -1,0 +1,52 @@
+id: power-dynamic-semantics-2026-10-17
+accessed: 2026-10-17
+wp: WP-2.11
+purpose: Dynamic model assembly, limits, load composition and initialization semantics
+source_ids: W218 through W227; existing W61, W60 and W97 revisited
+primary_sources:
+  - https://www.powerworld.com/files/T01ModelRelationships.pdf
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Dialog_States_Manual_Control.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_LoadComponent.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Overview_Loads.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/transient_stability_overview_Excitation_Limiters.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Dialog_Validation_Parameter_Check_Generator_Machine_Models.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_Load_Model_Group_Distribution_Feeder_Equivalent.htm
+  - https://www.powerworld.com/WebHelp/Content/MainDocumentation_HTML/Transient_Stability_LoadCharacteristic.htm
+  - https://www.mathworks.com/help/simulink/slref/anti-windup-control-using-a-pid-controller.html
+  - https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html
+inspection:
+  - PowerWorld 2024 training slides 16 and 17 rendered with Poppler and visually inspected; selected surrounding text read, not a complete 60-slide audit.
+  - Public model/input/state documentation read; permanent corrections distinguished from run-only limit adjustments.
+  - MathWorks R2026b page and SciPy 1.18.0 page displayed during access; no implementation source or proprietary examples copied.
+source_ambiguities:
+  - W61 says zero time step in a discussion of filter time constants; zero integration steps not inferred.
+  - W61 and W223 print a reactance ordering inconsistent with their correction tests; neither ordering nor replacement factors adopted as our constraints.
+  - W220 remainder example uses an inconsistent fraction label; detailed actual-build degenerate behaviour remains a verification requirement.
+  - W224 special zero/negative base and initialization parameter rules require explicit build/model interpretation; no undocumented defaults inferred.
+authored_checks:
+  runtime: SciPy 1.18.1
+  data_origin: Authored normalized signals, fractions and mechanical quantities; no equipment or vendor/book case data.
+  saturation:
+    inputs: Initial state 0; input +2 until t=2 then -2; limits [-1,1]. Compare an unlimited integrator with clipped output against a state held at its outward-pushed limit.
+    result: At t=2.25 the unlimited state is 3.5, clipped output 1, bounded state/output 0.5.
+  lead_lag:
+    inputs: T1=0.25, T2=0.5, unit step, initial lag state 0, interval [0,2], 41 output points. Independent state zdot=(1-z)/T2; y=T1/T2+(1-T1/T2)*z.
+    reference: y(t)=1-(1-T1/T2)*exp(-t/T2).
+    numerical_options: solve_ivp rtol=1e-10, atol=1e-12; identity acceptance below 1e-9.
+    max_error: 8.889e-12
+  load_reconciliation:
+    inputs: MW fractions [0.3,0.2,0.5]; deliberately fixed component reactive demands [0.18,0.12,0.25]; initial target Q=0.4 at V=1; test V=0.8.
+    result: Capacitive B=0.15; net Q=0.454 at lower voltage; not the constant-correction value 0.4.
+  event_sampling:
+    inputs: xdot=0, initial x=1, interval [0,1], guard (t-0.25)*(t-0.75).
+    coarse: first_step=max_step=1, 101 t_eval points; neither root detected.
+    refined: max_step=0.1; both roots detected within absolute error 1e-12.
+  mechanical_energy:
+    inputs: J=2, net torque=0.8, initial speed=0.6, duration=0.25; final speed=0.7.
+    reference: Compare change of J*omega^2/2 with net torque times integral of speed.
+    residual: 2.776e-17
+limits:
+  - Scratch checks illustrate semantics only, not physical engineering acceptance or commercial-engine equivalence.
+  - Original input values and identity thresholds are not recommended machine settings, limiter gains, relay delays or numerical defaults.
+  - No complete dynamic restart format, vendor root finder, exact limit enforcement algorithm or production DAE solver inferred.
+terms: Original paraphrase and authored mathematical reasoning only; no PDF, screenshot, model diagram, vendor example, executable or parameter dataset redistributed.
