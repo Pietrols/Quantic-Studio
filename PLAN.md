@@ -1824,7 +1824,7 @@ Change record: none
 
 ### WP-2.26 PV parity matrix, engines and requirements
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 5ab650e | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.23, WP-2.25
 Owned paths: `docs/research/pv/parity-matrix.md`, `docs/research/pv/engines.md`, `docs/research/pv/requirements.md`
