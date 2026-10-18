@@ -1649,6 +1649,155 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-2.19 Mining network model validation
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.15, WP-2.17
+Owned paths: `docs/research/power/mining-validation.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). Starts from ChatGPT's lead: Browne, DIgSILENT Pacific 2013, Modelling of a Large Mining Network.
+
+Steps:
+
+1. Read that paper and other public material on modelling and validating mine power networks: conference papers, utility and mine case studies, university theses, vendor application notes.
+2. Record how practitioners source data (manufacturer, typical, nameplate, site test), model VSD and motor loads, validate against measurements and handle islanded or weak-grid operation.
+3. Turn the findings into numbered validation requirements (V-IDs) linked to R-IDs and matrix rows, each with an acceptance check, tagged S, I or U.
+4. Copy no project data or figures; cite pages.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every V-ID has evidence, an S, I or U tag, R-IDs and an acceptance check; text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.20 Close unknown cells for the industrial competitors
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12, WP-2.18
+Owned paths: `docs/research/power/parity-matrix.md` (EasyPower, SKM and NEPLAN columns only), `docs/research/power/other-products.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). Matrix known gap 4: EasyPower and SKM have many U cells on rows that matter for mining (S3 to S9, D3 to D18, G2 to G10, F4, F8, M3, M4, H3).
+
+Steps:
+
+1. For each U cell in the EasyPower, SKM and NEPLAN columns, search current public help, manuals, release notes and tutorials.
+2. Change a cell to S only with a cited primary source; leave it U otherwise and record what was searched in the WP log.
+3. Add new sources to other-products.md with their IDs and dates.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every changed cell cites a new or existing source; the log lists searched-but-unresolved cells; matrix counts are updated; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.21 Zambian and southern African mine electrical rules
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12
+Owned paths: `docs/research/power/mining-regulations.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). Engine-index finding 4: local rules decide pass or fail in reports for Quantic's clients and are the largest home-market gap.
+
+Steps:
+
+1. Identify the public legal and technical instruments that govern electrical installations on Zambian mines (for example the Mines and Minerals Development Act and its regulations, ZESCO and ERB grid rules, ZABS standards) and the South African equivalents commonly applied in the Copperbelt (for example the Mine Health and Safety Act regulations and SANS standards).
+2. For each, record title, edition, issuer, whether it is public or paid, and which engine or matrix row it would govern (earthing, trailing cables, protection, arc flash, motor starting, grid connection).
+3. Record numeric limits only when read from the instrument itself, with clause; otherwise list the clause as a gap. Paid documents are listed for Peter, never copied.
+4. Cross-reference the Zambian standards already in QE-References (DZS 691, 387, 418, 1191-2) without copying their text.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every instrument is cited and dated; every limit has a clause or is a named gap; text and reference guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.22 Independent re-review of Claude's synthesis and source index
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12, WP-2.18
+Owned paths: `docs/research/power/engines.md`, `docs/research/power/notes/etap-sources.md`, `docs/research/power/notes/powerfactory-sources.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). A second, independent pass on work Claude wrote and ChatGPT reviewed only lightly.
+
+Steps:
+
+1. Re-review engines.md row by row: products named as seen must match the matrix cells; bases, licences, owned books and blocking gaps must be sourced; correct or qualify anything that does not hold.
+2. Fold E113 and E114 from the WP-2.18 source entry into notes/etap-sources.md, and any P IDs defined only in source entries into notes/powerfactory-sources.md.
+3. Check every licence statement in engines.md (pandapower, OpenDSS, VeraGrid, linerate, arcflash-calc, ANDES, FMPy) against the project's current licence file and record the date read.
+4. Post disagreements with Claude's text as channel messages before changing them.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every engines.md row agrees with the matrix or carries a correction; every licence statement has a dated source; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.23 Solar PV reference-product research: PVsyst, HelioScope and peers
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/pv/README.md`, `docs/research/pv/pvsyst.md`, `docs/research/pv/other-products.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). Opens the research-first phase for the second suite (Peter's order: power, then PV). Same template and evidence discipline as the power dossiers.
+
+Steps:
+
+1. Copy the dossier template and rules from docs/research/power/README.md into docs/research/pv/README.md, adapted to PV.
+2. Write a PVsyst dossier: editions and licensing, project and data model, meteo and horizon handling, transposition and shading models, module and inverter models, losses chain, P50 and P90 and reports, with every claim cited.
+3. Write a second dossier covering HelioScope, SAM (NREL, open source), PV*SOL and Plant Predict at lighter depth, with a shared capability table.
+4. Note which open engines (pvlib, SAM SSC) cover each model, with licences, and which of Peter's books cover the physics (for example Masters 2004).
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Both dossiers cover every template section; every claim cites a source; gaps are explicit; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.24 Power data import formats from public specifications
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.14
+Owned paths: `docs/research/power/import-formats.md`
+
+Added 2026-10-18 as part of a six-WP batch for Lane B (Peter: ChatGPT writes, Claude reviews). Users switch tools only if their models come with them (matrix D16, engine E35, R-037 to R-041).
+
+Steps:
+
+1. For PSS/E RAW and DYR, PowerWorld AUX, PowerFactory DGS, CIM/CGMES and OpenDSS scripts, find the public specification or documentation and its version.
+2. Record structure, versioning, units and conventions, what each format can and cannot carry (topology, types, dynamics, protection, diagrams) and known loss points between formats.
+3. List open-source readers and writers with licences (for example pandapower and VeraGrid converters) and their tested versions.
+4. Propose original round-trip test fixtures (no vendor or dataset files copied) tied to R-037 to R-041.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every format has a cited specification or a stated gap; every reader has a dated licence; guards pass.
+
+Learning note: none.
+Change record: none
+
 **Implementer stop point:** A model stops after its assigned engine WP merges and
 hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
 choices; all builds, acceptance, CI checks and merges are performed by the agents.
