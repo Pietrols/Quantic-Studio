@@ -1872,7 +1872,7 @@ Change record: none
 
 ### WP-2.28 Industrial automation reference-product research
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 6cb739e | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/automation/README.md`, `docs/research/automation/plc-products.md`
