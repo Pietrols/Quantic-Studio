@@ -9,9 +9,9 @@ dependencies are Done on main. Paths in the two lanes never overlap.
 
 | Item | Lane A: Claude | Lane B: ChatGPT |
 | --- | --- | --- |
-| Done | WP-2.10 (PR #64), WP-2.12 parity matrix and engines (PR #65) | WP-2.11 (PRs #53, #55, #56, #59 to #62); WP-2.13 (#57, #58); WP-2.14 (#63); WP-2.15 comparison cases (#66). All reviewed and accepted |
-| Now | Review only (Peter, 2026-10-17: ChatGPT writes, Claude reviews until more credits) | **WP-2.16** requirements for unmapped rows |
-| Next | Review each merge | WP-2.17 comparison model mapping, then WP-2.18 matrix cell citations |
+| Done | WP-2.10 (PR #64), WP-2.12 parity matrix and engines (PR #65) | WP-2.11 (PRs #53, #55, #56, #59 to #62); WP-2.13 (#57, #58); WP-2.14 (#63); WP-2.15 comparison cases (#66). All reviewed and accepted; WP-2.16 to 2.18 (#67 to #69) |
+| Now | Review only (Peter, 2026-10-17) | Waiting for Peter's next assignment |
+| Next | Review each merge | Candidate: mining network model-validation requirements (Browne 2013 lead) |
 | Parked | WP-2.6 PLC slice (not started) | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
 
 Engine order after research is decided from the parity matrix.
