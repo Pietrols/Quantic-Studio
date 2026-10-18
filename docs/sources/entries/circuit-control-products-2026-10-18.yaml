@@ -1,0 +1,25 @@
+id: circuit-control-products-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.27
+purpose: Circuit/control suite reference-product mechanisms, workflow boundaries and independently reusable engines
+deliverables:
+  - docs/research/circuit/README.md
+  - docs/research/circuit/simulink.md
+  - docs/research/circuit/other-products.md
+source_indices:
+  - SL1-SL24 in simulink.md
+  - CP1-CP30 in other-products.md
+licence_reads:
+  openmodelica_compiler: 1cf14a985ad18c92407ec89c95dd1dfd626a96e3
+  openmodelica_runtime: 662f79d64f5461a0fee5f54fb8c39b0378cfd800
+  python_control: fbfc42c670132862f4d6998add25451214023574
+  scipy: 1032aece8a8109d67f238de6865d8b08e750a8c0
+  sympy: 0744f229d697ca3ed1b1b257bfdb70e3eecf0b9e
+  ngspice_historical_v26_copying: e266da0141a06637b8119d8ce7e53318ab1eee12
+boundaries:
+  - Simscape native technology distinguished from SPS removed R2026a; conversion supports subsets, no losslessness claim.
+  - OpenModelica current source AGPL or OSMC modes distinguished from separate runtime terms and older licence descriptions.
+  - Current ngspice manual 46 component exceptions read; historical v26 COPYING not treated as current release audit.
+  - LTspice EULA unavailable; no generic ADI licence substituted. Scilab licence provider read, exact components unqualified.
+  - No application, imported model, firmware, converter, benchmark, paid source or reference-book text executed or copied.
+  - All proposed fixtures and engine splits are original and unrun; builds and contract changes remain parked.
