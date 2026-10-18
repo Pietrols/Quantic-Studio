@@ -1700,7 +1700,7 @@ Change record: none
 
 ### WP-2.21 Zambian and southern African mine electrical rules
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 87d082c | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.12
 Owned paths: `docs/research/power/mining-regulations.md`
