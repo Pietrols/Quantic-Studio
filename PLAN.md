@@ -1775,7 +1775,7 @@ Change record: none
 
 ### WP-2.24 Power data import formats from public specifications
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 005402b | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.14
 Owned paths: `docs/research/power/import-formats.md`
