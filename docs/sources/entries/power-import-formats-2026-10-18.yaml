@@ -1,0 +1,15 @@
+id: power-import-formats-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.24
+purpose: Public model-exchange formats, conversion losses, candidate readers and original round-trip proposals
+deliverable: docs/research/power/import-formats.md
+source_indices:
+  - IF1-IF30 in deliverable section 7
+method: Official specifications/help, project converter documentation and actual source/licence files; no application execution.
+boundaries:
+  - Current full Siemens RAW/RAWX/DYR record/model specifications and installed DGS documentation not retrieved; named gaps retained.
+  - CGMES 2.4.15 DY profile predates CGMES 3; NC bundle version is not CGMES version.
+  - Upstream documentation/test claims are distinguished from Quantic runtime tests, of which none were run.
+  - Reader code, vendor cases, attachments, private references and paid standards text not copied.
+  - OpenDSSDirect.py custom licence read directly; no stock BSD-only conclusion or dependency approval.
+  - Ten original fixture proposals, not implemented fixtures or passed numerical tests.
