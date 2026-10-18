@@ -1651,7 +1651,7 @@ Change record: none
 
 ### WP-2.19 Mining network model validation
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 8e59f37 | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.15, WP-2.17
 Owned paths: `docs/research/power/mining-validation.md`
