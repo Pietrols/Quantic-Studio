@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 20162)
+Total output lines: 910
+
 # Industrial and transmission competitors: EasyPower, SKM, NEPLAN and PSS/E
 
 WP-2.13. Public-source research checked 2026-10-16. This is a capability dossier,
@@ -481,10 +484,7 @@ curve revision. [NP6]
 | Network/node and switching | Phase/neutral/earth configuration; grounded/isolated/resonant earthing; area/zone/feeder/substation; breaker/disconnector state | One-, two-, three-phase AC and physical DC are distinguished. [NP4] |
 | Line/cable/transformer | Tower/conductor geometry and mutual effects; two/three/four-winding and phase-shifting transformers, tap control | Complete dialog units/defaults require the detailed manual. [NP4] |
 | Sources, loads and converters | Synchronous/asynchronous machines, external grid, composite/profile loads, HVDC/VSC, storage and DC motors/loads | The presence of a component does not establish every study's model fidelity. [NP4] |
-| Overcurrent device | Pickup and time settings; directional phase/earth functions; point/formula characteristic and permitted setting ranges | Curves can be referenced across voltage levels; exact curve constants are not reproduced. [NP10] |
-| Distance relay | R-X reach/shape, zone delays, CT/VT transformation, primary or secondary impedance, binary signalling | Mho, polygon and point-defined shapes; detailed parameter units/schema remain manual-dependent. [NP11] |
-| Motor/load | Torque, current and power factor versus slip; starter and load-torque curve; saturation/loss options | Least-squares parameter identification is documented, without copying fitted example values. [NP12] |
-| Arc-flash location | Working distance, arcing-current contribution, device clearing and selected method | Energy and clearing-time outputs are documented; full electrode/enclosure input schema is not established here. [NP9] |
+| Overcurrent device | Pickup and time settings; di…162 tokens truncated…flash location | Working distance, arcing-current contribution, device clearing and selected method | Energy and clearing-time outputs are documented; full electrode/enclosure input schema is not established here. [NP9] |
 
 ## 5. Studies and modules
 
@@ -752,3 +752,159 @@ with design and as-found settings separated. Transmission parity needs topology,
 steady-state and dynamic-model initialization checked independently, plus transparent
 import losses. These are research inputs for WP-2.12, not approval to implement new
 engines. [EP16][SK17][SK19][NP19][PS8][PS9]
+
+## WP-2.20 primary-evidence supplement, 2026-10-18
+
+This pass searched all previously U cells for EasyPower, SKM and NEPLAN through
+public product catalogs, current help/KB material, release notes and tutorials.
+The matrix updates are documentary S, never observed product executions. Partial
+cells retain their unknown remainder. Search scope and every unresolved row are
+listed in the completed WP log; a failed search is not evidence of absence.
+
+### EasyPower findings
+
+Current 26.0 help closes several control and interface gaps. PV generators switch
+to PQG at reactive limits and can return; multiple swing sources and isolated-state
+options are explicit. Reliability uses cut-set analysis, not a newly verified
+chronological restoration simulation. The detailed TMS page describes a constant-Z
+network/static-load approximation and flux-state motor models; native trajectory
+equivalence to C-01 remains unresolved. Its Lua mapping scripts are not evidence
+of a Python solver API. [EP24][EP25][EP26][EP28][EP30][EP32]
+
+| Formerly U row | Supported documentary subset |
+| --- | --- |
+| D7 | S part, load scaling/diversity; category breadth U [EP24] |
+| D13 | S part, multistep undo; recovery-bin scope U [EP31] |
+| D18 | S part, tab/tool options; group profiles U [EP3] |
+| G3 | S yes, auto layout (2026) [EP3] |
+| G6 | S part, voltage/overload highlighting; contour breadth U [EP24] |
+| G7 | S part, isolated-subsystem display [EP26] |
+| G8 | S part, editable database spreadsheet; full result breadth U [EP27] |
+| S3 | S yes, PV/PQG limits and return switching [EP25] |
+| S4 | S yes, automatic LTC and local/remote PV control [EP24] |
+| S6 | S part, multiple swing-source sharing; secondary breadth U [EP24][EP25] |
+| S7 | S yes, constant MVA/I/Z mixture [EP24] |
+| S9 | S yes, islanded systems with swing sources [EP24][EP26] |
+| S15 | S part, manual contingency/what-if states; automatic N-k/RAS U [EP24][EP5] |
+| S23 | S part, IEEE 493 cut-set reliability; chronological restoration U [EP28] |
+| P7 | S yes, differential/partial/ground differential [EP7] |
+| T6 | S yes, initialization DState criterion and logs [EP29] |
+
+### SKM findings
+
+The current public KB/training outline documents custom fields, project merging,
+multi-user access and Data Visualizer. Additional one-lines can use existing
+components even in Viewer. IEC 61363 is explicitly documented. The V8 enhancement
+list is dated 2016-10-24: its frequency-sensitive island load flow is a steady-state
+method, not the same as a transient governor simulation. It also documents cable
+temperature correction and arc-result coloring. Historical evidence retains its
+date; exact V11 defaults and full model equivalence remain U. [SK27][SK29][SK30][SK32][SK33]
+
+| Formerly U row | Supported documentary subset |
+| --- | --- |
+| D3 | S yes, new one-lines from shared components [SK30] |
+| D7 | S part, demand/design load analysis; diversity breadth U [SK27] |
+| D9 | S part, project merging and multi-user; derived hierarchy U [SK27] |
+| D10 | S yes, user-defined fields [SK27] |
+| D13 | S part, one-line undo; recovery bin U [SK28] |
+| D16 | S part, SPEL bidirectional exchange; RAW/CGMES U [SK31] |
+| G6 | S part, arc-flash result coloring (V8) [SK33] |
+| G8 | S yes, Data Visualizer inputs/results across scenarios [SK29] |
+| G10 | S yes, Data Visualizer scenario comparison [SK29][SK30] |
+| S3 | S part, generator VAR limits in TMS load flow; PV/PQ rule U [SK11] |
+| S6 | S part, frequency-sensitive island load flow (V8); secondary control U [SK33] |
+| S7 | S yes, constant kVA/I/Z loads [SK8] |
+| S8 | S yes, cable resistance temperature adjustment (V8) [SK33] |
+| S9 | S part, independent/frequency-sensitive islands; slack policy U [SK8][SK33] |
+| S11 | S part, line parameter calculators; geometry/mutual breadth U [SK8] |
+| S23 | S yes, reliability indices with repair/replace/switching [SK34] |
+| F4 | S mod, IEC 61363 decay and initial conditions [SK32] |
+| M3 | S part, reactor, autotransformer, star-delta, solid-state; VFD breadth U [SK11] |
+
+### NEPLAN findings
+
+Current load-flow, modelling and GUI pages explicitly document more than the
+original matrix recorded, including phase-shifters, distributed slack, secondary
+controls, shared diagrams, differential relays and measurement allocation.
+The 2019-path brochure lists several additional modules; this is dated capability
+evidence, not a current entitlement or proven algorithm. Economic cable thermal
+analysis on NP28 concerns fault heating/clearing, so it does not close the IEC 60287
+duct-bank ampacity cell. OPF economic dispatch/MOPF is not proof of integer unit
+commitment. [NP4][NP5][NP7][NP17][NP24][NP26][NP28]
+
+| Formerly U row | Supported documentary subset |
+| --- | --- |
+| D3 | S yes, multiple diagrams of shared elements [NP24] |
+| D7 | S part, predefined/user scaling; diversity categories U [NP7] |
+| D8 | S part, synthetic profiles and timed network state; arbitrary fields U [NP4][NP5] |
+| G2 | S yes, detailed stations and bays [NP24][NP4] |
+| G4 | S part, hierarchical substations; arbitrary composite semantics U [NP4] |
+| G6 | S yes, result ranges and overload coloring [NP24] |
+| G7 | S yes, islands and unsupplied network coloring [NP24] |
+| G8 | S yes, table-oriented Data Manager [NP5] |
+| G10 | S yes, result/variant comparison [NP5] |
+| S3 | S part, OPF reactive limits; LF PV/PQ transition U [NP17] |
+| S4 | S yes, local/remote OLTC control [NP7] |
+| S5 | S yes, phase-shifter power control [NP7] |
+| S6 | S part, distributed slack and secondary control; full breadth U [NP7][NP4] |
+| S7 | S part, constant-current/power and composite loads; full ZIP U [NP4] |
+| S11 | S yes, geometry and mutual coupling [NP4] |
+| S18 | S mod, State Estimator advertised (2019 brochure) [NP26] |
+| S19 | S mod, hosting capacity advertised (2019 brochure) [NP26] |
+| S20 | S mod, radial optimal capacitor placement [NP30] |
+| S21 | S mod, switching and phase balance advertised (2019/current catalog) [NP26][NP1] |
+| S23 | S mod, reliability and restoration [NP31] |
+| S24 | S mod, Ward/extended Ward/REI-DIMO [NP29] |
+| S25 | S yes, measurement import/load allocation [NP7] |
+| S26 | S part, economic dispatch/MOPF; unit commitment U [NP17] |
+| P7 | S yes, differential relay model [NP4] |
+| P8 | S part, current-transformer saturation module; VT breadth U [NP25] |
+| P9 | S part, PDMS setting history; explicit as-found/maintenance modes U [NP19] |
+| T6 | S part, automatic dynamic initialization; diagnostic detail U [NP14] |
+| H3 | S mod, Pst/Plt flicker analysis [NP27] |
+| C6 | S part, substation grounding advertised; FEM/soil method U [NP26] |
+| PW-S1 | S yes, decoupled active-power DC load flow [NP7] |
+| PW-S3 | S part, NTC security-limited transfer; refinement modes U [NP32] |
+| PW-S4 | S part, AC SC-OPF and economic dispatch; reserves U [NP17] |
+| X-2 | S part, instantaneous ABC/COMTRADE; RMS/phasor meters U [NP14] |
+| X-5 | S mod, investment present-value assessment (2019 brochure) [NP26] |
+| X-6 | S part, SCADA integration; native PMS/ILS/ADMS U [NP26] |
+| X-7 | S yes, transformer energization/inrush in EMT [NP14] |
+| X-10 | S yes, wind generation models [NP4] |
+
+### New primary sources
+
+All accessed 2026-10-18. Sources without a release/date are undated live pages.
+Existing EP3/EP7, SK8/SK11 and NP1/NP4/NP5/NP7/NP14/NP17/NP19 were also re-read
+or checked through their current primary pages; the original dates remain historical.
+Public text only, no binaries, model files, source worked examples or library data copied.
+
+| ID | Primary URL and inspected scope | Type | Accessed |
+| --- | --- | --- | --- |
+| EP24 | [PowerFlow feature detail: load forms, LTC, local/remote voltage, multiple swing sources](https://www.easypower.com/products/features/powerflow/features) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP25 | [2026 help: reactive limits, PV/PQG switching and sharing](https://help.easypower.com/ezp/26.0/Content/07_Power_Flow_Analysis/Considerations_for_Multiple_Gen_on_Bus.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP26 | [2026 help: isolated subsystems, static-start methods and source reinitialization](https://help.easypower.com/ezp/26.0/Content/07_Power_Flow_Analysis/PF_Options/PF_Options_Control.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP27 | [2026 help: editable/filterable/exportable database browser](https://help.easypower.com/ezp/26.0/Content/03_Making_Oneline_Diagrams/DB_Browser_Report/Database_Browser_and_Report.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP28 | [2026 help: IEEE 493 cut-set reliability and financial outputs](https://help.easypower.com/ezp/26.0/Content/21_Reliability/Reliability.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP29 | [2026 help: initialization DState, logs, events, stator-flux option](https://help.easypower.com/ezp/26.0/Content/19_Dynamic_Stability/DS_Options/Control_Tab.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP30 | [Detailed TMS: flux states, constant-Z background, initializer, digitized load and parameter derivation](https://www.easypower.com/products/features/transient-motor-starting/features) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP31 | [2026 help: multistep undo and focus restrictions](https://help.easypower.com/ezp/26.0/Content/03_Making_Oneline_Diagrams/Undo.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| EP32 | [2026 Revit Lua mapping scripts, not proof of a Python solver API](https://help.easypower.com/ezp/26.0/Content/12_Using_EasyPower_w_Other_Programs/Revit/Lua_Scripts.htm) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK27 | [Current vendor Course 101 outline: project merge, multi-user, custom fields, scenarios](https://www.skm.com/course101.html) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK28 | [Vendor KB: one-line undo includes destroy/connect/disconnect](https://support.skm.com/KB/View/3785-how-can-we-undo-something-on-the-one-line-) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK29 | [2024-12-12 KB: inputs/results across scenarios and spreadsheet editing/export](https://support.skm.com/KB/View/434050-using-data-visualizer-to-export-data-into-excel-format) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK30 | [Viewer: create additional one-lines from existing components, compare stored scenarios](https://www.skm.com/ptwViewer.html) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK31 | [SPEL bidirectional equipment data exchange; not RAW or CGMES evidence](https://skm.com/data-exchange.html) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK32 | [IEC 61363: decay, AC/DC current times and selectable initial conditions](https://www.skm.com/iec61363.html) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK33 | [V8 enhancement list, 2016-10-24; PDF pp. 7-8 frequency-sensitive islands, p. 9 coloring, p. 16 cable temperature](https://skm.com/download/PTW_V8.0_Enhancement_List.pdf) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK34 | [Reliability indices with repair, replacement, switching, cost and failure models](https://skm.com/distributionReliability.html) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| SK35 | [Installed manual index only; referenced detailed manuals not supplied as readable downloads here](https://support.skm.com/KB/View/5209-skm-reference-manual) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP24 | [Shared multi-diagram objects, detailed stations, result/island coloring](https://neplan.ch/description/graphical-network-representation-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP25 | [Education/research module list includes CT saturation; does not prove commercial entitlement](https://neplan.ch/neplanproduct/en-electro-research/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP26 | [2019-path four-page brochure, PDF pp. 3-4; named modules and historical SCADA/investment scope](https://www.neplan.ch/wp-content/uploads/2019/10/PamphletNEPLAN_V10_E-1.pdf) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP27 | [Pst/Plt, load and wind flicker, measurement summation](https://neplan.ch/description/flicker-analysis-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP28 | [Protection-clearing/short-circuit thermal capacity; not evidence of IEC 60287 duct-bank ampacity](https://neplan.ch/description/economic-cable-sizing-and-thermal-analysis-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP29 | [Ward, extended Ward and REI-DIMO; nonlinear-element options and derived variant](https://neplan.ch/description/network-reduction-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP30 | [English-text radial capacitor placement, technical/economic options; source language route retained](https://neplan.ch/description/optimal-capacitor-placement/?lang=es) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP31 | [Component outage/restoration, reliability and economic effects](https://neplan.ch/description/reliability-analysis-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
+| NP32 | [Security-limited transfer between control areas](https://neplan.ch/description/net-transfer-capability-ntc-2/) | Vendor help, product page or dated release PDF | 2026-10-18 |
