@@ -1848,7 +1848,7 @@ Change record: none
 
 ### WP-2.27 Circuit and control reference-product research
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 6fa45b5 | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/circuit/README.md`, `docs/research/circuit/simulink.md`, `docs/research/circuit/other-products.md`
