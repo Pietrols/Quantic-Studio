@@ -1800,7 +1800,7 @@ Change record: none
 
 ### WP-2.25 PV dossier deepening and solar resource data
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 66e99de | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.23
 Owned paths: `docs/research/pv/pvsyst.md`, `docs/research/pv/resource-data.md`
