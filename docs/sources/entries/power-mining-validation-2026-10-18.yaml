@@ -1,0 +1,36 @@
+id: power-mining-validation-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.19
+purpose: Primary-source methodology for mine network validation requirements V-001 to V-018
+method: Public text retrieval and page/section citation only; no source case data, figures, commercial execution or site test.
+sources:
+  - id: MV1
+    citation: David Browne, Modelling of a Large Mining Network, DIgSILENT Pacific, 2013 publication path, PDF pages 7-8, 13-16 and 18.
+    url: https://digsilent.com.au/en/publications.html?cid=13854&file=files/publications/2013/slides/Browne.D_Modelling+a+large+mining+network.pdf
+    inspected: Public 18-slide PDF text; no block diagram equations or site parameters adopted.
+  - id: MV2
+    url: https://digsilent.com.au/en/consulting-power-plant-and-power-system-measurements.html
+    inspected: Vendor measurement-programme description; not independent certification.
+  - id: MV3
+    citation: P. Cicilio and E. Cotilla-Sanchez, Evaluating Measurement-Based Dynamic Load Modeling Techniques and Metrics, 2019, arXiv 1907.07239.
+    url: https://arxiv.org/abs/1907.07239
+    inspected: Full online text, methodology and conclusions; no experiment datasets or tables copied.
+  - id: MV4
+    citation: Jacob Eisenbarth, Montana Tech MS thesis, 2020.
+    url: https://digitalcommons.mtech.edu/grad_rsch/250/
+    inspected: Repository abstract only; full thesis and numerical uncertainty results unverified.
+  - id: MV5
+    url: https://opendss.epri.com/HarmonicsLoadModeling.html
+    inspected: Official EPRI harmonic load/transformer modelling note; published defaults not adopted as site values.
+  - id: MV6
+    url: https://www.scirp.net/journal/paperinformation?paperid=153670
+    citation: Comprehensive Assessment of Large-Scale Photovoltaic Integration in an Isolated Mining Microgrid, 2026, online sections 3.2-3.6 and 4.
+    inspected: Author-reported modelling/validation workflow; raw measurements and independent reproducibility unestablished.
+  - id: MV7
+    citation: Tjerk den Boer, TU Delft thesis, Validation of Dynamic Power System Models using Synchrophasor Measurements, 2020.
+    url: https://repository.tudelft.nl/record/uuid:b871e4b7-451c-493e-9d2d-3d0b0d76a15e
+    inspected: Repository abstract only; full methods and quantitative results not adopted.
+boundaries:
+  - Validation requirements and acceptance checks are authored Quantic proposals, class I, not passed tests.
+  - All product or site validation results remain U; no paid standard, private book or client record redistributed.
+  - No source project inputs, numeric equipment settings, empirical coefficients or figures copied.
