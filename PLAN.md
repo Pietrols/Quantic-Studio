@@ -1676,7 +1676,7 @@ Change record: none
 
 ### WP-2.20 Close unknown cells for the industrial competitors
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 476f846 | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.12, WP-2.18
 Owned paths: `docs/research/power/parity-matrix.md` (EasyPower, SKM and NEPLAN columns only), `docs/research/power/other-products.md`
