@@ -1750,7 +1750,7 @@ Change record: none
 
 ### WP-2.23 Solar PV reference-product research: PVsyst, HelioScope and peers
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 30c7a59 | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-1.10
 Owned paths: `docs/research/pv/README.md`, `docs/research/pv/pvsyst.md`, `docs/research/pv/other-products.md`
