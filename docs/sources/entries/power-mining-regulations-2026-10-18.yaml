@@ -1,0 +1,17 @@
+id: power-mining-regulations-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.21
+purpose: Dated Zambia and South African mine electrical instrument inventory
+deliverable: docs/research/power/mining-regulations.md
+source_index: ZR1 to ZR20 and SR1 to SR2 in deliverable section 7
+method: Public official instruments, regulator reports and notices, Gazette reproductions and legal metadata; restricted retrieval explicitly identified.
+verified_changes:
+  - Act 14 of 2024 section 97 repeals Act 11 of 2015; SI 42 of 2025 paragraph 2 commences the new Act on publication, 13 June 2025.
+  - ERB 2025 report identifies SI 4 and SI 2 of 2026; their actual engineering schedules remain clause gaps.
+  - ERB 2024 report Appendix 1 printed page 65 reports final ZS 691 publication by Gazette Notice 983 of 13 September 2024; final edition/body not retrieved.
+  - MHSC January 2026 consolidation retains electrical Chapter 3 with dated SANS incorporation; latest catalogue edition is not automatically the legally referenced edition.
+boundaries:
+  - No numeric engineering threshold adopted and no new compliance claim.
+  - Seventeen named clause, edition or applicability gaps block affected checks, not research completion.
+  - Owned DZS copies are cross-referenced through the existing inventory; no private text or tables copied.
+  - South African applicability to a Copperbelt contract remains unverified.
