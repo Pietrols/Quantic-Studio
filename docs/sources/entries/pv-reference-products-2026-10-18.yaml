@@ -1,0 +1,21 @@
+id: pv-reference-products-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.23
+purpose: Public PVsyst and peer dossiers, model boundaries and open-engine reuse research
+deliverables:
+  - docs/research/pv/README.md
+  - docs/research/pv/pvsyst.md
+  - docs/research/pv/other-products.md
+source_indices:
+  - PV1-PV27 in pvsyst.md section 2
+  - HS1-HS6, SM1-SM4, VS1-VS9, PP1-PP9, OS1-OS5 and BK1 in other-products.md section 2
+licence_file_reads:
+  pvlib: e66a4aa98ebef6b9ef2926f4ce01f8b725f70950
+  ssc_and_sam: 7857d8d8df93252977a67c6a725e6f4b2d4726b5
+method: Official current help/release notes, project licence files and publisher catalogue; no application execution.
+boundaries:
+  - PVsyst v8 thermal inertia is distinguished from older steady-state descriptions and pvlib's documented v6 parameter model.
+  - PlantPredict pricing/API contradictions remain unresolved, not guessed.
+  - Product S means documented subset; no runtime parity or accuracy claim.
+  - Source projects, weather, component libraries and private/paid reference contents not copied.
+  - Masters 2004 ownership comes from existing inventory; public publisher metadata only read in this WP.
