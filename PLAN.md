@@ -1725,7 +1725,7 @@ Change record: none
 
 ### WP-2.22 Independent re-review of Claude's synthesis and source index
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 47b1452 | 2026-10-18
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.12, WP-2.18
 Owned paths: `docs/research/power/engines.md`, `docs/research/power/notes/etap-sources.md`, `docs/research/power/notes/powerfactory-sources.md`

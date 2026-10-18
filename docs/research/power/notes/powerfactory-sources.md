@@ -1,5 +1,12 @@
 # PowerFactory sources (accessed 2026-10-15 unless noted)
 
+WP-2.22 index audit, 2026-10-18: scanned PowerFactory source IDs defined in
+`docs/sources/entries/*.yaml` against this index. No unindexed P IDs found; all
+P1-P94 entries retained. In particular, P49 still supports generic measured-signal
+identification, not proof of the M4 motor-from-datasheet workflow. Source dates and
+historical/relayed qualifications remain unchanged; this is not a fresh read of
+every source or execution of its attachments.
+
 | # | URL | Title | Type |
 |---|---|---|---|
 | P1 | https://www.digsilent.de/en/functions.html | PowerFactory functions overview | vendor page |

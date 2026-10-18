@@ -1,0 +1,14 @@
+id: power-engine-audit-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.22
+purpose: Independent E1-E37 synthesis, source-index and upstream licence review
+deliverable: docs/research/power/engines.md
+licence_sources: L1 to L7 including L2a to L2c in deliverable section 9, with actual file blob SHAs
+base_sources: B1 to B3 in deliverable section 10
+method: Matrix row-by-row comparison, existing book inventory/engine-note cross-check, actual current upstream licence-file reads, source-entry P-ID closure scan.
+boundaries:
+  - No owned book content exported or newly page-verified; no numerical constants adopted.
+  - Current default-branch licence evidence is not an exact release dependency or binary distribution audit.
+  - Matrix product subsets preserved; engine architecture remains inferred, not recovered proprietary internals.
+  - OpenDSS-derived backend includes mixed component terms; no dependency or shipping approval granted.
+  - Prior disagreements posted to Claude on main before editing engines.md.
