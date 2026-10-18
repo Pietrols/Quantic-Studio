@@ -1,0 +1,17 @@
+id: pv-resource-deepening-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.25
+purpose: PVsyst model/workflow deepening and Zambia resource coverage, resolution, rights and validation
+deliverables:
+  - docs/research/pv/pvsyst.md
+  - docs/research/pv/resource-data.md
+source_indices:
+  - PV28-PV55 added to pvsyst.md; existing PV1-PV27 retained
+  - RD1-RD22 in resource-data.md
+method: Public official help, primary provider terms, JRC/NASA/NLR documentation and selected World Bank Zambia validation-report sections.
+boundaries:
+  - No application, simulation, weather API or measurement dataset execution/download.
+  - PVGIS6 beta period and NSRDB endpoint period contradictions explicitly retained.
+  - Meteonorm manual/API rights, free map licences, commercial series and code licences distinguished.
+  - ZMD access/licence and selected-site metadata remain named gates; no request or purchase.
+  - Vendor reports and weather/component libraries not copied; original fixture proposals only.
