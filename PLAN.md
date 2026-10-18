@@ -1798,6 +1798,150 @@ Acceptance:
 Learning note: none.
 Change record: none
 
+### WP-2.25 PV dossier deepening and solar resource data
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.23
+Owned paths: `docs/research/pv/pvsyst.md`, `docs/research/pv/resource-data.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). WP-2.23 is a first pass; the PVsyst dossier is far thinner than the power dossiers.
+
+Steps:
+
+1. Deepen pvsyst.md: bifacial, trackers and backtracking, near and far shading, horizon, soiling, module degradation and mismatch, inverter clipping, storage and grid limits, batch and CLI, with every claim cited.
+2. Write resource-data.md: public solar resource and weather sources usable in Zambia (for example PVGIS, NASA POWER, NSRDB coverage, Meteonorm, Solargis, Zambia Meteorological Department), their licences, resolution and validation evidence.
+3. Record which sources a Zambian bankable yield study would need and which are paid.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every template section of pvsyst.md is at least as detailed as etap.md; every resource source has licence and coverage; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.26 PV parity matrix, engines and requirements
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.23, WP-2.25
+Owned paths: `docs/research/pv/parity-matrix.md`, `docs/research/pv/engines.md`, `docs/research/pv/requirements.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). The PV equivalent of WP-2.12 and WP-2.14 combined.
+
+Steps:
+
+1. Build a PV capability matrix across PVsyst, HelioScope, SAM, PV*SOL and PlantPredict with S, I or U on every product cell, Quantic status and the owned book that verifies each row.
+2. List the engines implied (irradiance and transposition, shading, cell temperature, module and inverter models, losses chain, yield statistics), with open bases (pvlib, SAM SSC) and licences read on a date.
+3. Write numbered PV requirements (PV-R IDs) with acceptance checks, Zambian utility-scale and mine-site solar first.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every dossier capability is in the matrix; every product cell is tagged; every engine names sources; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.27 Circuit and control reference-product research
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/circuit/README.md`, `docs/research/circuit/simulink.md`, `docs/research/circuit/other-products.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). Opens research for the third suite (electronics, control and multiphysics).
+
+Steps:
+
+1. Copy and adapt the dossier template into docs/research/circuit/README.md.
+2. Write a MATLAB Simulink and Simscape Electrical dossier: solvers, block libraries, power electronics and motor drive models, code generation, licensing.
+3. Write a lighter dossier on Proteus, LTspice, PLECS, PSIM and open alternatives (ngspice, Xcos, OpenModelica), with a shared capability table and licences.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Both dossiers cover every template section; every claim cites a source; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.28 Industrial automation reference-product research
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-1.10
+Owned paths: `docs/research/automation/README.md`, `docs/research/automation/plc-products.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). Research-first for the fourth suite. The PLC engine (WP-2.8, WP-2.9) already exists, so this checks it against the products.
+
+Steps:
+
+1. Copy and adapt the dossier template into docs/research/automation/README.md.
+2. Write a dossier on Siemens TIA Portal with PLCSIM, Rockwell Studio 5000 with Emulate, CODESYS, and open tools (OpenPLC, Beremiz), covering IEC 61131-3 languages, simulation, HMI and SCADA, licensing and what Copperbelt plants run.
+3. Compare the documented scan, timer and language behaviour with what qe_plc implements today, listing differences as findings, not code changes.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every claim cites a source; differences with qe_plc are listed with file references; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.29 Acquisition list for Peter
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.21, WP-2.22
+Owned paths: `docs/research/acquisition-list.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). One place for every paid standard, regulation and book the research says we need.
+
+Steps:
+
+1. Collect every paid or unobtained source named as a blocker across the power, PV, circuit and automation research and the mine-rules inventory.
+2. For each: title, edition, issuer, what it unblocks (engine, matrix row, R-ID), whether a free alternative exists, and a dated public price where one is published.
+3. Rank by value to Quantic's first paying work (mining studies), and keep Peter's ruling visible: no purchases until release.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every entry names what it unblocks and its evidence; prices are dated observations; guards pass.
+
+Learning note: none.
+Change record: none
+
+### WP-2.30 Power research refresh against the original products
+
+Status: [ ] Not started
+Lane: B (ChatGPT); research only, no code
+Depends on: WP-2.12
+Owned paths: `docs/research/power/refresh-2026-10.md`
+
+Added 2026-10-18 as the second six-WP batch for Lane B (Peter: batches; ChatGPT writes, Claude reviews). Peter asked for periodic re-grounding every five to seven steps.
+
+Steps:
+
+1. Re-check the newest release notes and product pages for ETAP, PowerFactory, PowerWorld, EasyPower, SKM, NEPLAN and PSS/E since the dossiers were written.
+2. List every change that affects a matrix cell, with the proposed new cell and source; do not edit the matrix in this WP.
+3. Flag any finding that changes the proposed build order in engines.md.
+
+Reference: the sources listed in the deliverable.
+
+Acceptance:
+
+- Every proposed change cites a dated source; guards pass.
+
+Learning note: none.
+Change record: none
+
 **Implementer stop point:** A model stops after its assigned engine WP merges and
 hands its suite to the other model for WP-2.7. It does not audit its own suite. Peter is asked only for assignment/scope
 choices; all builds, acceptance, CI checks and merges are performed by the agents.
