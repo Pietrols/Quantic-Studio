@@ -9,8 +9,8 @@ dependencies are Done on main. Paths in the two lanes never overlap.
 
 | Item | Lane A: Claude | Lane B: ChatGPT |
 | --- | --- | --- |
-| Done | WP-2.10 (PR #64), WP-2.12 parity matrix and engines (PR #65) | WP-2.11 (PRs #53, #55, #56, #59 to #62); WP-2.13 (#57, #58); WP-2.14 (#63); WP-2.15 comparison cases (#66). All reviewed and accepted; WP-2.16 to 2.18 (#67 to #69); batch WP-2.19 to 2.24 (#70 to #75) |
-| Now | Review the batch when Peter asks | **Batch 2:** WP-2.25 PV deepening and resource data, 2.26 PV matrix and requirements, 2.27 circuit research, 2.28 automation research, 2.29 acquisition list, 2.30 power refresh (in order) |
+| Done | WP-2.10 (PR #64), WP-2.12 parity matrix and engines (PR #65) | WP-2.11 (PRs #53, #55, #56, #59 to #62); WP-2.13 (#57, #58); WP-2.14 (#63); WP-2.15 comparison cases (#66). All reviewed and accepted; WP-2.16 to 2.18 (#67 to #69); batch WP-2.19 to 2.24 (#70 to #75); WP-2.25 to 2.28 (#76 to #79) |
+| Now | Review when Peter asks | **Resume WP-2.29** acquisition list (branch exists), then WP-2.30 power refresh |
 | Next | Batch review | Next batch after review |
 | Parked | WP-2.6 PLC slice (not started) | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
 
