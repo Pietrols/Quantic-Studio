@@ -1,0 +1,14 @@
+id: acquisition-register-2026-10-18
+accessed: 2026-10-18
+wp: WP-2.29
+purpose: Consolidate source blockers, mining-study value, access alternatives and observed catalogue prices
+deliverables:
+  - docs/research/acquisition-list.md
+source_indices:
+  - AQ01-AQ76 in acquisition-list.md, with local gap evidence and inline primary catalogue routes
+boundaries:
+  - No purchases until release; no subscriptions, trial registrations or supplier contacts made.
+  - Prices observed 2026-10-18 in original currencies, indexed prices distinguished from directly read listings.
+  - Exact edition or price marked U when not reliably retrieved; no guessed publication identities or numeric engineering limits.
+  - Current catalogue status distinguished from contract adoption and historical benchmark target editions.
+  - Public, unobtained, paid and owned-but-unread evidence are separate; no restricted content copied.
