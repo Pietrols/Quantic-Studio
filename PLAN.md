@@ -1896,7 +1896,7 @@ Change record: none
 
 ### WP-2.29 Acquisition list for Peter
 
-Status: [ ] Not started
+Status: [x] Done | implemented by ChatGPT | commit 4298226 | 2026-10-19
 Lane: B (ChatGPT); research only, no code
 Depends on: WP-2.21, WP-2.22
 Owned paths: `docs/research/acquisition-list.md`
