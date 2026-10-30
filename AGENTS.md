@@ -16,6 +16,21 @@ These rules apply to every model and every session, whichever tool you run in. `
    `Status: [!] Changed design | due to <reason>, while original was <original>, as it was better for <benefit> | <model> | <YYYY-MM-DD>`
    and copy the same sentence into the WP's `Change record:`.
 
+
+### Commit authorship (Peter, 26 October 2026)
+
+Every commit is authored and committed as the owner, whichever model or person writes it:
+
+```bash
+git config user.name "Peter Kabamba"
+git config user.email "178684704+Pietrols@users.noreply.github.com"
+```
+
+- Run both lines in the clone before the first commit of a session.
+- After committing, check with `git log -1 --format='%an <%ae> | %cn <%ce>'`. If either name or email is anything else, fix it before pushing: `git commit --amend --reset-author --no-edit`.
+- An AI model may name itself in one `Co-Authored-By:` line at the end of the commit message. It is never the author or the committer.
+- Why: GitHub only counts a commit on Peter's contribution graph when it is authored with an email on his account and reaches `main`. The address above is his private GitHub address, so it counts without publishing his personal email.
+
 ## 2. Session-start review (mandatory, every session)
 
 Do this before claiming or continuing any work:
