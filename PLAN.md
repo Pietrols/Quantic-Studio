@@ -220,6 +220,20 @@ Each later phase follows the same method: Peter supplies material, agents study 
 
 ChatGPT is busy with the survey, so Claude lays the groundwork that every batch needs and measures what exists today.
 
+### WP-3.9 Plan v3 adoption
+
+Status: [ ] Not started
+Lane: P (Peter approves), drafted by Claude with ChatGPT's review
+Depends on: none
+Owned paths: `PLAN.md`, `AGENTS.md`, `opencode.json`, `.opencode/**`, `docs/agents/README.md`, `docs/agents/BOARD.md`, `docs/agents/messages/**`
+
+Authorized by Peter on 2026-11-04: replace this plan with plan v3.0 (roles: Claude product owner, ChatGPT product manager, DeepSeek workers in OpenCode; Phase 3 as milestones M3.0 to M3.5), replace `AGENTS.md` with the v3 workflow, add the OpenCode agent definitions, and hand the board to the product manager. Delivered in PR #84 after review by ChatGPT.
+
+Acceptance: every CI check passes on the PR head, including the ownership check; ChatGPT records agreement in the channel; Peter merges.
+
+Learning note: none.
+Change record: none
+
 ### WP-3.1 Native power core: network compile and sparse admittance
 
 Status: [ ] Not started
