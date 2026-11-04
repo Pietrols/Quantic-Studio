@@ -303,7 +303,30 @@ PowerFactory first, with ETAP touches, in Peter's colours: plain white canvas, g
 - **Reading map**: `research/engineering-software/PHASE3-READING-MAP.md` in the private reference library lists, per WP, which atlas chapters, survey reports and textbook pages to read. Read it before each WP. It points to the newest research through `research/engineering-software/CURRENT.md` there.
 - **Public benchmarks** (MATPOWER cases, IEEE test feeders, values computed by our own independent code) live in this repository under `tests/benchmarks/` with licence notes.
 - **Textbook worked examples** stay private (AGENTS.md rule 6). Their input data and printed answers are stored in the private library under `fixtures/textbook/<book-id>/<example>.json`. Tests in this repository load them through `QE_REFERENCES` (the path to a local clone) and skip, with a visible message, when it is not set. Public CI therefore runs public benchmarks only; the worker runs textbook checks locally and pastes only pass/fail and error figures into PRs, never the book's numbers.
+- **Independent expectations**: no expected value in a test may be produced by the code under test. References come from hand calculation, a textbook, a published solution or an independent implementation (pandapower through its adapter boundary), with provenance.
+- **Mandatory load-flow checks** for every method: KCL and power balance, Jacobian against finite differences (NR), PV/PQ limit entry and release, transformer orientation (tap on either side), island references, divergence and singular cases reported as failures. Later families get their own list in WP-3.60.
 - **Recorded demos**: Playwright video of each milestone demo. Demos on public cases are attached to the milestone's GitHub release; demos on textbook cases are stored in the private library under `demos/`.
+
+### 7.5 Workbench user journeys (acceptance for M3.U)
+
+Agreed with ChatGPT on 2026-11-04 from its workbench specification. Every journey runs as a Playwright test against the real local API, not mocks.
+
+| ID | Journey | Must hold |
+| --- | --- | --- |
+| UI-01 | Add and edit terminal, line, transformer, source and load through dialogs | No JSON needed for supported fields; units shown; missing data diagnosed on the field |
+| UI-02 | Connect, disconnect and move symbols | Only electrical commands change topology; moving a symbol leaves the input hash unchanged |
+| UI-03 | Edit in a sorted Data Manager grid, then undo and redo | The intended ids change; undo restores the model and the stale-result state together |
+| UI-04 | Switch project or model with unsaved changes | Save, discard or cancel offered; a late response from the previous project never overwrites the current one |
+| UI-05 | Create and compare operating scenarios | Base data preserved; which scenario supplied each value is visible |
+| UI-06 | Run a study | Running, cancelled, failed, converged and not-converged look different; no silent fallback to another engine |
+| UI-07 | Edit while viewing results | Results go stale visibly; exporting a stale result needs an explicit choice of the historical run |
+| UI-08 | Select a violation or diagnostic | The matching element is selected in diagram, grid and dialog alike |
+| UI-09 | Configure panels, toolbars and result boxes | Preferences never change solver inputs; restore defaults works |
+| UI-10 | Save, close and reopen the project on another machine | Model and diagram layout retained; local preferences optional |
+| UI-11 | API unavailable, timeout or save conflict | Clear recovery, unsaved edits kept, no false success |
+| UI-12 | Compare and export runs | Engine and version, method, input hash, units, assumptions and diagnostics travel with the export |
+
+Screenshots of the populated network, a selected element, a validation error, a result overlay, a failed solve and an expanded grid are captured at 1366x768 and 1920x1080 on the tested commit, and checked at 200 percent browser zoom with keyboard-only navigation.
 
 ---
 
@@ -322,7 +345,8 @@ Prove the delivery loop of `AGENTS.md` section 3 on a trivial change before any 
 2. Codex automatic review (or the mention) posts a review. Record whether it ran automatically.
 3. ChatGPT, as manager, requests one deliberate change. Record how the worker received it: comment polled by the local session, `/oc` comment handled by the OpenCode GitHub action, or scheduled action.
 4. The worker fixes it on the same branch; ChatGPT merges with green CI.
-5. Record in the document: which triggers worked, latency of each step, and anything that needed Peter.
+5. On Peter's PC, record `opencode --version`, `opencode models` and `opencode agent list`; confirm every agent in `.opencode/agents/` loads and resolves to the intended DeepSeek model, and correct the model ids in the agent files if the host lists them differently.
+6. Record in the document: which triggers worked, latency of each step, and anything that needed Peter.
 
 Acceptance: PR merged by the manager with green CI; `dry-run.md` records the outcome of every step, including steps that failed and the fallback used.
 
@@ -422,6 +446,9 @@ build_ybus(snapshot) -> scipy.sparse.csr_matrix (complex)
   assemble with COO triplets, sum duplicates, convert to CSR once
 
 factor(matrix) -> Factor   # scipy.sparse.linalg.splu wrapper; reuse for many right-hand sides
+                           # only while the matrix values are unchanged (Newton Jacobians need a
+                           # fresh numeric factor each iteration); a factor used after its matrix
+                           # changed raises a diagnostic
   singular or near-singular matrix -> diagnostic naming the node set, never an exception to the user
 
 trace module: Trace object that records steps as (equation id, symbolic form, substituted values,
@@ -550,6 +577,7 @@ Acceptance:
 - Q-limit case (case14 with tightened limits): the expected generators switch and the solution matches the reference with the same limits.
 - A deliberately unsolvable case (load scaled to 400 percent) returns `not_converged` with the worst node named.
 - Agrees with the textbook solver on all its supported cases.
+- The analytic Jacobian matches a finite-difference Jacobian to 1e-6 relative on case14 at a non-flat state; KCL and power balance close to 1e-9 pu at every node of every converged case.
 
 Learning note: `docs/learning/native-newton-raphson.md`, with mismatch, the four Jacobian blocks, why quadratic convergence, and Q-limit switching.
 Change record: none
@@ -842,7 +870,7 @@ Owned paths: `docs/log/**`, `apps/web/src/App.tsx`, `apps/web/src/GraphCanvas.ts
 
 ChatGPT audits as for WP-3.16, then switches `main.tsx` to the new power workbench and removes the old power files once nothing references them (PV and PLC workspaces stay). Claude reviews the recorded demos against section 7.3 and accepts or returns findings; Peter tries it.
 
-Acceptance: audit and acceptance logs; old workbench tests removed or migrated; CI green.
+Acceptance: every journey of section 7.5 passes; audit and acceptance logs; old workbench tests removed or migrated; CI green.
 
 Learning note: none.
 Change record: none
@@ -1121,6 +1149,19 @@ Depends on: WP-3.41 to WP-3.43, WP-3.45
 Owned paths: `docs/log/**`
 
 Acceptance: as WP-3.16.
+Learning note: none.
+Change record: none
+
+### WP-3.61 Release qualification for the power suite
+
+Status: [ ] Not started
+Lane: Manager (ChatGPT), with product owner acceptance by Claude
+Depends on: WP-3.44
+Owned paths: `docs/release/**`
+
+Proposed by ChatGPT (campaign B9). Clean-machine install, offline use, backup and restore, project migration and rollback, licence and source gates, operating documentation. Detailed in WP-3.60.
+
+Acceptance: to be detailed in WP-3.60.
 Learning note: none.
 Change record: none
 

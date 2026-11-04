@@ -12,7 +12,8 @@ Version 3.0, proposed 2026-11-04 by Claude (product owner) for agreement with Ch
 | Product owner (PO) | Claude | Writes the plan and acceptance criteria (`PLAN.md`), answers requirement questions, accepts or returns each milestone, refreshes the plan after milestones | Builds WPs; merges worker PRs |
 | Product manager (PM) | ChatGPT (Codex) | Keeps `docs/agents/BOARD.md` and the work queue, reviews every worker PR, merges, returns rework, audits each milestone, escalates | Rewrites requirements; marks a WP Done that failed review |
 | Worker lead | DeepSeek in OpenCode, agent `qs-lead` | Runs a worker session: picks WPs, delegates to worker subagents, opens PRs, handles rework | Merges its own PRs; edits another WP's owned paths |
-| Worker subagents | DeepSeek in OpenCode: `qs-engine`, `qs-ui`, `qs-verify`, `qs-numerics`, `qs-selfreview` | Build, test, verify and self-review under the lead | Open or merge PRs |
+| Worker subagents | DeepSeek in OpenCode: `qs-engine`, `qs-ui`, `qs-verify`, `qs-numerics` | Build, test and verify under the lead | Open or merge PRs |
+| Review subagents | DeepSeek in OpenCode: `qs-selfreview` (code and implementation quality), `qs-engineering-review` (units, bases, methods, independent references) | Read-only review before every PR, in a fresh session | Edit files; count as independent model review (they are the same model as the workers; Codex and Claude provide model diversity) |
 
 Credits: Peter and Claude keep their credits for the Lender app. Claude acts only at milestone acceptance, plan refreshes and when the PM escalates a requirement question. Everything else runs between the workers and the PM.
 
@@ -20,7 +21,7 @@ Credits: Peter and Claude keep their credits for the Lender app. Claude acts onl
 
 1. Build only WPs that exist in `PLAN.md` on `main` and are in the queue on `docs/agents/BOARD.md`. CI rejects a branch whose WP is not on `main`.
 2. Change **only the WP's owned paths**, plus that WP's own `Status:` and `Change record:` lines in `PLAN.md`, its learning note, and new files in `docs/log/` and `docs/sources/entries/`. CI enforces this. Anything else needs a new WP. Channel messages (section 9) are the exception: they go straight to `main`.
-3. **One worker session works one WP at a time.** Parallel work happens only in separate sessions, each in its own git worktree, on WPs of different tracks (PLAN.md section 7.1). Two sessions never share a worktree or a WP.
+3. **One worker session works one WP at a time.** Parallel work happens only in separate sessions, each in its own git worktree, on WPs of different tracks (PLAN.md section 7.1). Two sessions never share a worktree or a WP. OpenCode subagents share their lead's directory, so within one session the lead runs editing subagents one after another; only read-only subagents may run concurrently.
 4. **Never change `contracts/`** outside a Contract Change WP. A Contract Change WP runs alone on its schemas: no other open PR may touch those schemas.
 5. **Never guess engineering numbers.** Every number from a standard, datasheet, table or textbook carries its source (book id, edition, page, clause, table or equation) in a code comment and in `docs/sources/entries/`. If you cannot read the source, stop that step, record the gap as a diagnostic or a `TODO(source: ...)`, and tell the PM in the PR. A plausible value without a source is a defect.
 6. **Private material stays private.** Textbooks, paid standards, the ETAP and PowerFactory studies and client data live only in the private repository `Pietrols/QE-References`. Read it to learn and to verify; never copy its text, tables, figures, worked-example data or survey paths into this public repository, PR descriptions, commit messages, issue comments or CI logs. Textbook fixtures are loaded at test time through `QE_REFERENCES` (PLAN.md section 7.4). Test output prints pass or fail and error magnitudes only.
@@ -62,6 +63,7 @@ The worker never waits for a review. It opens a PR, moves to the next WP, and re
 
 Take the first WP in the board's queue for your track whose `Depends on` WPs are all merged. If none is free:
 
+- **Review queue cap:** at most four of your track's PRs may be open and unmerged at once. At the cap, do rework or take a WP of another track instead of opening a fifth.
 - **Stacking rule:** you may start a WP whose dependency is an open PR that has passed automatic review with no P0 or P1 findings. Branch from that PR's branch, say `Stacked on #<n>` in the PR description, and keep stacks to at most two levels. When the base merges, rebase onto `main` and force-push with `--force-with-lease`.
 - Otherwise take the first free WP of another track, in a new worktree.
 - If nothing at all is free, write a channel message to the PM listing what is blocked and why, and stop.
@@ -74,7 +76,7 @@ Take the first WP in the board's queue for your track whose `Depends on` WPs are
 4. Numerical code is tested against a reference with recorded provenance (PLAN.md section 4.6). Use the benchmark harness for solver results.
 5. Every result carries diagnostics, provenance and a calculation trace (D11).
 6. Write the learning note named in the WP: for Peter, a student who wants the concept, the why and the equations, not only the code.
-7. Run the self-review subagent `qs-selfreview` against the Code Review Rules (section 6). Fix what it finds.
+7. Run `qs-selfreview` against the Code Review Rules (section 6), and for track E and V WPs also `qs-engineering-review`. Fix what they find; findings use the format of section 5 step 5.
 8. Run every acceptance command of the WP and the full CI set locally:
    ```bash
    uv sync --all-packages --locked
@@ -120,7 +122,7 @@ Anything not done, any Changed design, any source that could not be read.
 
 The OpenCode Go plan gives far more DeepSeek V4.1 Flash requests than V4 Pro requests (roughly 43,000 versus 1,050 per five hours, and 108,000 versus 2,600 per week, per OpenCode's documentation in November 2026). So:
 
-- `qs-lead`, `qs-engine`, `qs-ui`, `qs-verify` and `qs-selfreview` run on `opencode-go/deepseek-v4.1-flash`.
+- `qs-lead`, `qs-engine`, `qs-ui`, `qs-verify`, `qs-selfreview` and `qs-engineering-review` run on `opencode-go/deepseek-v4.1-flash`.
 - `qs-numerics` runs on `opencode-go/deepseek-v4-pro` and is called only for: deriving a numerical method before coding it, and debugging a numerical test that still fails after two honest attempts. Every call states the question in one paragraph.
 - When an allowance runs out, the lead commits and pushes all work, writes a channel message with where it stopped, and ends the session.
 
@@ -146,8 +148,8 @@ The PM reviews each worker PR after automatic review has run.
 4. Check rules 5, 6 and 9 of section 1 and the Code Review Rules (section 6).
 5. Decide:
    - **Merge** when everything passes and CI is green on the head commit. Use a merge commit. Then update the board.
-   - **Fix small things directly** (typos, formatting, a missing source entry, under about 30 lines, nothing numerical) with a commit `[WP-<id>] pm: <fix>`, then merge.
-   - **Request changes** with numbered findings, each stating file, line, expected and actual, and what evidence would close it.
+   - **Fix small things directly** (typos, formatting, a missing source entry, under about 30 lines, nothing numerical) with a commit `[WP-<id>] pm: <fix>`. You are then the implementer of that change: CI and automatic review must pass again on the new head before you merge.
+   - **Request changes** with numbered findings: severity (blocker, major, note), requirement, file and line, reproduction, expected, actual, requested fix, and how it will be verified. Wrong units, missing method provenance and false success are blockers. Report what you inspected and what you did not run, even when there are no findings.
    - **Escalate to the PO** (a channel message to Claude, `needs: answer`) when the WP itself is ambiguous or wrong. Escalate to Peter for scope, source purchases or licence questions.
 6. Never merge with failing checks, never bypass branch protection, never merge a stack before its base.
 
@@ -159,11 +161,14 @@ This is section 6. Codex reads it for its automatic GitHub reviews. Workers' `qs
 
 - **P0** Copyrighted or private material in this repository: text, tables or worked-example data from a textbook or standard, survey paths, decompiled code or pseudocode, in code, tests, docs, PR text or test output.
 - **P0** An engineering number without a source (book, edition, page or clause) in a code comment and in `docs/sources/entries/`.
-- **P0** A loosened tolerance, a skipped or deleted test without a stated reason, or a test that compares a result with itself.
+- **P0** A loosened tolerance, a skipped or deleted test without a stated reason, or a test whose expected value was produced by the code under test.
+- **P0** A result reported as converged, valid or safe when it is not.
 - **P0** A change outside the WP's owned paths, or to `contracts/` outside a Contract Change WP.
 - A numerical result returned as valid when the solver did not converge, or an exception reaching the user instead of a diagnostic naming the element and field.
 - A result without provenance (engine, version, input hash) or without a calculation trace (D11).
 - Per-unit, sign convention or tap-side handling that differs from `docs/learning/native-network-and-ybus.md` without a Changed design entry.
+- Units, bases or terminal direction wrong; a transformer tap applied twice (in the ratio and again in the impedance); a numeric factor reused after its matrix values changed; state leaking from one run into the next.
+- UI shows results that are stale for the current inputs without marking them, or a late API response overwrites newer state.
 - Python loops over node pairs inside a numerical iteration where a vectorised or sparse form exists (engine-language consensus of 2026-11-01).
 - An import between domain packages, an adapter imported by `native/`, or a GPL library imported.
 - UI: a colour with a blue hue in theme tokens; information shown by colour alone; a dialog field without its unit; a control without an accessible name.
