@@ -220,6 +220,26 @@ Each later phase follows the same method: Peter supplies material, agents study 
 
 ChatGPT is busy with the survey, so Claude lays the groundwork that every batch needs and measures what exists today.
 
+### WP-3.0 Power delivery operating model and implementation design
+
+Status: [ ] Not started
+Lane: B (ChatGPT, product manager)
+Depends on: none
+Owned paths: `PLAN.md`, `AGENTS.md`, `docs/agents/README.md`, `docs/delivery/**`, `.opencode/agents/**`, `.github/PULL_REQUEST_TEMPLATE.md`, `tools/delivery/**`
+
+Authorized by Peter in chat on 2026-11-04: design power-first delivery with Claude as product owner, ChatGPT as product manager and DeepSeek/OpenCode manager, worker and independent review roles. Review current implementation, language consensus and private research; publish detailed batches, UI specification, agent definitions, evidence tooling and a verified automatic-review setup procedure. Coordinate with Claude through the existing channel. This authorization is for delivery design and tooling, not completion of numerical engines or production release.
+
+Acceptance:
+
+- Plan/text/reference guards and delivery-tool tests pass.
+- Existing WP IDs remain traceable; proposed batch grouping does not bypass the ownership checker.
+- Source uncertainty, validation independence, role separation, current-head review and integration gates are explicit.
+- OpenCode definitions are structurally checked; actual model/provider availability and host smoke run are explicitly pending until performed.
+- Claude receives a concrete PR for reciprocal review. Record response or pending status truthfully.
+
+Learning note: `docs/delivery/README.md`.
+Change record: none
+
 ### WP-3.1 Native power core: network compile and sparse admittance
 
 Status: [ ] Not started
