@@ -5,22 +5,22 @@ Peter does not have to relay messages. Peter's role: he tells each model "contin
 gives a ruling in chat), runs the software, and decides scope. Peter's chat instructions
 always override this folder.
 
-Roles:
+Roles (plan v3, Peter 2026-11-04; full table in `AGENTS.md` section 0):
 
-- **Claude** (cloud session): main agent. Owns `BOARD.md`, assigns work packages from
-  `PLAN.md`, answers questions, and resolves clashes. Escalates to Peter only for scope,
-  source or licence decisions.
-- **ChatGPT** (cloud): co-agent. Works the WPs assigned to Lane B on the board, reviews
-  Claude's merged WPs, and raises anything it disagrees with here.
+- **Claude** (cloud): product owner. Writes and revises `PLAN.md`, answers requirement
+  questions, accepts each milestone. Acts rarely to save credits.
+- **ChatGPT** (Codex, cloud): product manager. Owns `BOARD.md` and the queue, reviews and
+  merges worker PRs, returns rework, audits milestones, escalates.
+- **DeepSeek workers** (OpenCode, on Peter's PC, and the OpenCode GitHub action for
+  rework): build every WP. They write one message here at the end of each session.
 
-Both models run in their own cloud environments, not on Peter's computer. Each works
-on its own clone of `Pietrols/Quantic-Studio` and talks only through this folder on
-`main`. Peter's Mac is only where he runs the software to try it.
+Each agent works on its own clone or worktree of `Pietrols/Quantic-Studio` and talks
+through this folder on `main` and through PR reviews.
 
 ## Files
 
-- `BOARD.md`: who is doing what now, and what comes next. Only Claude edits it. ChatGPT
-  reports status in a message and Claude updates the board.
+- `BOARD.md`: the work queue per track and who is doing what. Only the PM (ChatGPT) edits it,
+  except Claude's v3 handover edit.
 - `messages/`: one file per message, never edited or deleted after it is pushed.
   Name: `YYYY-MM-DDTHHMMZ-<from>-<slug>.md` in UTC, for example
   `2026-10-14T1440Z-claude-hello.md`. Sorting by name gives the conversation in order.
@@ -28,8 +28,8 @@ on its own clone of `Pietrols/Quantic-Studio` and talks only through this folder
 Message format:
 
 ```
-from: Claude | ChatGPT
-to: ChatGPT | Claude
+from: Claude | ChatGPT | DeepSeek
+to: ChatGPT | Claude | DeepSeek | all
 re: <WP id or topic>
 needs: review | answer | nothing
 
@@ -37,6 +37,8 @@ needs: review | answer | nothing
 ```
 
 ## Rules
+
+For worker PRs, review and merge follow `AGENTS.md` sections 3 to 5, which replace rules 3 and 4 below. Rules 6 (no sub-agents) applies to Claude and ChatGPT only; workers use the OpenCode agents in `.opencode/agents/`.
 
 1. **Each time Peter says "continue":** get the latest `main` in whatever way your
    environment allows (a fetch, a fresh clone, or reading the files through the GitHub

@@ -1,22 +1,37 @@
 # Board
 
-Edited only by Claude. Updated: 2026-10-31.
+Edited only by the product manager (ChatGPT). This version is Claude's handover for plan v3. Updated: 2026-11-04.
 
-**Phase 3, power suite build (Peter, 2026-10-31).** The research phase is closed. The live plan is `PLAN.md` v2.0; the old plan is archived in `docs/plan/PLAN-v1.md`. Method: learn from the private reference library (books, standards, and the ETAP static survey in `QE-References/etap-survey/`), write our own Python, use established and survey-observed constants as defaults, benchmark everything (PLAN.md section 2).
+**Status:** plan v3.0 is proposed in the PR "Plan v3: power suite game plan and agentic workflow". Until Peter merges it, no worker starts. After merge, the first item is WP-3.0 (workflow dry run), then the tracks below run in parallel.
 
-| Item | Lane A: Claude | Lane B: ChatGPT |
-| --- | --- | --- |
-| Now | Groundwork WP-3.1 native core, WP-3.2 benchmark harness and baseline, WP-3.3 family map | Continue the survey on Peter's PC (Peter's instruction). WP-2.30 optional |
-| Next | Batch A: WP-3.10 to WP-3.15 (load flow, GS/FD, controls, topology, contingency) | Batch B: WP-3.20 to WP-3.25 (faults, IEC 60909, motor starting, harmonics, protection, arc flash), starts when WP-3.1 is Done |
-| Then | Batch C: WP-3.30 to WP-3.34 (unbalanced, transient stability, OPF, voltage stability, planning) | Batch D: WP-3.40 to WP-3.43 (workbench, import, libraries, reports) |
-| Audits | Claude audits batches B and D (WP-3.26, WP-3.44) | ChatGPT audits batches A and C (WP-3.16, WP-3.35) |
-| Parked | WP-2.6 PLC slice | WP-2.5 PV slice (branch `wp-2.5-pv-yield`) |
+Roles: Claude product owner, ChatGPT product manager, DeepSeek workers in OpenCode (`AGENTS.md` section 0).
 
-Each model works through its batch without waiting, one WP per PR, and the other model audits the whole batch at the end.
+## First worker batch: M3.0, M3.1, M3.U
 
-Survey snapshot in QE-References: `etap-survey/` (journal, reports, pseudocode, prototype), with `etap-survey/WP-MAP.md` mapping each Phase 3 WP to the survey reports to read. Public files in this repository cite it only as "private study notes".
+Take the first WP in your track whose dependencies are merged (stacking rule: `AGENTS.md` section 3.1).
 
-Follow-ups carried from Phase 2 (each needs its own WP):
+| Order | Track E (engines) | Track D (data, API) | Track U (workbench) | Track V (verification) |
+| --- | --- | --- | --- | --- |
+| 0 | | | | WP-3.0 dry run (all wait for it) |
+| 1 | WP-3.1 core, Ybus | WP-3.4 CC-10 network v1 | WP-3.50 shell (after 3.5) | WP-3.3 family map |
+| 2 | WP-3.13 topology, islands | WP-3.5 CC-11 diagram, study case | WP-3.51 diagram editor | WP-3.2 benchmarks (after 3.6) |
+| 3 | WP-3.17 DC load flow | WP-3.6 migration | WP-3.52 dialogs | WP-3.19 worked examples |
+| 4 | WP-3.10 Newton-Raphson | WP-3.7 result store | WP-3.53 Data Manager | WP-3.58 recorded demos |
+| 5 | WP-3.11 GS and FD | WP-3.49 API v1 | WP-3.55 study case dialogs | |
+| 6 | WP-3.12 controls | WP-3.14 CC-8 contingency contracts | WP-3.56 output window | |
+| 7 | WP-3.18 report, registration | | WP-3.54 libraries | |
+| 8 | WP-3.15 contingency | | WP-3.57 results on diagram | |
+
+Audits by the PM, then acceptance by Claude: WP-3.16 (M3.1) and WP-3.59 (M3.U, also retires the old workbench).
+
+Then: WP-3.60 (Claude) expands M3.2 onward after a research refresh.
+
+## Parked
+
+WP-2.5 PV slice (branch `wp-2.5-pv-yield`), WP-2.6 PLC slice, WP-2.30 research refresh (superseded by the research in the private library).
+
+## Follow-ups carried from Phase 2 (each needs its own WP)
+
 - CC-4 fix: a failed initialisation before a nonzero start cannot be serialized.
 - Shared harness: inject unavailable handlers in tests/integration/test_phase2_routing.py.
 - Validation speed: cache the schema registry in qe_core.validation.
