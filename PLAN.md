@@ -303,30 +303,7 @@ PowerFactory first, with ETAP touches, in Peter's colours: plain white canvas, g
 - **Reading map**: `research/engineering-software/PHASE3-READING-MAP.md` in the private reference library lists, per WP, which atlas chapters, survey reports and textbook pages to read. Read it before each WP. It points to the newest research through `research/engineering-software/CURRENT.md` there.
 - **Public benchmarks** (MATPOWER cases, IEEE test feeders, values computed by our own independent code) live in this repository under `tests/benchmarks/` with licence notes.
 - **Textbook worked examples** stay private (AGENTS.md rule 6). Their input data and printed answers are stored in the private library under `fixtures/textbook/<book-id>/<example>.json`. Tests in this repository load them through `QE_REFERENCES` (the path to a local clone) and skip, with a visible message, when it is not set. Public CI therefore runs public benchmarks only; the worker runs textbook checks locally and pastes only pass/fail and error figures into PRs, never the book's numbers.
-- **Independent expectations**: no expected value in a test may be produced by the code under test. References come from hand calculation, a textbook, a published solution or an independent implementation (pandapower through its adapter boundary), with provenance.
-- **Mandatory load-flow checks** for every method: KCL and power balance, Jacobian against finite differences (NR), PV/PQ limit entry and release, transformer orientation (tap on either side), island references, divergence and singular cases reported as failures. Later families get their own list in WP-3.60.
 - **Recorded demos**: Playwright video of each milestone demo. Demos on public cases are attached to the milestone's GitHub release; demos on textbook cases are stored in the private library under `demos/`.
-
-### 7.5 Workbench user journeys (acceptance for M3.U)
-
-Agreed with ChatGPT on 2026-11-04 from its workbench specification. Every journey runs as a Playwright test against the real local API, not mocks.
-
-| ID | Journey | Must hold |
-| --- | --- | --- |
-| UI-01 | Add and edit terminal, line, transformer, source and load through dialogs | No JSON needed for supported fields; units shown; missing data diagnosed on the field |
-| UI-02 | Connect, disconnect and move symbols | Only electrical commands change topology; moving a symbol leaves the input hash unchanged |
-| UI-03 | Edit in a sorted Data Manager grid, then undo and redo | The intended ids change; undo restores the model and the stale-result state together |
-| UI-04 | Switch project or model with unsaved changes | Save, discard or cancel offered; a late response from the previous project never overwrites the current one |
-| UI-05 | Create and compare operating scenarios | Base data preserved; which scenario supplied each value is visible |
-| UI-06 | Run a study | Running, cancelled, failed, converged and not-converged look different; no silent fallback to another engine |
-| UI-07 | Edit while viewing results | Results go stale visibly; exporting a stale result needs an explicit choice of the historical run |
-| UI-08 | Select a violation or diagnostic | The matching element is selected in diagram, grid and dialog alike |
-| UI-09 | Configure panels, toolbars and result boxes | Preferences never change solver inputs; restore defaults works |
-| UI-10 | Save, close and reopen the project on another machine | Model and diagram layout retained; local preferences optional |
-| UI-11 | API unavailable, timeout or save conflict | Clear recovery, unsaved edits kept, no false success |
-| UI-12 | Compare and export runs | Engine and version, method, input hash, units, assumptions and diagnostics travel with the export |
-
-Screenshots of the populated network, a selected element, a validation error, a result overlay, a failed solve and an expanded grid are captured at 1366x768 and 1920x1080 on the tested commit, and checked at 200 percent browser zoom with keyboard-only navigation.
 
 ---
 
@@ -345,8 +322,7 @@ Prove the delivery loop of `AGENTS.md` section 3 on a trivial change before any 
 2. Codex automatic review (or the mention) posts a review. Record whether it ran automatically.
 3. ChatGPT, as manager, requests one deliberate change. Record how the worker received it: comment polled by the local session, `/oc` comment handled by the OpenCode GitHub action, or scheduled action.
 4. The worker fixes it on the same branch; ChatGPT merges with green CI.
-5. On Peter's PC, record `opencode --version`, `opencode models` and `opencode agent list`; confirm every agent in `.opencode/agents/` loads and resolves to the intended DeepSeek model, and correct the model ids in the agent files if the host lists them differently.
-6. Record in the document: which triggers worked, latency of each step, and anything that needed Peter.
+5. Record in the document: which triggers worked, latency of each step, and anything that needed Peter.
 
 Acceptance: PR merged by the manager with green CI; `dry-run.md` records the outcome of every step, including steps that failed and the fallback used.
 
@@ -360,7 +336,7 @@ Lane: W-D (DeepSeek worker), runs alone on `contracts/power/`
 Depends on: WP-3.0
 Owned paths: `contracts/power/**`, `contracts/common/**`, `packages/py/qe_core/src/qe_core/power/**`, `packages/py/qe_core/tests/power/**`, `packages/ts/contracts/**`, `docs/contracts/network-v1.md`
 
-Replace the pandapower-shaped network contract (v0.2) with an equipment model that PowerFactory and ETAP users recognise. Schema version 1.0.0, `$id` `urn:quantic-studio:contracts:1.0.0:power:network`.
+Add a separately versioned network v1 contract alongside the existing v0.2 contract, with an equipment model that PowerFactory and ETAP users recognise. Preserve existing schema files, IDs, generated exports and consumers until explicit migration. Schema version 1.0.0, `$id` `urn:quantic-studio:contracts:1.0.0:power:network`.
 
 1. **Identity**: every object has a stable `id` (string), `name`, optional `description`, `out_of_service` flag. IDs never encode position.
 2. **Containers**: `grids[]` (each with nominal frequency 50 or 60 Hz), `areas[]` and `zones[]` optional.
@@ -389,13 +365,15 @@ Change record: none
 Status: [ ] Not started
 Lane: W-D (DeepSeek worker), runs alone on the new schemas
 Depends on: WP-3.4
-Owned paths: `contracts/project/diagram.schema.json`, `contracts/studies/**`, `packages/py/qe_core/src/qe_core/studies/**`, `packages/py/qe_core/tests/studies/**`, `packages/ts/contracts/src/diagram/**`, `packages/ts/contracts/src/studies/**`, `docs/contracts/diagram-and-study-case.md`
+Owned paths: `contracts/project/diagram.schema.json`, `contracts/studies/**`, `packages/py/qe_core/src/qe_core/studies/**`, `packages/py/qe_core/tests/studies/**`, `packages/ts/contracts/src/diagram/**`, `packages/ts/contracts/src/studies/**`, `packages/ts/contracts/scripts/**`, `packages/ts/contracts/src/index.ts`, `packages/ts/contracts/src/generated.ts`, `docs/contracts/diagram-and-study-case.md`
 
 1. **Diagram** (`diagram.schema.json`): `diagrams[]`, each a list of symbols `{ element_id, symbol, x, y, rotation, mirror, side_anchors }` and connection polylines. Many symbols may reference one element. This replaces browser-local layout storage.
 2. **Study case**: `id`, `name`, active `grid_ids`, active `scenario_id`, list of command ids, study time (optional), result-box template id.
 3. **Load flow command**: `method` (`ac_newton_raphson`, `ac_newton_raphson_current`, `ac_gauss_seidel`, `ac_fast_decoupled_xb`, `ac_fast_decoupled_bx`, `dc`), `flat_start` or `from_previous`, `tolerance_mva` (default 0.001, the documented ETAP criterion of 0.001 MW/Mvar), `max_iterations_inner` (default 25), `max_iterations_outer` (default 20), `consider_q_limits`, `automatic_tap_adjustment` (`off`, `stepped`, `continuous`), `automatic_shunt_adjustment`, `load_voltage_dependency`, `distributed_slack` (`none`, `by_generation`, `by_load`), `gs_acceleration` (default 1.47), `fd_angle_cap_rad` (0.4), `fd_voltage_cap_pu` (0.3), `nr_max_voltage_step_pu` (null, meaning none). Every default names its source in the schema description.
-4. **Result envelope**: `run_id`, `study_case_id`, `command_id`, `input_hash` (SHA-256 of canonical study data), engine name and version, status (`converged`, `not_converged`, `failed`), diagnostics, trace reference.
+4. **Run/result envelope**: `run_id`, project/model revision, `study_case_id`, `command_id`, `input_hash` (SHA-256 of immutable canonical effective inputs), engine name and version, lifecycle (`queued`, `running`, `completed`, `failed`, `cancelled`), separate convergence and limit-assessment states, diagnostics and trace reference. Specify allowed transitions, cancellation acknowledgement versus process termination, stale-response rejection and artifact/restart policy. Failed or cancelled runs cannot expose a valid engineering result.
 5. Existing study request contracts remain valid; the new command objects map onto them in WP-3.49.
+
+Generation ownership is serialized after WP-3.4: the current generator writes src/generated.ts and uses scripts/generate.mjs; add explicit new outputs without deleting legacy exports.
 
 Acceptance: schema tests for every command option and default; round trip through generated Python and TypeScript types; a study case referencing a missing scenario gives a named diagnostic.
 
@@ -446,16 +424,13 @@ build_ybus(snapshot) -> scipy.sparse.csr_matrix (complex)
   assemble with COO triplets, sum duplicates, convert to CSR once
 
 factor(matrix) -> Factor   # scipy.sparse.linalg.splu wrapper; reuse for many right-hand sides
-                           # only while the matrix values are unchanged (Newton Jacobians need a
-                           # fresh numeric factor each iteration); a factor used after its matrix
-                           # changed raises a diagnostic
   singular or near-singular matrix -> diagnostic naming the node set, never an exception to the user
 
 trace module: Trace object that records steps as (equation id, symbolic form, substituted values,
   result, units, source); shared by all engines for D11
 ```
 
-Transformer per-unit conversion: impedance from `uk_percent` and `pcu_kw` on the rated power, referred to the system base, with the off-nominal ratio computed from the rated voltages against the node nominal voltages and the tap position. The tap convention (which side, sign of a step, how impedance is referred when the tap moves) is set out in the private reading map with the ETAP numerical repair that fixed the 76 percent voltage error; follow it and test it explicitly.
+Transformer per-unit conversion: impedance from `uk_percent` and `pcu_kw` on the rated power, referred to the system base, with the off-nominal ratio computed from the rated voltages against the node nominal voltages and the tap position. Specify tap side, sign and impedance base independently for Quantic nameplate inputs. Private study notes include projection-specific stored-result reconstructions: do not apply a vendor-export impedance normalization to nameplate data or claim predictive vendor equivalence. Input adapters must identify their representation; test canonical stamps independently from original analytical inputs.
 
 Acceptance:
 
@@ -478,6 +453,8 @@ Owned paths: `tests/benchmarks/README.md`, `tests/benchmarks/harness/**`, `tests
 1. Public case library, each with source, licence and a stored reference solution: two-bus and three-bus analytical cases (our own derivation, shown in the README), MATPOWER case9, case14, case30, case57 and case118 converted to network v1, IEEE 4-node feeder (balanced).
 2. Reference solutions: pandapower Newton-Raphson at tolerance 1e-10 (independent implementation) stored as JSON with version provenance; where MATPOWER publishes solved values, also the published values with their printed precision.
 3. Harness: runs every registered solver on every case it supports and records maximum voltage magnitude error (pu), angle error (degrees), branch P and Q error (MW, Mvar), iterations, run time (cold and warm) and status. Exits nonzero if a solver exceeds its declared tolerance.
+Performance evidence additionally records raw repetitions/distributions; model compile, assembly, solve and result/trace costs; peak process memory including native allocations and workers; hardware, OS, exact versions and thread settings. Expand to licence-reviewed larger cases after the small correctness baseline; add contingency/time-series throughput when available. Record unknown product budgets and do not turn preliminary adapter timings into native capacity claims.
+
 4. `private_fixtures.py`: loads `fixtures/textbook/**` from `QE_REFERENCES`; skips with an explicit message when absent; never prints fixture values in test output (only pass/fail and error magnitudes).
 5. Register what exists today: textbook NR solver and pandapower adapter. Write `docs/benchmarks/baseline-2026-11.md`.
 
@@ -522,11 +499,13 @@ Change record: none
 Status: [ ] Not started
 Lane: W-D (DeepSeek worker)
 Depends on: WP-3.5, WP-3.6, WP-3.7
-Owned paths: `packages/py/qe_api/src/qe_api/v1/**`, `packages/py/qe_api/tests/v1/**`, `docs/api/v1.md`
+Owned paths: `packages/py/qe_api/src/qe_api/v1/**`, `packages/py/qe_api/src/qe_api/app.py`, `packages/py/qe_api/src/qe_api/runner.py`, `packages/py/qe_api/src/qe_api/worker.py`, `packages/py/qe_api/tests/v1/**`, `tests/integration/test_api_v1.py`, `docs/api/v1.md`
 
 REST endpoints under `/api/v1/`: list and open projects; get and save network (with etag); get and save diagrams; CRUD study cases and commands; run a command (returns `run_id`, then progress events over Server-Sent Events, then result); list runs with stale flags; get result and trace; update model from result. Engine selection by command `method`, routing to native engines as they become available and to the pandapower adapter before that. Existing API stays for the old workbench until WP-3.59.
 
-Acceptance: integration tests for every endpoint including etag conflict, cancellation of a running study, and stale-result flagging after a save.
+Reuse and extend the existing bounded process Runner; inventory timeout, byte-limit and slot-release behavior first. Register routes in app.py. Own v1/ integration exclusively until merged; WP-3.18 touches its nested registration paths only afterwards. Native/adapter selection must be explicit in capabilities and provenance, never a silent fallback for an unsupported method.
+
+Acceptance: integration tests for every endpoint including etag conflict, cancellation that terminates the worker, worker failure, resource cleanup, immutable concurrent snapshots, late-response rejection and stale-result flagging after a save.
 
 Learning note: none.
 Change record: none
@@ -575,9 +554,8 @@ Acceptance:
 - case9, case14, case30, case57, case118: |V| within 1e-8 pu and angle within 1e-6 degrees of the pandapower reference; branch flows within 1e-6 MW/Mvar; published MATPOWER values within their printed precision.
 - The two-bus example of the reading map reproduces its first-iteration increment to four significant figures.
 - Q-limit case (case14 with tightened limits): the expected generators switch and the solution matches the reference with the same limits.
-- A deliberately unsolvable case (load scaled to 400 percent) returns `not_converged` with the worst node named.
+- An original analytically infeasible case with documented assumptions, or a deliberately exhausted iteration budget, returns the appropriate failure status with the worst node named. A fixed load multiplier is not proof of infeasibility; distinguish iteration exhaustion from physical infeasibility.
 - Agrees with the textbook solver on all its supported cases.
-- The analytic Jacobian matches a finite-difference Jacobian to 1e-6 relative on case14 at a non-flat state; KCL and power balance close to 1e-9 pu at every node of every converged case.
 
 Learning note: `docs/learning/native-newton-raphson.md`, with mismatch, the four Jacobian blocks, why quadratic convergence, and Q-limit switching.
 Change record: none
@@ -622,7 +600,7 @@ Change record: none
 
 Status: [ ] Not started
 Lane: W-E (DeepSeek worker)
-Depends on: WP-3.1
+Depends on: WP-3.1, WP-3.10
 Owned paths: `packages/py/qe_power/src/qe_power/native/topology/**`, `packages/py/qe_power/tests/native/topology/**`
 
 1. Island detection on the prepared node graph (union-find over in-service branches and closed switches).
@@ -660,7 +638,7 @@ Owned paths: `packages/py/qe_power/src/qe_power/native/contingency/**`, `package
 2. DC screening: linear outage distribution factors (LODF) from the DC model to rank contingencies; only the top ranked go to full AC.
 3. Results ranked by severity with the base case alongside.
 
-Acceptance: case30 N-1 full AC equals 41 independent full solves; DC screening ranks the worst five contingencies the same as full AC on case30; an islanding outage reports the unsupplied load.
+Acceptance: case30 N-1 full AC equals 41 independent full solves; DC screening records ranking differences and recall against full AC under declared assumptions; all reported critical candidates are AC-verified and unscreened cases are explicitly unevaluated, with no guarantee that DC reproduces AC ranking; an islanding outage reports the unsupplied load.
 
 Learning note: `docs/learning/contingency-analysis.md`.
 Change record: none
@@ -683,7 +661,7 @@ Change record: none
 
 Status: [ ] Not started
 Lane: W-E (DeepSeek worker)
-Depends on: WP-3.10, WP-3.13, WP-3.49
+Depends on: WP-3.10, WP-3.11, WP-3.12, WP-3.13, WP-3.17, WP-3.49
 Owned paths: `packages/py/qe_power/src/qe_power/native/loadflow/report.py`, `packages/py/qe_power/src/qe_power/native/loadflow/register.py`, `packages/py/qe_power/tests/native/loadflow/test_report*.py`, `packages/py/qe_api/src/qe_api/v1/engines/loadflow.py`, `packages/py/qe_api/tests/v1/engines/test_loadflow*.py`
 
 1. Verification report like PowerFactory's: overloaded elements over a threshold, voltage violations against terminal limits, generators at Q limit, transformers at tap limit, unsupplied areas.
@@ -736,11 +714,13 @@ Starts as soon as WP-3.5 is merged (it builds on the contracts) and runs in para
 Status: [ ] Not started
 Lane: W-U (DeepSeek worker)
 Depends on: WP-3.5
-Owned paths: `apps/web/src/power/shell/**`, `apps/web/src/power/theme/**`, `apps/web/tests/power/shell/**`, `apps/web/e2e/power/shell.spec.ts`
+Owned paths: `apps/web/src/power/shell/**`, `apps/web/src/power/theme/**`, `apps/web/tests/power/shell/**`, `apps/web/e2e/power/shell.spec.ts`, `apps/web/power.html`, `apps/web/src/power/main.tsx`, `apps/web/src/power/App.tsx`, `apps/web/vite.config.ts`
 
 Layout of section 7.3: menu bar, main toolbar with study case and scenario selectors, project tree left, diagram tabs centre, drawing tools right, output window bottom, status bar. Dockable, resizable, hideable panels with layout saved per user. Theme tokens: white canvas, greys for panels and tabs, no blue (accents in dark grey and a single warm accent for selection). Keyboard: standard shortcuts (Ctrl+S, Ctrl+Z, Delete, F2 rename, F10 run load flow following ETAP habit, documented in a shortcut sheet).
 
-Acceptance: e2e test opens a project and checks every region; panels resize and persist; no colour with a blue hue in theme tokens (test reads tokens).
+Mount the new shell through a separate power.html development/test entry before any UI e2e. Keep the old default entry until retirement. Add a minimal bootstrap App for shared composition; subsequent feature integration is coordinated through one owner. Initial shell e2e may use explicit contract fixtures; integrated journeys later use the real API.
+
+Acceptance: e2e test opens the new entry and checks every region; panels resize and persist; no colour with a blue hue in theme tokens (test reads tokens).
 
 Learning note: none.
 Change record: none
@@ -866,11 +846,11 @@ Change record: none
 Status: [ ] Not started
 Lane: Manager (ChatGPT), with product owner acceptance by Claude
 Depends on: WP-3.50 to WP-3.58
-Owned paths: `docs/log/**`, `apps/web/src/App.tsx`, `apps/web/src/GraphCanvas.tsx`, `apps/web/src/Symbol.tsx`, `apps/web/src/main.tsx`
+Owned paths: `docs/log/**`, `apps/web/src/App.tsx`, `apps/web/src/GraphCanvas.tsx`, `apps/web/src/Symbol.tsx`, `apps/web/src/main.tsx`, `apps/web/tests/app.test.tsx`, `apps/web/tests/project-switch.test.tsx`, `apps/web/tests/power.test.ts`, `apps/web/e2e/workspace.spec.ts`
 
 ChatGPT audits as for WP-3.16, then switches `main.tsx` to the new power workbench and removes the old power files once nothing references them (PV and PLC workspaces stay). Claude reviews the recorded demos against section 7.3 and accepts or returns findings; Peter tries it.
 
-Acceptance: every journey of section 7.5 passes; audit and acceptance logs; old workbench tests removed or migrated; CI green.
+Acceptance: audit and acceptance logs; old workbench tests removed or migrated; CI green.
 
 Learning note: none.
 Change record: none
@@ -1149,19 +1129,6 @@ Depends on: WP-3.41 to WP-3.43, WP-3.45
 Owned paths: `docs/log/**`
 
 Acceptance: as WP-3.16.
-Learning note: none.
-Change record: none
-
-### WP-3.61 Release qualification for the power suite
-
-Status: [ ] Not started
-Lane: Manager (ChatGPT), with product owner acceptance by Claude
-Depends on: WP-3.44
-Owned paths: `docs/release/**`
-
-Proposed by ChatGPT (campaign B9). Clean-machine install, offline use, backup and restore, project migration and rollback, licence and source gates, operating documentation. Detailed in WP-3.60.
-
-Acceptance: to be detailed in WP-3.60.
 Learning note: none.
 Change record: none
 
