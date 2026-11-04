@@ -2,6 +2,23 @@
 
 These rules apply to every model and every session, whichever tool you run in. `PLAN.md` is the source of truth for what to build. This file is the source of truth for how to work.
 
+## Power delivery amendment, Peter's 4 November 2026 mandate
+
+This section takes precedence over the older lane, self-completion and review-frequency rules below for new Phase 3 work. Peter is sponsor; Claude is product owner; ChatGPT is product manager/external reviewer; DeepSeek/OpenCode uses the roles in `docs/delivery/agents.md`. Historical logs and completed work are unchanged.
+
+- Read `docs/delivery/README.md` and the assigned task contract. Approved work can proceed in large campaigns without per-task permission. Retain one WP per PR until a new umbrella WP with explicit owned paths is approved on main. Do not bypass the merge-base ownership checker.
+- Parallel workers require disjoint worktrees and owned paths. If the host cannot isolate editing sessions, serialize writes. A manager integrates; workers do not push or merge. Use fresh reviewer sessions, and distinguish role separation from model independence.
+- Every implementation PR gets code-quality, engineering and implementation-quality review plus external review and current-head CI. A review request or lack of findings is not product acceptance. Done requires the actual acceptance evidence; a pending draft remains In progress. Dependent work waits or explicitly stacks as draft. Independent next work may continue.
+- Claude records product acceptance; ChatGPT records delivery/technical review. Numerical blockers remain blockers. Reviewers may make small fixes, but become implementers for those fixes and require renewed independent verification.
+- New contract changes retain CC ownership, versioning and migration rules. Missing fields, unsupported methods and unknown source editions are explicit diagnostics, never guessed values.
+- Recent private study notes are evidence with limitations. Stored-result reconstruction, static inference and executed predictive validation are different classes. Do not copy vendor code, pseudocode, assets or private source paths into public code, comments, PRs or artifacts.
+- Preserve the November 1 language consensus: Python/NumPy/SciPy now, replaceable typed sparse kernels and measured acceleration. Numeric factors may be reused only for unchanged matrix values. Numba is optional, not an automatic new dependency.
+- Use `AGENTS.md` as canonical instructions and `.opencode/agents/` for role definitions. Never claim a Markdown file launches agents, enforces GitHub protections or wakes this chat. Follow `docs/delivery/review-automation.md`.
+
+### Code review focus
+
+Prioritize incorrect units/bases and terminal directions; double-applied transformer taps; stale numeric factors; hidden unsupported models; result-derived test inputs; invalid convergence/safety success; stale UI results; cross-run state leakage; contract compatibility; imported executable content; private evidence leaks. Require original independent numerical tests and actual user-journey evidence. Report exact reproductions and severity, including untested scope.
+
 ## 1. Non-negotiables
 
 1. Work on **one work package (WP) at a time**, and only one Peter has approved in `PLAN.md`.

@@ -1,3 +1,7 @@
+# Current power delivery roles
+
+Peter's 2026-11-04 instruction supersedes the historical roles below: Claude is product owner, ChatGPT product manager/external reviewer, DeepSeek/OpenCode the implementation team. See `../../AGENTS.md` and `../delivery/agents.md`. Claude retains BOARD ownership. Task delegation is authorized for the defined team; isolate worker worktrees. Per-PR independent review now supplements batch audits. Historical channel messages remain immutable.
+
 # Agent channel: how Claude and ChatGPT talk
 
 This folder is the conversation between the two models working on Quantic Studio, so

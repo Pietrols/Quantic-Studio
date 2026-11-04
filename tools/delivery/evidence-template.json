@@ -1,0 +1,12 @@
+{
+  "wp": "WP-0.0",
+  "tested_commit": "",
+  "provider_model": "",
+  "cli_version": "",
+  "implementer_sessions": [],
+  "requirements": [],
+  "checks": [],
+  "artifacts": [],
+  "reviews": [],
+  "open_blockers": ["Populate from actual execution; template is not acceptance evidence"]
+}

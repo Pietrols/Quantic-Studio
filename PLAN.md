@@ -128,6 +128,8 @@ provenance and calculation trace -> qe_report -> report (Markdown, PDF)
 
 ## 4. Collaboration protocol
 
+For new Phase 3 work, the 2026-11-04 power delivery amendment in AGENTS.md supersedes the historical lane assignments and self-merge review cadence below. Detailed campaigns and proposed new WPs are in `docs/delivery/batches.md`; only WPs explicitly listed here are executable. Claude owns product acceptance, ChatGPT delivery/technical review, and DeepSeek/OpenCode implementation. Existing IDs and scopes remain until explicitly amended.
+
 ### 4.1 Lanes and batches
 
 | Lane | Holder | Phase 3 work |
@@ -222,7 +224,7 @@ ChatGPT is busy with the survey, so Claude lays the groundwork that every batch 
 
 ### WP-3.0 Power delivery operating model and implementation design
 
-Status: [ ] Not started
+Status: [~] In progress | ChatGPT | branch wp-3.0-power-delivery | started 2026-11-04
 Lane: B (ChatGPT, product manager)
 Depends on: none
 Owned paths: `PLAN.md`, `AGENTS.md`, `docs/agents/README.md`, `docs/delivery/**`, `.opencode/agents/**`, `.github/PULL_REQUEST_TEMPLATE.md`, `tools/delivery/**`
@@ -251,7 +253,7 @@ Build the shared base every native engine uses:
 
 1. Compile a validated `network` contract into an immutable study snapshot: bus index map, in-service elements, per-unit conversion on one documented base, element IDs kept for results.
 2. Sparse bus admittance matrix (SciPy CSR) from four-block terminal stamps: pi lines, two-winding transformers with off-nominal and complex taps, shunts. Three-winding transformers as star equivalents.
-3. A factorization wrapper (SciPy `splu`) that reuses one factor for many right-hand sides and reports singular systems as diagnostics.
+3. A factorization wrapper (SciPy `splu`) that reuses one factor for many right-hand sides only while numerical matrix values are unchanged, and reports singular systems as diagnostics. Changing Newton Jacobians require fresh numeric factors; symbolic structure reuse is distinct.
 4. Add SciPy to the package dependencies if not already present.
 
 Acceptance:
@@ -274,6 +276,8 @@ Owned paths: `tests/benchmarks/README.md`, `tests/benchmarks/harness/**`, `tests
 2. A harness that runs every registered solver on every case it supports and records maximum voltage magnitude and angle error, branch flow error, iterations, run time and status.
 3. Register what exists today: the textbook NR solver and the pandapower adapter.
 4. Write the baseline: `docs/benchmarks/baseline-2026-10.md`, what we have today, where it is accurate and where it fails or has no coverage. Include the prototype results from the private study notes as a third column where recorded.
+
+Performance follow-through from the November 1 consensus: retain small correctness cases, then add provenance/licence-reviewed large cases. Record cold/warm distributions, raw repetitions, compile/assembly/solve/result/trace costs, peak process memory including native allocations and workers, hardware and thread settings. Add repeated contingency/time-series workloads as engines become available. Product budgets remain explicit open decisions; no capacity claim from preliminary adapter timings.
 
 Acceptance:
 
