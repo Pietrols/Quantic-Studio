@@ -334,7 +334,7 @@ Screenshots of the populated network, a selected element, a validation error, a 
 
 ### WP-3.9 Plan v3 adoption
 
-Status: [ ] Not started
+Status: [x] Done | implemented by Claude | commit 7fedda7 | 2026-11-04
 Lane: P (Peter approves), drafted by Claude with ChatGPT's review
 Depends on: none
 Owned paths: `PLAN.md`, `AGENTS.md`, `opencode.json`, `.opencode/**`, `docs/agents/README.md`, `docs/agents/BOARD.md`, `docs/agents/messages/**`
