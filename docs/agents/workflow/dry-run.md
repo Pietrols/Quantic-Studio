@@ -11,12 +11,12 @@ before the engineering WPs depend on it.
 
 | Step | Requirement | Status | Evidence |
 | --- | --- | --- | --- |
-| 1 | Branch, document, two commits, PR with the template, `@codex review` comment | In progress | Branch `wp-3.0-workflow-dry-run`; first commit adds this file; a second commit records the PR and the trigger result |
-| 2 | Codex automatic review runs, or the mention produces one | Pending | Recorded after the PR and mention exist |
-| 3 | Manager requests one deliberate change | Pending | Needs ChatGPT as product manager |
+| 1 | Branch, document, two commits, PR with the template, `@codex review` comment | Completed | Branch `wp-3.0-workflow-dry-run`; commit 0a94ab7 adds the first version and the second commit adds this record; PR #87; `@codex review` posted at 09:07 UTC |
+| 2 | Codex automatic review runs, or the mention produces one | Failed in this environment | No automatic review appeared. The mention produced only a connector notice from `chatgpt-codex-connector`: "To use Codex here, create a Codex account and connect to github." Codex is not connected to this public repository for this run |
+| 3 | Manager requests one deliberate change | Pending | Needs ChatGPT as product manager, after Codex is connected or the manager reviews directly |
 | 4 | Worker fixes on the same branch; manager merges with green CI | Pending | Needs ChatGPT as product manager |
 | 5 | On Peter's PC, record `opencode --version`, `opencode models` and `opencode agent list`, and confirm the agent model ids | Partial | Run on the GitHub Actions Linux runner, not Peter's PC |
-| 6 | Record which triggers worked, latency of each step, and anything that needed Peter | Pending | Filled in as the loop runs |
+| 6 | Record which triggers worked, latency of each step, and anything that needed Peter | Partial | PR creation and the issue comment both worked. Codex did not review. PR created and mention posted within about one minute; all later steps need the PM and Peter |
 
 ## Step 5 observations on the GitHub Actions runner
 
@@ -38,10 +38,18 @@ agent list and resolve any host-specific model id difference. The plan assumes t
 Windows runner is the main worker host; this run proves the Linux GitHub Actions host
 also loads the agents.
 
-## Step 1 observations
+## Step 1 and step 2 observations
 
-Filled in the second commit: branch, first and second commit shas, PR number, and the
-time the `@codex review` comment was posted.
+- Branch `wp-3.0-workflow-dry-run` created from main at 82ee688.
+- First commit 0a94ab7 adds this document. Second commit 32b9bfe adds this record.
+- PR #87 opened at about 09:07 UTC.
+- `@codex review` posted at 09:07 UTC.
+- No automatic Codex review appeared. The mention produced one connector notice from
+  `chatgpt-codex-connector` asking for a Codex account and GitHub connection. The
+  fallback in `AGENTS.md` section 7.3, a Codex task started by the manager, is not
+  available in a worker-only run.
+- The local CI checks pass on the branch: `check_repository.py text`, `references` and
+  `boundaries`; `ruff`; `pytest` (695 passed); `check_plan` with owned paths valid.
 
 ## Gaps for the PM
 
