@@ -1,0 +1,129 @@
+# DeepSeek workers in GitHub's cloud (AGENTS.md section 7.3).
+#
+# Three ways to start a run:
+#   1. Worker run: Actions tab > opencode > Run workflow, pick a track. Runs the worker loop
+#      of AGENTS.md section 3 for up to about six hours.
+#   2. Comment: "/oc <instruction>" or "/opencode <instruction>" on an issue, a PR or a PR
+#      code line. Only the owner and the Codex reviewer bot can trigger it.
+#   3. Schedule: every three hours, handles open review findings (AGENTS.md section 4).
+#
+# This repository is public, so its Actions logs are public. Runs here never check out or
+# read Pietrols/QE-References (AGENTS.md rule 6).
+#
+# Secret required: OPENCODE_GO_API_KEY (Settings > Secrets and variables > Actions).
+# opencode.json reads it through {env:OPENCODE_GO_API_KEY}.
+
+name: opencode
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Worker track (PLAN.md section 7.1)"
+        required: true
+        type: choice
+        options: [V, D, E, U]
+      note:
+        description: "Optional extra instruction for this run"
+        required: false
+        type: string
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  schedule:
+    - cron: "17 */3 * * *"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
+  CLOUD_RUN_RULES: >-
+    This run is in GitHub Actions on a public repository, so its logs are public.
+    QE_REFERENCES is not available: do not clone, fetch or read Pietrols/QE-References,
+    and never print private material. If a step needs a private source, build everything
+    else, record the gap under "Gaps and questions for the PM" in the PR, and move on.
+    Commit as Peter per AGENTS.md (Commit authorship). Never merge PRs.
+
+jobs:
+  worker:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    concurrency:
+      group: opencode-worker-track-${{ inputs.track }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.12'
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+      - name: Sync workspace
+        run: uv sync --all-packages --locked
+      - uses: anomalyco/opencode/github@latest
+        with:
+          model: opencode-go/deepseek-v4.1-flash
+          agent: qs-lead
+          prompt: >-
+            Session start per AGENTS.md section 2, then run the worker loop of section 3
+            on track ${{ inputs.track }} until the queue is empty, the allowance runs out,
+            or about five hours have passed. Open one PR per WP as section 3.2 says.
+            ${{ env.CLOUD_RUN_RULES }} ${{ inputs.note }}
+
+  comment:
+    if: >-
+      (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment')
+      && (contains(github.event.comment.body, '/oc') || contains(github.event.comment.body, '/opencode'))
+      && (github.event.comment.author_association == 'OWNER'
+          || (github.event.comment.user.type == 'Bot' && contains(github.event.comment.user.login, 'codex')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.12'
+      - name: Sync workspace
+        run: uv sync --all-packages --locked
+      - uses: anomalyco/opencode/github@latest
+        with:
+          model: opencode-go/deepseek-v4.1-flash
+          agent: qs-lead
+
+  rework:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    concurrency:
+      group: opencode-rework
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.12'
+      - name: Sync workspace
+        run: uv sync --all-packages --locked
+      - uses: anomalyco/opencode/github@latest
+        with:
+          model: opencode-go/deepseek-v4.1-flash
+          agent: qs-lead
+          prompt: >-
+            Find open PRs with unresolved review findings from the manager or Codex, or
+            open issues labelled rework, and address them per AGENTS.md section 4. If there
+            are none, stop immediately without other work. ${{ env.CLOUD_RUN_RULES }}
