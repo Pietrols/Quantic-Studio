@@ -506,7 +506,7 @@ Change record: none
 
 ### WP-3.3 Engine family map and Phase 3 learning index
 
-Status: [ ] Not started
+Status: [x] Done | implemented by DeepSeek (opencode-go/deepseek-v4.1-flash) | commit f0cbeaa | 2026-11-05
 Lane: W-V (DeepSeek worker)
 Depends on: none
 Owned paths: `docs/research/power/phase3-family-map.md`
