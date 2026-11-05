@@ -8,10 +8,11 @@ must read and verify.
 
 Public sources only. The private reading map, the ETAP and PowerFactory survey paths
 and the textbook fixtures stay in `Pietrols/QE-References` and are not reproduced here.
-Where the public research names a book but not a section, the entry says so and the gap
-is recorded in section 5. Where a standard is not owned, decision D18 and the relevant
-engine note stand: the method can be built, the standard-grade constants and
-certification cases wait for the purchase.
+Where the public research records a section, the table gives it. Where it records only
+a book, the exact chapter and page pointer is in the private reading map and the table
+does not claim to reproduce it; the gap is also recorded in section 6. Where a standard
+is not owned, decision D18 and the relevant engine note stand: the method can be built,
+the standard-grade constants and certification cases wait for the purchase.
 
 ## 1. How to read this map
 
@@ -53,7 +54,7 @@ Short names follow [notes/engines-library-map.md](notes/engines-library-map.md).
 | Gonen88 | Transmission Engineering, 1988 |
 | Grainger94 | Power System Analysis, 1994 |
 | Kasikci02 | Short Circuits in Power Systems, 2002 |
-| Krause23 | Analysis of Electric Machinery and Drive Systems, 2023 |
+| Krause23 | Introduction to Modern Analysis of Electric Machines and Drives, 2023 |
 | Kundur94 | Power System Stability and Control, 1994 |
 | Morley | Mine Power Systems, IC 9258 |
 | Najm10 | Circuit Simulation, 2010 |
@@ -63,29 +64,29 @@ Short names follow [notes/engines-library-map.md](notes/engines-library-map.md).
 
 | Family | Parity rows covered | Phase 3 WPs | Books and standards (id and section) | Public benchmarks | Private notes | Open gaps |
 | --- | --- | --- | --- | --- | --- | --- |
-| Network model, types and topology | D1, D2, D3, D4, D11, G2, G7, S9, PW-D1 | WP-3.4, WP-3.5, WP-3.13, WP-3.51, WP-3.54 | Grainger94 and Glover17 for network equations; section pointers are in the private reading map, not in the public research | Coupler station case; three-terminal radial feeder | Yes, ETAP and PowerFactory survey | D5, D7 to D10, D15 and D17 deferred; bay detail and composite networks deferred |
-| Study preparation, per unit, sparse Ybus and factorization | D2, S1, S5, S11 | WP-3.1 | Grainger94 and Glover17 for per unit; Kundur94 for transformer modelling; section pointers are in the private reading map | MATPOWER case9, case14, case30 and case118 Ybus; hand two-terminal, tapped transformer, phase shifter and three-winding cases | Yes, ETAP and PowerFactory survey | Line constants from geometry (S11) deferred; section-level pointers not public |
-| Balanced AC load flow | S1, S2, S3, S6, S9, G13 | WP-3.10, WP-3.11, WP-3.17, WP-3.18 | Glover17 ch. 6; Das02 ch. 11 to 13; Kundur94 | MATPOWER case9 to case118; two-bus and three-bus analytical cases; IEEE 4-node feeder | Yes, ETAP and PowerFactory survey | MATPOWER case licence recorded by WP-3.2; nothing else for the method |
-| Load-flow controls | S3, S4, S5, S6, S7 | WP-3.12 | Kundur94; Glover17; Sauer06; Das02 ch. 12 | ZIP against pandapower; hand three-node distributed slack | Yes, ETAP and PowerFactory survey | Droop and secondary control deferred; phase-shifter control not a separate WP-3.12 item |
-| Topology and islands | S9, G7 | WP-3.13, WP-3.57 | Grainger94; no specific public section recorded | Two-busbar station with a closed and open coupler; island with no source | Yes, ETAP and PowerFactory survey | None for the Phase 3 scope |
-| DC power flow, sensitivities and contingency | PW-S1, S15, S16, PW-S2, PW-S3 | WP-3.14, WP-3.15, WP-3.17, WP-3.33 | Grainger94 ch. 14 | MATPOWER case9 to case118 DC; case30 N-1 full AC and screened | Yes, ETAP and PowerFactory survey | PTDF not a separate item; RAS, full transfer refinement and N-2 groups deferred |
-| Sequence networks and faults | F1, F2, F6, F8 | WP-3.20, WP-3.29 | Grainger94 ch. 11 to 12; Glover17 9.5; Kasikci02 | WSCC 9-bus with public data; analytical sequence cases | Yes, ETAP and PowerFactory survey | Open-conductor faults and sweeps deferred; Anderson not owned |
+| Network model, types and topology | D1, D2, D3, D4, D11, G7, S9 | WP-3.4, WP-3.5, WP-3.7, WP-3.13, WP-3.49, WP-3.51, WP-3.54 | Grainger94 and Glover17 for network equations; exact sections are in the private reading map | Coupler station case; three-terminal radial feeder | Yes, ETAP and PowerFactory survey | G2 and PW-D1 deferred; D5, D7 to D10, D15 and D17 deferred |
+| Study preparation, per unit, Ybus and factorization | D2, S1, S5 | WP-3.1, WP-3.10, WP-3.12 | Grainger94 and Glover17 for per unit; Kundur94 for transformer modelling; exact sections are in the private reading map | MATPOWER case9, case14, case30 and case118 Ybus; hand two-terminal, tapped transformer, phase shifter and three-winding cases | Yes, ETAP and PowerFactory survey | S11 deferred; section-level pointers are private |
+| Balanced AC load flow | S1, S2, S3, G13 | WP-3.10, WP-3.11, WP-3.18 | Glover17 ch. 6; Das02 ch. 11 to 13; Kundur94 | MATPOWER case9 to case118; two-bus and three-bus analytical cases; IEEE 4-node feeder | Yes, ETAP and PowerFactory survey | MATPOWER case licence recorded by WP-3.2; S6 is covered in the controls row |
+| Load-flow controls | S4, S6, S7 | WP-3.12 | Kundur94; Glover17; Sauer06; Das02 ch. 12 | ZIP against pandapower; hand three-node distributed slack | Yes, ETAP and PowerFactory survey | S6 partial: distributed slack only, droop and secondary control deferred; S5 phase-shifter control is partial in WP-3.1 and WP-3.12 |
+| Topology and islands | S9, G7 | WP-3.13, WP-3.57 | Grainger94; exact section in the private reading map | Two-busbar station with a closed and open coupler; island with no source | Yes, ETAP and PowerFactory survey | None for the Phase 3 scope |
+| DC power flow, sensitivities and contingency | PW-S1, S15, S16, PW-S2, PW-S3 | WP-3.14, WP-3.15, WP-3.17, WP-3.33 | Grainger94 ch. 14 | MATPOWER case9 to case118 DC; case30 N-1 full AC and screened | Yes, ETAP and PowerFactory survey | S15 partial: N-1 and DC screening, N-2 and RAS deferred; S16 partial: LODF only; PW-S2 and PW-S3 partial |
+| Sequence networks and faults | F1, F2, F6, F8 | WP-3.20, WP-3.29 | Grainger94 ch. 11 to 12; Glover17 9.5; Kasikci02 | WSCC 9-bus with public data; analytical sequence cases | Yes, ETAP and PowerFactory survey | F4 and F5 deferred; F6 partial; F8 partial: open-conductor faults and sweeps deferred; Anderson not owned |
 | IEC 60909 short circuit | F1, F6 | WP-3.20, WP-3.21 | Kasikci02; Das02 ch. 8; IEC 60909-0:2016; IEC TR 60909-4:2021 | No public benchmark registered; analytical cases only | Yes, ETAP and PowerFactory survey | IEC 60909-0:2016 and IEC TR 60909-4:2021 not owned; c, q and lambda curves wait for them |
-| ANSI fault duties | F3, F7 | WP-3.27 | Das02 ch. 5 and 7; Das21; IEEE C37.010 | No public benchmark registered; Das02 examples are private fixtures | Yes, ETAP and PowerFactory survey | IEEE C37.010 and device rating data not owned |
-| Motor starting and acceleration | M1, M2, M3, M4, X-4 | WP-3.22 | Das02 sec. 12.10 to 12.11; Fitz03 ch. 6; Krause23; Bose02 | pandapower static motor start; own ODE case | Yes, ETAP and PowerFactory survey | M4 parameter fitting source not owned |
-| Harmonics and filters | H1, H2, H3 | WP-3.23, WP-3.24 | Das02 ch. 19 to 20; Arrillaga03 | No public benchmark registered | Yes, ETAP and PowerFactory survey | IEEE 519, IEC 61000-4-15 and measurement standards not owned; flicker (H3) deferred |
-| Protection and coordination | P1 to P9 | WP-3.23, WP-3.25 | Alstom11 ch. 9; Das21 ch. 7 and 11; Blackburn06; IEEE C37.112 | No public benchmark registered; Alstom and Das examples are private fixtures | Yes, ETAP and PowerFactory survey | Manufacturer curve data, C37.112 and local mine rules not owned; P6 to P9 deferred |
-| Arc flash | A1 to A5 | WP-3.23, WP-3.25 | Das21 ch. 3, 5 and 6 (Table 3.1 is unreliable); DGUV-I 203-077; IEEE 1584-2018; IEEE C2 | DGUV-I 203-077 example 5.1 and 5.8 are private fixtures; no public annex case | Yes, ETAP and PowerFactory survey | IEEE 1584-2018, IEEE C2 and local rules not owned; A3 and A4 deferred |
+| ANSI fault duties | F3, F7 | WP-3.27, WP-3.42 | Das02 ch. 5 and 7; Das21; IEEE C37.010 | No public benchmark registered; Das02 examples are private fixtures | Yes, ETAP and PowerFactory survey | F7 partial: duty checks and library ratings, full device workflow open; IEEE C37.010 and device data not owned |
+| Motor starting and acceleration | M1, M2, M3 | WP-3.22 | Das02 sec. 12.10 to 12.11; Fitz03 ch. 6; Krause23; Bose02 | pandapower static motor start; own ODE case | Yes, ETAP and PowerFactory survey | M4 and X-4 deferred; parameter fitting source not owned |
+| Harmonics and filters | H1, H2 | WP-3.23, WP-3.24 | Das02 ch. 19 to 20; Arrillaga03 | No public benchmark registered | Yes, ETAP and PowerFactory survey | H2 partial: filter support and limits are user data; H3 flicker deferred; IEEE 519 and measurement standards not owned |
+| Protection and coordination | P1 to P5 | WP-3.23, WP-3.25 | Alstom11 ch. 9; Das21 ch. 7 and 11; Blackburn06; IEEE C37.112 | No public benchmark registered; Alstom and Das examples are private fixtures | Yes, ETAP and PowerFactory survey | P1 to P5 partial in places; P6 to P9 deferred; manufacturer curve data, C37.112 and local mine rules not owned |
+| Arc flash | A1, A2, A5 | WP-3.23, WP-3.25 | Das21 ch. 3, 5 and 6 (Table 3.1 is unreliable); DGUV-I 203-077; IEEE 1584-2018; IEEE C2 | DGUV-I 203-077 example 5.1 and 5.8 are private fixtures; no public annex case | Yes, ETAP and PowerFactory survey | A1 partial: method only, IEEE 1584-2018 not owned; A2 and A5 partial; A3 and A4 deferred |
 | Unbalanced three-phase load flow | S10 | WP-3.30 | Das02 ch. 14; Kersting (not owned) | IEEE 4-node and IEEE 13-node feeders | Yes, PowerFactory survey documents the current formulation | Kersting not owned |
-| Transient stability | T1 to T6, X-10 | WP-3.31 | Kundur94 ch. 13; Sauer06 ch. 5 to 7; IEEE 421.5; IEC 61400-27 | WSCC 9-bus with public data | Yes, ETAP and PowerFactory survey | IEEE 421.5 and IBR models not owned; user models, EMT, small-signal and wind models deferred |
-| Optimal power flow and dispatch | S14, S26, PW-S4 | WP-3.32 | Glover17; Grainger94 ch. 13; Das02 ch. 15 to 16 | MATPOWER case9 and case14 published OPF results | Yes, PowerFactory survey | Unit commitment and reserves are not in WP-3.32; security-constrained dispatch deferred |
-| Voltage stability and transfer capability | S17, PW-S3 | WP-3.33 | Kundur94 ch. 14; Sauer06; Ajjarapu (not owned) | Continuation on case9 and case14, no published reference | Yes, PowerFactory survey | Q-limit handling check; Q-V and modal analysis deferred |
-| Planning tools | S20, C5 | WP-3.34 | Das02 ch. 9; Gonen88 ch. 10; IEEE 485; IEEE C57.91 | No public benchmark registered | Yes, ETAP survey; PowerFactory partial | IEEE 485 and IEEE C57.91 not owned; other calculators deferred |
-| Import, export and interchange | D16 | WP-3.41, WP-3.45 | No book; PSS/E RAW and DYR format specifications | MATPOWER cases; IEEE PES feeders | Yes, PowerFactory DGS and ETAP survey | PSS/E specifications, CIM and CGMES schemas and ETAP interchange not owned |
-| Equipment libraries | D11, C1 to C8 | WP-3.42, WP-3.54 | Anders05 ch. 1; Gonen88 ch. 10; IEC 60287; IEEE 738; manufacturer datasheets | No public benchmark; every type needs its source | Yes, ETAP and PowerFactory catalogues; data must be sourced again | Every type needs a source and redistribution permission; IEC 60287, IEEE 738 and IEEE 80 not owned |
-| Reports, results and provenance | G11, G13 | WP-3.1, WP-3.7, WP-3.18, WP-3.43, WP-3.57 | Kasikci02 for worked examples; no standard | Golden Markdown and PDF outputs; trace snapshots | Yes, ETAP and PowerFactory survey | Template designer, plots and recovery bin deferred |
-| Workbench and workflow | G1 to G10, D3, D4, D6, D12, D13, D14, D18 | WP-3.50 to WP-3.57, WP-3.59 | No book; PowerFactory workflow is in the private survey | Playwright fixtures; case9 built through the UI | Yes, PowerFactory UI and ETAP workflow survey | G2, G3, G4 and G12 deferred; batch automation D15 deferred |
-| Verification and benchmark harness | G13, D11, D12 | WP-3.2, WP-3.16, WP-3.19, WP-3.58 to WP-3.61 | All benchmark books and standards named above | MATPOWER cases; IEEE 4-node and 13-node feeders; analytical cases | Yes, ETAP validation list in the private survey | Private fixtures need `QE_REFERENCES`; public CI runs public cases only |
+| Transient stability | T1, T5, T6 | WP-3.31 | Kundur94 ch. 13; Sauer06 ch. 5 to 7; IEEE 421.5; IEC 61400-27 | WSCC 9-bus with public data | Yes, ETAP and PowerFactory survey | T1 partial: PSS models not named in WP-3.31; T5 and T6 partial; T2 to T4 and X-10 deferred; IEEE 421.5 and IBR models not owned |
+| Optimal power flow and dispatch | S14, PW-S4 | WP-3.32 | Glover17; Grainger94 ch. 13; Das02 ch. 15 to 16 | MATPOWER case9 and case14 OPF reference to be recorded by WP-3.2 | Yes, PowerFactory survey | S26 deferred; PW-S4 partial: security-constrained dispatch and reserves deferred; OPF benchmark still to establish |
+| Voltage stability and transfer capability | S17, PW-S3 | WP-3.33 | Kundur94 ch. 14; Sauer06; Ajjarapu (not owned) | Continuation on case9 and case14, no published reference | Yes, PowerFactory survey | S17 partial: P-V only, Q-V and modal deferred; PW-S3 partial: transfer refinement deferred; Q-limit handling check |
+| Planning tools | S20, C5 | WP-3.34 | Das02 sec. 14.3.3 for S20; Das02 ch. 9 for C5; IEEE 485; IEEE C57.91 | No public benchmark registered | Yes, ETAP survey; PowerFactory partial | C5 partial: battery sizing, IEEE 485 not owned; IEEE C57.91 not owned; other calculators deferred |
+| Import, export and interchange | D16 | WP-3.41, WP-3.45 | No book; PSS/E RAW and DYR format specifications | MATPOWER cases; IEEE PES feeders | Yes, PowerFactory DGS and ETAP survey | D16 partial: RAW and DGS only; PSS/E specifications, CIM and CGMES schemas and ETAP interchange not owned |
+| Equipment libraries and type data | D11, D2 | WP-3.42, WP-3.54 | Anders05 ch. 1; Gonen88 ch. 10; IEC 60287; IEEE 738; manufacturer datasheets | No public benchmark; every type needs its source | Yes, ETAP and PowerFactory catalogues; data must be sourced again | D11 partial: library mechanism only; C1 to C4 and C6 to C8 deferred; every type needs a source and redistribution permission |
+| Reports, results and provenance | G11, G13 | WP-3.1, WP-3.7, WP-3.18, WP-3.43, WP-3.57 | Kasikci02 for worked examples; no standard | Kasikci02 worked example through `QE_REFERENCES`; no code-generated golden is used as an expected value | Yes, ETAP and PowerFactory survey | G11 partial: Markdown and PDF only; template designer, plots and recovery bin deferred |
+| Workbench and workflow | G1, G5, G6, G7, G8, G9, G10, D3, D4, D6, D12, D13, D14, D18 | WP-3.50 to WP-3.57, WP-3.59 | No book; PowerFactory workflow is in the private survey | Playwright fixtures; case9 built through the UI | Yes, PowerFactory UI and ETAP workflow survey | G2, G3, G4 and G12 deferred; G9, D13, D14 and D18 partial; D15 batch automation deferred |
+| Verification and benchmark harness | none directly; verifies every mapped row | WP-3.2, WP-3.16, WP-3.19, WP-3.58 to WP-3.61 | All benchmark books and standards named above | MATPOWER cases; IEEE 4-node and 13-node feeders; analytical cases | Yes, ETAP validation list in the private survey | Private fixtures need `QE_REFERENCES`; public CI runs public cases only |
 
 ## 4. Phase 3 work package index
 
@@ -215,7 +216,7 @@ expansion.
 | S12 | Deferred | none | Physical DC networks with batteries and chargers; PW-S1 is separate |
 | S13 | Deferred | none | Time-series and quasi-dynamic load flow |
 | S14 | WP-3.32 | full | Optimal power flow |
-| S15 | WP-3.14, WP-3.15 | full | Contingency analysis |
+| S15 | WP-3.14, WP-3.15 | partial | N-1 full AC and DC screening; N-2 groups and RAS deferred |
 | S16 | WP-3.15 | partial | LODF screening; PTDF is not a separate item |
 | S17 | WP-3.33 | partial | Continuation P-V; Q-V and modal analysis deferred |
 | S18 | Deferred | none | State estimation; Abur is not owned |
@@ -254,10 +255,10 @@ expansion.
 | P7 | Deferred | none | Differential protection |
 | P8 | Deferred | none | CT and VT models with saturation |
 | P9 | Deferred | none | Design, as-found and maintenance states |
-| A1 | WP-3.25 | full | IEEE 1584-2018 method |
+| A1 | WP-3.25 | partial | IEEE 1584 method; edition gap recorded per D18, IEEE 1584-2018 not owned |
 | A2 | WP-3.25 | partial | Labels and work-permit workflow |
 | A3 | Deferred | none | DC arc flash |
-| A4 | Deferred | none | HV arc flash above 15 kV |
+| A4 | Deferred | none | HV arc flash above 15 kV (Das21; the range is set by the cited method, not by an owned standard) |
 | A5 | WP-3.25 | partial | Integrated energy with changing current |
 
 ### 5.6 Machines, dynamics and power quality
@@ -268,7 +269,7 @@ expansion.
 | M2 | WP-3.22 | full | Dynamic acceleration |
 | M3 | WP-3.22 | full | Starter types |
 | M4 | Deferred | none | Motor parameter fitting from datasheet |
-| T1 | WP-3.31 | full | RMS transient stability |
+| T1 | WP-3.31 | partial | RMS machines, exciters and governors; PSS models not named in WP-3.31 |
 | T2 | Deferred | none | User-defined dynamic models |
 | T3 | Deferred | none | Small-signal eigenvalue analysis |
 | T4 | Deferred | none | EMT simulation |
@@ -286,7 +287,7 @@ expansion.
 | C2 | Deferred | none | Cable ampacity |
 | C3 | Deferred | none | Cable pulling and tension |
 | C4 | Deferred | none | Transformer sizing |
-| C5 | WP-3.34 | full | Battery sizing |
+| C5 | WP-3.34 | partial | Battery sizing; IEEE 485 not owned |
 | C6 | Deferred | none | Ground grid |
 | C7 | Deferred | none | Panel schedules |
 | C8 | Deferred | none | Line sag and tension |
@@ -319,21 +320,22 @@ expansion.
 1. **Private reading map pointers are not reproduced.** This run had no
    `QE_REFERENCES`. The family table names the books and standards that the public
    research records, and keeps the exact chapter and page pointers in the private
-   reading map. Where the public research names a book without a section, the table
-   says so. The PM can add the section pointers from the private map before the
-   milestone audit.
+   reading map. Where the public research records only a book, the pointer is private
+   and the table does not claim to reproduce it. The PM can add the section pointers
+   from the private map before the milestone audit.
 2. **Private fixtures are not available in public CI.** WP-3.2 and WP-3.19 load them
    through `QE_REFERENCES` and skip with a visible message when the variable is absent.
-3. **Paid standards remain gaps per D18.** IEC 60909-0, IEC TR 60909-4, IEEE 1584-2018,
-   IEEE C37.010, IEEE 485, IEEE 80, IEEE 519, IEEE 738, IEC 60287, IEC 61363, IEC 61660,
-   IEEE 946 and IEEE 421.5 are not owned. The methods can be built; certification-grade
-   constants and cases wait for the purchase list in
+3. **Paid standards remain gaps per D18.** This list is not exhaustive. It includes
+   IEC 60909-0, IEC TR 60909-4, IEEE 1584-2018, IEEE C2, IEEE C37.010, IEEE C37.112,
+   IEEE C57.91, IEEE 485, IEEE 80, IEEE 519, IEEE 738, IEEE 946, IEEE 421.5,
+   IEC 60287, IEC 61000-4-15, IEC 61363, IEC 61400-27 and IEC 61660. The methods can
+   be built; certification-grade constants and cases wait for the purchase list in
    [../acquisition-list.md](../acquisition-list.md).
-4. **Deferred rows need later WPs.** Section 5 lists 55 deferred parity rows. The
+4. **Deferred rows need later WPs.** Section 5 lists 57 deferred parity rows. The
    largest groups are design calculators (C1 to C4 and C6 to C8), advanced dynamics
-   (T2 to T4, X-1 to X-10), planning and operations (S18 to S26, PW-D1, PW-S5, PW-T1,
-   PW-X1) and the remaining protection models (P6 to P9). WP-3.60 expands M3.2 onward
-   after the M3.1 audit and a research refresh.
+   (T2 to T4, X-1 to X-10), planning and operations (S18, S19, S21 to S26, PW-D1,
+   PW-S5, PW-T1, PW-X1) and the remaining protection models (P6 to P9). WP-3.60
+   expands M3.2 onward after the M3.1 audit and a research refresh.
 5. **Coverage is not parity.** A `full` label means the WP is written to cover the row.
    It is not evidence that the built engine matches a reference product. The milestone
    audits and the benchmark harness decide that.
