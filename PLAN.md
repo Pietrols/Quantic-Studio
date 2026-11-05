@@ -348,7 +348,7 @@ Change record: none
 
 ### WP-3.0 Agentic workflow dry run
 
-Status: [ ] Not started
+Status: [~] In progress | DeepSeek (opencode-go/deepseek-v4.1-flash) | branch wp-3.0-workflow-dry-run | started 2026-11-05 | blocked by Codex connection and manager steps
 Lane: W-V (DeepSeek worker), with ChatGPT and Peter
 Depends on: none
 Owned paths: `docs/agents/workflow/dry-run.md`
